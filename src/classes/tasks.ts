@@ -8,10 +8,10 @@ export type TaskBlockProps = {
 };
 
 export class TaskBlock {
-	#id: string;
-	#name: string;
-	#color: string;
-	#description?: string;
+	private id: string;
+	private name: string;
+	private color: string;
+	private description?: string;
 	constructor({ name, description, color }: TaskBlockProps) {
 		this.setId(nanoid());
 		this.setName(name);
@@ -21,31 +21,31 @@ export class TaskBlock {
 		}
 	}
 	setName(name: string) {
-		this.#name = name;
+		this.name = name;
 	}
 	getName() {
-		return this.#name;
+		return this.name;
 	}
 	getId() {
-		return this.#id;
+		return this.id;
 	}
 	setId(id: string) {
-		this.#id = id;
+		this.id = id;
 	}
 	getColor() {
-		return this.#color;
+		return this.color;
 	}
 	setColor(color: string) {
-		this.#color = color;
+		this.color = color;
 	}
 	setDescription(description: string) {
-		this.#description = description;
+		this.description = description;
 	}
 	removeDescription() {
-		this.#description = undefined;
+		this.description = undefined;
 	}
 	getDescription() {
-		return this.#description;
+		return this.description;
 	}
 }
 
@@ -57,8 +57,8 @@ export type FixedTimeTaskBlockProps = TaskBlockProps & {
  * A task block that represents a task that always starts and ends at the same time.
  */
 export class FixedTimeTaskBlock extends TaskBlock {
-	#startTime: string;
-	#endTime: string;
+	private startTime: string;
+	private endTime: string;
 	constructor({
 		name,
 		description,
@@ -70,16 +70,16 @@ export class FixedTimeTaskBlock extends TaskBlock {
 		this.setEndTime(endTime);
 	}
 	getStartTime() {
-		return this.#startTime;
+		return this.startTime;
 	}
 	getEndTime() {
-		return this.#endTime;
+		return this.endTime;
 	}
 	setStartTime(startTime: string) {
-		this.#startTime = startTime;
+		this.startTime = startTime;
 	}
 	setEndTime(endTime: string) {
-		this.#endTime = endTime;
+		this.endTime = endTime;
 	}
 }
 
@@ -87,7 +87,7 @@ type FixedWeeklyTimeBlockProps = FixedTimeTaskBlockProps & {
 	dayOfWeek: number;
 };
 export class FixedWeeklyTimeBlock extends FixedTimeTaskBlock {
-	#dayOfWeek: number;
+	dayOfWeek: number;
 	constructor({
 		dayOfWeek,
 		endTime,
@@ -102,26 +102,32 @@ export class FixedWeeklyTimeBlock extends FixedTimeTaskBlock {
 		if (dayOfWeek < 0 || dayOfWeek > 6) {
 			throw new Error("Day of week must be between 0 and 6 inclusive.");
 		}
-		this.#dayOfWeek = dayOfWeek;
+		this.dayOfWeek = dayOfWeek;
 	}
 	getDayOfWeek() {
-		return this.#dayOfWeek;
+		return this.dayOfWeek;
 	}
 }
 
 class Calendar {
-	daysMap: Map<string, Day>;
+	private daysMap: Map<string, Day>;
 	constructor() {
 		this.daysMap = new Map();
+	}
+	getDay(dayString: string) {
+		return this.daysMap.get(dayString);
+	}
+	setDay(day: Day) {
+		this.daysMap.set(day.toString(), day);
 	}
 }
 
 class Day {
-	// Map of Task IDs to the task data
-	#tasks: Record<string, TaskBlock>;
-	#year: number;
-	#month: number;
-	#day: number;
+	// Map of Task IDs to the task block
+	private tasks: Map<string, TaskBlock>;
+	private year: number;
+	private month: number;
+	private day: number;
 	constructor({
 		year,
 		month,
@@ -134,33 +140,51 @@ class Day {
 		this.setYear(year);
 		this.setMonth(month);
 		this.setDay(day);
-		this.#tasks = [];
+		this.tasks = new Map();
+	}
+	static toString(year: number, month: number, day: number) {
+		return `${year}-${month}-${day}`;
+	}
+	toString() {
+		return Day.toString(this.year, this.month, this.day);
 	}
 	setDay(day: number) {
 		if (day < 1 || day > 31) {
 			throw new Error("Day must be between 1 and 31 inclusive");
 		}
-		this.#day = day;
+		this.day = day;
+	}
+	getDay() {
+		return this.day;
 	}
 	setMonth(month: number) {
 		if (month < 0 || month > 11) {
 			throw new Error("Month must be between 0 and 11 inclusive.");
 		}
-		this.#month = month;
+		this.month = month;
+	}
+	getMonth() {
+		return this.month;
 	}
 	setYear(year: number) {
 		if (year < 0) {
 			throw new Error("Year cannot be negative.");
 		}
-		this.#year = year;
+		this.year = year;
+	}
+	getYear() {
+		return this.year;
+	}
+	getTask(taskId: string) {
+		return this.tasks.get(taskId);
 	}
 	addTask(task: TaskBlock) {
-		this.#tasks.push();
+		this.tasks.set(task.getId(), task);
 	}
-	getTasks() {
-		return this.#tasks;
+	getTasksMap() {
+		return this.tasks;
 	}
 	clearTasks() {
-		this.#tasks = [];
+		this.tasks.clear();
 	}
 }
