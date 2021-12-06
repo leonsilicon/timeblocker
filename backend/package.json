@@ -1,0 +1,24 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+		"gen": "prisma generate",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^3.6.0",
+    "bcryptjs": "^2.4.3",
+    "fastify": "^3.24.1",
+    "fastify-autoload": "^3.9.0",
+    "fastify-plugin": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.11",
+    "prisma": "^3.6.0"
+  }
+}
