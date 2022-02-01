@@ -2,7 +2,7 @@
 	"name": "timeblocker",
 	"private": true,
 	"version": "1.0.0",
-	"description": "Computer Science IA Project",
+	"description": "A timeblocking app.",
 	"repository": "leonzalion/timeblocker",
 	"author": {
 		"name": "Leon Si",
