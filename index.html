@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Timeblocker</title>
+		<script type="module" crossorigin src="/assets/index.afe48b3a.js"></script>
+		<link rel="modulepreload" href="/assets/vendor.f8baf0a1.js">
+		<link rel="stylesheet" href="/assets/index.2904a63c.css">
+	</head>
+	<body>
+		<div id="app"></div>
+		
+
+		<script>
+			// Redirects user from 404
+			(function () {
+				var redirect = sessionStorage.redirect;
+				delete sessionStorage.redirect;
+				if (redirect && redirect != location.href) {
+					history.replaceState(null, null, redirect);
+				}
+			})();
+		</script>
+	</body>
+</html>
