@@ -14,7 +14,7 @@ model Account {
   id           String      @id() @default(uuid())
   email        String
   passwordHash String
-  Timeblock    Timeblock[]
+  timeblock    Timeblock[]
 }
 
 model Timeblock {
