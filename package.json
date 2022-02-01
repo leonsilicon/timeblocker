@@ -26,7 +26,7 @@
 		"vue": "^3.2.25"
 	},
 	"devDependencies": {
-		"@leonzalion/configs": "latest",
+		"@leonzalion/configs": "^1.0.60",
 		"@types/node": "^17.0.0",
 		"eslint": "^8.5.0",
 		"lint-staged": "^12.1.3",

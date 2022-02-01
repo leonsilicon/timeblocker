@@ -1,37 +1,29 @@
 import fastify from 'fastify';
-import * as trpc from '@trpc/server';
-import { nodeHTTPRequestHandler } from '@trpc/server/adapters/node-http.js';
-
-async function startServer() {
-	const app = fastify();
-
-	type Context = trpc.inferAsyncReturnType<typeof createContext>;
-
-	function createContext(_opts: CreateHttpContextOptions) {
-		// Use opts.req / opts.res here
-		return {
-			// Req,
-			// res,
-		};
-	}
-
-	app.all('/trpc/:path', (req, reply) => {
-		nodeHTTPRequestHandler({
-			req: req.raw,
-			res: reply.raw,
-			router: appRouter,
-			createContext,
-			path: req.params.path,
-		});
-	});
-
-	const url = await app.listen(5000);
-
-	return {
-		url,
-		client,
-		close: () => fastify.close(),
-	};
-}
+import { nodeHTTPRequestHandler } from '@trpc/server/adapters/node-http/dist/trpc-server-adapters-node-http.cjs.js';
+import { getAppRouter } from '~/routes/router.js';
+import { createContext } from '~/utils/index.js';
 
 const app = fastify();
+
+app.all<{
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	Params: {
+		path: string;
+	};
+}>('/trpc/:path', async (req, reply) => {
+	await nodeHTTPRequestHandler({
+		req: req.raw,
+		res: reply.raw,
+		router: getAppRouter(),
+		createContext,
+		path: req.params.path,
+	});
+});
+
+app.listen(5000, (err, address) => {
+	if (err) {
+		console.error(err);
+	} else {
+		console.info(`🚀 Server listening at ${address}`);
+	}
+});

@@ -11,10 +11,24 @@ datasource db {
 }
 
 model Account {
-  id           String      @id() @default(uuid())
-  email        String
-  passwordHash String
-  timeblock    Timeblock[]
+  id                  String                @id() @default(uuid())
+  email               String                @unique()
+  passwordHash        String
+  timeblock           Timeblock[]
+  AccountSessionToken AccountSessionToken[]
+}
+
+model AccountSessionToken {
+  token     String  @id()
+  account   Account @relation(fields: [accountId], references: [id])
+  accountId String
+}
+
+model AccountRegistrationRequest {
+  id               String @id() @default(uuid())
+  email            String @unique()
+  passwordHash     String
+  confirmationCode String
 }
 
 model Timeblock {

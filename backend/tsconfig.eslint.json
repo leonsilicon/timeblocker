@@ -2,6 +2,8 @@
 	"extends": "./tsconfig.json",
 	"include": [
 		"src",
+		"typings",
+		"scripts",
 		".eslintrc.cjs",
 		"sync-index.config.cjs"
 	]
