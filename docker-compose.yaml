@@ -1,0 +1,22 @@
+version: '2.4'
+services:
+  postgresql:
+    image: postgres:13.4
+    environment:
+      POSTGRES_USER: timeblocker
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: timeblocker
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./database:/database
+    user: postgres
+    ports:
+      - '${POSTGRES_PORT:-5432}:5432'
+    networks:
+      - timeblocker
+
+volumes:
+  postgres:
+
+networks:
+  timeblocker:

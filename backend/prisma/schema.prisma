@@ -1,0 +1,31 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id           String      @id() @default(uuid())
+  email        String
+  passwordHash String
+  Timeblock    Timeblock[]
+}
+
+model Timeblock {
+  id             String  @id() @default(uuid())
+  name           String
+  owner          Account @relation(fields: [ownerAccountId], references: [id])
+  ownerAccountId String
+}
+
+model Task {
+  id          String @id() @default(uuid())
+  name        String
+  description String
+}

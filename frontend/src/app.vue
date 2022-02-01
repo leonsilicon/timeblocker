@@ -1,7 +1,13 @@
 <script setup lang="ts"></script>
 
 <template>
-	<div>onke</div>
+	<router-view />
 </template>
 
-<style></style>
+<style>
+html,
+body,
+#app {
+	height: 100%;
+}
+</style>

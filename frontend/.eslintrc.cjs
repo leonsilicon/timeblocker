@@ -15,5 +15,13 @@ module.exports = {
 				packageDir: [__dirname, path.resolve(__dirname, '..')],
 			},
 		],
+		'import/extensions': [
+			'error',
+			{
+				ts: 'never',
+				js: 'never',
+				vue: 'always',
+			},
+		],
 	},
 };
