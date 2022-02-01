@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-	<div>monke</div>
+	<div>onke</div>
 </template>
 
 <style></style>

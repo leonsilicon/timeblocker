@@ -1,0 +1,13 @@
+{
+	"type": "module",
+	"scripts": {
+		"lint": "eslint --fix --cache .",
+		"prettier": "prettier --write src",
+		"tc": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@commitlint/cli": "^15.0.0",
+		"execa": "^6.0.0",
+		"tsc-alias": "^1.5.0"
+	}
+}
