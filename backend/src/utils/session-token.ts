@@ -1,5 +1,5 @@
 import { nanoid } from '@leonzalion/nanoid-good';
-import type { Context } from '~/types/context.js';
+import type { Context } from '~b/types/context.js';
 
 export async function createSessionToken(ctx: Context, accountId: string) {
 	const sessionToken = nanoid(128);

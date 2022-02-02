@@ -5,7 +5,7 @@ import { join } from 'desm';
 export default defineConfig({
 	resolve: {
 		alias: {
-			'~': join(import.meta.url, './src'),
+			'~f': join(import.meta.url, './src'),
 		},
 	},
 	plugins: [vue()],

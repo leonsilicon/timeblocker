@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
-import { createRouter, createSessionToken } from '~/utils/index.js';
+import { createRouter, createSessionToken } from '~b/utils/index.js';
 
 export const loginRouter = createRouter().mutation('login', {
 	input: z.object({
@@ -23,7 +23,7 @@ export const loginRouter = createRouter().mutation('login', {
 		}
 
 		if (await bcrypt.compare(password, account.passwordHash)) {
-			return createSessionToken(ctx, account.id);
+			return { sessionToken: createSessionToken(ctx, account.id) };
 		} else {
 			throw new Error('Incorrect account or password.');
 		}

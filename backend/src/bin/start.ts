@@ -1,7 +1,7 @@
 import fastify from 'fastify';
 import { nodeHTTPRequestHandler } from '@trpc/server/adapters/node-http/dist/trpc-server-adapters-node-http.cjs.js';
-import { getAppRouter } from '~/routes/router.js';
-import { createContext } from '~/utils/index.js';
+import { getAppRouter } from '~b/routes/router.js';
+import { createContext } from '~b/utils/index.js';
 
 const app = fastify();
 

@@ -9,13 +9,17 @@
 		"outDir": "dist",
 		"baseUrl": ".",
 		"paths": {
-			"~/*": [
+			"~f/*": [
 				"./src/*"
+			],
+			"~b/*": [
+				"../backend/src/*"
 			]
 		},
 		"typeRoots": [
 			"./node_modules/@types",
-			"./typings"
+			"./typings",
+			"vite/client"
 		]
 	},
 	"include": [

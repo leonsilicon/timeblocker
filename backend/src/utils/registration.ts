@@ -1,6 +1,6 @@
 import process from 'node:process';
-import type { Context } from '~/types/context.js';
-import { getSmtpTransport } from '~/utils/smtp.js';
+import type { Context } from '~b/types/context.js';
+import { getSmtpTransport } from '~b/utils/smtp.js';
 
 export async function sendAccountRegistrationConfirmationCode(
 	ctx: Context,

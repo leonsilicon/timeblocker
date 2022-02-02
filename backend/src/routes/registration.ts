@@ -1,9 +1,9 @@
 import { z } from 'zod';
 import { nanoid } from '@leonzalion/nanoid-good';
 import bcrypt from 'bcrypt';
-import { createRouter } from '~/utils/router.js';
-import { createSessionToken } from '~/utils/session-token.js';
-import { captchaInput } from '~/utils/captcha.js';
+import { createRouter } from '~b/utils/router.js';
+import { createSessionToken } from '~b/utils/session-token.js';
+import { captchaInput } from '~b/utils/captcha.js';
 
 export const registrationRouter = createRouter()
 	.mutation('createRegistrationRequest', {
@@ -54,7 +54,7 @@ export const registrationRouter = createRouter()
 					},
 				});
 
-				return createSessionToken(ctx, account.id);
+				return { sessionToken: createSessionToken(ctx, account.id) };
 			} else {
 				throw new Error('Email not found or invalid confirmation code.');
 			}

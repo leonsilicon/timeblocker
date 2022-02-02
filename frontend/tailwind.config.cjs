@@ -1,10 +1,13 @@
 module.exports = {
-	content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+	content: [
+		'./index.html',
+		'./src/**/*.{vue,js,ts,jsx,tsx}',
+		'./node_modules/tw-elements/dist/js/**/*.js',
+	],
 	theme: { extend: {} },
-	plugins: [],
-	shortcuts: {
-		row: 'flex flex-row',
-		column: 'flex flex-col',
-		center: 'items-center justify-center',
-	},
+	plugins: [
+		require('@tailwindcss/typography'),
+		require('daisyui'),
+		require('tw-elements/dist/plugin'),
+	],
 };

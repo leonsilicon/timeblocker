@@ -7,7 +7,19 @@ module.exports = {
 		project: [path.resolve(__dirname, './tsconfig.eslint.json')],
 		extraFileExtensions: ['.vue'],
 	},
-	settings: createAliases({ '~': './src', '~test': './test' }),
+	settings: createAliases({
+		'~f': './src',
+		'~test': './test',
+		'~b': '../backend/src',
+	}),
+	overrides: [
+		{
+			files: ['*.vue'],
+			rules: {
+				'@typescript-eslint/consistent-type-imports': 'off',
+			},
+		},
+	],
 	rules: {
 		'import/no-extraneous-dependencies': [
 			'error',
