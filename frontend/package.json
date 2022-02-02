@@ -24,6 +24,7 @@
 		"simple-vue-icon": "^1.1.10",
 		"tw-elements": "^1.0.0-alpha10",
 		"vue": "^3.2.25",
+		"vue-plugin-load-script": "^2.1.0",
 		"vue-recaptcha": "^2.0.1",
 		"vue-router": "^4.0.12"
 	},

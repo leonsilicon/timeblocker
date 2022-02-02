@@ -94,6 +94,7 @@ importers:
       typescript: ^4.5.4
       vite: ^2.7.2
       vue: ^3.2.25
+      vue-plugin-load-script: ^2.1.0
       vue-recaptcha: ^2.0.1
       vue-router: ^4.0.12
       vue-tsc: ^0.30.2
@@ -108,6 +109,7 @@ importers:
       simple-vue-icon: 1.1.10_vue@3.2.29
       tw-elements: 1.0.0-alpha10_395544cfbe1472baf4d44cf7709a657a
       vue: 3.2.29
+      vue-plugin-load-script: 2.1.0
       vue-recaptcha: 2.0.1_vue@3.2.29
       vue-router: 4.0.12_vue@3.2.29
     devDependencies:
@@ -7446,6 +7448,10 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /vue-plugin-load-script/2.1.0:
+    resolution: {integrity: sha512-tFvedqtOiLI+jZ78dymg+f7bjiglCVC2lA0CXVIq7bXVqu1sssP40r6UNMpD9glGD+EhbGRdOa70Sb5ZuHjmTA==}
+    dev: false
 
   /vue-recaptcha/2.0.1_vue@3.2.29:
     resolution: {integrity: sha512-k7IHZUEqmMAwWQafkcQz6Y2PxBed7VUerM0ehCY8BlA0hXokTO1OVmj3xnr8m0J54XiNyoG2Jin270zQOvvsDA==}

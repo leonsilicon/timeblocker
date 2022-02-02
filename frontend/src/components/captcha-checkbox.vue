@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import VueHcaptcha from '@hcaptcha/vue3-hcaptcha';
-import { VueRecaptcha } from 'vue-recaptcha';
 import { mdiAlert } from '@mdi/js';
 import { logError } from '~f/utils/log';
-import type { VueHcaptcha as HcaptchaType } from '~f/types/captcha';
-
-const hcaptchaSitekey = import.meta.env.VITE_HCAPTCHA_SITE_KEY;
-const recaptchaSitekey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+import HcaptchaWidget from '~f/components/hcaptcha-widget.vue';
+import RecaptchaWidget from '~f/components/recaptcha-widget.vue';
+import { ComponentType } from '~f/types/component';
 
 const emit = defineEmits<{
 	(event: 'verify', token: string): void;
@@ -18,8 +15,8 @@ const props = defineProps<{
 	useRecaptcha: boolean;
 }>();
 
-const hcaptchaEl = ref<HcaptchaType>();
-const recaptchaEl = ref<VueRecaptcha>();
+const hcaptchaEl = ref<ComponentType<typeof HcaptchaWidget>>();
+const recaptchaEl = ref<ComponentType<typeof RecaptchaWidget>>();
 const isRecaptchaReady = ref(false);
 const isRecaptchaError = ref(false);
 const isHCaptchaReady = ref(false);
@@ -76,27 +73,28 @@ function switchCaptcha() {
 			"
 			class="m-4 w-8 h-8 border-4 rounded-full spinner-border animate-spin"
 		></span>
-		<div v-show="props.useRecaptcha">
-			<vue-recaptcha
+		<div v-if="props.useRecaptcha">
+			<recaptcha-widget
 				ref="recaptchaEl"
-				:sitekey="recaptchaSitekey"
 				@verify="onReCaptchaVerify"
 				@error="onReCaptchaError"
 				@render="onReCaptchaRender"
 			/>
-			<div v-if="props.useRecaptcha && isRecaptchaError" class="text-red-500">
-				<v-icon :path="mdiAlert" />
+			<div
+				v-if="props.useRecaptcha && isRecaptchaError"
+				class="text-red-500 row justify-center"
+			>
+				<v-icon :path="mdiAlert" class="mr-1" />
 				<span>ReCaptcha failed to load.</span>
 			</div>
 		</div>
 
-		<vue-hcaptcha
-			v-show="!props.useRecaptcha"
+		<hcaptcha-widget
+			v-if="!props.useRecaptcha"
 			ref="hcaptchaEl"
-			:sitekey="hcaptchaSitekey"
 			@verify="onHCaptchaVerify"
 			@error="onHCaptchaError"
-			@rendered="onHcaptchaRendered"
+			@render="onHcaptchaRendered"
 		/>
 	</div>
 </template>
