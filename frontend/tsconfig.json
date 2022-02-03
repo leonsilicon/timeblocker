@@ -18,6 +18,8 @@
 			"~b/*": [
 				"../backend/src/*"
 			],
+			// Needed because @fullcalendar/core imports preact which conflicts
+			// with Volar JSX definitions
 			"preact/compat": [
 				"./typings/preact-stub.d.ts"
 			]
