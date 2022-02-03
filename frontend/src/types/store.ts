@@ -1,4 +1,6 @@
-export type AppStore = {
-	isRecaptchaScriptLoaded: boolean;
-	isHcaptchaScriptLoaded: boolean;
+export type TimeblockStoreState = {
+	/**
+	 * Map of task IDs to Tasks
+	 */
+	tasks: Record<string, Task>
 };

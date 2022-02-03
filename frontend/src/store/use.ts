@@ -1,3 +1,7 @@
 import { defineStore } from 'pinia';
 
-export const useAppStore = defineStore('app', {});
+export const useTimeblockStore = defineStore('timeblock', {
+	state: () => ({
+		tasks: {}
+	}),
+});
