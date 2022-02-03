@@ -95,7 +95,7 @@ function onRightMonthArrowClick() {
 }
 
 #fc .fc-event-title {
-	@apply font-glacial text-center font-medium text-md;
+	@apply text-center font-medium text-md;
 	white-space: normal !important;
 	overflow: auto !important;
 	grid-column: 1 / -1;
@@ -151,7 +151,6 @@ function onRightMonthArrowClick() {
 }
 
 .fc .fc-daygrid-day-number {
-	@apply font-glacial;
 }
 </style>
 

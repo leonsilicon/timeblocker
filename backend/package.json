@@ -5,7 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"gen": "prisma generate",
-		"start": "node-ts ./src/bin/start.ts -- --experimental-specifier-resolution=node",
+		"start": "node-ts ./src/bin/start.ts",
 		"build": "node-ts ./scripts/build.ts",
 		"lint": "eslint --cache --fix .",
 		"prettier": "prettier --write src",

@@ -26,6 +26,7 @@
 		"dateformat": "^5.0.2",
 		"desm": "^1.2.0",
 		"pinia": "^2.0.11",
+		"sass": "^1.49.7",
 		"simple-vue-icon": "^1.1.10",
 		"tw-elements": "^1.0.0-alpha10",
 		"vue": "^3.2.25",
