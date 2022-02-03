@@ -14,11 +14,15 @@
 		"tc": "vue-tsc --noEmit"
 	},
 	"dependencies": {
+		"@fullcalendar/core": "^5.10.1",
+		"@fullcalendar/daygrid": "^5.10.1",
+		"@fullcalendar/timegrid": "^5.10.1",
 		"@hcaptcha/vue3-hcaptcha": "^1.0.1",
 		"@mdi/js": "^6.5.95",
 		"@tailwindcss/typography": "^0.5.1",
 		"@trpc/client": "^9.18.0",
 		"daisyui": "^1.25.4",
+		"dateformat": "^5.0.2",
 		"desm": "^1.2.0",
 		"pinia": "^2.0.11",
 		"simple-vue-icon": "^1.1.10",
