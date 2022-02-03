@@ -5,6 +5,7 @@ import { logError } from '~f/utils/log';
 import HcaptchaWidget from '~f/components/hcaptcha-widget.vue';
 import RecaptchaWidget from '~f/components/recaptcha-widget.vue';
 import { ComponentType } from '~f/types/component';
+import CircleSpinner from '~f/components/circle-spinner.vue';
 
 const emit = defineEmits<{
 	(event: 'verify', token: string): void;
@@ -17,22 +18,20 @@ const props = defineProps<{
 
 const hcaptchaEl = ref<ComponentType<typeof HcaptchaWidget>>();
 const recaptchaEl = ref<ComponentType<typeof RecaptchaWidget>>();
-const isRecaptchaReady = ref(false);
-const isRecaptchaError = ref(false);
-const isHCaptchaReady = ref(false);
-const isHCaptchaError = ref(false);
+let isRecaptchaReady = $ref(false);
+let isRecaptchaError = $ref(false);
+let isHCaptchaReady = $ref(false);
 
 function onHCaptchaVerify(token: string) {
 	emit('verify', token);
 }
 
 function onHCaptchaError(error: unknown) {
-	isHCaptchaError.value = true;
 	logError(error);
 }
 
 function onHcaptchaRendered() {
-	isHCaptchaReady.value = true;
+	isHCaptchaReady = true;
 }
 
 function onReCaptchaVerify(token: string) {
@@ -40,12 +39,12 @@ function onReCaptchaVerify(token: string) {
 }
 
 function onReCaptchaError(error: unknown) {
-	isRecaptchaError.value = true;
+	isRecaptchaError = true;
 	logError(error);
 }
 
 function onReCaptchaRender() {
-	isRecaptchaReady.value = true;
+	isRecaptchaReady = true;
 }
 
 function switchCaptcha() {
@@ -66,13 +65,12 @@ function switchCaptcha() {
 				Use {{ props.useRecaptcha ? 'HCaptcha' : 'ReCaptcha' }}
 			</button>
 		</div>
-		<span
+		<circle-spinner
 			v-if="
 				(props.useRecaptcha && !isRecaptchaReady) ||
 				(!props.useRecaptcha && !isHCaptchaReady)
 			"
-			class="m-4 w-8 h-8 border-4 rounded-full spinner-border animate-spin"
-		></span>
+		/>
 		<div v-if="props.useRecaptcha">
 			<recaptcha-widget
 				ref="recaptchaEl"
@@ -88,13 +86,13 @@ function switchCaptcha() {
 				<span>ReCaptcha failed to load.</span>
 			</div>
 		</div>
-
-		<hcaptcha-widget
-			v-if="!props.useRecaptcha"
-			ref="hcaptchaEl"
-			@verify="onHCaptchaVerify"
-			@error="onHCaptchaError"
-			@render="onHcaptchaRendered"
-		/>
+		<div v-else>
+			<hcaptcha-widget
+				ref="hcaptchaEl"
+				@verify="onHCaptchaVerify"
+				@error="onHCaptchaError"
+				@render="onHcaptchaRendered"
+			/>
+		</div>
 	</div>
 </template>

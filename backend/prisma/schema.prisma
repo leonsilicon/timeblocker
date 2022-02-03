@@ -18,10 +18,17 @@ model Account {
   AccountSessionToken AccountSessionToken[]
 }
 
+enum AuthenticationMethod {
+  header
+  cookie
+}
+
 model AccountSessionToken {
   token     String  @id()
   account   Account @relation(fields: [accountId], references: [id])
   accountId String
+
+  authenticationMethod AuthenticationMethod
 }
 
 model AccountRegistrationRequest {
@@ -29,6 +36,12 @@ model AccountRegistrationRequest {
   email            String @unique()
   passwordHash     String
   confirmationCode String
+}
+
+model Task {
+  id          String
+  name        String
+  description String
 }
 
 model Timeblock {

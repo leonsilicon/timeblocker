@@ -6,7 +6,10 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			'~f': join(import.meta.url, './src'),
+			'~s': join(import.meta.url, '../shared')
 		},
 	},
-	plugins: [vue()],
+	plugins: [vue({
+		reactivityTransform: true
+	})],
 });

@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import { loadScript } from 'vue-plugin-load-script';
 
 const emit = defineEmits<{
 	(event: 'verify', token: string): void;
-	(event: 'expired' | 'render'): void;
+	(event: 'expired'): void;
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
+	(event: 'render'): void;
 	(event: 'error', e: unknown): void;
 }>();
 
@@ -24,7 +26,7 @@ onMounted(() => {
 
 let grecaptcha: any;
 
-const recaptchaEl = ref();
+const recaptchaEl = $ref();
 function onRecaptchaLoaded() {
 	if (grecaptcha === undefined) {
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -32,7 +34,7 @@ function onRecaptchaLoaded() {
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-call
-	grecaptcha.render(recaptchaEl.value, {
+	grecaptcha.render(recaptchaEl, {
 		callback: (token: string) => {
 			emit('verify', token);
 		},

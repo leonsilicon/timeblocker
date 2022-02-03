@@ -1,13 +1,19 @@
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
-import { createRouter, createSessionToken } from '~b/utils/index.js';
+import { authenticateClient } from '~b/utils/auth.js';
+import { createRouter } from '~b/utils/index.js';
+import { AuthenticationMethod } from '~s/types/auth.js';
 
 export const loginRouter = createRouter().mutation('login', {
 	input: z.object({
 		email: z.string(),
 		password: z.string(),
+		authenticationMethod: z.enum([
+			AuthenticationMethod.cookie,
+			AuthenticationMethod.header,
+		]),
 	}),
-	async resolve({ ctx, input: { email, password } }) {
+	async resolve({ ctx, input: { email, password, authenticationMethod } }) {
 		const account = await ctx.prisma.account.findFirst({
 			select: {
 				passwordHash: true,
@@ -23,7 +29,10 @@ export const loginRouter = createRouter().mutation('login', {
 		}
 
 		if (await bcrypt.compare(password, account.passwordHash)) {
-			return { sessionToken: createSessionToken(ctx, account.id) };
+			return authenticateClient(ctx, {
+				accountId: account.id,
+				authenticationMethod,
+			});
 		} else {
 			throw new Error('Incorrect account or password.');
 		}

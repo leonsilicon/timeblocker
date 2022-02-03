@@ -2,7 +2,6 @@ import { z } from 'zod';
 import { nanoid } from '@leonzalion/nanoid-good';
 import bcrypt from 'bcrypt';
 import { createRouter } from '~b/utils/router.js';
-import { createSessionToken } from '~b/utils/session-token.js';
 import { captchaInput } from '~b/utils/captcha.js';
 
 export const registrationRouter = createRouter()
@@ -53,8 +52,6 @@ export const registrationRouter = createRouter()
 						passwordHash: account.passwordHash,
 					},
 				});
-
-				return { sessionToken: createSessionToken(ctx, account.id) };
 			} else {
 				throw new Error('Email not found or invalid confirmation code.');
 			}

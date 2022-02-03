@@ -3,6 +3,7 @@
 declare namespace NodeJS {
 	export interface ProcessEnv {
 		CLIENT_URL: string;
+		APP_SECRET: string;
 
 		HCAPTCHA_SECRET_KEY: string;
 		RECAPTCHA_SECRET_KEY: string;

@@ -1,36 +1,49 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { client } from '~f/utils/trpc';
 import CaptchaCheckbox from '~f/components/captcha-checkbox.vue';
+import CircleSpinner from '~f/components/circle-spinner.vue';
+import { AuthenticationMethod } from '~s/types/auth';
 
 const route = useRoute();
 
-const isLogin = computed(() => route.path === '/login');
-const isRegister = computed(() => !isLogin.value);
-const email = ref('');
-const password = ref('');
-const confirmPassword = ref('');
+const isLogin = $computed(() => route.path === '/login');
+const isRegister = $computed(() => !isLogin);
+const email = $ref('');
+const password = $ref('');
+const confirmPassword = $ref('');
 
-const useRecaptcha = ref(true);
-const captchaResponse = ref('');
+const useRecaptcha = $ref(true);
+const captchaResponse = $ref('');
 
+let isRequestLoading = $ref(false);
 async function login() {
-	const { sessionToken } = await client.mutation('login', {
-		email: email.value,
-		password: password.value,
-	});
+	try {
+		isRequestLoading = true;
+		await client.mutation('login', {
+			email,
+			password,
+			authenticationMethod: AuthenticationMethod.header,
+		});
+	} finally {
+		isRequestLoading = false;
+	}
 }
 
 async function register() {
-	await client.mutation('createRegistrationRequest', {
-		email: email.value,
-		password: password.value,
-		captcha: {
-			captchaResponse: captchaResponse.value,
-			isRecaptcha: useRecaptcha.value,
-		},
-	});
+	try {
+		isRequestLoading = true;
+		await client.mutation('createRegistrationRequest', {
+			email,
+			password,
+			captcha: {
+				captchaResponse,
+				isRecaptcha: useRecaptcha,
+			},
+		});
+	} finally {
+		isRequestLoading = false;
+	}
 }
 </script>
 
@@ -80,8 +93,12 @@ async function register() {
 			/>
 		</div>
 
-		<button class="btn btn-primary mt-2 px-8">
-			{{ isLogin ? 'Login' : 'Register' }}
+		<button
+			class="btn btn-primary mt-2 px-8"
+			@click="isLogin ? login() : register()"
+		>
+			<circle-spinner v-if="isRequestLoading" />
+			<div v-else>{{ isLogin ? 'Login' : 'Register' }}</div>
 		</button>
 		<router-link
 			class="link hover:text-secondary transition-all"

@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import { loadScript } from 'vue-plugin-load-script';
 
 const emit = defineEmits<{
-	(e: 'verify', token: string): void;
-	(e: 'error', error: unknown): void;
-	(e: 'expired' | 'render'): void;
+	(event: 'verify', token: string): void;
+	(event: 'error', error: unknown): void;
+	(event: 'expired'): void;
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
+	(event: 'render'): void;
 }>();
 
 let hcaptcha: any;
@@ -23,13 +25,13 @@ onMounted(() => {
 	}
 });
 
-const hcaptchaEl = ref();
+const hcaptchaEl = $ref();
 function onHcaptchaLoaded() {
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	hcaptcha = (window as any).hcaptcha;
 
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-call
-	hcaptcha.render(hcaptchaEl.value, {
+	hcaptcha.render(hcaptchaEl, {
 		sitekey: import.meta.env.VITE_HCAPTCHA_SITE_KEY,
 		callback: (token: string) => {
 			emit('verify', token);
@@ -45,11 +47,11 @@ function onHcaptchaLoaded() {
 	emit('render');
 }
 
-(window as any).onHcaptchaLoaded = onHcaptchaLoaded;
-
 const hcaptchaSiteKey = import.meta.env.VITE_HCAPTCHA_SITE_KEY;
+
+(window as any).onHcaptchaLoaded = onHcaptchaLoaded;
 </script>
 
 <template>
-	<div id="hcaptcha" ref="hcaptchaEl" :data-sitekey="hcaptchaSiteKey"></div>
+	<div :class="hcaptchaSiteKey"></div>
 </template>

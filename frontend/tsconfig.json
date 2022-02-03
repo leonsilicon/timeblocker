@@ -12,14 +12,22 @@
 			"~f/*": [
 				"./src/*"
 			],
+			"~s/*": [
+				"../shared/*"
+			],
 			"~b/*": [
 				"../backend/src/*"
 			]
 		},
+		"types": [
+			// Needed for type-checking the backend from `import type { AppRouter } from '~b/types/trpc';`
+			"../backend/node_modules/fastify-cookie",
+			"../backend/typings/env",
+			"vue/ref-macros"
+		],
 		"typeRoots": [
 			"./node_modules/@types",
-			"./typings",
-			"vite/client"
+			"./typings"
 		]
 	},
 	"include": [
