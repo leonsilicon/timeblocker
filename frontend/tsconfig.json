@@ -23,7 +23,8 @@
 			// Needed for type-checking the backend from `import type { AppRouter } from '~b/types/trpc';`
 			"../backend/node_modules/fastify-cookie",
 			"../backend/typings/env",
-			"vue/ref-macros"
+			"vue/ref-macros",
+			"vite/client"
 		],
 		"typeRoots": [
 			"./node_modules/@types",

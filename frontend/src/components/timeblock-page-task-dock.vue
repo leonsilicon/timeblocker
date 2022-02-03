@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useAppStore } from '~f/store/use.js';
+import { useTimeblockStore } from '~f/store';
 
-const appStore = useAppStore();
+const timeblockStore = useTimeblockStore();
 </script>
 
 <template>
