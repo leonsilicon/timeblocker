@@ -47,10 +47,5 @@
 			"pnpm run lint",
 			"pnpm run prettier"
 		]
-	},
-	"pnpm": {
-		"overrides": {
-			"preact": "npm:lodash.noop@latest"
-		}
 	}
 }

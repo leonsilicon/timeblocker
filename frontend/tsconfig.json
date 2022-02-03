@@ -17,6 +17,9 @@
 			],
 			"~b/*": [
 				"../backend/src/*"
+			],
+			"preact/compat": [
+				"./typings/preact-stub.d.ts"
 			]
 		},
 		"types": [
