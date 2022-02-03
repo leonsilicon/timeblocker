@@ -20,4 +20,8 @@ export const routes: RouteRecordRaw[] = [
 			},
 		],
 	},
+	{
+		path: '/timeblock',
+		component: async () => import('~f/pages/timeblock-page.vue'),
+	},
 ];

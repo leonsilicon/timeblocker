@@ -47,5 +47,10 @@
 			"pnpm run lint",
 			"pnpm run prettier"
 		]
+	},
+	"pnpm": {
+		"overrides": {
+			"eslint-import-resolver-webpack": "npm:lodash.noop"
+		}
 	}
 }

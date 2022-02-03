@@ -15,7 +15,7 @@ export class TaskBlock {
 	/**
 	 * The UNIX timestamp of the end time of this block
 	 */
-	private readonly endTimestamp: number;
+	private endTimestamp: number;
 
 	constructor({ task }: TaskBlockConstructorProps) {
 		this.task = task;
