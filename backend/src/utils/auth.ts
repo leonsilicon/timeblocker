@@ -1,6 +1,8 @@
 import { nanoid } from '@leonzalion/nanoid-good';
 import type { Context } from '~b/types/context.js';
+import { CustomHttpHeader } from '~b/types/http.js';
 import { Cookie, getCookie, setCookie } from '~b/utils/cookie.js';
+import { getCustomHttpHeader } from '~b/utils/http.js';
 import { AuthenticationMethod } from '~s/types/auth.js';
 
 export type GetCtxAccountIdOpts = {
@@ -14,17 +16,32 @@ export async function getCtxAccountId<Opts extends GetCtxAccountIdOpts>(
 	const optional = opts?.optional ?? false;
 
 	let clientAuthenticationMethod: AuthenticationMethod;
-	let clientToken: string;
+	let clientSessionToken: string;
+	let clientCsrfToken: string | undefined;
 
-	const tokenCookie = getCookie(ctx, Cookie.sessionToken);
-	if (tokenCookie !== undefined) {
+	const cookieSessionToken = getCookie(ctx, Cookie.sessionToken);
+	// User has a sessionToken in the cookie, meaning that they are using the
+	// "cookie" authentication method.
+	if (cookieSessionToken !== undefined) {
 		clientAuthenticationMethod = AuthenticationMethod.cookie;
-		clientToken = tokenCookie;
+		clientSessionToken = cookieSessionToken;
+
+		// Need to check for a CSRF token as well
+		const csrfToken = getCustomHttpHeader(ctx, CustomHttpHeader.xCsrfToken);
+		clientCsrfToken = csrfToken;
+
+		if (clientCsrfToken === undefined) {
+			throw new Error('CSRF token not found in hte header.');
+		}
 		// eslint-disable-next-line no-negated-condition
 	} else if (ctx.request.headers.authorization !== undefined) {
 		clientAuthenticationMethod = AuthenticationMethod.header;
-		clientToken = ctx.request.headers.authorization.replace('Bearer ', '');
+		clientSessionToken = ctx.request.headers.authorization.replace(
+			'Bearer ',
+			''
+		);
 	}
+
 	// User is unauthenticated
 	else {
 		if (optional) {
@@ -39,9 +56,10 @@ export async function getCtxAccountId<Opts extends GetCtxAccountIdOpts>(
 		select: {
 			accountId: true,
 			authenticationMethod: true,
+			csrfToken: true,
 		},
 		where: {
-			token: clientToken,
+			token: clientSessionToken,
 		},
 	});
 
@@ -51,6 +69,13 @@ export async function getCtxAccountId<Opts extends GetCtxAccountIdOpts>(
 
 	if (accountSessionToken.authenticationMethod !== clientAuthenticationMethod) {
 		throw new Error('Incorrect authentication method.');
+	}
+
+	if (
+		accountSessionToken.authenticationMethod === AuthenticationMethod.cookie &&
+		clientCsrfToken !== accountSessionToken.csrfToken
+	) {
+		throw new Error('Invalid CSRF token.');
 	}
 
 	return accountSessionToken.accountId;

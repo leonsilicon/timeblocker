@@ -34,8 +34,7 @@
 		"prettier": "^2.5.1",
 		"sync-index": "^1.0.11",
 		"ts-node": "^10.4.0",
-		"typescript": "^4.5.4",
-		"@types/react": "link:frontend/typings/types__react"
+		"typescript": "^4.5.4"
 	},
 	"prettier": "@leonzalion/configs/prettier",
 	"commitlint": {
@@ -48,5 +47,10 @@
 			"pnpm run lint",
 			"pnpm run prettier"
 		]
+	},
+	"pnpm": {
+		"overrides": {
+			"preact": "npm:lodash.noop@latest"
+		}
 	}
 }

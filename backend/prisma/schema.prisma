@@ -11,11 +11,12 @@ datasource db {
 }
 
 model Account {
-  id                  String                @id() @default(uuid())
-  email               String                @unique()
-  passwordHash        String
-  timeblock           Timeblock[]
-  AccountSessionToken AccountSessionToken[]
+  id                   String                @id() @default(uuid())
+  email                String                @unique()
+  passwordHash         String
+  timeblocks           Timeblock[]
+  AccountSessionTokens AccountSessionToken[]
+  AccountCsrfTokens    AccountCsrfToken[]
 }
 
 enum AuthenticationMethod {
@@ -28,7 +29,17 @@ model AccountSessionToken {
   account   Account @relation(fields: [accountId], references: [id])
   accountId String
 
+  // Token to be sent in the header in "cookie" requests and
+  // stored in localStorage to prevent CSRF attacks
+  csrfToken String?
+
   authenticationMethod AuthenticationMethod
+}
+
+model AccountCsrfToken {
+  token     String  @id()
+  account   Account @relation(fields: [accountId], references: [id])
+  accountId String
 }
 
 model AccountRegistrationRequest {
@@ -36,12 +47,6 @@ model AccountRegistrationRequest {
   email            String @unique()
   passwordHash     String
   confirmationCode String
-}
-
-model Task {
-  id          String
-  name        String
-  description String
 }
 
 model Timeblock {

@@ -9,7 +9,8 @@
 		"build": "node-ts ./scripts/build.ts",
 		"lint": "eslint --cache --fix .",
 		"prettier": "prettier --write src",
-		"tc": "tsc --noEmit"
+		"tc": "tsc --noEmit",
+		"prepare": "pnpm gen"
 	},
 	"dependencies": {
 		"@leonzalion/nanoid-good": "^1.0.3",

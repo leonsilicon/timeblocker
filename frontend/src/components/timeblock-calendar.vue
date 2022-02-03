@@ -95,7 +95,7 @@ function onRightMonthArrowClick() {
 }
 
 #fc .fc-event-title {
-	@apply text-center font-medium text-md;
+	@apply text-center font-medium text-lg;
 	white-space: normal !important;
 	overflow: auto !important;
 	grid-column: 1 / -1;
@@ -106,7 +106,7 @@ function onRightMonthArrowClick() {
 }
 
 .fc .fc-col-header-cell-cushion {
-	@apply text-gray;
+	@apply text-gray-500;
 	font-size: 0.6rem;
 	text-transform: uppercase;
 	vertical-align: top;
@@ -124,14 +124,6 @@ function onRightMonthArrowClick() {
 	content: '';
 	@apply absolute inset-0;
 	border: 2px solid red;
-}
-
-#fc .school-event {
-	@apply bg-red-dark;
-}
-
-#fc .club-event {
-	@apply bg-yellow-deep text-white;
 }
 
 #fc .fc-day-today {
