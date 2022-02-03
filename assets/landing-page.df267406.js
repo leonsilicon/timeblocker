@@ -1,0 +1,1 @@
+import{_ as e}from"./index.e1a77380.js";import{o as n,f as r}from"./vendor.9c232c22.js";const a={};function c(o,t){return n(),r("div",null,"Landing page")}var d=e(a,[["render",c]]);export{d as default};
