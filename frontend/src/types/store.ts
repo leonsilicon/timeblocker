@@ -11,4 +11,9 @@ export type TimeblockStoreState = {
 	 * Array of task blocks
 	 */
 	taskBlocks: TaskBlock[];
+
+	/**
+	 * Whether the task dock is open
+	 */
+	isTaskDockOpen: boolean;
 };

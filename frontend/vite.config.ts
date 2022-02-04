@@ -6,10 +6,22 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			'~f': join(import.meta.url, './src'),
-			'~s': join(import.meta.url, '../shared')
+			'~s': join(import.meta.url, '../shared'),
 		},
 	},
-	plugins: [vue({
-		reactivityTransform: true
-	})],
+	/**
+	 * Complains when the import order isn't exact
+	 */
+	optimizeDeps: {
+		exclude: [
+			'@fullcalendar/core',
+			'@fullcalendar/daygrid',
+			'@fullcalendar/timegrid',
+		],
+	},
+	plugins: [
+		vue({
+			reactivityTransform: true,
+		}),
+	],
 });

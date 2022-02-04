@@ -5,5 +5,9 @@ export const useTimeblockStore = defineStore('timeblock', {
 	state: (): TimeblockStoreState => ({
 		tasks: new Map(),
 		taskBlocks: [],
+		isTaskDockOpen: false
 	}),
+	actions: {
+
+	}
 });
