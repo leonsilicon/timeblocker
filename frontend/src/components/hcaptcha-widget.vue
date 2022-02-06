@@ -6,7 +6,6 @@ const emit = defineEmits<{
 	(event: 'verify', token: string): void;
 	(event: 'error', error: unknown): void;
 	(event: 'expired'): void;
-	// eslint-disable-next-line @typescript-eslint/unified-signatures
 	(event: 'render'): void;
 }>();
 
