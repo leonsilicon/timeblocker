@@ -1,19 +1,18 @@
 import { z } from 'zod';
-import { getCtxAccountId } from '~b/utils/auth.js';
+import { accountMiddleware } from '~b/utils/auth.js';
 import { createRouter } from '~b/utils/router.js';
 
 export const timeblockCrudRouter = createRouter()
+	.middleware(accountMiddleware)
 	.mutation('createTimeblock', {
 		input: z.object({
 			name: z.string(),
 		}),
 		async resolve({ ctx, input: { name } }) {
-			const accountId = await getCtxAccountId(ctx);
-
 			const { id: timeblockId } = await ctx.prisma.timeblock.create({
 				data: {
 					name,
-					ownerAccountId: accountId,
+					ownerAccountId: ctx.accountId,
 				},
 				select: {
 					id: true,
@@ -30,8 +29,6 @@ export const timeblockCrudRouter = createRouter()
 			timeblockId: z.string(),
 		}),
 		async resolve({ ctx, input: { timeblockId } }) {
-			const accountId = await getCtxAccountId(ctx);
-
 			const timeblock = await ctx.prisma.timeblock.findFirst({
 				select: {
 					id: true,
@@ -39,7 +36,7 @@ export const timeblockCrudRouter = createRouter()
 				},
 				where: {
 					id: timeblockId,
-					ownerAccountId: accountId,
+					ownerAccountId: ctx.accountId,
 				},
 			});
 
@@ -56,14 +53,13 @@ export const timeblockCrudRouter = createRouter()
 			limit: z.number(),
 		}),
 		async resolve({ ctx, input: { skip, limit } }) {
-			const accountId = await getCtxAccountId(ctx);
 			const timeblocks = await ctx.prisma.timeblock.findMany({
 				select: {
 					id: true,
 					name: true,
 				},
 				where: {
-					ownerAccountId: accountId,
+					ownerAccountId: ctx.accountId,
 				},
 				skip,
 				take: limit,
@@ -77,12 +73,10 @@ export const timeblockCrudRouter = createRouter()
 			timeblockId: z.string(),
 		}),
 		async resolve({ ctx, input: { timeblockId } }) {
-			const accountId = await getCtxAccountId(ctx);
-
 			await ctx.prisma.timeblock.deleteMany({
 				where: {
 					id: timeblockId,
-					ownerAccountId: accountId,
+					ownerAccountId: ctx.accountId,
 				},
 			});
 		},

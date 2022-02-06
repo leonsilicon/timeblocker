@@ -1,4 +1,5 @@
 import { nanoid } from '@leonzalion/nanoid-good';
+import type { MiddlewareFunction } from '@trpc/server/dist/declarations/src/internals/middlewares';
 import type { Context } from '~b/types/context.js';
 import { CustomHttpHeader } from '~b/types/http.js';
 import { Cookie, getCookie, setCookie } from '~b/utils/cookie.js';
@@ -112,3 +113,11 @@ export async function authenticateClient(
 		return { sessionToken };
 	}
 }
+
+export const accountMiddleware: MiddlewareFunction<
+	Context,
+	Context & { accountId: string }
+> = async ({ ctx, next }) => {
+	const accountId = await getCtxAccountId(ctx);
+	return next({ ctx: { ...ctx, accountId } });
+};
