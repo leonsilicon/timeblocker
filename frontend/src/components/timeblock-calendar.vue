@@ -28,9 +28,9 @@ function onRightMonthArrowClick() {
 </script>
 
 <template>
-	<div class="column items-center">
+	<div class="column items-center shrink">
 		<div class="overflow-auto max-w-full">
-			<div class="px-8 pb-8 bg-yellow w-[1000px]">
+			<div class="px-8 pb-8 bg-yellow-400">
 				<div class="row center">
 					<svg viewBox="0 0 10 10" class="arrow-svg">
 						<polygon
@@ -46,7 +46,7 @@ function onRightMonthArrowClick() {
 						class="text-white text-center text-[3rem] md:text-[6rem] font-bold my-6 mx-14 flex-grow"
 						style="text-shadow: 5px 5px rgba(230, 4, 0, 0.4)"
 					>
-						{ Current Month }
+						February
 					</div>
 					<svg viewBox="0 0 10 10" class="arrow-svg">
 						<polygon

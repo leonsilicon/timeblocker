@@ -78,7 +78,8 @@ importers:
       '@fullcalendar/daygrid': ^5.10.1
       '@fullcalendar/timegrid': ^5.10.1
       '@hcaptcha/vue3-hcaptcha': ^1.0.1
-      '@leonzalion/nanoid-good': ^1.0.3
+      '@headlessui/vue': ^1.4.3
+      '@leonzalion/nanoid-good': ^1.0.4
       '@mdi/js': ^6.5.95
       '@tailwindcss/typography': ^0.5.1
       '@trpc/client': ^9.18.0
@@ -112,7 +113,8 @@ importers:
       '@fullcalendar/daygrid': 5.10.1
       '@fullcalendar/timegrid': 5.10.1
       '@hcaptcha/vue3-hcaptcha': 1.0.1
-      '@leonzalion/nanoid-good': 1.0.3
+      '@headlessui/vue': 1.4.3_vue@3.2.29
+      '@leonzalion/nanoid-good': 1.0.4
       '@mdi/js': 6.5.95
       '@tailwindcss/typography': 0.5.1_tailwindcss@3.0.18
       '@trpc/client': 9.18.0_@trpc+server@9.18.0
@@ -746,6 +748,15 @@ packages:
       vue: 3.2.29
     dev: false
 
+  /@headlessui/vue/1.4.3_vue@3.2.29:
+    resolution: {integrity: sha512-cDAd3aP7jH5bO2WO4eSkyQQg0k6Zw8gobl+zL8LGApqix28EtlxultyKH/mVKnbo8Kiq6IDRzwP1HfKOf1QZbQ==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      vue: ^3.0.0
+    dependencies:
+      vue: 3.2.29
+    dev: false
+
   /@humanwhocodes/config-array/0.9.3:
     resolution: {integrity: sha512-3xSMlXHh03hCcCmFc0rbKp3Ivt2PFEJnQUJDDMTJQ2wkECZWdq4GePs2ctc5H8zV+cHPaq8k2vU8mrQjA6iHdQ==}
     engines: {node: '>=10.10.0'}
@@ -1025,6 +1036,13 @@ packages:
 
   /@leonzalion/nanoid-good/1.0.3:
     resolution: {integrity: sha512-e+XgQKZuE95zO9xWHXdqL7hNZcAtcged/wZokBaonQxDsP+QLJFJ56SoJ/6Eg6/OfSWgztt1IZQ5EpfIfDGrow==}
+    dependencies:
+      nanoid: 3.2.0
+      naughty-words: 1.2.0
+    dev: false
+
+  /@leonzalion/nanoid-good/1.0.4:
+    resolution: {integrity: sha512-WZkPvB6oGayvqOUjZvXJ4tWG4leVtT+/5tjPIDZXhqmESd9PaiOtgyITkfl4iyzJ9mk2b13Vs798XhIggbCUJw==}
     dependencies:
       nanoid: 3.2.0
       naughty-words: 1.2.0
