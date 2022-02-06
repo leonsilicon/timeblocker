@@ -5,7 +5,7 @@ export type TaskBlockConstructorProps = {
 };
 
 export class TaskBlock {
-	private readonly task: Task;
+	private task: Task;
 
 	/**
 	 * The UNIX timestamp of the start time of this block
@@ -21,11 +21,26 @@ export class TaskBlock {
 		this.task = task;
 	}
 
+	getTask() {
+		return this.task;
+	}
+
+	setTask(task: Task) {
+		this.task = task;
+	}
+
 	getStartTimestamp() {
 		return this.startTimestamp;
 	}
 
 	setStartTimestamp(timestamp: number) {
+		// Verifies that the timestamp is in UNIX seconds and not milliseconds
+		if (timestamp.toString().length !== 10) {
+			throw new Error(
+				`Timestamp must be in UNIX seconds, received ${timestamp}`
+			);
+		}
+
 		this.startTimestamp = timestamp;
 	}
 

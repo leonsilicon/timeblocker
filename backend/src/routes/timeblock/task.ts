@@ -2,26 +2,29 @@ import { z } from 'zod';
 import { getCtxAccountId } from '~b/utils/auth.js';
 import { createRouter } from '~b/utils/router.js';
 
-export const timeblockCrudRouter = createRouter()
-	.mutation('createTimeblock', {
+export const timeblockTaskRouter = createRouter()
+	.mutation('addTimeblockTask', {
 		input: z.object({
 			name: z.string(),
+			description: z.string(),
+			timeblockId: z.string(),
 		}),
-		async resolve({ ctx, input: { name } }) {
+		async resolve({ ctx, input: { name, description, timeblockId } }) {
 			const accountId = await getCtxAccountId(ctx);
 
-			const { id: timeblockId } = await ctx.prisma.timeblock.create({
+			const { id: timeblockTaskId } = await ctx.prisma.timeblockTask.create({
+				select: {
+					id,
+				},
 				data: {
 					name,
-					ownerAccountId: accountId,
-				},
-				select: {
-					id: true,
+					description,
+					timeblockId,
 				},
 			});
 
 			return {
-				timeblockId,
+				timeblockTaskId,
 			};
 		},
 	})
@@ -42,12 +45,6 @@ export const timeblockCrudRouter = createRouter()
 					ownerAccountId: accountId,
 				},
 			});
-
-			if (timeblock === null) {
-				throw new Error('Timeblock not found.');
-			}
-
-			return timeblock;
 		},
 	})
 	.query('listTimeblocks', {

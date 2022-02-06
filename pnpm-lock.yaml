@@ -90,6 +90,7 @@ importers:
       autoprefixer: ^10.4.1
       daisyui: ^1.25.4
       dateformat: ^5.0.2
+      dayjs: ^1.10.7
       desm: ^1.2.0
       jest: ^27.4.5
       lodash.noop: ^3.0.1
@@ -120,6 +121,7 @@ importers:
       '@trpc/client': 9.18.0_@trpc+server@9.18.0
       daisyui: 1.25.4
       dateformat: 5.0.2
+      dayjs: 1.10.7
       desm: 1.2.0
       pinia: 2.0.11_typescript@4.5.5+vue@3.2.29
       sass: 1.49.7
@@ -2603,6 +2605,10 @@ packages:
   /dateformat/5.0.2:
     resolution: {integrity: sha512-h9vywpuz+ReixnJTwFx5JLtZpS8eLCbRm8shwwKkCKOZA547N6yoMtD3W91Z6+NFZ8wOaZlcaCcK/w+kELhSVg==}
     engines: {node: '>=12.20'}
+    dev: false
+
+  /dayjs/1.10.7:
+    resolution: {integrity: sha512-P6twpd70BcPK34K26uJ1KT3wlhpuOAPoMwJzpsIWUxHZ7wpmbdZL/hQqBDfz7hGurYSa5PhzdhDHtt319hL3ig==}
     dev: false
 
   /debug/2.6.9:

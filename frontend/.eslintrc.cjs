@@ -22,6 +22,7 @@ module.exports = {
 		},
 	],
 	rules: {
+		'node/file-extension-in-import': 'off',
 		'import/no-extraneous-dependencies': [
 			'error',
 			{

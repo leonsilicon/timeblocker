@@ -50,14 +50,17 @@ model AccountRegistrationRequest {
 }
 
 model Timeblock {
-  id             String  @id() @default(uuid())
+  id             String          @id() @default(uuid())
   name           String
-  owner          Account @relation(fields: [ownerAccountId], references: [id])
+  owner          Account         @relation(fields: [ownerAccountId], references: [id])
   ownerAccountId String
+  TimeblockTask  TimeblockTask[]
 }
 
-model Task {
-  id          String @id() @default(uuid())
+model TimeblockTask {
+  id          String    @id() @default(uuid())
   name        String
   description String
+  timeblock   Timeblock @relation(fields: [timeblockId], references: [id])
+  timeblockId String
 }

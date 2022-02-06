@@ -1,20 +1,65 @@
 <script setup lang="ts">
-import { Dialog, DialogOverlay, DialogTitle } from '@headlessui/vue';
-import { useTimeblockStore } from '~f/store';
+import { nextTick } from 'vue';
 import TimeblockTask from '~f/components/timeblock-task.vue';
+import { useTimeblockStore } from '~f/store';
 
 const timeblockStore = useTimeblockStore();
-const tasks = $computed(() => timeblockStore.tasks.values());
+const tasks = $computed(() => [...timeblockStore.tasksMap.values()]);
 
-const isAddTaskDialogOpen = $ref(false);
-const newTaskName = $ref('');
-const newTaskDescription = $ref('');
+let isNewTaskTemplateVisible = $ref(false);
+let newTaskName = $ref('');
+let newTaskDescription = $ref('');
+const taskNameInputEl = $ref<HTMLInputElement>();
+const taskDescriptionInputEl = $ref<HTMLInputElement>();
+let focusedTextbox = $ref<'name' | 'description' | undefined>();
 
+/**
+ * Adds the task to the store only if the task name isn't empty
+ */
 function addTask() {
-	timeblockStore.addTask({
-		name: newTaskName,
-		description: newTaskDescription,
-	});
+	if (newTaskName.trim() !== '') {
+		timeblockStore.addTask({
+			name: newTaskName,
+			description: newTaskDescription,
+		});
+	}
+
+	// Reset the new task textbox
+	newTaskName = '';
+	newTaskDescription = '';
+	isNewTaskTemplateVisible = false;
+}
+
+function onTaskNameFocusOut() {
+	if (focusedTextbox !== undefined) return;
+	addTask();
+}
+
+function onTaskDescriptionFocusOut() {
+	if (focusedTextbox !== undefined) return;
+	addTask();
+}
+
+function onTaskNameKeydown(event: KeyboardEvent) {
+	if (event.key === 'Enter') {
+		focusedTextbox = 'name';
+		taskDescriptionInputEl.focus();
+	}
+}
+
+function onTaskDescriptionKeydown(event: KeyboardEvent) {
+	if (event.key === 'Enter') {
+		focusedTextbox = undefined;
+		// This blur will automatically trigger the `onFocusOut` callback
+		taskDescriptionInputEl.blur();
+	}
+}
+
+async function onAddTaskClick() {
+	isNewTaskTemplateVisible = true;
+	// Wait until the input appears in the DOM
+	await nextTick();
+	taskNameInputEl.focus();
 }
 </script>
 
@@ -23,20 +68,36 @@ function addTask() {
 		v-show="timeblockStore.isTaskDockOpen"
 		class="items-center column shrink-0 w-[250px]"
 	>
-		<div class="font-bold text-3xl mb-4">Tasks</div>
-		<div
-			class="btn btn-primary min-h-2 h-2"
-			@click="isAddTaskDialogOpen = true"
-		>
+		<div class="font-bold text-3xl mb-2">Tasks</div>
+		<div class="btn btn-primary btn-sm min-h-2 h-2" @click="onAddTaskClick">
 			Add Task
 		</div>
-		<Dialog class='absolute h-full' :open="isAddTaskDialogOpen" @close="isAddTaskDialogOpen = false">
-			<DialogOverlay class="inset-0 h-screen relative" />
 
-			<DialogTitle>My Dialog</DialogTitle>
+		<div v-show="isNewTaskTemplateVisible">
+			<div class="py-2 rounded-lg text-center self-stretch m-2 bg-red-100">
+				<input
+					ref="taskNameInputEl"
+					v-model="newTaskName"
+					placeholder="Task Name"
+					type="text"
+					class="bg-red-100 outline-none w-full px-4"
+					@focus="focusedTextbox = 'name'"
+					@focusout="onTaskNameFocusOut"
+					@keydown="onTaskNameKeydown"
+				/>
+				<input
+					ref="taskDescriptionInputEl"
+					v-model="newTaskDescription"
+					placeholder="Task Description"
+					type="text"
+					class="bg-red-100 outline-none w-full px-4 text-sm"
+					@focus="focusedTextbox = 'description'"
+					@focusout="onTaskDescriptionFocusOut"
+					@keydown="onTaskDescriptionKeydown"
+				/>
+			</div>
+		</div>
 
-			<button>My button</button>
-		</Dialog>
 		<TimeblockTask
 			v-for="task of tasks"
 			:id="task.getId()"

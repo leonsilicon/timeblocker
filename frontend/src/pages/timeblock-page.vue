@@ -25,7 +25,7 @@ for (const task of dummyTasks) {
 <template>
 	<div class="column">
 		<TimeblockPageToolbar />
-		<div class="row">
+		<div class="row px-4">
 			<TimeblockPageTaskDock />
 			<TimeblockCalendar />
 		</div>

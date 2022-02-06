@@ -1,17 +1,25 @@
 import { defineStore } from 'pinia';
 import { Task } from '~f/classes/task';
 import type { TimeblockStoreState } from '~f/types/store';
+import { client } from '~f/utils/trpc.js';
+
+function createTimeblockStoreState(): TimeblockStoreState {
+	return {
+		orderedTaskIds: [],
+		tasksMap: new Map(),
+		taskBlocksMap: new Map(),
+		isTaskDockOpen: true,
+	};
+}
 
 export const useTimeblockStore = defineStore('timeblock', {
-	state: (): TimeblockStoreState => ({
-		tasks: new Map(),
-		taskBlocks: [],
-		isTaskDockOpen: false,
-	}),
+	state: () => createTimeblockStoreState(),
 	actions: {
-		addTask({ name, description }: { name: string; description: string }) {
+		async addTask({ name, description }: { name: string; description: string }) {
 			const task = new Task({ name, description });
-			this.tasks.set(task.getId(), task);
+			this.tasksMap.set(task.getId(), task);
+
+			client.mutation('')
 		},
 	},
 });

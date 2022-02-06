@@ -3,14 +3,19 @@ import type { TaskBlock } from '~f/classes/task-block';
 
 export type TimeblockStoreState = {
 	/**
+	 * The order of tasks (by IDs) that are displayed in the dock
+	 */
+	orderedTaskIds: string[];
+
+	/**
 	 * Map of task IDs to Tasks
 	 */
-	tasks: Map<string, Task>;
+	tasksMap: Map<string, Task>;
 
 	/**
 	 * Array of task blocks
 	 */
-	taskBlocks: TaskBlock[];
+	taskBlocksMap: Map<string, TaskBlock>;
 
 	/**
 	 * Whether the task dock is open
