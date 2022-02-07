@@ -7,7 +7,7 @@ const props = defineProps<{
 }>();
 
 const timeblockStore = useTimeblockStore();
-const task = $computed(() => timeblockStore.tasksMap.get(props.id)!);
+const task = $computed(() => timeblockStore.activeTimeblock.getTask(props.id)!);
 
 function onDragStart(event: DragEvent) {
 	event.dataTransfer?.setData(

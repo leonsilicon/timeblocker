@@ -1,48 +1,26 @@
-import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { accountMiddleware } from '~b/utils/auth.js';
 import { createRouter } from '~b/utils/router.js';
-import { verifyTimeblockOwner } from '~b/utils/timeblock.js';
+import { timeblockMiddleware } from '~b/utils/timeblock.js';
 
-const timeblockIdInput = z.object({ timeblockId: z.string() });
 export const timeblockTaskRouter = createRouter()
 	.middleware(accountMiddleware)
-	.middleware(async ({ next, ctx, rawInput }) => {
-		const result = timeblockIdInput.safeParse(rawInput);
-		if (!result.success) {
-			throw new TRPCError({
-				code: 'BAD_REQUEST',
-				message: 'Timeblock ID not provided.',
-			});
-		}
-
-		await verifyTimeblockOwner(ctx, {
-			accountId: ctx.accountId,
-			timeblockId: result.data.timeblockId,
-		});
-
-		return next({ ctx: { ...ctx, timeblockId: result.data.timeblockId } });
-	})
+	.middleware(timeblockMiddleware)
 	.mutation('addTimeblockTask', {
 		input: z.object({
+			id: z.string(),
 			name: z.string(),
 			description: z.string(),
 		}),
-		async resolve({ ctx, input: { name, description } }) {
-			const { id: timeblockTaskId } = await ctx.prisma.timeblockTask.create({
-				select: {
-					id: true,
-				},
+		async resolve({ ctx, input: { id, name, description } }) {
+			await ctx.prisma.timeblockTask.create({
 				data: {
+					id,
 					name,
 					description,
 					timeblockId: ctx.timeblockId,
 				},
 			});
-
-			return {
-				timeblockTaskId,
-			};
 		},
 	})
 	.query('listTimeblockTasks', {

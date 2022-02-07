@@ -6,7 +6,7 @@ const props = defineProps<{
 	heightRatio: number;
 }>();
 const timeblockStore = useTimeblockStore();
-const task = $computed(() => timeblockStore.tasksMap.get(props.id)!);
+const task = $computed(() => timeblockStore.activeTimeblock.getTask(props.id)!);
 </script>
 
 <template>

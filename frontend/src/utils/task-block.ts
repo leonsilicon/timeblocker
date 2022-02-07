@@ -1,6 +1,6 @@
 import type { TaskBlock } from '~f/classes/task-block';
 import type { TimeblockDate } from '~f/types/date';
-import { dayjsFromTimeblockDate } from '~f/utils/date';
+import { timeblockDateToDayjs } from '~f/utils/date';
 
 type CalculateTaskBlocksRatiosProps = {
 	taskBlocks: TaskBlock[];
@@ -13,7 +13,7 @@ export function calculateTaskBlocksRatios({
 }: CalculateTaskBlocksRatiosProps) {
 	const ratios: number[] = [];
 
-	const startOfDay = dayjsFromTimeblockDate(date);
+	const startOfDay = timeblockDateToDayjs(date);
 	const endOfDay = startOfDay.add(1, 'day').subtract(1, 'millisecond');
 	for (const taskBlock of taskBlocks) {
 		const startTimestamp = Math.max(

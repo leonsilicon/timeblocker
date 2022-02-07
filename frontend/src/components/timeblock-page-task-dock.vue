@@ -1,10 +1,19 @@
 <script setup lang="ts">
+import { nanoid } from 'nanoid';
 import { nextTick } from 'vue';
+import { Task } from '~f/classes/task';
 import TimeblockTask from '~f/components/timeblock-task.vue';
 import { useTimeblockStore } from '~f/store';
+import { logError } from '~f/utils/log';
+import { client } from '~f/utils/trpc';
 
 const timeblockStore = useTimeblockStore();
-const tasks = $computed(() => [...timeblockStore.tasksMap.values()]);
+
+const tasks = $computed(() =>
+	timeblockStore.activeTimeblock
+		.getOrderedTaskIds()
+		.map((taskId) => timeblockStore.activeTimeblock.getTask(taskId)!)
+);
 
 let isNewTaskTemplateVisible = $ref(false);
 let newTaskName = $ref('');
@@ -16,12 +25,26 @@ let focusedTextbox = $ref<'name' | 'description' | undefined>();
 /**
  * Adds the task to the store only if the task name isn't empty
  */
-function addTask() {
+async function addTask() {
 	if (newTaskName.trim() !== '') {
-		timeblockStore.addTask({
+		const taskId = nanoid();
+		const newTask = new Task({
+			id: taskId,
 			name: newTaskName,
 			description: newTaskDescription,
 		});
+
+		timeblockStore.activeTimeblock.addTask(newTask);
+
+		try {
+			await client.mutation('addTimeblockTask', {
+				id: taskId,
+				name: newTaskName,
+				description: newTaskDescription,
+			});
+		} catch (error: unknown) {
+			logError(error);
+		}
 	}
 
 	// Reset the new task textbox
@@ -30,14 +53,14 @@ function addTask() {
 	isNewTaskTemplateVisible = false;
 }
 
-function onTaskNameFocusOut() {
+async function onTaskNameFocusOut() {
 	if (focusedTextbox !== undefined) return;
-	addTask();
+	await addTask();
 }
 
-function onTaskDescriptionFocusOut() {
+async function onTaskDescriptionFocusOut() {
 	if (focusedTextbox !== undefined) return;
-	addTask();
+	await addTask();
 }
 
 function onTaskNameKeydown(event: KeyboardEvent) {

@@ -1,25 +1,32 @@
 import { defineStore } from 'pinia';
+import type { TaskConstructorProps } from '~f/classes/task';
 import { Task } from '~f/classes/task';
+import type { Timeblock } from '~f/classes/timeblock';
 import type { TimeblockStoreState } from '~f/types/store';
-import { client } from '~f/utils/trpc.js';
+import { logError } from '~f/utils/log';
+import { client } from '~f/utils/trpc';
 
 function createTimeblockStoreState(): TimeblockStoreState {
 	return {
-		orderedTaskIds: [],
-		tasksMap: new Map(),
-		taskBlocksMap: new Map(),
+		activeTimeblockId: undefined,
+		timeblockMap: new Map(),
 		isTaskDockOpen: true,
 	};
 }
 
+/**
+ * Timeblock store contains all actions that interact with the server
+ */
 export const useTimeblockStore = defineStore('timeblock', {
 	state: () => createTimeblockStoreState(),
 	actions: {
-		async addTask({ name, description }: { name: string; description: string }) {
-			const task = new Task({ name, description });
-			this.tasksMap.set(task.getId(), task);
-
-			client.mutation('')
+		addTimeblock(timeblock: Timeblock) {
+			this.timeblockMap.set(timeblock.getId(), timeblock);
+		},
+	},
+	getters: {
+		activeTimeblock(store) {
+			return store.timeblockMap.get(store.activeTimeblockId!)!;
 		},
 	},
 });

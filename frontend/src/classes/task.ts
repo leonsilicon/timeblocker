@@ -1,15 +1,14 @@
-import { nanoid } from '@leonzalion/nanoid-good';
-
 import { getRandomTaskColor } from '~f/utils/task';
 
-type TaskConstructorProps = {
+export type TaskConstructorProps = {
+	id: string;
 	name: string;
 	color?: string;
 	description?: string;
 };
 
 export class Task {
-	private id: string;
+	private readonly id: string;
 
 	private name: string;
 
@@ -17,8 +16,8 @@ export class Task {
 
 	private description?: string;
 
-	constructor({ name, description, color }: TaskConstructorProps) {
-		this.setId(nanoid());
+	constructor({ id, name, description, color }: TaskConstructorProps) {
+		this.id = id;
 		this.setName(name);
 		this.setColor(color ?? getRandomTaskColor());
 		if (description !== undefined) {
@@ -36,10 +35,6 @@ export class Task {
 
 	getId() {
 		return this.id;
-	}
-
-	setId(id: string) {
-		this.id = id;
 	}
 
 	getColor() {

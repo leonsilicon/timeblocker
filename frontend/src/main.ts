@@ -4,7 +4,7 @@ import VIcon from 'simple-vue-icon';
 import LoadScript from 'vue-plugin-load-script';
 import App from './app.vue';
 import './tailwind.css';
-import { router } from '~f/router/create';
+import { router } from '~f/router';
 import 'tw-elements';
 
 const app = createApp(App);

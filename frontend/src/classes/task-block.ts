@@ -1,10 +1,21 @@
 import type { Task } from '~f/classes/task';
 
 export type TaskBlockConstructorProps = {
+	id: string;
 	task: Task;
+	startTimestamp: number;
+	endTimestamp: number;
 };
 
 export class TaskBlock {
+	/**
+	 * The unique ID of this task block
+	 */
+	private readonly id: string;
+
+	/**
+	 * The task this task block references
+	 */
 	private task: Task;
 
 	/**
@@ -17,8 +28,20 @@ export class TaskBlock {
 	 */
 	private endTimestamp: number;
 
-	constructor({ task }: TaskBlockConstructorProps) {
+	constructor({
+		id,
+		task,
+		startTimestamp,
+		endTimestamp,
+	}: TaskBlockConstructorProps) {
+		this.id = id;
 		this.task = task;
+		this.startTimestamp = startTimestamp;
+		this.endTimestamp = endTimestamp;
+	}
+
+	getId() {
+		return this.id;
 	}
 
 	getTask() {

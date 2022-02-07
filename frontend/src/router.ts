@@ -1,5 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router';
 
+import { createRouter, createWebHistory } from 'vue-router';
+
 export const routes: RouteRecordRaw[] = [
 	{
 		path: '/',
@@ -24,4 +26,13 @@ export const routes: RouteRecordRaw[] = [
 		path: '/timeblock',
 		component: async () => import('~f/pages/timeblock-page.vue'),
 	},
+	{
+		path: '/test',
+		component: async () => import('~f/pages/test-page.vue'),
+	},
 ];
+
+export const router = createRouter({
+	history: createWebHistory(),
+	routes,
+});
