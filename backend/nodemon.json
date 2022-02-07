@@ -1,3 +1,4 @@
 {
-	"exec": "pnpm start"
+	"exec": "pnpm start",
+	"ext": ".js,.ts,.cjs,.json"
 }
