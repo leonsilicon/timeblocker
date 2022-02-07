@@ -3,7 +3,7 @@ import { useTimeblockStore } from '~f/store/define';
 import { TimeblockDate } from '~f/types/date';
 import { calculateTaskBlocksRatios } from '~f/utils/task-block';
 import TimeblockTaskBlock from '~f/components/timeblock-task-block.vue';
-import TimeblockColumnSlot from '~f/components/timeblock-column-slot.vue';
+import TimeblockColumnBackground from '~f/components/timeblock-column-background.vue';
 
 const props = defineProps<{
 	versionNumber: number;
@@ -26,26 +26,24 @@ const taskBlockHeightRatios = $computed(() =>
 	})
 );
 
-const hoursInDayMinutes = Array.from({ length: 25 }).map((_, i) => i * 60);
 const timeblockColumnStyle = $computed(() => ({
 	display: 'grid',
 	'grid-template-rows': 'repeat(1440, 1px)', // 1440 minutes in a day
-	'grid-template-columns': `auto`,
+	'grid-template-columns': `1fr`,
 }));
 </script>
 
 <template>
-	<div :style="timeblockColumnStyle">
-		<TimeblockColumnSlot
-			v-for="hourInDayMinutes of hoursInDayMinutes"
-			:key="hourInDayMinutes"
-			:start-day-minute="hourInDayMinutes"
-			:end-day-minute="hourInDayMinutes + 60"
+	<div :style="timeblockColumnStyle" class="border-b border-gray-200 relative">
+		<TimeblockColumnBackground
+			style="grid-row: 1 / -1; grid-column: 1 / -1"
+			:column-version-number="versionNumber"
 		/>
 		<TimeblockTaskBlock
 			v-for="(taskBlock, i) of taskBlocks"
-			:id="taskBlock.getTask().getId()"
-			:key="taskBlock.getTask().getId()"
+			:key="taskBlock.getId()"
+			:task-block-id="taskBlock.getId()"
+			:column-version-number="versionNumber"
 			:height-ratio="taskBlockHeightRatios[i]!"
 		/>
 	</div>

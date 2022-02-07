@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import type { TaskBlock } from '~f/classes/task-block';
 import type { Timeblock } from '~f/classes/timeblock';
 import type { TimeblockDate } from '~f/types/date';
+import { dayjsToTimeblockDate, timeblockDateToDayjs } from '~f/utils/date.js';
 
 export type TimeblockColumnConstructorProps = {
 	timeblock: Timeblock;
@@ -66,11 +67,7 @@ export class TimeblockColumn {
 		const taskBlockStartTimestamp = taskBlock.getStartTimestamp();
 		const taskBlockEndTimestamp = taskBlock.getEndTimestamp();
 
-		const columnStartDate = dayjs()
-			.set('year', this.date.year)
-			.set('month', this.date.month)
-			.set('day', this.date.day);
-
+		const columnStartDate = timeblockDateToDayjs(this.date);
 		const columnEndDate = columnStartDate.add(1, 'day');
 
 		if (

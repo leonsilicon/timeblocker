@@ -59,10 +59,11 @@ export class Timeblock {
 		return this.orderedTaskIds;
 	}
 
-	public addColumn() {
+	public addColumn(date: TimeblockDate) {
 		this.columns.push(
 			new TimeblockColumn({
 				timeblock: this,
+				date,
 				versionNumber: this.columns.length,
 			})
 		);

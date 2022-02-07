@@ -1,6 +1,10 @@
 export type TaskBoxDropData = {
-	type: 'particle-drop';
+	type: TaskBoxDropType;
 	payload: {
 		taskId: string;
 	};
 };
+
+export enum TaskBoxDropType {
+	taskBoxDrop = 'task-box-drop',
+}

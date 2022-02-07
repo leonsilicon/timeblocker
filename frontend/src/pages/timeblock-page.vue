@@ -7,6 +7,7 @@ import TimeblockPageTaskDock from '~f/components/timeblock-page-task-dock.vue';
 import { useTimeblockStore } from '~f/store/define';
 import { Timeblock } from '~f/classes/timeblock';
 import { Task } from '~f/classes/task';
+import { dayjsToTimeblockDate } from '~f/utils/date';
 
 const today = dayjs();
 
@@ -25,12 +26,12 @@ timeblockStore.activeTimeblockId = timeblock.getId();
 
 const dummyTasks: Array<{ name: string; description: string }> = [
 	{
-		name: 'monke',
-		description: 'monke',
+		name: 'Finish ICS IA',
+		description: 'Finish writing documentation',
 	},
 ];
 
-timeblock.addColumn();
+timeblock.addColumn(dayjsToTimeblockDate(today));
 
 for (const task of dummyTasks) {
 	timeblock.addTask(
