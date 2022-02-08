@@ -54,12 +54,12 @@ async function addTask() {
 }
 
 async function onTaskNameFocusOut() {
-	if (focusedTextbox !== undefined) return;
+	if (focusedTextbox !== undefined && focusedTextbox !== 'name') return;
 	await addTask();
 }
 
 async function onTaskDescriptionFocusOut() {
-	if (focusedTextbox !== undefined) return;
+	if (focusedTextbox !== undefined && focusedTextbox !== 'description') return;
 	await addTask();
 }
 

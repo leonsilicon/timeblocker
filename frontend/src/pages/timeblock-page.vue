@@ -15,7 +15,7 @@ const timeblockStore = useTimeblockStore();
 const timeblock = new Timeblock({
 	id: 'my-timeblock',
 	date: {
-		day: today.day(),
+		day: today.date(),
 		month: today.month(),
 		year: today.year(),
 	},

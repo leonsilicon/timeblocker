@@ -7,7 +7,6 @@ import { useTimeblockStore } from '~f/store/define';
  * @param hour Hour from 0-25 (25 = 12AM of the next day)
  */
 function getHourString(hour: number) {
-	console.log(hour);
 	let amPm: 'AM' | 'PM';
 	if (hour < 12) amPm = 'AM';
 	else if (hour < 24) amPm = 'PM';

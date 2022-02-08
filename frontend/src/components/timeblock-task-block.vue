@@ -18,20 +18,22 @@ const task = $computed(() => taskBlock.getTask());
 
 const todayStartTimestamp = getTodayDayjs().unix();
 
-const timeblockTaskBlockStyle = $computed(() => {
-	console.log(taskBlock.getStartTimestamp() - todayStartTimestamp);
-	return {
-		'grid-column': '1 / span 1',
-		'grid-row-start':
-			1 + (taskBlock.getStartTimestamp() - todayStartTimestamp) / 60,
-		'grid-row-end':
-			1 + (taskBlock.getEndTimestamp() - todayStartTimestamp) / 60,
-	};
-});
+const timeblockTaskBlockStyle = $computed(() => ({
+	'grid-column': '1 / span 1',
+	'grid-row-start':
+		1 + (taskBlock.getStartTimestamp() - todayStartTimestamp) / 60,
+	'grid-row-end': 1 + (taskBlock.getEndTimestamp() - todayStartTimestamp) / 60,
+}));
+
 </script>
 
 <template>
-	<div class="column center" :style="timeblockTaskBlockStyle">
+	<div
+		@drop.prevent="onDrop"
+		@dragover.prevent
+		class="column center rounded-md bg-red-200"
+		:style="timeblockTaskBlockStyle"
+	>
 		{{ task.getName() }}
 	</div>
 </template>

@@ -57,17 +57,13 @@ export class TimeblockColumn {
 		// Validate that the task block overlaps with the date
 		const taskBlockStartTimestamp = taskBlock.getStartTimestamp();
 		const taskBlockEndTimestamp = taskBlock.getEndTimestamp();
-
 		const columnStartDate = timeblockDateToDayjs(this.timeblock.getDate());
 		const columnEndDate = columnStartDate.add(1, 'day');
-
-		console.log(columnStartDate, columnEndDate, dayjs(taskBlockStartTimestamp), dayjs(taskBlockEndTimestamp))
 
 		if (
 			columnStartDate.unix() > taskBlockEndTimestamp ||
 			columnEndDate.unix() <= taskBlockStartTimestamp
 		) {
-			console.log(columnStartDate, columnEndDate)
 			throw new Error('Task does not fall into range of column.');
 		}
 
