@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { mdiPlusCircleOutline } from '@mdi/js';
 import TimeblockColumns from '~f/components/timeblock-columns.vue';
+import { useTimeblockStore } from '~f/store/define';
+
 /**
  * @param hour Hour from 0-25 (25 = 12AM of the next day)
  */
@@ -20,11 +23,18 @@ function getTimeStyle({ hour, minute }: { hour: number; minute: number }) {
 	};
 }
 
+const timeblockStore = useTimeblockStore();
 const timeblockCalendarStyle = $computed(() => ({
 	display: 'grid',
 	'grid-template-rows': 'repeat(1440, 1px)', // 1440 minutes in a day
-	'grid-template-columns': `60px auto`,
+	'grid-template-columns': `60px repeat(${
+		timeblockStore.activeTimeblock.getColumns().length
+	}, 1fr) auto`,
 }));
+
+function addNewColumn() {
+	timeblockStore.activeTimeblock.addColumn();
+}
 </script>
 
 <template>
@@ -38,5 +48,12 @@ const timeblockCalendarStyle = $computed(() => ({
 			{{ getHourString(hour - 1) }}
 		</div>
 		<TimeblockColumns />
+		<div class="column items-center">
+			<v-icon
+				class="px-3 text-gray-700 cursor-pointer"
+				:path="mdiPlusCircleOutline"
+				@click="addNewColumn"
+			/>
+		</div>
 	</div>
 </template>

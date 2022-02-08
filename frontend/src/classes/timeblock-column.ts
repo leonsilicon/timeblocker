@@ -1,13 +1,11 @@
-import dayjs from 'dayjs';
 import type { TaskBlock } from '~f/classes/task-block';
 import type { Timeblock } from '~f/classes/timeblock';
-import type { TimeblockDate } from '~f/types/date';
-import { dayjsToTimeblockDate, timeblockDateToDayjs } from '~f/utils/date.js';
+import { timeblockDateToDayjs } from '~f/utils/date';
+import dayjs from 'dayjs'
 
 export type TimeblockColumnConstructorProps = {
 	timeblock: Timeblock;
 	versionNumber: number;
-	date: TimeblockDate;
 };
 
 /**
@@ -26,24 +24,17 @@ export class TimeblockColumn {
 	 */
 	private readonly taskBlockMap: Map<string, TaskBlock>;
 
-	/**
-	 * The date this column represents
-	 */
-	private readonly date: TimeblockDate;
-
 	constructor({
 		timeblock,
 		versionNumber,
-		date,
 	}: TimeblockColumnConstructorProps) {
 		this.timeblock = timeblock;
-		this.date = date;
 		this.versionNumber = versionNumber;
 		this.taskBlockMap = new Map();
 	}
 
 	public getDate() {
-		return this.date;
+		return this.timeblock.getDate();
 	}
 
 	public setVersionNumber(versionNumber: number) {
@@ -67,13 +58,16 @@ export class TimeblockColumn {
 		const taskBlockStartTimestamp = taskBlock.getStartTimestamp();
 		const taskBlockEndTimestamp = taskBlock.getEndTimestamp();
 
-		const columnStartDate = timeblockDateToDayjs(this.date);
+		const columnStartDate = timeblockDateToDayjs(this.timeblock.getDate());
 		const columnEndDate = columnStartDate.add(1, 'day');
+
+		console.log(columnStartDate, columnEndDate, dayjs(taskBlockStartTimestamp), dayjs(taskBlockEndTimestamp))
 
 		if (
 			columnStartDate.unix() > taskBlockEndTimestamp ||
 			columnEndDate.unix() <= taskBlockStartTimestamp
 		) {
+			console.log(columnStartDate, columnEndDate)
 			throw new Error('Task does not fall into range of column.');
 		}
 

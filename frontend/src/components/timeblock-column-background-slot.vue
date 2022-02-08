@@ -15,7 +15,7 @@ const props = defineProps<{
 const slotStyle = $computed(() => ({
 	'grid-row-start': 1 + props.startDayMinute,
 	'grid-row-end': 1 + props.endDayMinute,
-	'grid-column': '1 / span 1'
+	'grid-column': '1 / span 1',
 }));
 
 const timeblockStore = useTimeblockStore();
@@ -34,7 +34,6 @@ function onDrop(event: DragEvent) {
 			}
 
 			const today = getTodayDayjs();
-
 			const startTimestamp = today.add(props.startDayMinute, 'minutes').unix();
 			const endTimestamp = today.add(props.endDayMinute, 'minutes').unix();
 

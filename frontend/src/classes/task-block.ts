@@ -36,8 +36,8 @@ export class TaskBlock {
 	}: TaskBlockConstructorProps) {
 		this.id = id;
 		this.task = task;
-		this.startTimestamp = startTimestamp;
-		this.endTimestamp = endTimestamp;
+		this.setStartTimestamp(startTimestamp);
+		this.setEndTimestamp(endTimestamp);
 	}
 
 	getId() {
@@ -57,6 +57,10 @@ export class TaskBlock {
 	}
 
 	setStartTimestamp(timestamp: number) {
+		if (timestamp === undefined) {
+			throw new Error('startTimestamp cannot be undefined.');
+		}
+
 		// Verifies that the timestamp is in UNIX seconds and not milliseconds
 		if (timestamp.toString().length !== 10) {
 			throw new Error(
@@ -72,6 +76,17 @@ export class TaskBlock {
 	}
 
 	setEndTimestamp(timestamp: number) {
+		if (timestamp === undefined) {
+			throw new Error('endTimestamp cannot be undefined.');
+		}
+
+		// Verifies that the timestamp is in UNIX seconds and not milliseconds
+		if (timestamp.toString().length !== 10) {
+			throw new Error(
+				`Timestamp must be in UNIX seconds, received ${timestamp}`
+			);
+		}
+
 		this.endTimestamp = timestamp;
 	}
 }
