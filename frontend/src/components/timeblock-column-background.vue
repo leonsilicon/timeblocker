@@ -15,7 +15,7 @@ const hoursInDayMinutes = Array.from({ length: 24 }).map((_, i) => i * 60);
 </script>
 
 <template>
-	<div :style="timeblockColumnStyle" class="border-b border-gray-200 relative">
+	<div :style="timeblockColumnStyle" class="border-b border-gray-200">
 		<TimeblockColumnBackgroundSlot
 			v-for="hourInDayMinutes of hoursInDayMinutes"
 			:key="hourInDayMinutes"

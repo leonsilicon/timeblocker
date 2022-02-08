@@ -34,7 +34,7 @@ const timeblockColumnStyle = $computed(() => ({
 </script>
 
 <template>
-	<div :style="timeblockColumnStyle" class="border-b border-gray-200 relative">
+	<div :style="timeblockColumnStyle" class="border-b border-gray-200 -z-1">
 		<TimeblockColumnBackground
 			style="grid-row: 1 / -1; grid-column: 1 / -1"
 			:column-version-number="versionNumber"

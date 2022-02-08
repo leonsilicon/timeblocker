@@ -71,7 +71,7 @@ function onDrop(event: DragEvent) {
 <template>
 	<div
 		:style="slotStyle"
-		class="w-full h-full border-t border-x border-gray-200 absolute"
+		class="w-full h-full border-t border-x border-gray-200 -z-1"
 		@drop.prevent="onDrop"
 		@dragover.prevent
 	></div>
