@@ -7,7 +7,6 @@ import TimeblockPageTaskDock from '~f/components/timeblock-page-task-dock.vue';
 import { useTimeblockStore } from '~f/store/define';
 import { Timeblock } from '~f/classes/timeblock';
 import { Task } from '~f/classes/task';
-import { dayjsToTimeblockDate } from '~f/utils/date';
 
 const today = dayjs();
 
