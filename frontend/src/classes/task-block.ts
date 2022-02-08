@@ -1,11 +1,12 @@
 import type { Task } from '~f/classes/task';
+import type { Timeblock } from '~f/classes/timeblock';
 
 export type TaskBlockConstructorProps = {
 	id: string;
 	task: Task;
 	startTimestamp: number;
 	endTimestamp: number;
-	timeblockId: string;
+	timeblock: Timeblock;
 };
 
 export class TaskBlock {
@@ -30,19 +31,19 @@ export class TaskBlock {
 	private endTimestamp: number;
 
 	/**
-	 * The ID of the timeblock this task block belongs to.
+	 * The timeblock this task block belongs to.
 	 */
-	private timeblockId: string;
+	private readonly timeblock: Timeblock;
 
 	constructor({
 		id,
 		task,
 		startTimestamp,
 		endTimestamp,
-		timeblockId,
+		timeblock,
 	}: TaskBlockConstructorProps) {
 		this.id = id;
-		this.timeblockId = timeblockId;
+		this.timeblock = timeblock;
 		this.task = task;
 		this.setStartTimestamp(startTimestamp);
 		this.setEndTimestamp(endTimestamp);

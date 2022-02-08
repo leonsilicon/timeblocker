@@ -1,4 +1,5 @@
 import type { Task } from '~f/classes/task';
+import type { TaskBlock } from '~f/classes/task-block';
 import { TimeblockColumn } from '~f/classes/timeblock-column';
 import type { TimeblockDate } from '~f/types/date';
 
@@ -26,14 +27,17 @@ export class Timeblock {
 	 */
 	private readonly columns: TimeblockColumn[];
 
-	private readonly tasksMap: Map<string, Task>;
+	private readonly taskMap: Map<string, Task>;
+
+	private readonly taskBlockMap: Map<string, TaskBlock>;
 
 	private readonly orderedTaskIds: string[];
 
 	constructor({ id, date }: TimeblockConstructorProps) {
 		this.id = id;
 		this.date = date;
-		this.tasksMap = new Map();
+		this.taskMap = new Map();
+		this.taskBlockMap = new Map();
 		this.orderedTaskIds = [];
 		this.columns = [];
 	}
@@ -43,16 +47,34 @@ export class Timeblock {
 	}
 
 	public addTask(task: Task, index = 0) {
-		this.tasksMap.set(task.getId(), task);
+		this.taskMap.set(task.getId(), task);
 		this.orderedTaskIds.splice(index, 0, task.getId());
 	}
 
 	public removeTask(taskId: string) {
-		this.tasksMap.delete(taskId);
+		this.taskMap.delete(taskId);
 	}
 
 	public getTask(taskId: string) {
-		return this.tasksMap.get(taskId);
+		const task = this.taskMap.get(taskId);
+		if (task === undefined) {
+			throw new Error(`Task with ID ${taskId} not found.`);
+		}
+
+		return task;
+	}
+
+	public getTaskBlock(taskBlockId: string) {
+		const taskBlock = this.taskBlockMap.get(taskBlockId);
+		if (taskBlock === undefined) {
+			throw new Error(`Task block with ID ${taskBlockId} not found.`);
+		}
+
+		return taskBlock;
+	}
+
+	public addTaskBlock(taskBlock: TaskBlock) {
+		this.taskBlockMap.set(taskBlock.getId(), taskBlock);
 	}
 
 	public getOrderedTaskIds() {

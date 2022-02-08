@@ -9,11 +9,8 @@ const props = defineProps<{
 	heightRatio: number;
 }>();
 const timeblockStore = useTimeblockStore();
-const taskBlock = $computed(
-	() =>
-		timeblockStore.activeTimeblock
-			.getColumn(props.columnVersionNumber)!
-			.getTaskBlock(props.taskBlockId)!
+const taskBlock = $computed(() =>
+	timeblockStore.activeTimeblock.getTaskBlock(props.taskBlockId)
 );
 const task = $computed(() => taskBlock.getTask());
 

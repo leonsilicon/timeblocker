@@ -43,18 +43,17 @@ function onDrop(event: DragEvent) {
 
 				const taskBlock = new TaskBlock({
 					id: nanoid(),
+					timeblock: activeTimeblock,
 					task,
 					startTimestamp,
 					endTimestamp,
 				});
 
-				timeblockStore.activeTimeblock
-					.getColumn(props.columnVersionNumber)!
-					.addTaskBlock(taskBlock);
+				timeblockStore.activeTimeblock.addTaskBlock(taskBlock);
 			} else if ('sourceTaskBlockId' in payload) {
-				const taskBlock = timeblockStore.activeTimeblock
-					.getColumn(props.columnVersionNumber)!
-					.getTaskBlock(payload.sourceTaskBlockId);
+				const taskBlock = timeblockStore.activeTimeblock.getTaskBlock(
+					payload.sourceTaskBlockId
+				);
 
 				if (taskBlock === undefined) {
 					logError(`Task block is undefined.`);

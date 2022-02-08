@@ -1,4 +1,3 @@
-import type { TaskBlock } from '~f/classes/task-block';
 import type { Timeblock } from '~f/classes/timeblock';
 import { timeblockDateToDayjs } from '~f/utils/date';
 
@@ -21,15 +20,12 @@ export class TimeblockColumn {
 	/**
 	 * The IDs of task blocks that are contained in this column.
 	 */
-	private readonly taskBlocks: TaskBlock[];
-
-	private readonly taskBlockMap: Map<string, TaskBlock>;
+	private readonly taskBlockIds: Set<string>;
 
 	constructor({ timeblock, versionNumber }: TimeblockColumnConstructorProps) {
 		this.timeblock = timeblock;
 		this.versionNumber = versionNumber;
-		this.taskBlocks = [];
-		this.taskBlockMap = new Map();
+		this.taskBlockIds = new Set();
 	}
 
 	public getDate() {
@@ -52,7 +48,9 @@ export class TimeblockColumn {
 		return this.timeblock;
 	}
 
-	public addTaskBlock(taskBlock: TaskBlock) {
+	public addTaskBlock(taskBlockId: string) {
+		const taskBlock = this.timeblock.getTaskBlock(taskBlockId);
+
 		// Validate that the task block overlaps with the date
 		const taskBlockStartTimestamp = taskBlock.getStartTimestamp();
 		const taskBlockEndTimestamp = taskBlock.getEndTimestamp();
@@ -66,18 +64,16 @@ export class TimeblockColumn {
 			throw new Error('Task does not fall into range of column.');
 		}
 
-		this.taskBlockMap.set(taskBlock.getId(), taskBlock);
+		this.taskBlockIds.add(taskBlockId);
 	}
 
 	public removeTaskBlock(taskBlockId: string) {
-		this.taskBlockMap.delete(taskBlockId);
-	}
-
-	public getTaskBlock(taskBlockId: string) {
-		return this.taskBlockMap.get(taskBlockId);
+		this.taskBlockIds.delete(taskBlockId);
 	}
 
 	public getTaskBlocks() {
-		return [...this.taskBlockMap.values()];
+		return [...this.taskBlockIds.values()].map((taskBlockId) =>
+			this.timeblock.getTaskBlock(taskBlockId)
+		);
 	}
 }

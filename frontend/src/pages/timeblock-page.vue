@@ -31,7 +31,7 @@ const dummyTasks: Array<{ name: string; description: string }> = [
 	},
 ];
 
-timeblock.addColumn(dayjsToTimeblockDate(today));
+timeblock.addColumn();
 
 for (const task of dummyTasks) {
 	timeblock.addTask(

@@ -14,14 +14,10 @@ export class FixedTimeTaskBlock extends TaskBlock {
 
 	private endTime: string;
 
-	constructor({
-		task,
-		startTime,
-		endTime,
-	}: FixedTimeTaskBlockConstructorProps) {
-		super({ task });
-		this.setStartTime(startTime);
-		this.setEndTime(endTime);
+	constructor(props: FixedTimeTaskBlockConstructorProps) {
+		super(props);
+		this.setStartTime(props.startTime);
+		this.setEndTime(props.endTime);
 	}
 
 	getStartTime() {
