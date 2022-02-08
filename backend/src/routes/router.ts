@@ -13,7 +13,7 @@ export const getAppRouter = onetime(() =>
 		.merge(timeblockTaskRouter)
 		.query('ping', {
 			async resolve({ ctx }) {
-				await ctx.prisma.$queryRawUnsafe('select 1');
+				return ctx.prisma.$queryRawUnsafe('select 1')
 			},
 		})
 );

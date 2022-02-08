@@ -22,7 +22,7 @@ export async function verifyReCaptcha(captchaResponse: string): Promise<void> {
 export async function verifyHCaptcha(captchaResponse: string): Promise<void> {
 	const params = new URLSearchParams();
 	params.append('response', captchaResponse);
-	params.append('secret', process.env.HCAPTCHA_SECRET_KEY);
+	params.append('secret', process.env.HCAPTCHA_SECRET_KEY!);
 
 	const response = await got.post<{ success: boolean }>(
 		'https://hcaptcha.com/siteverify',

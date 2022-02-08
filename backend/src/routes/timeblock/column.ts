@@ -11,19 +11,7 @@ export const timeblockColumnRouter = createRouter()
 			columnId: z.string(),
 		}),
 		async resolve({ ctx, input: { columnId } }) {
-			const { id: timeblockId } = await ctx.prisma.timeblock.create({
-				data: {
-					name,
-					ownerAccountId: ctx.accountId,
-				},
-				select: {
-					id: true,
-				},
-			});
 
-			return {
-				timeblockId,
-			};
 		},
 	})
 	.query('getTimeblock', {

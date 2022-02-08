@@ -32,7 +32,7 @@ const timeblockIdInput = z.object({ timeblockId: z.string() });
 
 export const timeblockMiddleware: MiddlewareFunction<
 	Context & { accountId: string },
-	Context & { timeblockId: string }
+	Context & { accountId: string; timeblockId: string }
 > = async ({ next, ctx, rawInput }) => {
 	const result = timeblockIdInput.safeParse(rawInput);
 	if (!result.success) {

@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"description": "Timeblocker backend",
 	"type": "module",
+	"bin": "./dist/backend/src/bin/start.js",
 	"scripts": {
 		"gen": "prisma generate",
 		"dev": "nodemon",

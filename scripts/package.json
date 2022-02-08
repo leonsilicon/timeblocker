@@ -9,5 +9,8 @@
 		"@commitlint/cli": "^15.0.0",
 		"execa": "^6.0.0",
 		"tsc-alias": "^1.5.0"
+	},
+	"devDependencies": {
+		"pkg": "^5.5.2"
 	}
 }
