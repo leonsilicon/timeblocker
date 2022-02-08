@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useTimeblockStore } from '~f/store/define';
+import { TaskBoxDropData, TaskBoxDropType } from '~f/types/task-box';
 import { getTodayDayjs } from '~f/utils/date';
 
 const props = defineProps<{
@@ -25,14 +26,25 @@ const timeblockTaskBlockStyle = $computed(() => ({
 	'grid-row-end': 1 + (taskBlock.getEndTimestamp() - todayStartTimestamp) / 60,
 }));
 
+function onDragStart(event: DragEvent) {
+	event.dataTransfer?.setData(
+		'text',
+		JSON.stringify<TaskBoxDropData>({
+			type: TaskBoxDropType.taskBoxDrop,
+			payload: {
+				sourceTaskBlockId: props.taskBlockId,
+			},
+		})
+	);
+}
 </script>
 
 <template>
 	<div
-		@drop.prevent="onDrop"
-		@dragover.prevent
-		class="column center rounded-md bg-red-200"
+		draggable="true"
+		class="column center rounded-md bg-red-200 cursor-grab active:cursor-grabbing"
 		:style="timeblockTaskBlockStyle"
+		@dragstart="onDragStart"
 	>
 		{{ task.getName() }}
 	</div>

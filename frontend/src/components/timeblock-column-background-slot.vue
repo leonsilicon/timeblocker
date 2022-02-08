@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 import { TaskBlock } from '~f/classes/task-block';
 import { useTimeblockStore } from '~f/store/define';
 import { TaskBoxDropData, TaskBoxDropType } from '~f/types/task-box';
-import { getTodayDayjs, timeblockDateToDayjs } from '~f/utils/date';
+import { timeblockDateToDayjs } from '~f/utils/date';
 import { logError } from '~f/utils/log';
 
 const props = defineProps<{
@@ -25,31 +25,44 @@ function onDrop(event: DragEvent) {
 	if (dropDataString !== undefined) {
 		const dropData = JSON.parse(dropDataString) as TaskBoxDropData;
 		if (dropData.type === TaskBoxDropType.taskBoxDrop) {
-			const { taskId } = dropData.payload;
+			const { payload } = dropData;
+
 			const { activeTimeblock } = timeblockStore;
-			const task = activeTimeblock.getTask(taskId);
-			if (task === undefined) {
-				logError('Task not found.');
-				return;
-			}
-
 			const activeDate = timeblockDateToDayjs(activeTimeblock.getDate());
-
 			const startTimestamp = activeDate
 				.add(props.startDayMinute, 'minutes')
 				.unix();
 			const endTimestamp = activeDate.add(props.endDayMinute, 'minutes').unix();
 
-			const taskBlock = new TaskBlock({
-				id: nanoid(),
-				task,
-				startTimestamp,
-				endTimestamp,
-			});
+			if ('taskId' in payload) {
+				const task = activeTimeblock.getTask(payload.taskId);
+				if (task === undefined) {
+					logError('Task not found.');
+					return;
+				}
 
-			timeblockStore.activeTimeblock
-				.getColumn(props.columnVersionNumber)!
-				.addTaskBlock(taskBlock);
+				const taskBlock = new TaskBlock({
+					id: nanoid(),
+					task,
+					startTimestamp,
+					endTimestamp,
+				});
+
+				timeblockStore.activeTimeblock
+					.getColumn(props.columnVersionNumber)!
+					.addTaskBlock(taskBlock);
+			} else if ('sourceTaskBlockId' in payload) {
+				const taskBlock = timeblockStore.activeTimeblock
+					.getColumn(props.columnVersionNumber)!
+					.getTaskBlock(payload.sourceTaskBlockId);
+
+				if (taskBlock === undefined) {
+					logError(() => `Task block is undefined.`);
+				} else {
+					taskBlock.setStartTimestamp(startTimestamp);
+					taskBlock.setEndTimestamp(endTimestamp);
+				}
+			}
 		}
 	}
 }
