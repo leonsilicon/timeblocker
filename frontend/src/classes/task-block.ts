@@ -5,6 +5,7 @@ export type TaskBlockConstructorProps = {
 	task: Task;
 	startTimestamp: number;
 	endTimestamp: number;
+	timeblockId: string;
 };
 
 export class TaskBlock {
@@ -28,13 +29,20 @@ export class TaskBlock {
 	 */
 	private endTimestamp: number;
 
+	/**
+	 * The ID of the timeblock this task block belongs to.
+	 */
+	private timeblockId: string;
+
 	constructor({
 		id,
 		task,
 		startTimestamp,
 		endTimestamp,
+		timeblockId,
 	}: TaskBlockConstructorProps) {
 		this.id = id;
+		this.timeblockId = timeblockId;
 		this.task = task;
 		this.setStartTimestamp(startTimestamp);
 		this.setEndTimestamp(endTimestamp);

@@ -57,7 +57,7 @@ function onDrop(event: DragEvent) {
 					.getTaskBlock(payload.sourceTaskBlockId);
 
 				if (taskBlock === undefined) {
-					logError(() => `Task block is undefined.`);
+					logError(`Task block is undefined.`);
 				} else {
 					taskBlock.setStartTimestamp(startTimestamp);
 					taskBlock.setEndTimestamp(endTimestamp);

@@ -1,7 +1,6 @@
 import type { TaskBlock } from '~f/classes/task-block';
 import type { Timeblock } from '~f/classes/timeblock';
 import { timeblockDateToDayjs } from '~f/utils/date';
-import dayjs from 'dayjs'
 
 export type TimeblockColumnConstructorProps = {
 	timeblock: Timeblock;
@@ -20,16 +19,16 @@ export class TimeblockColumn {
 	private versionNumber: number;
 
 	/**
-	 * The IDs of tasks that are contained in this column.
+	 * The IDs of task blocks that are contained in this column.
 	 */
+	private readonly taskBlocks: TaskBlock[];
+
 	private readonly taskBlockMap: Map<string, TaskBlock>;
 
-	constructor({
-		timeblock,
-		versionNumber,
-	}: TimeblockColumnConstructorProps) {
+	constructor({ timeblock, versionNumber }: TimeblockColumnConstructorProps) {
 		this.timeblock = timeblock;
 		this.versionNumber = versionNumber;
+		this.taskBlocks = [];
 		this.taskBlockMap = new Map();
 	}
 
