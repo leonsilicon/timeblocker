@@ -39,15 +39,18 @@ importers:
       '@types/node': ^17.0.0
       '@types/nodemailer': ^6.4.4
       '@types/sqlite3': ^3.1.8
+      '@vercel/ncc': ^0.33.1
       bcrypt: ^5.0.1
       execa: ^6.0.0
       fastify: ^3.27.0
       fastify-cookie: ^5.5.0
       googleapis: ^94.0.0
       got: ^12.0.1
+      lion-system: ^1.0.9
       nodemailer: ^6.7.2
       nodemon: ^2.0.15
       onetime: ^6.0.0
+      pkg: ^5.5.2
       prisma: ^3.9.0
       sqlite3: ^5.0.2
       tsc-alias: ^1.5.0
@@ -72,8 +75,11 @@ importers:
       '@types/node': 17.0.14
       '@types/nodemailer': 6.4.4
       '@types/sqlite3': 3.1.8
+      '@vercel/ncc': 0.33.1
       execa: 6.0.0
+      lion-system: 1.0.9
       nodemon: 2.0.15
+      pkg: 5.5.2
       prisma: 3.9.1
       tsc-alias: 1.5.0
       typescript: 4.5.5
@@ -1657,6 +1663,11 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.10.2
       eslint-visitor-keys: 3.2.0
+    dev: true
+
+  /@vercel/ncc/0.33.1:
+    resolution: {integrity: sha512-Mlsps/P0PLZwsCFtSol23FGqT3FhBGb4B1AuGQ52JTAtXhak+b0Fh/4T55r0/SVQPeRiX9pNItOEHwakGPmZYA==}
+    hasBin: true
     dev: true
 
   /@vitejs/plugin-vue/2.1.0_vite@2.7.13+vue@3.2.29:
@@ -5870,6 +5881,12 @@ packages:
       pkg-dir: 6.0.1
     dev: true
 
+  /lion-system/1.0.9:
+    resolution: {integrity: sha512-kOomq2SrAljYpUkzzXHAors4Bibe9+sP51uGSyfi2ilYCx6e0scHiYg3t6oyhWhr4276QjIbjNGwkBEylAB1ww==}
+    dependencies:
+      pkg-up: 4.0.0
+    dev: true
+
   /listr2/4.0.2:
     resolution: {integrity: sha512-YcgwfCWpvPbj9FLUGqvdFvd3hrFWKpOeuXznRgfWEJ7RNr8b/IKKIKZABHx3aU+4CWN/iSAFFSReziQG6vTeIA==}
     engines: {node: '>=12'}
@@ -6847,6 +6864,13 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       find-up: 3.0.0
+    dev: true
+
+  /pkg-up/4.0.0:
+    resolution: {integrity: sha512-N4zdA4sfOe6yCv+ulPCmpnIBQ5I60xfhDr1otdBBhKte9QtEf3bhfrfkW7dTb+IQ0iEx4ZDzas0kc1o5rdWpYg==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dependencies:
+      find-up: 6.2.0
     dev: true
 
   /pkg/5.5.2:
