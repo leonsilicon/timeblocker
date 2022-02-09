@@ -7,14 +7,18 @@ export type TimeblockColumnConstructorProps = {
 };
 
 /**
- * A timeblock column is a column of your tasks
+ * A timeblock column is a column containing the user's tasks.
  */
 export class TimeblockColumn {
 	/**
-	 * The timeblock that this column belongs to
+	 * The timeblock that this column belongs to.
 	 */
 	private timeblock: Timeblock;
 
+	/**
+	 * The version number of the column (used when there are multiple timeblock columns
+	 * in a day).
+	 */
 	private versionNumber: number;
 
 	/**
@@ -22,6 +26,11 @@ export class TimeblockColumn {
 	 */
 	private readonly taskBlockIds: Set<string>;
 
+	/**
+	 * Creates a new timeblock column.
+	 * @param props The properties to set on the timeblock column.
+	 * @param props.timeblock The timeblock the timeblock column belongs to.
+	 */
 	constructor({ timeblock, versionNumber }: TimeblockColumnConstructorProps) {
 		this.timeblock = timeblock;
 		this.versionNumber = versionNumber;

@@ -9,6 +9,9 @@ export type TaskBlockConstructorProps = {
 	timeblock: Timeblock;
 };
 
+/**
+ * A chunk of time on the timeblock that is associated with a particular task.
+ */
 export class TaskBlock {
 	/**
 	 * The unique ID of this task block
@@ -35,6 +38,15 @@ export class TaskBlock {
 	 */
 	private readonly timeblock: Timeblock;
 
+	/**
+	 * Creates a new task block.
+	 * @param props The properties to set on the task block.
+	 * @param props.id The ID of the task block.
+	 * @param props.task The task associated with the task block.
+	 * @param props.startTimestamp The start timestamp of the task block.
+	 * @param props.endTimestamp The end timestamp of the task block.
+	 * @param props.timeblock The timeblock the task block belongs to.
+	 */
 	constructor({
 		id,
 		task,
@@ -49,22 +61,43 @@ export class TaskBlock {
 		this.setEndTimestamp(endTimestamp);
 	}
 
+	/**
+	 * Gets the ID of the task block.
+	 * @returns The ID of the task block.
+	 */
 	getId() {
 		return this.id;
 	}
 
+	/**
+	 * Gets the task associated with the task block.
+	 * @returns The task associated with the task block.
+	 */
 	getTask() {
 		return this.task;
 	}
 
+	/**
+	 * Sets the task associated with the task block.
+	 * @param task The new task to be associated with the task block.
+	 */
 	setTask(task: Task) {
 		this.task = task;
 	}
 
+	/**
+	 * Gets the start timestamp of the task block.
+	 * @returns The start timestamp of the task block.
+	 */
 	getStartTimestamp() {
 		return this.startTimestamp;
 	}
 
+	/**
+	 * Sets the start timestamp of the task block and verifies that the timestamp
+	 * is a valid UNIX timestamp.
+	 * @param timestamp The new start timestamp of the task block.
+	 */
 	setStartTimestamp(timestamp: number) {
 		if (timestamp === undefined) {
 			throw new Error('startTimestamp cannot be undefined.');
@@ -80,10 +113,19 @@ export class TaskBlock {
 		this.startTimestamp = timestamp;
 	}
 
+	/**
+	 * Gets the end timestamp of the task block.
+	 * @returns The end timestamp of the task block.
+	 */
 	getEndTimestamp() {
 		return this.endTimestamp;
 	}
 
+	/**
+	 * Sets the end timestamp of the task block and verifies that the timestamp
+	 * is a valid UNIX timestamp.
+	 * @param timestamp The new end timestamp of the task block.
+	 */
 	setEndTimestamp(timestamp: number) {
 		if (timestamp === undefined) {
 			throw new Error('endTimestamp cannot be undefined.');
