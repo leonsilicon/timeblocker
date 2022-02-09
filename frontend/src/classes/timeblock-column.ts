@@ -30,6 +30,8 @@ export class TimeblockColumn {
 	 * Creates a new timeblock column.
 	 * @param props The properties to set on the timeblock column.
 	 * @param props.timeblock The timeblock the timeblock column belongs to.
+	 * @param props.versionNumber The version number of the timeblock column (used when
+	 * there are multiple columns in a day)
 	 */
 	constructor({ timeblock, versionNumber }: TimeblockColumnConstructorProps) {
 		this.timeblock = timeblock;

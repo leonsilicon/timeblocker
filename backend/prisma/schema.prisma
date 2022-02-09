@@ -6,17 +6,23 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Account {
-  id                   String                @id() @default(uuid())
-  email                String                @unique()
-  passwordHash         String
-  timeblocks           Timeblock[]
-  AccountSessionTokens AccountSessionToken[]
-  AccountCsrfTokens    AccountCsrfToken[]
+  id           String      @id() @default(uuid())
+  email        String      @unique()
+  passwordHash String
+  timeblocks   Timeblock[]
+
+  accountSessionTokens AccountSessionToken[]
+  accountCsrfTokens    AccountCsrfToken[]
+}
+
+enum AuthenticationMethod {
+	header
+	cookie
 }
 
 model AccountSessionToken {
@@ -29,7 +35,7 @@ model AccountSessionToken {
   csrfToken String?
 
   // Either 'header' or 'cookie'
-  authenticationMethod String
+  authenticationMethod AuthenticationMethod
 }
 
 model AccountCsrfToken {

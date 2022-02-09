@@ -11,9 +11,4 @@ export const getAppRouter = onetime(() =>
 		.merge(registrationRouter)
 		.merge(timeblockCrudRouter)
 		.merge(timeblockTaskRouter)
-		.query('ping', {
-			async resolve({ ctx }) {
-				return ctx.prisma.$queryRawUnsafe('select 1')
-			},
-		})
 );

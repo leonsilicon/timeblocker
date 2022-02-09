@@ -3,6 +3,8 @@ import { nanoid } from '@leonzalion/nanoid-good';
 import bcrypt from 'bcrypt';
 import { createRouter } from '~b/utils/router.js';
 import { captchaInput } from '~b/utils/captcha.js';
+import { authenticateClient } from '~b/utils/auth.js';
+import { AuthenticationMethod } from '~s/types/auth.js';
 
 export const registrationRouter = createRouter()
 	.mutation('createRegistrationRequest', {
@@ -29,6 +31,11 @@ export const registrationRouter = createRouter()
 			email: z.string(),
 			confirmationCode: z.string(),
 		}),
+		/**
+		 * Confirming a registration request is always done via an email link to a URL,
+		 * so therefore we can set the authentication method to "cookie" since the user
+		 * has to use a browser to confirm the request.
+		 */
 		async resolve({ ctx, input: { email, confirmationCode } }) {
 			const account = await ctx.prisma.accountRegistrationRequest.findFirst({
 				select: {
@@ -51,6 +58,11 @@ export const registrationRouter = createRouter()
 						email,
 						passwordHash: account.passwordHash,
 					},
+				});
+
+				await authenticateClient(ctx, {
+					accountId: account.id,
+					authenticationMethod: AuthenticationMethod.cookie,
 				});
 			} else {
 				throw new Error('Email not found or invalid confirmation code.');
