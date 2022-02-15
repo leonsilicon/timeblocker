@@ -26,36 +26,35 @@ The frontend is a single-page application built with Vue, a JavaScript framework
 
 \section*{Significant files/folders:}
 \begin{tabularx}{\textwidth}{
-	@{}
-	p{0.3\linewidth}
-	X
-}
+		@{}
+		p{0.3\linewidth}
+		X
+	}
 	% https://tex.stackexchange.com/a/57709
 	\centerline{\adjustbox{valign=t}{
-		\includegraphics[width=0.3\textwidth]{frontend-files.png}
-	}}
-	&
+			\includegraphics[width=0.3\textwidth]{frontend-files.png}
+		}}
+	 &
 	\begin{itemize}[label={}, leftmargin=5pt]
 		\item \textbf{public:} Assets that are hosted on the website as-is (e.g. the favicon).
 		\item \textbf{src/:} The main website source code.
-					\begin{itemize}[label={}]
-						\item \textbf{classes/:} Frontend’s OOP classes.
-						\item \textbf{components/:} Vue components.
-						\item \textbf{layouts/:} UI templates reused across multiple pages.
-						\item \textbf{pages/:} Website pages.
-						\item \textbf{store/:} Global data store.
-						\item \textbf{types/:} TypeScript types.
-						\item \textbf{utils/:} Various utility functions.
-						\item \textbf{app.vue:} Main Vue component.
-						\item \textbf{main.ts:} Entrypoint for website scripts.
-						\item \textbf{router.ts:} Website routing configuration.
-						\item \textbf{tailwind.css:} Loads TailwindCSS styles.
-					\end{itemize}
+		      \begin{itemize}[label={}]
+			      \item \textbf{classes/:} Frontend’s OOP classes.
+			      \item \textbf{components/:} Vue components.
+			      \item \textbf{layouts/:} UI templates reused across multiple pages.
+			      \item \textbf{pages/:} Website pages.
+			      \item \textbf{store/:} Global data store.
+			      \item \textbf{types/:} TypeScript types.
+			      \item \textbf{utils/:} Various utility functions.
+			      \item \textbf{app.vue:} Main Vue component.
+			      \item \textbf{main.ts:} Entrypoint for website scripts.
+			      \item \textbf{router.ts:} Website routing configuration.
+			      \item \textbf{tailwind.css:} Loads TailwindCSS styles.
+		      \end{itemize}
 		\item \textbf{index.html:} Website entrypoint.
 		\item \textbf{Configuration files (*.cjs, *.json, vite.config.ts):} Configuration files for various frontend development tools.
 	\end{itemize}
 \end{tabularx}
-
 \section*{Development}
 To develop my program, I used various build tools from the JavaScript ecosystem.
 For the frontend, I used Vite, a build tool that uses Hot Module Reload to update the site without needing to refresh the page and thus resetting the page state.
@@ -63,14 +62,14 @@ When building the site for production, Vite uses Rollup to bundle all the websit
 
 \section*{User Interface}
 \begin{tabularx}{\textwidth}{
-	@{}
-	p{0.3\linewidth}
-	X
-}
+		@{}
+		p{0.3\linewidth}
+		X
+	}
 	\centerline{\adjustbox{valign=t}{
-		\includegraphics[width=1\linewidth]{frontend-pages-folder.png}
-	}}
-	&
+			\includegraphics[width=1\linewidth]{frontend-pages-folder.png}
+		}}
+	 &
 	The code responsible for the user interface is stored under the src/pages folder. The .vue file extension indicates Vue Single-File Components, or SFCs for short. These files contain all the necessary HTML, CSS, and JavaScript to render a component part of a dynamic user interface.
 \end{tabularx}
 
@@ -78,16 +77,16 @@ When building the site for production, Vite uses Rollup to bundle all the websit
 
 % https://tex.stackexchange.com/questions/205086/do-not-indent-a-tabular
 \noindent\begin{tabularx}{\textwidth}{
-	@{}
-	X
-	p{0.6\linewidth}
-	@{}
-}
+		@{}
+		X
+		p{0.6\linewidth}
+		@{}
+	}
 	In each Vue SFC, there are three root tags: the <script> tag, the <template> tag, and the <style> tag. The <script> tag contains the JavaScript that is executed when the component is initialized for the first time. The <template> tag contains the HTML that defines the structure of the component, and the <style> tag contains the CSS that is used to style the component.
-	&
+	 &
 	\centerline{\adjustbox{valign=t}{
-		\includegraphics[width=0.6\textwidth]{frontend-vue-sfc.png}
-	}}
+			\includegraphics[width=0.6\textwidth]{frontend-vue-sfc.png}
+		}}
 \end{tabularx}
 
 Most of the SFCs don’t contain a <style> tag because the CSS styles are primarily contained within the HTML through TailwindCSS’s utility classes. TailwindCSS is a CSS framework that provides flexible utility classes for making it easier to style HTML. In addition, I used a Tailwind library known as daisyUI that provides out-of-the-box styled components for common HTML components.
@@ -114,12 +113,12 @@ On the right side of the timeblock calendar, there is a plus icon that allows th
 The backend uses tRPC, a TypeScript library for defining type-safe server routes, and Fastify, a low overhead web framework for Node.js. Significant files/folders include:
 
 \noindent\begin{tabularx}{\textwidth}{
-	@{}
-	p{0.3\linewidth}
-	X
-}
+		@{}
+		p{0.3\linewidth}
+		X
+	}
 	\adjustbox{valign=t}{\includegraphics[width=0.3\textwidth]{backend-files.png}}
-	&
+	 &
 	\begin{itemize}[label={}, leftmargin=5pt]
 		\item	\textbf{prisma/:} Database models and configuration files for the Prisma ORM.
 		\item	\textbf{src/:} Main backend source code.
