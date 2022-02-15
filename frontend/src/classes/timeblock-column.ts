@@ -76,9 +76,12 @@ export class TimeblockColumn {
 		}
 
 		this.taskBlockIds.add(taskBlockId);
+		taskBlock.setColumnVersionNumber(this.versionNumber);
 	}
 
 	public removeTaskBlock(taskBlockId: string) {
+		const taskBlock = this.timeblock.getTaskBlock(taskBlockId);
+		taskBlock.setColumnVersionNumber(undefined);
 		this.taskBlockIds.delete(taskBlockId);
 	}
 

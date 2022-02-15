@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
 	<div class="column items-center py-16">
 		<div class="font-bold mb-2 text-5xl text-center">timeblocker.io</div>

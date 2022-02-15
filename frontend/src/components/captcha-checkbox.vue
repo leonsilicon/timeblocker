@@ -8,11 +8,14 @@ import { ComponentType } from '~f/types/component';
 import CircleSpinner from '~f/components/circle-spinner.vue';
 
 const emit = defineEmits<{
+	// Emitted when the user successfully completes the captcha.
 	(event: 'verify', token: string): void;
+	// Emitted when the user switches the captchas to use.
 	(event: 'update:useRecaptcha', useRecaptcha: boolean): void;
 }>();
 
 const props = defineProps<{
+	// Whether or not to use Google reCaptcha or hCaptcha
 	useRecaptcha: boolean;
 }>();
 

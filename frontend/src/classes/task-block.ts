@@ -7,6 +7,7 @@ export type TaskBlockConstructorProps = {
 	startTimestamp: number;
 	endTimestamp: number;
 	timeblock: Timeblock;
+	columnVersionNumber: number;
 };
 
 /**
@@ -39,6 +40,11 @@ export class TaskBlock {
 	private readonly timeblock: Timeblock;
 
 	/**
+	 * The timeblock column this task block belongs to.
+	 */
+	private columnVersionNumber: number | undefined;
+
+	/**
 	 * Creates a new task block.
 	 * @param props The properties to set on the task block.
 	 * @param props.id The ID of the task block.
@@ -46,6 +52,7 @@ export class TaskBlock {
 	 * @param props.startTimestamp The start timestamp of the task block.
 	 * @param props.endTimestamp The end timestamp of the task block.
 	 * @param props.timeblock The timeblock the task block belongs to.
+	 * @param props.columnVersionNumber The timeblock column the task block belongs to.
 	 */
 	constructor({
 		id,
@@ -53,12 +60,14 @@ export class TaskBlock {
 		startTimestamp,
 		endTimestamp,
 		timeblock,
+		columnVersionNumber,
 	}: TaskBlockConstructorProps) {
 		this.id = id;
 		this.timeblock = timeblock;
 		this.task = task;
 		this.setStartTimestamp(startTimestamp);
 		this.setEndTimestamp(endTimestamp);
+		this.setColumnVersionNumber(columnVersionNumber);
 	}
 
 	/**
@@ -139,5 +148,13 @@ export class TaskBlock {
 		}
 
 		this.endTimestamp = timestamp;
+	}
+
+	public getColumnVersionNumber() {
+		return this.columnVersionNumber;
+	}
+
+	public setColumnVersionNumber(columnVersionNumber: number | undefined) {
+		this.columnVersionNumber = columnVersionNumber;
 	}
 }

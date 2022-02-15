@@ -1,10 +1,6 @@
 import { defineStore } from 'pinia';
-import type { TaskConstructorProps } from '~f/classes/task';
-import { Task } from '~f/classes/task';
 import type { Timeblock } from '~f/classes/timeblock';
 import type { TimeblockStoreState } from '~f/types/store';
-import { logError } from '~f/utils/log';
-import { client } from '~f/utils/trpc';
 
 function createTimeblockStoreState(): TimeblockStoreState {
 	return {

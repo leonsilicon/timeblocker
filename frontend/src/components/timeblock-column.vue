@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTimeblockStore } from '~f/store/define';
+import { useTimeblockStore } from '~f/store/timeblock';
 import { TimeblockDate } from '~f/types/date';
 import { calculateTaskBlocksRatios } from '~f/utils/task-block';
 import TimeblockTaskBlock from '~f/components/timeblock-task-block.vue';

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { nanoid } from 'nanoid';
 import { TaskBlock } from '~f/classes/task-block';
-import { useTimeblockStore } from '~f/store/define';
+import { useTimeblockStore } from '~f/store/timeblock';
 import { TaskBoxDropData, TaskBoxDropType } from '~f/types/task-box';
 import { timeblockDateToDayjs } from '~f/utils/date';
 import { logError } from '~f/utils/log';
@@ -47,11 +47,15 @@ function onDrop(event: DragEvent) {
 					task,
 					startTimestamp,
 					endTimestamp,
+					columnVersionNumber: props.columnVersionNumber,
 				});
 
-				timeblockStore.activeTimeblock.addTaskBlock(taskBlock);
+				activeTimeblock.addTaskBlock(taskBlock);
+				activeTimeblock
+					.getColumn(props.columnVersionNumber)
+					?.addTaskBlock(taskBlock.getId());
 			} else if ('sourceTaskBlockId' in payload) {
-				const taskBlock = timeblockStore.activeTimeblock.getTaskBlock(
+				const taskBlock = activeTimeblock.getTaskBlock(
 					payload.sourceTaskBlockId
 				);
 
@@ -60,6 +64,13 @@ function onDrop(event: DragEvent) {
 				} else {
 					taskBlock.setStartTimestamp(startTimestamp);
 					taskBlock.setEndTimestamp(endTimestamp);
+					const sourceColumnVersionNumber = taskBlock.getColumnVersionNumber()!;
+					activeTimeblock
+						.getColumn(sourceColumnVersionNumber)
+						?.removeTaskBlock(taskBlock.getId());
+					activeTimeblock
+						.getColumn(props.columnVersionNumber)
+						?.addTaskBlock(taskBlock.getId());
 				}
 			}
 		}

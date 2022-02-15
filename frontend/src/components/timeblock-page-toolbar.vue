@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { mdiMenu } from '@mdi/js';
-import { useTimeblockStore } from '~f/store/define';
+import { useTimeblockStore } from '~f/store/timeblock';
 
 const timeblockStore = useTimeblockStore();
 

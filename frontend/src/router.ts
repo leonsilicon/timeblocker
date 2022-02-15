@@ -25,11 +25,7 @@ export const routes: RouteRecordRaw[] = [
 	{
 		path: '/timeblock',
 		component: async () => import('~f/pages/timeblock-page.vue'),
-	},
-	{
-		path: '/test',
-		component: async () => import('~f/pages/test-page.vue'),
-	},
+	}
 ];
 
 export const router = createRouter({

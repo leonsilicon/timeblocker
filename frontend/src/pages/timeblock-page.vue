@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid';
 import TimeblockCalendar from '~f/components/timeblock-calendar.vue';
 import TimeblockPageToolbar from '~f/components/timeblock-page-toolbar.vue';
 import TimeblockPageTaskDock from '~f/components/timeblock-page-task-dock.vue';
-import { useTimeblockStore } from '~f/store/define';
+import { useTimeblockStore } from '~f/store/timeblock';
 import { Timeblock } from '~f/classes/timeblock';
 import { Task } from '~f/classes/task';
 

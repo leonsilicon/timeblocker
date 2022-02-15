@@ -33,6 +33,15 @@ export class Timeblock {
 
 	private readonly orderedTaskIds: string[];
 
+	/**
+	 * A map from task blocks to their column number. This information is stored
+	 * in the Timeblock class so that there is one source of truth for determine
+	 * which column a task block belongs to (in contrast to storing a variable in
+	 * both the taskBlock class containing the version number and a list of taskBlocks
+	 * in the column class, and always having to update both of those).
+	 */
+	private readonly taskBlockToColumnNumberMap: Map<string, number>;
+
 	constructor({ id, date }: TimeblockConstructorProps) {
 		this.id = id;
 		this.date = date;

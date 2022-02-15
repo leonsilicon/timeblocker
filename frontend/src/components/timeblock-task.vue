@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTimeblockStore } from '~f/store/define';
+import { useTimeblockStore } from '~f/store/timeblock';
 import { TaskBoxDropData, TaskBoxDropType } from '~f/types/task-box';
 
 const props = defineProps<{

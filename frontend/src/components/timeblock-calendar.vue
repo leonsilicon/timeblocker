@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { mdiPlusCircleOutline } from '@mdi/js';
 import TimeblockColumns from '~f/components/timeblock-columns.vue';
-import { useTimeblockStore } from '~f/store/define';
+import { useTimeblockStore } from '~f/store/timeblock';
 
 /**
  * @param hour Hour from 0-25 (25 = 12AM of the next day)
