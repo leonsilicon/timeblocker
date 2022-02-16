@@ -1,0 +1,284 @@
+\documentclass[11pt]{report}
+\usepackage{array}
+\usepackage[margin=1in]{geometry}
+\usepackage{tabularx}
+\usepackage{xltabular}
+\usepackage{ragged2e}
+\usepackage{fontspec}
+\usepackage[table]{xcolor}
+
+\setmainfont{Calibri}
+\definecolor{msblue}{HTML}{5AB5D8}
+\setlength{\parindent}{0pt}
+
+\title{Criterion B: Record of Tasks}
+\author{} % Anonymous because IB
+
+\pagenumbering{gobble}
+
+% Counter for the task number
+\newcounter{taskno}
+\setcounter{taskno}{0}
+
+\makeatletter
+\begin{document}
+
+% Title
+\centerline{\textcolor{msblue}{
+		\fontspec{Cambria}\textbf{\fontsize{13}{13}\@title}
+	}}
+\bigskip
+% Record of Tasks Table
+\begin{xltabular}{\textwidth}{|>{\stepcounter{taskno}\thetaskno}
+	p{0.5cm\RaggedRight}|
+	>{\RaggedRight} X|
+	>{\RaggedRight} X|
+	>{\RaggedRight} X|
+	p{2cm\RaggedRight}|
+	p{1cm\RaggedRight}|
+	}
+	\hline
+	\rowcolor{gray!40}
+	\multicolumn{1}{|>{\centering\arraybackslash}l|}{Task number} &
+	\parbox[c]{\hsize}{Planned action} &
+	\parbox[c]{\hsize}{Planned outcome} &
+	\parbox[c]{\hsize}{Time estimated} &
+	\parbox[c]{\hsize}{Target \newline completion date} &
+	\parbox[c]{\hsize}{Criterion}
+	\\\hline
+	& Brainstorm IA Ideas
+	&
+	&
+	&
+	&
+	\\\hline
+	& Think about challenges
+	&
+	&
+	&
+	&
+	\\\hline
+	& Create proposal with features
+	&
+	&
+	&
+	&
+	\\\hline
+	& Brainstorm solution mastery
+	&
+	&
+	&
+	&
+	\\\hline
+	& Researching the problem
+	& Understanding more about timeblocking
+	& 2 hours
+	& October 10, 2021
+	& A
+	\\\hline
+	& Creating a detailed plan for the application
+	& Have an outline of the functionality completed
+	&
+	&
+	& A
+	\\\hline
+	& Initial discussion with my advisor--my father
+	& To have ideas approved by my advisor and to have reiceved some feedback on my idea.
+	& 0.5 hours
+	& October 11, 2021
+	& A
+	\\\hline
+	& Consider the technologies I plan to use in my program
+	&
+	&
+	&
+	&
+	\\\hline
+	& Creating an initial UI design in Figma
+	& Create a timeblock page in Figma containing month, week, and day views, as well as login and registration pages.
+	& 20 hours
+	&
+	&
+	\\\hline
+	& Find software for creating the flowchart
+	&
+	&
+	&
+	&
+	\\\hline
+	& Sketch GUI on paper
+	&
+	&
+	&
+	&
+	\\\hline
+	& Flowchart with FigJam
+	&
+	&
+	&
+	&
+	\\\hline
+	& Designing the class hierarchy of my program
+	&
+	&
+	&
+	&
+	\\\hline
+	& Learning a library called tRPC for creating type-safe API endpoints
+	&
+	& 3 hours
+	&
+	&
+	\\\hline
+	& Learning web security and adding measures to avoid CSRF attacks and minimize the damage of XSS attacks
+	& Implementing a CSRF token into the authentication flow and using a httpOnly cookie to prevent access to the cookie via JavaScript.
+	& 8 hours
+	&
+	&
+	\\\hline
+	& Set up a working local development environment for easy local development on the website
+	& To finish configuring ESLint (a code linter), Prettier (a code formatter), pnpm (a package manager), Vite (a build tool), and git (a version control system).
+	& 4 hours
+	&
+	& C
+	\\\hline
+	& Learn Vue 3.2's ref sugar syntax
+	&
+	& 2 hours
+	&
+	&
+	\\\hline
+	& Hosting the website on GitHub pages and integrating GitHub Actions
+	& Have the website publicly accessible on a GitHub domain (https://<username>.github.io/timeblocker) and have 404 redirects work properly, and have a GitHub Action run every time the code is pushed to the main branch.
+	& 4 hours
+	&
+	&
+	\\\hline
+	& Linking the website to a public domain for anybody to access
+	& Have the website accessible on a public domain (https://timeblocker.io)
+	& 2 hours
+	&
+	&
+	\\\hline
+	& Hosting the server publicly on Heroku (a cloud application platform)
+	& The server is public and linked to a Heroku domain and CORS (cross-origin resource sharing) is restricted to only accept requests from https://timeblocker.io
+	& 2 hours
+	&
+	&
+	\\\hline
+	& Setting up Prisma on the backend
+	& Having Prisma installed and integrated into the backend and having the ORM models defined in the schema.prisma file.
+	& 4 hours
+	&
+	&
+	\\\hline
+	& Creating a Dockerfile and integrating Docker for easier local development
+	& Having a docker-compose.yaml file in the root of the project to automatically build and start a PostgreSQL container with the database when `docker compose up` is run on a local machine with Docker installed.
+	& 1 hour
+	&
+	&
+	\\\hline
+	& Implementing authentication in the frontend and backend
+	& Creating a functional registration and login page with captcha protection to prevent attackers from flooding the site with unwanted registration requests. Implementing cookie-based authentication in the backend. In addition, the registration page should send the user a confirmation email to ensure they entered their email correctly (which is necessary for security-related emails like password reset requests).
+	& 40 hours
+	&
+	&
+	\\\hline
+	& Setting up page routing on my website
+	& Have a Vue Router configuration object containing routes that point to the various pages in my program. Adding Vue Router links to the code that allow users to navigate to different pages through button clicks in my website.
+	& 2 hours
+	&
+	&
+	\\\hline
+	& Integrating TypeDoc into my project to automatically generate documentation from the inline JSDoc comments in my code
+	& Have a documentation page of the code generated.
+	&
+	&
+	&
+	\\\hline
+	& Learning and integrating the TailwindCSS library DaisyUI into my program
+	& Have the UI elements of my program use battle-tested and accessible components from a popular TailwindCSS component library called DaisyUI.
+	& 4 hours
+	&
+	&
+	\\\hline
+	& Creating a landing page for my website
+	&
+	&
+	&
+	&
+	\\\hline
+	& Implementing drag and drop API for dragging tasks and task blocks
+	& Have a landing page that is presented to the user when they visit the home page (https://timeblocker.io) that includes a call-to-action and buttons to create an account or log into an existing account.
+	& 3 hours
+	&
+	&
+	\\\hline
+	& Create testing plan
+	&
+	&
+	&
+	&
+	\\\hline
+	& Set up pnpm and pnpm workspaces
+	&
+	&
+	&
+	&
+	\\\hline
+	& Set up Vite
+	& Have Vite (a build tool for JavaScript projects) set up locally, such that whenever I make a change to my code, Vite will automatically update the local website without me needing to refresh the page or restart the development server.
+	& 2 hours
+	&
+	&
+	\\\hline
+	& Set up ESLint
+	& Have ESLint (a code linter) set up with Vue and TypeScript support. This will help prevent bugs in my code, especially the TypeScript plugin with a rule that enforces strong static typing on all variables.
+	& 2 hours
+	&
+	&
+	\\\hline
+	& Set up Prettier
+	& Have Prettier (a code formatter) set up and integrated with my IDE (VSCode) so I can easily format my code by pressing a shortcut and running a command from the command line.
+	& 0.5 hours
+	&
+	&
+	\\\hline
+	& Set up VSCode
+	& Have the necessary extensions (Volar, Prettier, ESLint) for developing Vue projects installed and configured. Have keybinds registered for ESLint and Prettier that allow me to easily lint and format my code using keyboard shortcuts.
+	& 0.5 hours
+	&
+	&
+	\\\hline
+	& Set up TailwindCSS
+	& Have TailwindCSS integrated into my project that allows me to use utility classes in my HTML code to make it easier to style content in my website. In addition, have a popular TailwindCSS UI library (daisyUI) installed that allows me to easily embed customizable, accessible, and battle-tested UI components like buttons and checkboxes.
+	& 4 hours
+	&
+	&
+	\\\hline
+	& Set up TypeScript
+	&
+	&
+	&
+	&
+	\\\hline
+	& Fix bug with Volar type checking
+	& Isolated the issue to using a union type signature in Vue’s defineEmits function. Replaced the union with two separate function signatures to sidestep the bug. Created a minimal reproduction project and reported the bug using GitHub issues in the Volar GitHub repository.
+	& 2 hours
+	&
+	&
+	\\\hline
+	& Set up Prisma
+	&
+	&
+	&
+	&
+	\\\hline
+	& Set up nodemon
+	&
+	&
+	&
+	&
+	\\\hline
+\end{xltabular}
+\end{document}
