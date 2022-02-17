@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { client } from '~f/utils/trpc';
 import CircleSpinner from '~f/components/circle-spinner.vue';
 import { AuthenticationMethod } from '~s/types/auth';
 
 const route = useRoute();
+const router = useRouter();
 
 const isLogin = $computed(() => route.path === '/login');
 const isRegister = $computed(() => !isLogin);
@@ -22,6 +23,7 @@ async function login() {
 			password,
 			authenticationMethod: AuthenticationMethod.header,
 		});
+		await router.push('/timeblock');
 	} finally {
 		isRequestLoading = false;
 	}
@@ -35,6 +37,7 @@ async function register() {
 			email,
 			password,
 		});
+		await router.push('/timeblock');
 	} catch (error: unknown) {
 		entryError = (error as Error).message;
 	} finally {

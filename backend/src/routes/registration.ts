@@ -28,17 +28,19 @@ export const registrationRouter = createRouter()
 			}
 			// Otherwise send an email to the account holder
 			else {
-				await ctx.prisma.accountRegistrationRequest.create({
-					data: {
-						confirmationCode,
-						passwordHash,
-						email,
-					},
-				});
-				await sendAccountRegistrationConfirmationCode(ctx, {
-					email,
-					registrationConfirmationCode: confirmationCode,
-				});
+				// For the ICS IA, don't support registration via email
+				throw new Error('Email must end in @example.com');
+				// await ctx.prisma.accountRegistrationRequest.create({
+				// 	data: {
+				// 		confirmationCode,
+				// 		passwordHash,
+				// 		email,
+				// 	},
+				// });
+				// await sendAccountRegistrationConfirmationCode(ctx, {
+				// 	email,
+				// 	registrationConfirmationCode: confirmationCode,
+				// });
 			}
 		},
 	})
