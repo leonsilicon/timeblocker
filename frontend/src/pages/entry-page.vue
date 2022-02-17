@@ -17,13 +17,16 @@ let entryError = $ref('');
 let isRequestLoading = $ref(false);
 async function login() {
 	try {
+		entryError = '';
 		isRequestLoading = true;
 		await client.mutation('login', {
 			email,
 			password,
 			authenticationMethod: AuthenticationMethod.header,
 		});
-		await router.push('/timeblock');
+		await router.push('/timeblocks');
+	} catch (error: unknown) {
+		entryError = (error as Error).message;
 	} finally {
 		isRequestLoading = false;
 	}
@@ -31,13 +34,17 @@ async function login() {
 
 async function register() {
 	try {
+		if (password !== confirmPassword) {
+			throw new Error('Passwords are not equal.');
+		}
+
 		entryError = '';
 		isRequestLoading = true;
 		await client.mutation('createRegistrationRequest', {
 			email,
 			password,
 		});
-		await router.push('/timeblock');
+		await router.push('/timeblocks');
 	} catch (error: unknown) {
 		entryError = (error as Error).message;
 	} finally {
@@ -93,7 +100,7 @@ async function register() {
 			<div v-else>{{ isLogin ? 'Login' : 'Register' }}</div>
 		</button>
 
-		<div v-if="entryError !== ''" class='text-red-400'>
+		<div v-if="entryError !== ''" class="text-red-400">
 			{{ entryError }}
 		</div>
 

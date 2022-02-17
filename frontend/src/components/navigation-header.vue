@@ -13,10 +13,16 @@ const appStore = useAppStore();
 			timeblocker.io
 		</router-link>
 		<template v-if="appStore.isLoggedIn">
-			<router-link to="/login" class="ml-auto btn btn-primary btn-sm mr-2">
+			<router-link
+				to="/login"
+				class="ml-auto btn btn-primary btn-sm mr-2"
+			>
 				Login
 			</router-link>
-			<router-link to="/register" class="btn btn-secondary btn-sm">
+			<router-link
+				to="/register"
+				class="btn btn-secondary btn-sm"
+			>
 				Register
 			</router-link>
 		</template>

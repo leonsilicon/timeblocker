@@ -13,7 +13,10 @@ export const routes: RouteRecordRaw[] = [
 			},
 			{
 				path: '/login',
-				alias: '/register',
+				component: async () => import('~f/pages/entry-page.vue'),
+			},
+			{
+				path: '/register',
 				component: async () => import('~f/pages/entry-page.vue'),
 			},
 			{
@@ -23,9 +26,13 @@ export const routes: RouteRecordRaw[] = [
 		],
 	},
 	{
-		path: '/timeblock',
+		path: '/timeblocks',
+		component: async () => import('~f/pages/timeblock-list-page.vue'),
+	},
+	{
+		path: '/timeblock/:id',
 		component: async () => import('~f/pages/timeblock-page.vue'),
-	}
+	},
 ];
 
 export const router = createRouter({

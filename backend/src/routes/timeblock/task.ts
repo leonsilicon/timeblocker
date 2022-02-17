@@ -1,3 +1,4 @@
+import { TimeblockTask } from '~s/types/task';
 import { z } from 'zod';
 import { accountMiddleware } from '~b/utils/auth.js';
 import { createRouter } from '~b/utils/router.js';
@@ -43,7 +44,7 @@ export const timeblockTaskRouter = createRouter()
 				throw new Error('Timeblock not found.');
 			}
 
-			return timeblock.tasks;
+			return timeblock.tasks as TimeblockTask[];
 		},
 	})
 	.mutation('updateTimeblockTask', {
