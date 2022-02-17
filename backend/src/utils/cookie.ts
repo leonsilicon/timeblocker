@@ -4,8 +4,8 @@ export enum Cookie {
 	sessionToken = 'sessionToken',
 }
 
-export async function setCookie(ctx: Context, cookie: Cookie, value: string) {
-	await ctx.reply.setCookie(`__Secure-${cookie}`, value);
+export function setCookie(ctx: Context, cookie: Cookie, value: string) {
+	void ctx.reply.setCookie(`__Secure-${cookie}`, value);
 }
 
 export function getCookie(ctx: Context, cookie: Cookie) {

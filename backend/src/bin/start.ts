@@ -1,13 +1,22 @@
 import process from 'node:process';
 import fastify from 'fastify';
-import { nodeHTTPRequestHandler } from '@trpc/server/adapters/node-http/dist/trpc-server-adapters-node-http.cjs.js';
+import { fastifyTRPCPlugin } from '@trpc/server/adapters/fastify/dist/trpc-server-adapters-fastify.cjs.js';
 import fastifyCookie from 'fastify-cookie';
 import { getAppRouter } from '~b/routes/router.js';
 import { createContext } from '~b/utils/index.js';
+import fastifyCors from 'fastify-cors';
+import fp from 'fastify-plugin';
 
 const app = fastify();
-
-void app.register(fastifyCookie, {
+app.register(fastifyCors);
+app.register(fp(fastifyTRPCPlugin), {
+	prefix: '/trpc',
+	trpcOptions: {
+		router: getAppRouter(),
+		createContext,
+	},
+});
+app.register(fastifyCookie, {
 	secret: process.env.APP_SECRET,
 	parseOptions: {
 		httpOnly: true,

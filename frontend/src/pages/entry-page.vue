@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
 import { client } from '~f/utils/trpc';
-import CaptchaCheckbox from '~f/components/captcha-checkbox.vue';
 import CircleSpinner from '~f/components/circle-spinner.vue';
 import { AuthenticationMethod } from '~s/types/auth';
 
@@ -12,9 +11,7 @@ const isRegister = $computed(() => !isLogin);
 const email = $ref('');
 const password = $ref('');
 const confirmPassword = $ref('');
-
-const useRecaptcha = $ref(true);
-const captchaResponse = $ref('');
+let entryError = $ref('');
 
 let isRequestLoading = $ref(false);
 async function login() {
@@ -32,15 +29,14 @@ async function login() {
 
 async function register() {
 	try {
+		entryError = '';
 		isRequestLoading = true;
 		await client.mutation('createRegistrationRequest', {
 			email,
 			password,
-			captcha: {
-				captchaResponse,
-				isRecaptcha: useRecaptcha,
-			},
 		});
+	} catch (error: unknown) {
+		entryError = (error as Error).message;
 	} finally {
 		isRequestLoading = false;
 	}
@@ -84,13 +80,6 @@ async function register() {
 				class="input input-bordered w-[20rem]"
 				type="password"
 			/>
-
-			<!-- Registering needs the user to fill out a Captcha -->
-			<captcha-checkbox
-				v-model:use-recaptcha="useRecaptcha"
-				class="mt-4"
-				@verify="captchaResponse = $event"
-			/>
 		</div>
 
 		<button
@@ -100,6 +89,11 @@ async function register() {
 			<circle-spinner v-if="isRequestLoading" />
 			<div v-else>{{ isLogin ? 'Login' : 'Register' }}</div>
 		</button>
+
+		<div v-if="entryError !== ''" class='text-red-400'>
+			{{ entryError }}
+		</div>
+
 		<router-link
 			class="link hover:text-secondary transition-all"
 			:to="{ force: true, path: isLogin ? '/register' : '/login' }"

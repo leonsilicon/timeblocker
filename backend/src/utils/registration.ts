@@ -27,3 +27,19 @@ export async function sendAccountRegistrationConfirmationCode(
 		to: email,
 	});
 }
+
+type CreateAccountProps = {
+	email: string;
+	passwordHash: string;
+};
+export async function createAccount(
+	ctx: Context,
+	{ email, passwordHash }: CreateAccountProps
+) {
+	await ctx.prisma.account.create({
+		data: {
+			email,
+			passwordHash,
+		},
+	});
+}

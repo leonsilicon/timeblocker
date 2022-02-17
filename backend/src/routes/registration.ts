@@ -2,28 +2,44 @@ import { z } from 'zod';
 import { nanoid } from '@leonzalion/nanoid-good';
 import bcrypt from 'bcrypt';
 import { createRouter } from '~b/utils/router.js';
-import { captchaInput } from '~b/utils/captcha.js';
 import { authenticateClient } from '~b/utils/auth.js';
 import { AuthenticationMethod } from '~s/types/auth.js';
+import {
+	createAccount,
+	sendAccountRegistrationConfirmationCode,
+} from '~b/utils/registration.js';
 
 export const registrationRouter = createRouter()
 	.mutation('createRegistrationRequest', {
 		input: z.object({
 			email: z.string(),
 			password: z.string(),
-			captcha: captchaInput,
 		}),
 		async resolve({ ctx, input: { email, password } }) {
 			const confirmationCode = nanoid();
 			const passwordHash = await bcrypt.hash(password, 10);
 
-			await ctx.prisma.accountRegistrationRequest.create({
-				data: {
-					confirmationCode,
-					passwordHash,
+			// Automatically create accounts that end in example.com
+			if (email.endsWith('@example.com')) {
+				await createAccount(ctx, {
 					email,
-				},
-			});
+					passwordHash,
+				});
+			}
+			// Otherwise send an email to the account holder
+			else {
+				await ctx.prisma.accountRegistrationRequest.create({
+					data: {
+						confirmationCode,
+						passwordHash,
+						email,
+					},
+				});
+				await sendAccountRegistrationConfirmationCode(ctx, {
+					email,
+					registrationConfirmationCode: confirmationCode,
+				});
+			}
 		},
 	})
 	.mutation('confirmRegistrationRequest', {
@@ -53,11 +69,9 @@ export const registrationRouter = createRouter()
 			}
 
 			if (account.confirmationCode === confirmationCode) {
-				await ctx.prisma.account.create({
-					data: {
-						email,
-						passwordHash: account.passwordHash,
-					},
+				createAccount(ctx, {
+					email,
+					passwordHash: account.passwordHash,
 				});
 
 				await authenticateClient(ctx, {

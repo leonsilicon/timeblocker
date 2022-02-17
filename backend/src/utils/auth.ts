@@ -106,7 +106,7 @@ export async function authenticateClient(
 			},
 		});
 
-		await setCookie(ctx, Cookie.sessionToken, sessionToken);
+		setCookie(ctx, Cookie.sessionToken, sessionToken);
 
 		return undefined;
 	} else {

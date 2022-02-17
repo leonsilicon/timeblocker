@@ -1,4 +1,3 @@
-export * from './captcha.js';
 export * from './context.js';
 export * from './prisma.js';
 export * from './registration.js';
