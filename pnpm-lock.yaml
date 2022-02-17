@@ -50,13 +50,13 @@ importers:
       nodemailer: ^6.7.2
       nodemon: ^2.0.15
       onetime: ^6.0.0
-      prisma: ^3.9.0
+      prisma: ^3.9.2
       tsc-alias: ^1.5.0
       typescript: ^4.5.4
       zod: ^3.11.6
     dependencies:
       '@leonzalion/nanoid-good': 1.0.3
-      '@prisma/client': 3.9.1_prisma@3.9.1
+      '@prisma/client': 3.9.1_prisma@3.9.2
       '@trpc/server': 9.19.0
       bcrypt: 5.0.1
       fastify: 3.27.0
@@ -76,7 +76,7 @@ importers:
       execa: 6.0.0
       lion-system: 1.0.9
       nodemon: 2.0.15
-      prisma: 3.9.1
+      prisma: 3.9.2
       tsc-alias: 1.5.0
       typescript: 4.5.5
 
@@ -1103,7 +1103,7 @@ packages:
       pug-lexer: 5.0.1
     dev: true
 
-  /@prisma/client/3.9.1_prisma@3.9.1:
+  /@prisma/client/3.9.1_prisma@3.9.2:
     resolution: {integrity: sha512-aLwfXKLvL+loQ0IuPPCXkcq8cXBg1IeoHHa5lqQu3dJHdj45wnislA/Ny4UxRQjD5FXqrfAb8sWtF+jhdmjFTg==}
     engines: {node: '>=12.6'}
     requiresBuild: true
@@ -1114,7 +1114,7 @@ packages:
         optional: true
     dependencies:
       '@prisma/engines-version': 3.9.0-58.bcc2ff906db47790ee902e7bbc76d7ffb1893009
-      prisma: 3.9.1
+      prisma: 3.9.2
     dev: false
 
   /@prisma/engines-version/3.9.0-58.bcc2ff906db47790ee902e7bbc76d7ffb1893009:
@@ -6495,8 +6495,8 @@ packages:
       react-is: 17.0.2
     dev: true
 
-  /prisma/3.9.1:
-    resolution: {integrity: sha512-IGcJAu5LzlFv+i+NNhOEh1J1xVVttsVdRBxmrMN7eIH+7mRN6L89Hz1npUAiz4jOpNlHC7n9QwaOYZGxTqlwQw==}
+  /prisma/3.9.2:
+    resolution: {integrity: sha512-i9eK6cexV74OgeWaH3+e6S07kvC9jEZTl6BqtBH398nlCU0tck7mE9dicY6YQd+euvMjjCtY89q4NgmaPnUsSg==}
     engines: {node: '>=12.6'}
     hasBin: true
     requiresBuild: true

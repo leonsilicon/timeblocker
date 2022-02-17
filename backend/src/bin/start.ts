@@ -9,7 +9,7 @@ import fp from 'fastify-plugin';
 
 const app = fastify();
 app.register(fastifyCors);
-app.register(fp(fastifyTRPCPlugin), {
+app.register(fp(fastifyTRPCPlugin as any), {
 	prefix: '/trpc',
 	trpcOptions: {
 		router: getAppRouter(),
@@ -25,21 +25,6 @@ app.register(fastifyCookie, {
 		sameSite: 'strict',
 		signed: true,
 	},
-});
-
-app.all<{
-	// eslint-disable-next-line @typescript-eslint/naming-convention
-	Params: {
-		path: string;
-	};
-}>('/trpc/:path', async (request, reply) => {
-	await nodeHTTPRequestHandler({
-		req: request.raw,
-		res: reply.raw,
-		router: getAppRouter(),
-		createContext: async () => createContext(request, reply),
-		path: request.params.path,
-	});
 });
 
 app.listen(5000, (err, address) => {
