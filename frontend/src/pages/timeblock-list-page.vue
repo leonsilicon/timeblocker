@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { mdiPlus } from '@mdi/js';
 import { client } from '~f/utils/trpc';
 import CircleSpinner from '~f/components/circle-spinner.vue';
 import TimeblockListing from '~f/components/timeblock-listing.vue';
+import { useRouter } from 'vue-router';
 
 let timeblocks = $ref<Array<{ id: string; name: string }> | null>(null);
 // Retrieve the timeblock tasks from the server
@@ -11,6 +13,14 @@ let timeblocks = $ref<Array<{ id: string; name: string }> | null>(null);
 		skip: 0,
 	});
 })();
+
+const router = useRouter();
+async function createNewTimeblock() {
+	const { timeblockId } = await client.mutation('createTimeblock', {
+		name: 'My Timeblock'
+	});
+	await router.push(`/timeblock/${timeblockId}`);
+}
 </script>
 
 <template>
@@ -20,8 +30,10 @@ let timeblocks = $ref<Array<{ id: string; name: string }> | null>(null);
 			<circle-spinner class="mr-2" /> Loading...
 		</div>
 		<div v-else>
-			<v-implcon path='' />
-			<div>Create New Timeblock</div>
+			<div class='btn btn-primary btn-sm' @click='createNewTimeblock'>
+				<v-icon :icon="mdiPlus" />
+				Create New Timeblock
+			</div>
 			<timeblock-listing
 				v-for="timeblock in timeblocks"
 				:id="timeblock.id"
