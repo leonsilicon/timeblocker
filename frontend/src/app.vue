@@ -4,10 +4,9 @@ import { LocalStorageKey } from '~f/types/local-storage';
 
 const appStore = useAppStore();
 
-const csrfToken = window.localStorage.getItem(LocalStorageKey.csrfToken);
 const sessionToken = window.localStorage.getItem(LocalStorageKey.sessionToken);
 
-if (csrfToken === undefined && sessionToken === undefined) {
+if (sessionToken === undefined) {
 	appStore.isLoggedIn = false;
 } else {
 	appStore.isLoggedIn = true;

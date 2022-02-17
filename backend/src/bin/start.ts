@@ -19,10 +19,13 @@ app.register(fp(fastifyTRPCPlugin as any), {
 app.register(fastifyCookie, {
 	secret: process.env.APP_SECRET,
 	parseOptions: {
-		httpOnly: true,
-		secure: true,
-		domain: process.env.CLIENT_URL,
-		sameSite: 'strict',
+		httpOnly: false,
+		secure: process.env.NODE_ENV === 'production',
+		domain:
+			process.env.NODE_ENV === 'production'
+				? process.env.CLIENT_URL
+				: undefined,
+		sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'none',
 		signed: true,
 	},
 });

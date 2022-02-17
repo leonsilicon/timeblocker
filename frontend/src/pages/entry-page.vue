@@ -3,6 +3,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { client } from '~f/utils/trpc';
 import CircleSpinner from '~f/components/circle-spinner.vue';
 import { AuthenticationMethod } from '~s/types/auth';
+import { LocalStorageKey } from '~f/types/local-storage.js';
 
 const route = useRoute();
 const router = useRouter();
@@ -19,11 +20,11 @@ async function login() {
 	try {
 		entryError = '';
 		isRequestLoading = true;
-		await client.mutation('login', {
+		const { sessionToken } = await client.mutation('login', {
 			email,
 			password,
-			authenticationMethod: AuthenticationMethod.header,
 		});
+		window.localStorage.setItem(LocalStorageKey.sessionToken, sessionToken);
 		await router.push('/timeblocks');
 	} catch (error: unknown) {
 		entryError = (error as Error).message;

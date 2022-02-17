@@ -76,10 +76,7 @@ export const registrationRouter = createRouter()
 					passwordHash: account.passwordHash,
 				});
 
-				await authenticateClient(ctx, {
-					accountId: account.id,
-					authenticationMethod: AuthenticationMethod.cookie,
-				});
+				return authenticateClient();
 			} else {
 				throw new Error('Email not found or invalid confirmation code.');
 			}

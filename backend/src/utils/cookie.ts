@@ -5,9 +5,18 @@ export enum Cookie {
 }
 
 export function setCookie(ctx: Context, cookie: Cookie, value: string) {
-	void ctx.reply.setCookie(`__Secure-${cookie}`, value);
+	if (process.env.NODE_ENV === 'production') {
+		void ctx.reply.setCookie(`__Secure-${cookie}`, value);
+	} else {
+		void ctx.reply.setCookie(cookie, value);
+	}
 }
 
 export function getCookie(ctx: Context, cookie: Cookie) {
-	return ctx.request.cookies[`__Secure-${cookie}`];
+	console.log(ctx.request.cookies)
+	if (process.env.NODE_ENV === 'production') {
+		return ctx.request.cookies[`__Secure-${cookie}`];
+	} else {
+		return ctx.request.cookies[cookie];
+	}
 }

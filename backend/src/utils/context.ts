@@ -1,16 +1,16 @@
-import type { FastifyReply, FastifyRequest } from 'fastify';
+import { CreateFastifyContextOptions } from '@trpc/server/adapters/fastify';
 import type { Context } from '~b/types/context.js';
 import { getPrismaClient } from '~b/utils/prisma.js';
 
-export async function createContext(
-	request: FastifyRequest,
-	reply: FastifyReply
-): Promise<Context> {
+export async function createContext({
+	req,
+	res,
+}: CreateFastifyContextOptions): Promise<Context> {
 	const prismaClient = await getPrismaClient();
 
 	return {
-		request,
-		reply,
+		request: req,
+		reply: res,
 		prisma: prismaClient,
 	};
 }
