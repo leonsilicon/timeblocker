@@ -2,17 +2,19 @@ import { TimeblockTask } from '~s/types/task';
 import { z } from 'zod';
 import { accountMiddleware } from '~b/utils/auth.js';
 import { createRouter } from '~b/utils/router.js';
-import { timeblockMiddleware } from '~b/utils/timeblock.js';
+import { timeblockIdInput, timeblockMiddleware } from '~b/utils/timeblock.js';
 
 export const timeblockTaskRouter = createRouter()
 	.middleware(accountMiddleware)
 	.middleware(timeblockMiddleware)
 	.mutation('addTimeblockTask', {
-		input: z.object({
-			id: z.string(),
-			name: z.string(),
-			description: z.string(),
-		}),
+		input: timeblockIdInput.merge(
+			z.object({
+				id: z.string(),
+				name: z.string(),
+				description: z.string(),
+			})
+		),
 		async resolve({ ctx, input: { id, name, description } }) {
 			await ctx.prisma.timeblockTask.create({
 				data: {
@@ -25,10 +27,12 @@ export const timeblockTaskRouter = createRouter()
 		},
 	})
 	.query('listTimeblockTasks', {
-		input: z.object({
-			skip: z.number(),
-			limit: z.number(),
-		}),
+		input: timeblockIdInput.merge(
+			z.object({
+				skip: z.number(),
+				limit: z.number(),
+			})
+		),
 		async resolve({ ctx }) {
 			const timeblock = await ctx.prisma.timeblock.findFirst({
 				select: {
@@ -48,11 +52,13 @@ export const timeblockTaskRouter = createRouter()
 		},
 	})
 	.mutation('updateTimeblockTask', {
-		input: z.object({
-			taskId: z.string(),
-			name: z.string().optional(),
-			description: z.string().optional(),
-		}),
+		input: timeblockIdInput.merge(
+			z.object({
+				taskId: z.string(),
+				name: z.string().optional(),
+				description: z.string().optional(),
+			})
+		),
 		async resolve({ ctx, input: { taskId, name, description } }) {
 			await ctx.prisma.timeblockTask.update({
 				data: {
@@ -66,9 +72,11 @@ export const timeblockTaskRouter = createRouter()
 		},
 	})
 	.mutation('deleteTimeblockTask', {
-		input: z.object({
-			taskId: z.string(),
-		}),
+		input: timeblockIdInput.merge(
+			z.object({
+				taskId: z.string(),
+			})
+		),
 		async resolve({ ctx, input: { taskId } }) {
 			await ctx.prisma.timeblockTask.delete({
 				where: {

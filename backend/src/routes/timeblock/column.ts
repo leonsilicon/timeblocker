@@ -1,72 +1,47 @@
 import { z } from 'zod';
 import { accountMiddleware } from '~b/utils/auth.js';
 import { createRouter } from '~b/utils/router.js';
-import { timeblockMiddleware } from '~b/utils/timeblock.js';
+import { timeblockIdInput, timeblockMiddleware } from '~b/utils/timeblock.js';
 
 export const timeblockColumnRouter = createRouter()
 	.middleware(accountMiddleware)
 	.middleware(timeblockMiddleware)
 	.mutation('addTimeblockColumn', {
-		input: z.object({
-			columnId: z.string(),
-		}),
+		input: timeblockIdInput.merge(
+			z.object({
+				columnId: z.string(),
+			})
+		),
 		async resolve({ ctx, input: { columnId } }) {
-
+			await ctx.prisma.timeblockColumn.create({
+				data: {
+					id: columnId,
+				},
+			});
 		},
 	})
-	.query('getTimeblock', {
-		input: z.object({
-			timeblockId: z.string(),
-		}),
-		async resolve({ ctx, input: { timeblockId } }) {
-			const timeblock = await ctx.prisma.timeblock.findFirst({
+	.query('getTimeblockColumns', {
+		input: timeblockIdInput,
+		async resolve({ ctx }) {
+			const timeblockColumns = await ctx.prisma.timeblockColumn.findMany({
 				select: {
 					id: true,
-					name: true,
-				},
-				where: {
-					id: timeblockId,
-					ownerAccountId: ctx.accountId,
 				},
 			});
 
-			if (timeblock === null) {
-				throw new Error('Timeblock not found.');
-			}
-
-			return timeblock;
+			return timeblockColumns;
 		},
 	})
-	.query('listTimeblocks', {
-		input: z.object({
-			skip: z.number(),
-			limit: z.number(),
-		}),
-		async resolve({ ctx, input: { skip, limit } }) {
-			const timeblocks = await ctx.prisma.timeblock.findMany({
-				select: {
-					id: true,
-					name: true,
-				},
+	.mutation('deleteTimeblockColumn', {
+		input: timeblockIdInput.merge(
+			z.object({
+				columnId: z.string(),
+			})
+		),
+		async resolve({ ctx, input: { columnId } }) {
+			await ctx.prisma.timeblockColumn.deleteMany({
 				where: {
-					ownerAccountId: ctx.accountId,
-				},
-				skip,
-				take: limit,
-			});
-
-			return timeblocks;
-		},
-	})
-	.mutation('deleteTimeblock', {
-		input: z.object({
-			timeblockId: z.string(),
-		}),
-		async resolve({ ctx, input: { timeblockId } }) {
-			await ctx.prisma.timeblock.deleteMany({
-				where: {
-					id: timeblockId,
-					ownerAccountId: ctx.accountId,
+					id: columnId,
 				},
 			});
 		},

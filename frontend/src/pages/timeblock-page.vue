@@ -9,10 +9,11 @@ import { useTimeblockStore } from '~f/store/timeblock';
 import { Timeblock } from '~f/classes/timeblock';
 import { Task } from '~f/classes/task';
 import { client } from '~f/utils/trpc';
-import CircleSpinner from '~f/components/circle-spinner.vue.js';
+import CircleSpinner from '~f/components/circle-spinner.vue';
 
 const route = useRoute();
 const routeParams = $computed(() => route.params as { id: string });
+
 const timeblockStore = useTimeblockStore();
 watch(
 	() => routeParams.id,
@@ -24,6 +25,7 @@ watch(
 let isLoading = $ref(true);
 (async () => {
 	const result = await client.query('listTimeblockTasks', {
+		timeblockId: routeParams.id,
 		limit: 10,
 		skip: 0,
 	});

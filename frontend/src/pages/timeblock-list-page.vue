@@ -17,7 +17,7 @@ let timeblocks = $ref<Array<{ id: string; name: string }> | null>(null);
 const router = useRouter();
 async function createNewTimeblock() {
 	const { timeblockId } = await client.mutation('createTimeblock', {
-		name: 'My Timeblock'
+		name: 'My Timeblock',
 	});
 	await router.push(`/timeblock/${timeblockId}`);
 }
@@ -25,12 +25,15 @@ async function createNewTimeblock() {
 
 <template>
 	<div class="column center p-8">
-		<div class="text-6xl font-bold">Timeblocks</div>
+		<div class="text-6xl font-bold mb-2">Timeblocks</div>
 		<div v-if="timeblocks === null" class="row center p-4">
 			<circle-spinner class="mr-2" /> Loading...
 		</div>
-		<div v-else>
-			<div class='btn btn-primary btn-sm' @click='createNewTimeblock'>
+		<div v-else class="self-stretch column">
+			<div
+				class="btn btn-primary btn-sm self-center mb-4"
+				@click="createNewTimeblock"
+			>
 				<v-icon :icon="mdiPlus" />
 				Create New Timeblock
 			</div>

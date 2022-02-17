@@ -28,7 +28,7 @@ export async function verifyTimeblockOwner(
 	}
 }
 
-const timeblockIdInput = z.object({ timeblockId: z.string() });
+export const timeblockIdInput = z.object({ timeblockId: z.string() });
 
 export const timeblockMiddleware: MiddlewareFunction<
 	Context & { accountId: string },

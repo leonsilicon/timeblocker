@@ -1,10 +1,22 @@
 <script setup lang="ts">
-defineProps<{
+import { useRouter } from 'vue-router';
+
+const props = defineProps<{
 	id: string;
 	name: string;
 }>();
+
+const router = useRouter();
+async function goToTimeblock() {
+	await router.push(`/timeblock/${props.id}`);
+}
 </script>
 
 <template>
-	<div class="h-16 w-16">{{ name }}</div>
+	<button
+		class="py-4 px-4 border-2 center column rounded-md border-primary cursor-pointer hover:scale-105 transition-all"
+		@click="goToTimeblock"
+	>
+		{{ name }}
+	</button>
 </template>
