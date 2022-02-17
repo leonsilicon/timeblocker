@@ -1,0 +1,136 @@
+\documentclass[12pt, notitlepage]{report}
+\usepackage[margin=1in]{geometry}
+\usepackage{tabularx}
+\usepackage{xltabular}
+\usepackage{xcolor}
+\usepackage{fontspec}
+\usepackage{ragged2e}
+
+\title{Criterion A: Planning}
+\definecolor{msblue}{HTML}{5AB5D8}
+\makeatletter
+
+\begin{document}
+\centerline{\textcolor{msblue}{
+		\fontspec{Cambria}\textbf{\fontsize{13}{13}\@title}
+	}}
+
+\noindent\textbf{Client:} Leon Si (myself)
+\\
+\textbf{Advisor:} Mark Si (my dad)
+
+\section*{1. Problem Description}
+Many people, especially students, have many tasks they need to finish in a day.
+However, an unstructured plan for a day can be inefficient in terms of spending time.
+Luckily, there's a solution called Timeboxing that encourages people to schedule the tasks they want to complete in a day with concrete start and end times.
+Timeboxing is beneficial for many reasons: it gives students a clear idea and goal of how they would like to spend their time in a day, it reduces the friction between starting new tasks, and it also helps students focus on a specific task because they explicitly decide to work on a single task, thereby preventing multitasking which is bad for becoming fully productive.
+While Timeboxing is a powerful strategy, there's no good online solution that solely focuses on this scheduling strategy; current solutions like Google Calendar make this process extremely difficult and time-consuming.
+Thus, I want to create an app that allows students to easily apply the strategy of timeboxing into their schedule in the most simple and straightforward way possible.
+
+\section*{2. Proposed Solution}
+My app, named Timeblocker, will provide a simple and straightforward way to practice this scheduling strategy that will help students create a better structure for their day that will allow them to have a clear focus of what they need to work on throughout their day.
+My app will contain two parts: task boxes and a schedule.
+The boxes will represent tasks, and the user will be able to drag the boxes onto the schedule, where they'll be able to resize the boxes to fit the time on the schedule during when they would like to work on it.
+The user can create and reuse task blocks, so that they don't need to create a separate event each time.
+
+Each task block will have a title (the name of the task), a description, and extra information based on the box type.
+There will be multiple types of boxes, such as a school based box, an entertainment box, etc.
+Thus, this will need the use of inheritance (SchoolTaskBox extends TaskBox).
+
+The app will also give the user the ability to import and export their schedules as a file.
+In addition, users will have the ability to create an account to synchronize their schedules across different computers.
+
+I'm building this app in TypeScript (a superset of JavaScript that compiles to JavaScript) because I want this app to be as accessible as possible.
+Optimally, users should be able to simply visit a website to plan out their day instead of having to install a separate program.
+This would also make their schedule accessible from anywhere, including at school.
+I chose to use TypeScript instead of JavaScript because TypeScript will help eliminate as many type errors as possible from typos and/or mixing up variables, and it will also help with classes by throwing errors if I try calling a class method that doesn't exist on a certain class.
+
+\section*{3. Functionality}
+\begin{itemize}
+	\item Create, edit, duplicate, and delete task boxes
+	\item Drag task boxes onto the schedule
+	\item Categorize task boxes to have specific features (e.g. task box with subtasks)
+	\item Import/export schedule as a file
+	\item Creating multiple schedules
+	\item Searching through task boxes
+	\item Sorting task boxes based on name/category
+	\item Resizing the task boxes that are on the schedule
+	\item Changing the schedule view between day and week
+	\item Registering and Logging in accounts
+	\item Server-side synchronization with a database to save schedules
+	\item Schedule autosave every time changes are made
+\end{itemize}
+
+\section*{4. Target Market}
+The target market of this software is people that are looking to schedule their day in a way that saves them time and helps them get more done in a day.
+
+\section*{5. Solution Mastery Aspect}
+\textbf{IB Standard Level}
+\vspace{-6pt}
+\noindent\begin{xltabular}{\textwidth}{|p{0.3\textwidth\RaggedRight}|X|}
+	\hline
+	\textbf{Mastery Factor}
+	& \textbf{Where it would be used}
+	\\\hline
+	1. Arrays
+	& Array of tasks in the schedule
+	\\\hline
+	2. User-defined objects
+	& A list of task boxes
+	\\\hline
+	3. Objects as data records
+	& Task box details (title, description, etc.)
+	\\\hline
+	4. Simple selection (if-else)
+	& When the user drops the task onto the schedule, the program checks if the task is overlapping an existing task on the schedule so that it can move the task either before or after.
+	\\\hline
+	5. Complex selection (nested if, if with multiple conditions or switch)
+	& In more complex scenarios, like dragging and dropping a task box between two tasks, the program needs to determine the most likely placement where the user wants to put the new task depending on where it is dropped.
+	\\\hline
+	6. Loops
+	& Looping through all the task boxes when the user exports the schedule.
+	\\\hline
+	7. User-defined methods
+	& An "export" and "import" method that imports a schedule from a file.
+	\\\hline
+	8. User-defined methods with appropriate return values
+	& A method to validate a user-supplied file to check if it's valid to import.
+	\\\hline
+	9. Sorting
+	& Sorting of task boxes in the preview based on name.
+	\\\hline
+	10. Searching
+	& Searching through task boxes based on the name/description.
+	\\\hline
+	11. File I/O
+	& Ability for the user to import and export files into the program.
+	\\\hline
+	12. Use of additional library
+	& Vue.js
+	\\\hline
+\end{xltabular}
+
+\bigskip
+
+\noindent\textbf{IB Higher Level}
+\smallskip
+
+\noindent\begin{tabularx}{\textwidth}{|l|X|}
+	\hline
+	\textbf{Mastery Factor}
+	 & \textbf{Where it would be used}
+	\\\hline
+	1. Polymorphism
+	 & Each box will have a function that displays itself in a certain way, but the way the box displays itself is based on the box type and thus requires polymorphism.
+	\\\hline
+	2. Inheritance
+	 & Specific task boxes (SchoolTaskBox inherits from TaskBox).
+	\\\hline
+	3. Encapsulation
+	 & The classes that will make use of private variables and getters/setters to modify/access those variables.
+	\\\hline
+	4. Database
+	 & Timeboxer will be using PostgreSQL as the database, using Prisma as the ORM for type-safety with TypeScript.
+	\\\hline
+\end{tabularx}
+\end{document}

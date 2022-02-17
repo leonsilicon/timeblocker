@@ -9,16 +9,23 @@
 \usepackage{float}
 \usepackage{tabularx}
 \usepackage[export]{adjustbox}
+\usepackage{fontspec}
+\usepackage{xcolor}
 \usepackage{titling} % https://tex.stackexchange.com/questions/591/removing-vertical-space-inside-maketitle/593
 \renewcommand{\familydefault}{\sfdefault}
 
 \graphicspath{{images/}}
 
 \title{Criterion C: Development}
-\author{\vspace{-2ex}} % Anonymous since IB
+\definecolor{msblue}{HTML}{5AB5D8}
+\makeatletter
 
 \begin{document}
-\maketitle
+% Title
+\centerline{\textcolor{msblue}{
+		\fontspec{Cambria}\textbf{\fontsize{13}{13}\@title}
+	}}
+\bigskip
 
 My timeblocker program is written using a client-server architecture. The client is a website frontend written using HTML, CSS, and TypeScript (a statically-typed superset of JavaScript). The server is a Node.js backend with a PostgreSQL database.
 
@@ -71,7 +78,9 @@ When building the site for production, Vite uses Rollup to bundle all the websit
 			\includegraphics[width=1\linewidth]{frontend-pages-folder.png}
 		}}
 	 &
-	The code responsible for the user interface is stored under the src/pages folder. The .vue file extension indicates Vue Single-File Components, or SFCs for short. These files contain all the necessary HTML, CSS, and JavaScript to render a component part of a dynamic user interface.
+	The code responsible for the user interface is stored under the src/pages folder.
+	The .vue file extension indicates Vue Single-File Components, or SFCs for short.
+	These files contain all the necessary HTML, CSS, and JavaScript to render a component part of a dynamic user interface.
 \end{tabularx}
 
 \vspace{10pt}
