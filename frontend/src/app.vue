@@ -14,7 +14,7 @@ if (sessionToken === undefined) {
 </script>
 
 <template>
-	<div data-theme="emerald">
+	<div class="h-full w-full" data-theme="emerald">
 		<router-view />
 	</div>
 </template>

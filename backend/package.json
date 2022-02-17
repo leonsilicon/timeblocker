@@ -20,7 +20,7 @@
 	},
 	"dependencies": {
 		"@leonzalion/nanoid-good": "^1.0.3",
-		"@prisma/client": "^3.9.0",
+		"@prisma/client": "^3.9.2",
 		"@trpc/server": "^9.19.0",
 		"bcrypt": "^5.0.1",
 		"fastify": "^3.27.0",
