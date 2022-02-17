@@ -20,6 +20,7 @@
 		"@headlessui/vue": "^1.4.3",
 		"@leonzalion/nanoid-good": "^1.0.4",
 		"@mdi/js": "^6.5.95",
+		"@prisma/client": "^3.9.2",
 		"@tailwindcss/typography": "^0.5.1",
 		"@trpc/client": "^9.19.0",
 		"daisyui": "^1.25.4",

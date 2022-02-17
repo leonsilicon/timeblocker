@@ -88,6 +88,7 @@ importers:
       '@headlessui/vue': ^1.4.3
       '@leonzalion/nanoid-good': ^1.0.4
       '@mdi/js': ^6.5.95
+      '@prisma/client': ^3.9.2
       '@tailwindcss/typography': ^0.5.1
       '@trpc/client': ^9.19.0
       '@trpc/server': ^9.18.0
@@ -123,6 +124,7 @@ importers:
       '@headlessui/vue': 1.4.3_vue@3.2.29
       '@leonzalion/nanoid-good': 1.0.4
       '@mdi/js': 6.5.95
+      '@prisma/client': 3.9.2
       '@tailwindcss/typography': 0.5.1_tailwindcss@3.0.18
       '@trpc/client': 9.19.0_@trpc+server@9.18.0
       daisyui: 1.25.4
@@ -1115,6 +1117,19 @@ packages:
     dependencies:
       '@prisma/engines-version': 3.9.0-58.bcc2ff906db47790ee902e7bbc76d7ffb1893009
       prisma: 3.9.2
+    dev: false
+
+  /@prisma/client/3.9.2:
+    resolution: {integrity: sha512-VlEIYVMyfFZHbVBOlunPl47gmP/Z0zzPjPj8I7uKEIaABqrUy50ru3XS0aZd8GFvevVwt7p91xxkUjNjrWhKAQ==}
+    engines: {node: '>=12.6'}
+    requiresBuild: true
+    peerDependencies:
+      prisma: '*'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
+    dependencies:
+      '@prisma/engines-version': 3.9.0-58.bcc2ff906db47790ee902e7bbc76d7ffb1893009
     dev: false
 
   /@prisma/engines-version/3.9.0-58.bcc2ff906db47790ee902e7bbc76d7ffb1893009:
