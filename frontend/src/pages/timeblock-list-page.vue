@@ -20,6 +20,8 @@ let timeblocks = $ref<Array<{ id: string; name: string }> | null>(null);
 			<circle-spinner class="mr-2" /> Loading...
 		</div>
 		<div v-else>
+			<v-implcon path='' />
+			<div>Create New Timeblock</div>
 			<timeblock-listing
 				v-for="timeblock in timeblocks"
 				:id="timeblock.id"

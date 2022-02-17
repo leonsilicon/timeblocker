@@ -106,7 +106,7 @@ importers:
       pinia: ^2.0.11
       postcss: ^8.4.5
       sass: ^1.49.7
-      simple-vue-icon: ^1.1.10
+      simple-vue-icon: ^1.1.11
       tailwindcss: ^3.0.11
       ts-jest: ^27.1.2
       ts-node: ^10.4.0
@@ -134,7 +134,7 @@ importers:
       nanoid: 3.2.0
       pinia: 2.0.11_typescript@4.5.5+vue@3.2.29
       sass: 1.49.7
-      simple-vue-icon: 1.1.10_vue@3.2.29
+      simple-vue-icon: 1.1.11_vue@3.2.29
       tw-elements: 1.0.0-alpha10_395544cfbe1472baf4d44cf7709a657a
       vue: 3.2.29
       vue-plugin-load-script: 2.1.0
@@ -7006,8 +7006,8 @@ packages:
   /signal-exit/3.0.6:
     resolution: {integrity: sha512-sDl4qMFpijcGw22U5w63KmD3cZJfBuFlVNbVMKje2keoKML7X2UzWbc4XrmEbDwg0NXJc3yv4/ox7b+JWb57kQ==}
 
-  /simple-vue-icon/1.1.10_vue@3.2.29:
-    resolution: {integrity: sha512-VMLAGxooR3z01V+Rz68Yst0RWviK4v+wCueF7wEE+/QbfI8oBoy0EGifmYDoSd7kkV6yPXtuX6wYz44ZpVCQJg==}
+  /simple-vue-icon/1.1.11_vue@3.2.29:
+    resolution: {integrity: sha512-V1ubhSVdsE4XjqtbS7LJW/i8KOAoKRZ7hGt3DdzMHDMZkowwveFFe5OISpx3RV2EBVYGJPXn8uQ1b+Nd7fMaPw==}
     peerDependencies:
       vue: ^3
     dependencies:

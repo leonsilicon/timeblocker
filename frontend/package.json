@@ -30,7 +30,7 @@
 		"nanoid": "^3.2.0",
 		"pinia": "^2.0.11",
 		"sass": "^1.49.7",
-		"simple-vue-icon": "^1.1.10",
+		"simple-vue-icon": "^1.1.11",
 		"tw-elements": "^1.0.0-alpha10",
 		"vue": "^3.2.25",
 		"vue-plugin-load-script": "^2.1.0",

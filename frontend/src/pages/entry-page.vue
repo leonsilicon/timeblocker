@@ -2,8 +2,7 @@
 import { useRoute, useRouter } from 'vue-router';
 import { client } from '~f/utils/trpc';
 import CircleSpinner from '~f/components/circle-spinner.vue';
-import { AuthenticationMethod } from '~s/types/auth';
-import { LocalStorageKey } from '~f/types/local-storage.js';
+import { LocalStorageKey } from '~f/types/local-storage';
 
 const route = useRoute();
 const router = useRouter();
