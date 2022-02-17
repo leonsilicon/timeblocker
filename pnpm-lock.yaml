@@ -91,7 +91,7 @@ importers:
       '@prisma/client': ^3.9.2
       '@tailwindcss/typography': ^0.5.1
       '@trpc/client': ^9.19.0
-      '@trpc/server': ^9.18.0
+      '@trpc/server': ^9.19.0
       '@types/jest': ^27.0.3
       '@types/node': ^17.0.0
       '@vitejs/plugin-vue': ^2.0.0
@@ -126,7 +126,7 @@ importers:
       '@mdi/js': 6.5.95
       '@prisma/client': 3.9.2
       '@tailwindcss/typography': 0.5.1_tailwindcss@3.0.18
-      '@trpc/client': 9.19.0_@trpc+server@9.18.0
+      '@trpc/client': 9.19.0_@trpc+server@9.19.0
       daisyui: 1.25.4
       dateformat: 5.0.2
       dayjs: 1.10.7
@@ -140,7 +140,7 @@ importers:
       vue-plugin-load-script: 2.1.0
       vue-router: 4.0.12_vue@3.2.29
     devDependencies:
-      '@trpc/server': 9.18.0
+      '@trpc/server': 9.19.0
       '@types/jest': 27.4.0
       '@types/node': 17.0.14
       '@vitejs/plugin-vue': 2.1.0_vite@2.7.13+vue@3.2.29
@@ -1337,26 +1337,19 @@ packages:
     engines: {node: '>= 6'}
     dev: true
 
-  /@trpc/client/9.19.0_@trpc+server@9.18.0:
+  /@trpc/client/9.19.0_@trpc+server@9.19.0:
     resolution: {integrity: sha512-pL7E3Bd0KrbSUosmycld2Ff+VatKhE36dLx5iNAJUMfx9XvEtWo1eVyrDQSfjTBva7qxN6jB1we0wMiy+CWqIw==}
     peerDependencies:
       '@trpc/server': 9.19.0
     dependencies:
       '@babel/runtime': 7.17.0
-      '@trpc/server': 9.18.0
+      '@trpc/server': 9.19.0
     dev: false
-
-  /@trpc/server/9.18.0:
-    resolution: {integrity: sha512-xWBC2+Q5OuJfK4kN9LqvpnncOP3T2I1duc5xDAnYOhhmvnKrfoUQoBReSqA5MohomAB/EDcRVCea2sKoNIoa0g==}
-    dependencies:
-      tslib: 2.3.1
-    dev: true
 
   /@trpc/server/9.19.0:
     resolution: {integrity: sha512-CV7bhwAYK7ZitkRUVbgpPHjlAM1xIFEex25sTyC8SUA9Pwwa0FDUx8IEkGDu8Tt8921J+7a6TJ2Wxg53lTgU4Q==}
     dependencies:
       tslib: 2.3.1
-    dev: false
 
   /@tsconfig/node10/1.0.8:
     resolution: {integrity: sha512-6XFfSQmMgq0CFLY1MslA/CPUfhIL919M1rMsa5lP2P097N2Wd1sSX0tx1u4olM16fLNhtHZpRhedZJphNJqmZg==}
