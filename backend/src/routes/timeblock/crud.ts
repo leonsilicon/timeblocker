@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { accountMiddleware } from '~b/utils/auth.js';
+import { throwTrpcError } from '~b/utils/error.js';
 import { createRouter } from '~b/utils/router.js';
 
 export const timeblockCrudRouter = createRouter()
@@ -41,7 +42,7 @@ export const timeblockCrudRouter = createRouter()
 			});
 
 			if (timeblock === null) {
-				throw new Error('Timeblock not found.');
+				throwTrpcError('timeblockNotFound');
 			}
 
 			return timeblock;

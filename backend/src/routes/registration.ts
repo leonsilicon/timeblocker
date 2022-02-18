@@ -1,13 +1,10 @@
 import { z } from 'zod';
-import { nanoid } from '@leonzalion/nanoid-good';
 import bcrypt from 'bcrypt';
 import { createRouter } from '~b/utils/router.js';
 import { authenticateClient } from '~b/utils/auth.js';
-import { AuthenticationMethod } from '~s/types/auth.js';
-import {
-	createAccount,
-	sendAccountRegistrationConfirmationCode,
-} from '~b/utils/registration.js';
+import { createAccount } from '~b/utils/registration.js';
+import { TRPCError } from '@trpc/server';
+import { throwTrpcError, trpcError } from '~b/utils/error.js';
 
 export const registrationRouter = createRouter()
 	.mutation('createRegistrationRequest', {
@@ -16,7 +13,6 @@ export const registrationRouter = createRouter()
 			password: z.string(),
 		}),
 		async resolve({ ctx, input: { email, password } }) {
-			const confirmationCode = nanoid();
 			const passwordHash = await bcrypt.hash(password, 10);
 
 			// Automatically create accounts that end in example.com
@@ -29,7 +25,7 @@ export const registrationRouter = createRouter()
 			// Otherwise send an email to the account holder
 			else {
 				// For the ICS IA, don't support registration via email
-				throw new Error('Email must end in @example.com');
+				throwTrpcError(trpcError.notAtExampleEmail);
 				// await ctx.prisma.accountRegistrationRequest.create({
 				// 	data: {
 				// 		confirmationCode,
@@ -67,7 +63,7 @@ export const registrationRouter = createRouter()
 			});
 
 			if (account === null) {
-				throw new Error('Email not found or invalid confirmation code.');
+				throwTrpcError(trpcError.invalidConfirmationCode);
 			}
 
 			if (account.confirmationCode === confirmationCode) {
@@ -76,9 +72,11 @@ export const registrationRouter = createRouter()
 					passwordHash: account.passwordHash,
 				});
 
-				return authenticateClient();
+				return authenticateClient(ctx, {
+					accountId: account.id,
+				});
 			} else {
-				throw new Error('Email not found or invalid confirmation code.');
+				throwTrpcError(trpcError.invalidConfirmationCode);
 			}
 		},
 	});

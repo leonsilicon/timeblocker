@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
 import { authenticateClient } from '~b/utils/auth.js';
+import { throwTrpcError } from '~b/utils/error.js';
 import { createRouter } from '~b/utils/index.js';
 
 export const loginRouter = createRouter().mutation('login', {
@@ -8,7 +9,7 @@ export const loginRouter = createRouter().mutation('login', {
 		email: z.string(),
 		password: z.string(),
 	}),
-	async resolve({ ctx, input: { email, password, authenticationMethod } }) {
+	async resolve({ ctx, input: { email, password } }) {
 		const account = await ctx.prisma.account.findFirst({
 			select: {
 				passwordHash: true,
@@ -20,7 +21,7 @@ export const loginRouter = createRouter().mutation('login', {
 		});
 
 		if (account === null) {
-			throw new Error('Incorrect account or password.');
+			throwTrpcError('badUsernamePassword');
 		}
 
 		if (await bcrypt.compare(password, account.passwordHash)) {
@@ -28,7 +29,7 @@ export const loginRouter = createRouter().mutation('login', {
 				accountId: account.id,
 			});
 		} else {
-			throw new Error('Incorrect account or password.');
+			throwTrpcError('badUsernamePassword');
 		}
 	},
 });

@@ -6,6 +6,7 @@ export const client = createTRPCClient<AppRouter>({
 	url: import.meta.env.VITE_BACKEND_URL,
 	headers: () => {
 		const sessionToken = window.localStorage.getItem(LocalStorageKey.sessionToken);
+		console.log(sessionToken)
 
 		if (sessionToken === null) {
 			return {};

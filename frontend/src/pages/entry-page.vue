@@ -15,6 +15,7 @@ const confirmPassword = $ref('');
 let entryError = $ref('');
 
 let isRequestLoading = $ref(false);
+
 async function login() {
 	try {
 		entryError = '';

@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { accountMiddleware } from '~b/utils/auth.js';
 import { createRouter } from '~b/utils/router.js';
 import { timeblockIdInput, timeblockMiddleware } from '~b/utils/timeblock.js';
+import { throwTrpcError } from '~b/utils/error.js';
 
 export const timeblockTaskRouter = createRouter()
 	.middleware(accountMiddleware)
@@ -45,7 +46,7 @@ export const timeblockTaskRouter = createRouter()
 				},
 			});
 			if (timeblock === null) {
-				throw new Error('Timeblock not found.');
+				throwTrpcError('timeblockNotFound');
 			}
 
 			return timeblock.tasks as TimeblockTask[];

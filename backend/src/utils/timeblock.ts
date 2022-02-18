@@ -2,6 +2,7 @@ import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import type { MiddlewareFunction } from '@trpc/server/dist/declarations/src/internals/middlewares';
 import type { Context } from '~b/types/index.js';
+import { throwTrpcError, trpcError } from '~b/utils/error.js';
 
 /**
  * Verify that an account owns the timeblock
@@ -20,11 +21,11 @@ export async function verifyTimeblockOwner(
 	});
 
 	if (timeblock === null) {
-		throw new Error('Timeblock not found.');
+		throwTrpcError(trpcError.timeblockNotFound);
 	}
 
 	if (timeblock.ownerAccountId !== accountId) {
-		throw new Error('Account is not the owner of the timeblock.');
+		throwTrpcError(trpcError.accountNotOwnerOfTimeblock);
 	}
 }
 
@@ -36,10 +37,7 @@ export const timeblockMiddleware: MiddlewareFunction<
 > = async ({ next, ctx, rawInput }) => {
 	const result = timeblockIdInput.safeParse(rawInput);
 	if (!result.success) {
-		throw new TRPCError({
-			code: 'BAD_REQUEST',
-			message: 'Timeblock ID not provided.',
-		});
+		throwTrpcError(trpcError.timeblockIdNotProvided);
 	}
 
 	await verifyTimeblockOwner(ctx, {

@@ -1,6 +1,7 @@
 import { nanoid } from '@leonzalion/nanoid-good';
 import type { MiddlewareFunction } from '@trpc/server/dist/declarations/src/internals/middlewares';
 import type { Context } from '~b/types/context.js';
+import { throwTrpcError, trpcError } from '~b/utils/error.js';
 import { AuthenticationMethod } from '~s/types/auth.js';
 
 export type GetCtxAccountIdOpts = {
@@ -21,14 +22,13 @@ export async function getCtxAccountId<Opts extends GetCtxAccountIdOpts>(
 			''
 		);
 	}
-
 	// User is unauthenticated
 	else {
 		if (optional) {
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 			return undefined as any;
 		} else {
-			throw new Error('User is not authenticated.');
+			throwTrpcError(trpcError.userNotAuthenticated);
 		}
 	}
 
@@ -42,7 +42,7 @@ export async function getCtxAccountId<Opts extends GetCtxAccountIdOpts>(
 	});
 
 	if (accountSessionToken === null) {
-		throw new Error('Token not found.');
+		throwTrpcError(trpcError.tokenNotFound);
 	}
 
 	return accountSessionToken.accountId;
