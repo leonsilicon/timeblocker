@@ -4,7 +4,7 @@ import { TaskBlock } from '~f/classes/task-block';
 import { useTimeblockStore } from '~f/store/timeblock';
 import { TaskBoxDropData, TaskBoxDropType } from '~f/types/task-box';
 import { timeblockDateToDayjs } from '~f/utils/date';
-import { logError } from '~f/utils/log';
+import { displayError } from '~f/utils/error';
 
 const props = defineProps<{
 	columnVersionNumber: number;
@@ -37,7 +37,7 @@ function onDrop(event: DragEvent) {
 			if ('taskId' in payload) {
 				const task = activeTimeblock.getTask(payload.taskId);
 				if (task === undefined) {
-					logError('Task not found.');
+					displayError('Task not found.');
 					return;
 				}
 

@@ -34,6 +34,7 @@
 		"simple-vue-icon": "^1.1.12",
 		"tw-elements": "^1.0.0-alpha10",
 		"vue": "^3.2.25",
+		"vue-input-autowidth": "^2.2.0",
 		"vue-plugin-load-script": "^2.1.0",
 		"vue-router": "^4.0.12"
 	},

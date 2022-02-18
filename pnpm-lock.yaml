@@ -116,6 +116,7 @@ importers:
       typescript: ^4.5.5
       vite: ^2.7.2
       vue: ^3.2.25
+      vue-input-autowidth: ^2.2.0
       vue-plugin-load-script: ^2.1.0
       vue-router: ^4.0.12
       vue-tsc: ^0.31.1
@@ -140,6 +141,7 @@ importers:
       simple-vue-icon: 1.1.12_vue@3.2.29
       tw-elements: 1.0.0-alpha10_395544cfbe1472baf4d44cf7709a657a
       vue: 3.2.29
+      vue-input-autowidth: 2.2.0
       vue-plugin-load-script: 2.1.0
       vue-router: 4.0.12_vue@3.2.29
     devDependencies:
@@ -7980,6 +7982,10 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /vue-input-autowidth/2.2.0:
+    resolution: {integrity: sha512-yRngEzIdQb0GxY6+JNIvhDXX9RAuXlq+DwILZMUlK1SO/mGKKYd7Nq42AuUOZC/ZGkMHR400N8FbHVaWFNoYvw==}
+    dev: false
 
   /vue-plugin-load-script/2.1.0:
     resolution: {integrity: sha512-tFvedqtOiLI+jZ78dymg+f7bjiglCVC2lA0CXVIq7bXVqu1sssP40r6UNMpD9glGD+EhbGRdOa70Sb5ZuHjmTA==}

@@ -81,7 +81,7 @@ export const timeblockCrudRouter = createRouter()
 					name,
 				},
 				where: {
-					timeblockId,
+					id: timeblockId,
 				},
 			});
 		},

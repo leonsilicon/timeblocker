@@ -9,13 +9,20 @@ function toggleTaskDock() {
 	timeblockStore.isTaskDockOpen = !timeblockStore.isTaskDockOpen;
 }
 
-const isTimeblockNameInputActive = $ref(false);
-const timeblockNameInputValue = $ref('');
+const timeblockNameInputValue = $ref(timeblockStore.activeTimeblock.getName());
+const timeblockNameInput = $ref<HTMLInputElement>();
 
 async function updateTimeblockName() {
 	await client.mutation('updateTimeblock', {
+		timeblockId: timeblockStore.activeTimeblock.getId(),
 		name: timeblockNameInputValue,
 	});
+}
+
+function onKeyPress(event: KeyboardEvent) {
+	if (event.key === 'Enter') {
+		timeblockNameInput.blur();
+	}
 }
 </script>
 
@@ -29,16 +36,13 @@ async function updateTimeblockName() {
 			></v-icon>
 		</div>
 		<input
-			v-if="isTimeblockNameInputActive"
+			ref="timeblockNameInput"
 			v-model="timeblockNameInputValue"
-			class="input input-sm"
+			v-autowidth
+			class="input input-sm text-xl font-bold px-2 hover:border-md hover:border-gray-300 rounded-md transition-[border]"
+			@keypress="onKeyPress"
+			@focusout="updateTimeblockName"
 		/>
-		<div
-			class="font-bold text-xl hover:border-2 transition-all cursor-text rounded-md px-2"
-			@click="isTimeblockNameInputActive = true"
-		>
-			{{ timeblockStore.activeTimeblock.getName() }}
-		</div>
 		<div class="ml-auto"></div>
 	</div>
 </template>
