@@ -163,6 +163,12 @@ importers:
       execa: 6.0.0
       tsc-alias: 1.5.0
 
+  shared:
+    specifiers:
+      '@trpc/server': ^9.19.0
+    devDependencies:
+      '@trpc/server': 9.19.0
+
 packages:
 
   /@ampproject/remapping/2.0.1:

@@ -2,7 +2,7 @@ import { nanoid } from '@leonzalion/nanoid-good';
 import type { MiddlewareFunction } from '@trpc/server/dist/declarations/src/internals/middlewares';
 import type { Context } from '~b/types/context.js';
 import { throwTrpcError, trpcError } from '~b/utils/error.js';
-import { AuthenticationMethod } from '~s/types/auth.js';
+import { AuthenticationMethod } from '~s/src/types/auth.js';
 
 export type GetCtxAccountIdOpts = {
 	optional: boolean;

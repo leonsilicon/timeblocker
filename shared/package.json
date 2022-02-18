@@ -1,0 +1,5 @@
+{
+	"devDependencies": {
+		"@trpc/server": "^9.19.0"
+	}
+}

@@ -10,7 +10,7 @@ module.exports = {
 	settings: createAliases({
 		'~f': './src',
 		'~b': '../backend/src',
-		'~s': '../shared',
+		'~s': '../shared/src',
 		'~test': './test',
 	}),
 	overrides: [
