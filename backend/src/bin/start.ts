@@ -3,9 +3,12 @@ import fastify from 'fastify';
 import { fastifyTRPCPlugin } from '@trpc/server/adapters/fastify/dist/trpc-server-adapters-fastify.cjs.js';
 import fastifyCookie from 'fastify-cookie';
 import { getAppRouter } from '~b/routes/router.js';
-import { createContext } from '~b/utils/index.js';
+import { createContext, getPrismaClient } from '~b/utils/index.js';
 import fastifyCors from 'fastify-cors';
 import fp from 'fastify-plugin';
+
+// Ensure the prisma client is connected to the database
+await getPrismaClient();
 
 const app = fastify();
 app.register(fastifyCors);

@@ -24,15 +24,21 @@ watch(
 
 let isLoading = $ref(true);
 (async () => {
-	const result = await client.query('listTimeblockTasks', {
-		timeblockId: routeParams.id,
-		limit: 10,
-		skip: 0,
-	});
+	const [timeblockResult, timeblockTasksResult] = await Promise.all([
+		client.query('getTimeblock', {
+			timeblockId: routeParams.id,
+		}),
+		client.query('listTimeblockTasks', {
+			timeblockId: routeParams.id,
+			limit: 10,
+			skip: 0,
+		}),
+	]);
 
 	const today = dayjs();
 	const timeblock = new Timeblock({
 		id: routeParams.id,
+		name: timeblockResult.name,
 		date: {
 			day: today.date(),
 			month: today.month(),
@@ -40,7 +46,7 @@ let isLoading = $ref(true);
 		},
 	});
 
-	for (const task of result) {
+	for (const task of timeblockTasksResult) {
 		timeblock.addTask(
 			new Task({
 				id: task.id,

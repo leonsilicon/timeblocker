@@ -42,7 +42,7 @@ export class Task {
 	constructor({ id, name, description, color }: TaskConstructorProps) {
 		this.id = id;
 		this.setName(name);
-		this.setColor(color ?? getRandomTaskColor());
+		this.setColor(color ?? 'lightred');
 		if (description !== undefined) {
 			this.setDescription(description);
 		}
@@ -87,7 +87,6 @@ export class Task {
 	setColor(color: string) {
 		this.color = color;
 	}
-
 
 	/**
 	 * Gets the description of the task.

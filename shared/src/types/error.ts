@@ -12,13 +12,12 @@ export type TRPCErrorDefinition = {
 const defineErrors = <Errors extends Record<string, TRPCErrorParams>>(
 	errors: Errors
 ): { [ErrorName in keyof Errors]: Errors[ErrorName] & { name: ErrorName } } => {
-	const errorsMap: Record<string, TRPCErrorParams> = {};
 	for (const errorName of Object.keys(errors)) {
 		(errors[errorName] as TRPCErrorDefinition).name = errorName;
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-	return errorsMap as any;
+	return errors as any;
 };
 
 export const trpcError = defineErrors({

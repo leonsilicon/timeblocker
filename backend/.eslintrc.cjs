@@ -4,7 +4,7 @@ const createAliases = require('@leonzalion/configs/eslint/alias');
 module.exports = {
 	extends: '../.eslintrc.cjs',
 	parserOptions: { project: [path.resolve(__dirname, 'tsconfig.eslint.json')] },
-	settings: createAliases({ '~b': './src', '~s': '../shared' }),
+	settings: createAliases({ '~b': './src', '~s': '../shared/src' }),
 	rules: {
 		'import/no-extraneous-dependencies': [
 			'error',

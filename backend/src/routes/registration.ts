@@ -3,8 +3,8 @@ import bcrypt from 'bcrypt';
 import { createRouter } from '~b/utils/router.js';
 import { authenticateClient } from '~b/utils/auth.js';
 import { createAccount } from '~b/utils/registration.js';
-import { TRPCError } from '@trpc/server';
-import { throwTrpcError, trpcError } from '~b/utils/error.js';
+import { throwTrpcError } from '~b/utils/error.js';
+import { trpcError } from '~s/types/error.js';
 
 export const registrationRouter = createRouter()
 	.mutation('createRegistrationRequest', {

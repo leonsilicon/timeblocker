@@ -21,6 +21,7 @@
 		"@leonzalion/nanoid-good": "^1.0.4",
 		"@mdi/js": "^6.5.95",
 		"@prisma/client": "^3.9.2",
+		"@quasar/extras": "^1.12.5",
 		"@tailwindcss/typography": "^0.5.1",
 		"@trpc/client": "^9.19.0",
 		"daisyui": "^1.25.4",
@@ -29,7 +30,7 @@
 		"desm": "^1.2.0",
 		"nanoid": "^3.2.0",
 		"pinia": "^2.0.11",
-		"sass": "^1.49.7",
+		"quasar": "^2.5.5",
 		"simple-vue-icon": "^1.1.12",
 		"tw-elements": "^1.0.0-alpha10",
 		"vue": "^3.2.25",
@@ -37,6 +38,7 @@
 		"vue-router": "^4.0.12"
 	},
 	"devDependencies": {
+		"@quasar/vite-plugin": "^1.0.4",
 		"@trpc/server": "^9.19.0",
 		"@types/jest": "^27.0.3",
 		"@types/node": "^17.0.0",
@@ -44,6 +46,7 @@
 		"autoprefixer": "^10.4.1",
 		"jest": "^27.4.5",
 		"postcss": "^8.4.5",
+		"sass": "1.32.0",
 		"tailwindcss": "^3.0.11",
 		"ts-jest": "^27.1.2",
 		"ts-node": "^10.4.0",

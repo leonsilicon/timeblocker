@@ -1,8 +1,8 @@
-import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import type { MiddlewareFunction } from '@trpc/server/dist/declarations/src/internals/middlewares';
 import type { Context } from '~b/types/index.js';
-import { throwTrpcError, trpcError } from '~b/utils/error.js';
+import { throwTrpcError } from '~b/utils/error.js';
+import { trpcError } from '~s/types/error.js';
 
 /**
  * Verify that an account owns the timeblock

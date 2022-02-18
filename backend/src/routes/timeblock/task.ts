@@ -1,9 +1,10 @@
-import { TimeblockTask } from '~s/src/types/task';
+import { TimeblockTask } from '~s/types/task.js';
 import { z } from 'zod';
 import { accountMiddleware } from '~b/utils/auth.js';
 import { createRouter } from '~b/utils/router.js';
 import { timeblockIdInput, timeblockMiddleware } from '~b/utils/timeblock.js';
 import { throwTrpcError } from '~b/utils/error.js';
+import { trpcError } from '~s/types/error.js';
 
 export const timeblockTaskRouter = createRouter()
 	.middleware(accountMiddleware)
@@ -46,7 +47,7 @@ export const timeblockTaskRouter = createRouter()
 				},
 			});
 			if (timeblock === null) {
-				throwTrpcError('timeblockNotFound');
+				throwTrpcError(trpcError.timeblockNotFound);
 			}
 
 			return timeblock.tasks as TimeblockTask[];

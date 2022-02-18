@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { mdiPlus } from '@mdi/js';
+import { useRouter } from 'vue-router';
 import { client } from '~f/utils/trpc';
 import CircleSpinner from '~f/components/circle-spinner.vue';
 import TimeblockListing from '~f/components/timeblock-listing.vue';
-import { useRouter } from 'vue-router';
 
 let timeblocks = $ref<Array<{ id: string; name: string }> | null>(null);
 // Retrieve the timeblock tasks from the server
 (async () => {
-	timeblocks = await client.query('listTimeblocks', {
+	const serverTimeblocks = await client.query('listTimeblocks', {
 		limit: 10,
 		skip: 0,
 	});
+	timeblocks = serverTimeblocks;
 })();
 
 const router = useRouter();

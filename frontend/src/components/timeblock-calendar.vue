@@ -50,7 +50,7 @@ function addNewColumn() {
 		<div class="column items-center">
 			<v-icon
 				class="px-3 text-gray-700 cursor-pointer"
-				:path="mdiPlusCircleOutline"
+				:icon="mdiPlusCircleOutline"
 				@click="addNewColumn"
 			/>
 		</div>

@@ -6,7 +6,7 @@ const appStore = useAppStore();
 
 const sessionToken = window.localStorage.getItem(LocalStorageKey.sessionToken);
 
-if (sessionToken === undefined) {
+if (sessionToken === null) {
 	appStore.isLoggedIn = false;
 } else {
 	appStore.isLoggedIn = true;

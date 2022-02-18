@@ -4,7 +4,7 @@ import { nextTick } from 'vue';
 import { Task } from '~f/classes/task';
 import TimeblockTask from '~f/components/timeblock-task.vue';
 import { useTimeblockStore } from '~f/store';
-import { logError } from '~f/utils/log';
+import { displayError } from '~f/utils/error';
 import { client } from '~f/utils/trpc';
 
 const timeblockStore = useTimeblockStore();
@@ -38,12 +38,13 @@ async function addTask() {
 
 		try {
 			await client.mutation('addTimeblockTask', {
+				timeblockId: timeblockStore.activeTimeblock.getId(),
 				id: taskId,
 				name: newTaskName,
 				description: newTaskDescription,
 			});
 		} catch (error: unknown) {
-			logError(error);
+			displayError(error);
 		}
 	}
 

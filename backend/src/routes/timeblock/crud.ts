@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { accountMiddleware } from '~b/utils/auth.js';
 import { throwTrpcError } from '~b/utils/error.js';
 import { createRouter } from '~b/utils/router.js';
+import { trpcError } from '~s/types/error.js';
 
 export const timeblockCrudRouter = createRouter()
 	.middleware(accountMiddleware)
@@ -42,7 +43,7 @@ export const timeblockCrudRouter = createRouter()
 			});
 
 			if (timeblock === null) {
-				throwTrpcError('timeblockNotFound');
+				throwTrpcError(trpcError.timeblockNotFound);
 			}
 
 			return timeblock;
@@ -67,6 +68,22 @@ export const timeblockCrudRouter = createRouter()
 			});
 
 			return timeblocks;
+		},
+	})
+	.mutation('updateTimeblock', {
+		input: z.object({
+			timeblockId: z.string(),
+			name: z.string(),
+		}),
+		async resolve({ ctx, input: { name, timeblockId } }) {
+			await ctx.prisma.timeblock.update({
+				data: {
+					name,
+				},
+				where: {
+					timeblockId,
+				},
+			});
 		},
 	})
 	.mutation('deleteTimeblock', {

@@ -13,7 +13,6 @@ export function setCookie(ctx: Context, cookie: Cookie, value: string) {
 }
 
 export function getCookie(ctx: Context, cookie: Cookie) {
-	console.log(ctx.request.cookies)
 	if (process.env.NODE_ENV === 'production') {
 		return ctx.request.cookies[`__Secure-${cookie}`];
 	} else {
