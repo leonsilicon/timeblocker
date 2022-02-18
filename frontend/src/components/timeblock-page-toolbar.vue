@@ -27,22 +27,24 @@ function onKeyPress(event: KeyboardEvent) {
 </script>
 
 <template>
-	<div class="row items-center">
-		<div class="p-4 mr-auto">
+	<div class="row items-center justify-center">
+		<div class="p-4 mr-auto flex-1">
 			<v-icon
 				:icon="mdiMenu"
 				class="cursor-pointer"
 				@click="toggleTaskDock"
 			></v-icon>
 		</div>
-		<input
-			ref="timeblockNameInput"
-			v-model="timeblockNameInputValue"
-			v-autowidth
-			class="input input-sm text-xl font-bold px-2 hover:border-md hover:border-gray-300 rounded-md transition-[border]"
-			@keypress="onKeyPress"
-			@focusout="updateTimeblockName"
-		/>
-		<div class="ml-auto"></div>
+		<div class="flex-1 row justify-center">
+			<input
+				ref="timeblockNameInput"
+				v-model="timeblockNameInputValue"
+				v-autowidth
+				class="input input-sm text-xl font-bold px-2 hover:border-md hover:border-gray-300 rounded-md transition-[border]"
+				@keypress="onKeyPress"
+				@focusout="updateTimeblockName"
+			/>
+		</div>
+		<div class="flex-1 ml-auto"></div>
 	</div>
 </template>
