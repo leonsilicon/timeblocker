@@ -24,5 +24,7 @@ html,
 body,
 #app {
 	height: 100%;
+	font-family: var(--bs-font-sans-serif);
+	font-size: var(--bs-body-font-size);
 }
 </style>
