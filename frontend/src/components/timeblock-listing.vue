@@ -14,7 +14,7 @@ async function goToTimeblock() {
 
 <template>
 	<button
-		class="py-4 px-4 border-2 center column rounded-md border-primary cursor-pointer hover:scale-105 transition-all"
+		class="py-4 px-4 border-2 center column rounded-md border-primary cursor-pointer hover:scale-[1.01] transition-all"
 		@click="goToTimeblock"
 	>
 		{{ name }}
