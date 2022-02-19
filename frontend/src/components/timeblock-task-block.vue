@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useTimeblockStore } from '~f/store/timeblock';
 import { TaskBoxDropData, TaskBoxDropType } from '~f/types/task-box';
-import { getTodayDayjs } from '~f/utils/date';
 
 const props = defineProps<{
 	taskBlockId: string;

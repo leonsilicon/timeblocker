@@ -5,12 +5,10 @@ import {
 	timeblockColumnIdInput,
 	timeblockColumnMiddleware,
 	timeblockIdInput,
-	timeblockMiddleware,
 } from '~b/utils/timeblock.js';
 
 export const timeblockTaskBlockRouter = createRouter()
 	.middleware(accountMiddleware)
-	.middleware(timeblockMiddleware)
 	.middleware(timeblockColumnMiddleware)
 	.mutation('addTimeblockTaskBlock', {
 		input: timeblockColumnIdInput.merge(

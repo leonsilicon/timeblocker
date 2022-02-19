@@ -52,22 +52,50 @@ export const timeblockColumnIdInput = z.object({
 	timeblockColumnId: z.string(),
 });
 
-export const timeblockColumnMiddleware: MiddlewareFunction<
-	Context & { accountId: string; timeblockId: string },
-	Context & {
-		accountId: string;
-		timeblockId: string;
-		timeblockColumnId: string;
+/**
+ * Verify that an account owns the timeblock column
+ */
+export async function verifyTimeblockColumnOwner(
+	ctx: Context,
+	{
+		accountId,
+		timeblockColumnId,
+	}: { accountId: string; timeblockColumnId: string }
+) {
+	const timeblockColumn = await ctx.prisma.timeblockColumn.findFirst({
+		select: {
+			timeblock: {
+				select: {
+					ownerAccountId: true,
+				},
+			},
+		},
+		where: {
+			id: timeblockColumnId,
+		},
+	});
+
+	if (timeblockColumn === null) {
+		throwTrpcError(trpcError.timeblockColumnNotFound);
 	}
+
+	if (timeblockColumn.timeblock.ownerAccountId !== accountId) {
+		throwTrpcError(trpcError.accountNotOwnerOfTimeblock);
+	}
+}
+
+export const timeblockColumnMiddleware: MiddlewareFunction<
+	Context & { accountId: string },
+	Context & { accountId: string; timeblockColumnId: string }
 > = async ({ next, ctx, rawInput }) => {
 	const result = timeblockColumnIdInput.safeParse(rawInput);
 	if (!result.success) {
-		throwTrpcError(trpcError.timeblockIdNotProvided);
+		throwTrpcError(trpcError.timeblockColumnIdNotProvided);
 	}
 
-	await verifyTimeblockOwner(ctx, {
+	await verifyTimeblockColumnOwner(ctx, {
 		accountId: ctx.accountId,
-		timeblockId: result.data.timeblockColumnId,
+		timeblockColumnId: result.data.timeblockColumnId,
 	});
 
 	return next({

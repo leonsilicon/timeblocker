@@ -112,9 +112,8 @@ export class TaskBlock {
 			throw new Error('startMinute cannot be undefined.');
 		}
 
-		// Verifies that the minute is in UNIX seconds and not milliseconds
-		if (minute.toString().length !== 10) {
-			throw new Error(`Minute must be in UNIX seconds, received ${minute}`);
+		if (minute < 0 || minute > 1440) {
+			throw new Error(`Minute must be between 0 and 1440, received ${minute}`);
 		}
 
 		this.startMinute = minute;
@@ -138,9 +137,8 @@ export class TaskBlock {
 			throw new Error('endMinute cannot be undefined.');
 		}
 
-		// Verifies that the minute is in UNIX seconds and not milliseconds
-		if (minute.toString().length !== 10) {
-			throw new Error(`Minute must be in UNIX seconds, received ${minute}`);
+		if (minute < 0 || minute > 1440) {
+			throw new Error(`Minute must be between 0 and 1440, received ${minute}`);
 		}
 
 		this.endMinute = minute;

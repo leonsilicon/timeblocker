@@ -37,6 +37,10 @@ export const trpcError = defineErrors({
 		code: 'BAD_REQUEST',
 		message: 'Timeblock not found.',
 	},
+	timeblockColumnNotFound: {
+		code: 'BAD_REQUEST',
+		message: 'Timeblock column not found.',
+	},
 	userNotAuthenticated: {
 		code: 'UNAUTHORIZED',
 		message: 'User is not authenticated.',
@@ -52,5 +56,9 @@ export const trpcError = defineErrors({
 	timeblockIdNotProvided: {
 		code: 'BAD_REQUEST',
 		message: 'Timeblock ID was not provided.',
+	},
+	timeblockColumnIdNotProvided: {
+		code: 'BAD_REQUEST',
+		message: 'Timeblock column ID was not provided.',
 	},
 });

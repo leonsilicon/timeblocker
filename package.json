@@ -13,6 +13,7 @@
 	"scripts": {
 		"up": "docker compose up",
 		"gen": "pnpm gen --filter=./backend",
+		"migrate": "pnpm migrate --filter=./backend",
 		"sync-index": "pnpm sync-index --recursive",
 		"dev:frontend": "pnpm dev --filter=./frontend",
 		"build:frontend": "pnpm build --filter=./frontend",

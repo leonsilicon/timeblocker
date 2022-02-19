@@ -10,6 +10,7 @@
 	"scripts": {
 		"create-executable": "pkg dist",
 		"gen": "prisma generate",
+		"migrate": "prisma migrate dev",
 		"dev": "nodemon",
 		"start": "node-ts ./src/bin/start.ts",
 		"build": "node-ts ./scripts/build.ts",

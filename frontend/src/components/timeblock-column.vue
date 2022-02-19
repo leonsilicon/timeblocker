@@ -9,7 +9,7 @@ import TimeblockColumnBackground from '~f/components/timeblock-column-background
 import { TaskBlock } from '~f/classes/task-block';
 import { TaskBoxDropData, TaskBoxDropType } from '~f/types/task-box';
 import { displayError } from '~f/utils/error';
-import { client } from '~f/utils/trpc.js';
+import { client } from '~f/utils/trpc';
 
 const props = defineProps<{
 	timeblockColumnId: string;
@@ -132,15 +132,11 @@ async function onDrop(event: DragEvent) {
 			:style="taskBlockShadowStyle"
 			class="bg-red-100 rounded-md"
 		></div>
-		<TimeblockColumnBackground
-			style="grid-row: 1 / -1; grid-column: 1 / -1"
-			:column-version-number="timeblockId"
-		/>
+		<TimeblockColumnBackground style="grid-row: 1 / -1; grid-column: 1 / -1" />
 		<TimeblockTaskBlock
 			v-for="(taskBlock, i) of taskBlocks"
 			:key="taskBlock.getId()"
 			:task-block-id="taskBlock.getId()"
-
 			:height-ratio="taskBlockHeightRatios[i]!"
 		/>
 	</div>
