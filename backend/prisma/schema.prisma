@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Account {
-  id           String      @id() @default(uuid())
+  id           String      @id()
   email        String      @unique()
   passwordHash String
   timeblocks   Timeblock[]
@@ -45,7 +45,7 @@ model AccountCsrfToken {
 }
 
 model AccountRegistrationRequest {
-  id               String @id() @default(uuid())
+  id               String @id()
   email            String @unique()
   passwordHash     String
   confirmationCode String

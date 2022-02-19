@@ -38,12 +38,14 @@ async function createNewTimeblock() {
 				<v-icon :icon="mdiPlus" />
 				Create New Timeblock
 			</div>
-			<timeblock-listing
-				v-for="timeblock in timeblocks"
-				:id="timeblock.id"
-				:key="timeblock.id"
-				:name="timeblock.name"
-			/>
+			<div class="column self-stretch gap-4">
+				<timeblock-listing
+					v-for="timeblock in timeblocks"
+					:id="timeblock.id"
+					:key="timeblock.id"
+					:name="timeblock.name"
+				/>
+			</div>
 		</div>
 	</div>
 </template>

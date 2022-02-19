@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { mdiMenu } from '@mdi/js';
+import { mdiMenu, mdiChevronLeft } from '@mdi/js';
 import { useTimeblockStore } from '~f/store/timeblock';
 import { client } from '~f/utils/trpc';
 
@@ -27,8 +27,11 @@ function onKeyPress(event: KeyboardEvent) {
 </script>
 
 <template>
-	<div class="row items-center justify-center">
-		<div class="p-4 mr-auto flex-1">
+	<div class="row items-center justify-center mb-2">
+		<div class="flex-1 p-4 mr-auto row gap-2">
+			<router-link to="/timeblocks">
+				<v-icon :icon="mdiChevronLeft" class="cursor-pointer"></v-icon>
+			</router-link>
 			<v-icon
 				:icon="mdiMenu"
 				class="cursor-pointer"

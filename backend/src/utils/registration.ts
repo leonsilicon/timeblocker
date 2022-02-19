@@ -1,3 +1,4 @@
+import { nanoid } from '@leonzalion/nanoid-good';
 import process from 'node:process';
 import type { Context } from '~b/types/context.js';
 import { getSmtpTransport } from '~b/utils/smtp.js';
@@ -36,10 +37,12 @@ export async function createAccount(
 	ctx: Context,
 	{ email, passwordHash }: CreateAccountProps
 ) {
+	const accountId = nanoid();
 	await ctx.prisma.account.create({
 		data: {
 			email,
 			passwordHash,
 		},
 	});
+	return accountId;
 }

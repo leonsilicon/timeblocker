@@ -1,3 +1,4 @@
+import { nanoid } from '@leonzalion/nanoid-good';
 import { z } from 'zod';
 import { accountMiddleware } from '~b/utils/auth.js';
 import { throwTrpcError } from '~b/utils/error.js';
@@ -11,8 +12,10 @@ export const timeblockCrudRouter = createRouter()
 			name: z.string(),
 		}),
 		async resolve({ ctx, input: { name } }) {
-			const { id: timeblockId } = await ctx.prisma.timeblock.create({
+			const timeblockId = nanoid();
+			await ctx.prisma.timeblock.create({
 				data: {
+					id: timeblockId,
 					name,
 					ownerAccountId: ctx.accountId,
 				},
@@ -21,8 +24,17 @@ export const timeblockCrudRouter = createRouter()
 				},
 			});
 
+			const timeblockColumnId = nanoid();
+			await ctx.prisma.timeblockColumn.create({
+				data: {
+					id: timeblockColumnId,
+					timeblockId,
+				},
+			});
+
 			return {
 				timeblockId,
+				timeblockColumnId,
 			};
 		},
 	})
