@@ -29,6 +29,12 @@ export const useTimeblockStore = defineStore('timeblock', {
 				timeblockName,
 			});
 		},
+		hasTimeblock(timeblockId: string) {
+			return this.timeblockMap.has(timeblockId);
+		},
+		getTimeblock(timeblockId: string) {
+			return this.timeblockMap.get(timeblockId);
+		},
 		addTimeblock(timeblock: Timeblock) {
 			this.timeblockMap.set(timeblock.getId(), timeblock);
 		},

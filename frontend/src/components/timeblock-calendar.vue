@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { mdiPlusCircleOutline } from '@mdi/js';
+import { nanoid } from 'nanoid';
 import TimeblockColumns from '~f/components/timeblock-columns.vue';
 import { useTimeblockStore } from '~f/store/timeblock';
 
@@ -32,7 +33,8 @@ const timeblockCalendarStyle = $computed(() => ({
 }));
 
 function addNewColumn() {
-	timeblockStore.activeTimeblock.addColumn();
+	const timeblockColumnId = nanoid();
+	timeblockStore.activeTimeblock.addColumn(timeblockColumnId);
 }
 </script>
 

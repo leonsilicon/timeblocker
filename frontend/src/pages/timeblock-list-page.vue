@@ -8,6 +8,7 @@ import { useTimeblockStore } from '~f/store/timeblock';
 
 const timeblockStore = useTimeblockStore();
 let areTimeblockListingsLoading = $ref(true);
+
 // Retrieve the timeblock tasks from the server
 (async () => {
 	const timeblockListings = await client.query('listTimeblocks', {
@@ -16,10 +17,16 @@ let areTimeblockListingsLoading = $ref(true);
 	});
 	areTimeblockListingsLoading = false;
 	for (const { id, name } of timeblockListings) {
-		timeblockStore.addTimeblockListing({
-			timeblockId: id,
-			timeblockName: name,
-		});
+		if (
+			!timeblockStore.timeblockListings.some(
+				(listing) => listing.timeblockId === id
+			)
+		) {
+			timeblockStore.addTimeblockListing({
+				timeblockId: id,
+				timeblockName: name,
+			});
+		}
 	}
 })();
 

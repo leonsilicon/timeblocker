@@ -10,10 +10,10 @@ import { Timeblock } from '~f/classes/timeblock';
 import { Task } from '~f/classes/task';
 import { client } from '~f/utils/trpc';
 import CircleSpinner from '~f/components/circle-spinner.vue';
-import { TaskBlock } from '~f/classes/task-block';
 
 const route = useRoute();
 const routeParams = $computed(() => route.params as { id: string });
+const timeblockId = $computed(() => routeParams.id);
 
 const timeblockStore = useTimeblockStore();
 watch(
@@ -41,30 +41,34 @@ let isLoading = $ref(true);
 		]);
 
 	const today = dayjs();
-	const timeblock = new Timeblock({
-		id: routeParams.id,
-		name: timeblockResult.name,
-		date: {
-			day: today.date(),
-			month: today.month(),
-			year: today.year(),
-		},
-	});
 
-	for (const task of timeblockTasksResult) {
-		timeblock.addTask(
-			new Task({
-				id: task.id,
-				name: task.name,
-				description: task.description,
-			})
-		);
-	}
+	// Avoid creating duplicate timeblocks
+	if (!timeblockStore.hasTimeblock(timeblockId)) {
+		const timeblock = new Timeblock({
+			id: timeblockId,
+			name: timeblockResult.name,
+			date: {
+				day: today.date(),
+				month: today.month(),
+				year: today.year(),
+			},
+		});
 
-	timeblockStore.addTimeblock(timeblock);
-	timeblockStore.activeTimeblockId = timeblock.getId();
-	for (const timeblockColumn of timeblockColumns) {
-		timeblock.addColumn(timeblockColumn.id);
+		for (const task of timeblockTasksResult) {
+			timeblock.addTask(
+				new Task({
+					id: task.id,
+					name: task.name,
+					description: task.description,
+				})
+			);
+		}
+
+		timeblockStore.addTimeblock(timeblock);
+		timeblockStore.activeTimeblockId = timeblock.getId();
+		for (const timeblockColumn of timeblockColumns) {
+			timeblock.addColumn(timeblockColumn.id);
+		}
 	}
 
 	isLoading = false;
