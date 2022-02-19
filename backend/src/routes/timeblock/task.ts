@@ -14,7 +14,7 @@ export const timeblockTaskRouter = createRouter()
 			z.object({
 				id: z.string(),
 				name: z.string(),
-				description: z.string(),
+				description: z.string().optional(),
 			})
 		),
 		async resolve({ ctx, input: { id, name, description } }) {

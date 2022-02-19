@@ -4,7 +4,6 @@ import { TaskBoxDropData, TaskBoxDropType } from '~f/types/task-box';
 import { getTodayDayjs } from '~f/utils/date';
 
 const props = defineProps<{
-	columnVersionNumber: number;
 	taskBlockId: string;
 	heightRatio: number;
 }>();
@@ -14,13 +13,10 @@ const taskBlock = $computed(() =>
 );
 const task = $computed(() => taskBlock.getTask());
 
-const todayStartTimestamp = getTodayDayjs().unix();
-
 const timeblockTaskBlockStyle = $computed(() => ({
 	'grid-column': '1 / span 1',
-	'grid-row-start':
-		1 + (taskBlock.getStartTimestamp() - todayStartTimestamp) / 60,
-	'grid-row-end': 1 + (taskBlock.getEndTimestamp() - todayStartTimestamp) / 60,
+	'grid-row-start': 1 + taskBlock.getStartMinute() / 60,
+	'grid-row-end': 1 + taskBlock.getEndMinute() / 60,
 }));
 
 function onDragStart(event: DragEvent) {

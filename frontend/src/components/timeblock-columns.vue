@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import TimeblockColumn from '~f/components/timeblock-column.vue';
-import { TimeblockColumn as TimeblockColumnClass } from '~f/classes/timeblock-column';
 import { useTimeblockStore } from '~f/store';
 
 const timeblockStore = useTimeblockStore();
@@ -8,10 +7,10 @@ const timeblockColumns = $computed(() =>
 	timeblockStore.activeTimeblock.getColumns()
 );
 
-function getTimeblockColumnStyle(timeblockColumn: TimeblockColumnClass) {
+function getTimeblockColumnStyle(timeblockColumnIndex: number) {
 	return {
-		'grid-column-start': timeblockColumn.getVersionNumber() + 2,
-		'grid-column-end': timeblockColumn.getVersionNumber() + 3,
+		'grid-column-start': timeblockColumnIndex + 2,
+		'grid-column-end': timeblockColumnIndex + 3,
 		'grid-row': '1 / -1',
 	};
 }
@@ -19,10 +18,10 @@ function getTimeblockColumnStyle(timeblockColumn: TimeblockColumnClass) {
 
 <template>
 	<TimeblockColumn
-		v-for="timeblockColumn of timeblockColumns"
-		:key="timeblockColumn.getVersionNumber()"
-		:style="getTimeblockColumnStyle(timeblockColumn)"
-		:version-number="timeblockColumn.getVersionNumber()"
+		v-for="(timeblockColumn, timeblockColumnIndex) of timeblockColumns"
+		:key="timeblockColumn.getId()"
+		:style="getTimeblockColumnStyle(timeblockColumnIndex)"
+		:timeblock-column-id="timeblockColumn.getId()"
 		:date="timeblockColumn.getDate()"
 	/>
 </template>

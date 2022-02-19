@@ -2,8 +2,8 @@ import type { Timeblock } from '~f/classes/timeblock';
 import { timeblockDateToDayjs } from '~f/utils/date';
 
 export type TimeblockColumnConstructorProps = {
+	id: string;
 	timeblock: Timeblock;
-	versionNumber: number;
 };
 
 /**
@@ -15,11 +15,7 @@ export class TimeblockColumn {
 	 */
 	private timeblock: Timeblock;
 
-	/**
-	 * The version number of the column (used when there are multiple timeblock columns
-	 * in a day).
-	 */
-	private versionNumber: number;
+	private readonly id: string;
 
 	/**
 	 * The IDs of task blocks that are contained in this column.
@@ -29,13 +25,12 @@ export class TimeblockColumn {
 	/**
 	 * Creates a new timeblock column.
 	 * @param props The properties to set on the timeblock column.
+	 * @param props.id The ID of the timeblock column
 	 * @param props.timeblock The timeblock the timeblock column belongs to.
-	 * @param props.versionNumber The version number of the timeblock column (used when
-	 * there are multiple columns in a day)
 	 */
-	constructor({ timeblock, versionNumber }: TimeblockColumnConstructorProps) {
+	constructor({ timeblock, id }: TimeblockColumnConstructorProps) {
+		this.id = id;
 		this.timeblock = timeblock;
-		this.versionNumber = versionNumber;
 		this.taskBlockIds = new Set();
 	}
 
@@ -43,12 +38,8 @@ export class TimeblockColumn {
 		return this.timeblock.getDate();
 	}
 
-	public setVersionNumber(versionNumber: number) {
-		this.versionNumber = versionNumber;
-	}
-
-	public getVersionNumber() {
-		return this.versionNumber;
+	public getId() {
+		return this.id;
 	}
 
 	public setTimeblock(timeblock: Timeblock) {
@@ -61,27 +52,13 @@ export class TimeblockColumn {
 
 	public addTaskBlock(taskBlockId: string) {
 		const taskBlock = this.timeblock.getTaskBlock(taskBlockId);
-
-		// Validate that the task block overlaps with the date
-		const taskBlockStartTimestamp = taskBlock.getStartTimestamp();
-		const taskBlockEndTimestamp = taskBlock.getEndTimestamp();
-		const columnStartDate = timeblockDateToDayjs(this.timeblock.getDate());
-		const columnEndDate = columnStartDate.add(1, 'day');
-
-		if (
-			columnStartDate.unix() > taskBlockEndTimestamp ||
-			columnEndDate.unix() <= taskBlockStartTimestamp
-		) {
-			throw new Error('Task does not fall into range of column.');
-		}
-
 		this.taskBlockIds.add(taskBlockId);
-		taskBlock.setColumnVersionNumber(this.versionNumber);
+		taskBlock.setTimeblockColumnId(this.getId());
 	}
 
 	public removeTaskBlock(taskBlockId: string) {
 		const taskBlock = this.timeblock.getTaskBlock(taskBlockId);
-		taskBlock.setColumnVersionNumber(undefined);
+		taskBlock.setTimeblockColumnId(undefined);
 		this.taskBlockIds.delete(taskBlockId);
 	}
 

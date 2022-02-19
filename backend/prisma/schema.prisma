@@ -21,8 +21,8 @@ model Account {
 }
 
 enum AuthenticationMethod {
-	header
-	cookie
+  header
+  cookie
 }
 
 model AccountSessionToken {
@@ -57,23 +57,30 @@ model Timeblock {
   owner          Account @relation(fields: [ownerAccountId], references: [id])
   ownerAccountId String
 
-  tasks TimeblockTask[]
+  tasks            TimeblockTask[]
+  timeblockColumns TimeblockColumn[]
 }
 
 model TimeblockColumn {
-  id String @id()
+  id                  String               @id()
+  timeblockTaskBlocks TimeblockTaskBlock[]
+
+  timeblock   Timeblock @relation(fields: [timeblockId], references: [id])
+  timeblockId String
 }
 
 model TimeblockTask {
-  id          String     @id()
+  id          String    @id()
   name        String
-  description String
-  Timeblock   Timeblock? @relation(fields: [timeblockId], references: [id])
-  timeblockId String?
+  description String?
+  timeblock   Timeblock @relation(fields: [timeblockId], references: [id])
+  timeblockId String
 }
 
 model TimeblockTaskBlock {
-  id             String @id()
-  startTimestamp Int
-  endTimestamp   Int
+  id                String          @id()
+  startMinute       Int
+  endMinute         Int
+  timeblockColumn   TimeblockColumn @relation(fields: [timeblockColumnId], references: [id])
+  timeblockColumnId String
 }

@@ -8,11 +8,11 @@ import TimeblockTaskBlock from '~f/components/timeblock-task-block.vue';
 import TimeblockColumnBackground from '~f/components/timeblock-column-background.vue';
 import { TaskBlock } from '~f/classes/task-block';
 import { TaskBoxDropData, TaskBoxDropType } from '~f/types/task-box';
-import { timeblockDateToDayjs } from '~f/utils/date';
 import { displayError } from '~f/utils/error';
+import { client } from '~f/utils/trpc.js';
 
 const props = defineProps<{
-	versionNumber: number;
+	timeblockColumnId: string;
 	date: TimeblockDate;
 }>();
 
@@ -21,13 +21,12 @@ const timeblockStore = useTimeblockStore();
 const taskBlocks = $computed(
 	() =>
 		timeblockStore.activeTimeblock
-			.getColumn(props.versionNumber)
+			.getColumn(props.timeblockColumnId)
 			?.getTaskBlocks() ?? []
 );
 
 const taskBlockHeightRatios = $computed(() =>
 	calculateTaskBlocksRatios({
-		date: props.date,
 		taskBlocks,
 	})
 );
@@ -54,7 +53,7 @@ function onDragOver(event: DragEvent) {
 	taskBlockShadowStyle['grid-row-end'] = nearest15 + 1 + 60;
 }
 
-function onDrop(event: DragEvent) {
+async function onDrop(event: DragEvent) {
 	isTaskBlockShadowActive = false;
 	const dropDataString = event.dataTransfer?.getData('text');
 	if (dropDataString !== undefined) {
@@ -66,9 +65,8 @@ function onDrop(event: DragEvent) {
 			const nearest15 = Math.round(y / 15) * 15;
 
 			const { activeTimeblock } = timeblockStore;
-			const activeDate = timeblockDateToDayjs(activeTimeblock.getDate());
-			const startTimestamp = activeDate.add(nearest15, 'minutes').unix();
-			const endTimestamp = activeDate.add(nearest15 + 60, 'minutes').unix();
+			const startMinute = nearest15;
+			const endMinute = nearest15 + 60;
 
 			if ('taskId' in payload) {
 				const task = activeTimeblock.getTask(payload.taskId);
@@ -81,15 +79,22 @@ function onDrop(event: DragEvent) {
 					id: nanoid(),
 					timeblock: activeTimeblock,
 					task,
-					startTimestamp,
-					endTimestamp,
-					columnVersionNumber: props.versionNumber,
+					startMinute,
+					endMinute,
+					timeblockColumnId: props.timeblockColumnId,
 				});
 
 				activeTimeblock.addTaskBlock(taskBlock);
 				activeTimeblock
-					.getColumn(props.versionNumber)
+					.getColumn(props.timeblockColumnId)
 					?.addTaskBlock(taskBlock.getId());
+
+				await client.mutation('addTimeblockTaskBlock', {
+					taskBlockId: taskBlock.getId(),
+					timeblockColumnId: props.timeblockColumnId,
+					startMinute,
+					endMinute,
+				});
 			} else if ('sourceTaskBlockId' in payload) {
 				const taskBlock = activeTimeblock.getTaskBlock(
 					payload.sourceTaskBlockId
@@ -98,14 +103,14 @@ function onDrop(event: DragEvent) {
 				if (taskBlock === undefined) {
 					displayError(`Task block is undefined.`);
 				} else {
-					taskBlock.setStartTimestamp(startTimestamp);
-					taskBlock.setEndTimestamp(endTimestamp);
-					const sourceColumnVersionNumber = taskBlock.getColumnVersionNumber()!;
+					taskBlock.setStartMinute(startMinute);
+					taskBlock.setEndMinute(endMinute);
+					const sourceTimeblockColumnId = taskBlock.getTimeblockColumnId()!;
 					activeTimeblock
-						.getColumn(sourceColumnVersionNumber)
+						.getColumn(sourceTimeblockColumnId)
 						?.removeTaskBlock(taskBlock.getId());
 					activeTimeblock
-						.getColumn(props.versionNumber)
+						.getColumn(props.timeblockColumnId)
 						?.addTaskBlock(taskBlock.getId());
 				}
 			}
@@ -129,13 +134,13 @@ function onDrop(event: DragEvent) {
 		></div>
 		<TimeblockColumnBackground
 			style="grid-row: 1 / -1; grid-column: 1 / -1"
-			:column-version-number="versionNumber"
+			:column-version-number="timeblockId"
 		/>
 		<TimeblockTaskBlock
 			v-for="(taskBlock, i) of taskBlocks"
 			:key="taskBlock.getId()"
 			:task-block-id="taskBlock.getId()"
-			:column-version-number="versionNumber"
+
 			:height-ratio="taskBlockHeightRatios[i]!"
 		/>
 	</div>

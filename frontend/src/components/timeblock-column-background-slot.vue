@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const props = defineProps<{
-	columnVersionNumber: number;
 	startDayMinute: number;
 	endDayMinute: number;
 }>();

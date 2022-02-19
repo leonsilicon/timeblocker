@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import type { Task } from '~f/classes/task';
 import type { TaskBlock } from '~f/classes/task-block';
 import { TimeblockColumn } from '~f/classes/timeblock-column';
@@ -109,13 +110,13 @@ export class Timeblock {
 		this.columns.push(
 			new TimeblockColumn({
 				timeblock: this,
-				versionNumber: this.columns.length,
+				id: nanoid(),
 			})
 		);
 	}
 
-	public getColumn(index: number) {
-		return this.columns[index];
+	public getColumn(id: string) {
+		return this.columns.find((c) => c.getId() === id);
 	}
 
 	public getDate() {

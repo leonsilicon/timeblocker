@@ -4,10 +4,10 @@ import type { Timeblock } from '~f/classes/timeblock';
 export type TaskBlockConstructorProps = {
 	id: string;
 	task: Task;
-	startTimestamp: number;
-	endTimestamp: number;
+	startMinute: number;
+	endMinute: number;
 	timeblock: Timeblock;
-	columnVersionNumber: number;
+	timeblockColumnId: string | undefined;
 };
 
 /**
@@ -25,14 +25,14 @@ export class TaskBlock {
 	private task: Task;
 
 	/**
-	 * The UNIX timestamp of the start time of this block
+	 * The UNIX minute of the start time of this block
 	 */
-	private startTimestamp: number;
+	private startMinute: number;
 
 	/**
-	 * The UNIX timestamp of the end time of this block
+	 * The UNIX minute of the end time of this block
 	 */
-	private endTimestamp: number;
+	private endMinute: number;
 
 	/**
 	 * The timeblock this task block belongs to.
@@ -42,32 +42,32 @@ export class TaskBlock {
 	/**
 	 * The timeblock column this task block belongs to.
 	 */
-	private columnVersionNumber: number | undefined;
+	private timeblockColumnId: string | undefined;
 
 	/**
 	 * Creates a new task block.
 	 * @param props The properties to set on the task block.
 	 * @param props.id The ID of the task block.
 	 * @param props.task The task associated with the task block.
-	 * @param props.startTimestamp The start timestamp of the task block.
-	 * @param props.endTimestamp The end timestamp of the task block.
+	 * @param props.startMinute The start minute of the task block.
+	 * @param props.endMinute The end minute of the task block.
 	 * @param props.timeblock The timeblock the task block belongs to.
-	 * @param props.columnVersionNumber The timeblock column the task block belongs to.
+	 * @param props.timeblockColumnId The timeblock column the task block belongs to.
 	 */
 	constructor({
 		id,
 		task,
-		startTimestamp,
-		endTimestamp,
+		startMinute,
+		endMinute,
 		timeblock,
-		columnVersionNumber,
+		timeblockColumnId,
 	}: TaskBlockConstructorProps) {
 		this.id = id;
 		this.timeblock = timeblock;
 		this.task = task;
-		this.setStartTimestamp(startTimestamp);
-		this.setEndTimestamp(endTimestamp);
-		this.setColumnVersionNumber(columnVersionNumber);
+		this.setStartMinute(startMinute);
+		this.setEndMinute(endMinute);
+		this.setTimeblockColumnId(timeblockColumnId);
 	}
 
 	/**
@@ -95,66 +95,62 @@ export class TaskBlock {
 	}
 
 	/**
-	 * Gets the start timestamp of the task block.
-	 * @returns The start timestamp of the task block.
+	 * Gets the start minute of the task block.
+	 * @returns The start minute of the task block.
 	 */
-	getStartTimestamp() {
-		return this.startTimestamp;
+	getStartMinute() {
+		return this.startMinute;
 	}
 
 	/**
-	 * Sets the start timestamp of the task block and verifies that the timestamp
-	 * is a valid UNIX timestamp.
-	 * @param timestamp The new start timestamp of the task block.
+	 * Sets the start minute of the task block and verifies that the minute
+	 * is a valid UNIX minute.
+	 * @param minute The new start minute of the task block.
 	 */
-	setStartTimestamp(timestamp: number) {
-		if (timestamp === undefined) {
-			throw new Error('startTimestamp cannot be undefined.');
+	setStartMinute(minute: number) {
+		if (minute === undefined) {
+			throw new Error('startMinute cannot be undefined.');
 		}
 
-		// Verifies that the timestamp is in UNIX seconds and not milliseconds
-		if (timestamp.toString().length !== 10) {
-			throw new Error(
-				`Timestamp must be in UNIX seconds, received ${timestamp}`
-			);
+		// Verifies that the minute is in UNIX seconds and not milliseconds
+		if (minute.toString().length !== 10) {
+			throw new Error(`Minute must be in UNIX seconds, received ${minute}`);
 		}
 
-		this.startTimestamp = timestamp;
+		this.startMinute = minute;
 	}
 
 	/**
-	 * Gets the end timestamp of the task block.
-	 * @returns The end timestamp of the task block.
+	 * Gets the end minute of the task block.
+	 * @returns The end minute of the task block.
 	 */
-	getEndTimestamp() {
-		return this.endTimestamp;
+	getEndMinute() {
+		return this.endMinute;
 	}
 
 	/**
-	 * Sets the end timestamp of the task block and verifies that the timestamp
-	 * is a valid UNIX timestamp.
-	 * @param timestamp The new end timestamp of the task block.
+	 * Sets the end minute of the task block and verifies that the minute
+	 * is a valid UNIX minute.
+	 * @param minute The new end minute of the task block.
 	 */
-	setEndTimestamp(timestamp: number) {
-		if (timestamp === undefined) {
-			throw new Error('endTimestamp cannot be undefined.');
+	setEndMinute(minute: number) {
+		if (minute === undefined) {
+			throw new Error('endMinute cannot be undefined.');
 		}
 
-		// Verifies that the timestamp is in UNIX seconds and not milliseconds
-		if (timestamp.toString().length !== 10) {
-			throw new Error(
-				`Timestamp must be in UNIX seconds, received ${timestamp}`
-			);
+		// Verifies that the minute is in UNIX seconds and not milliseconds
+		if (minute.toString().length !== 10) {
+			throw new Error(`Minute must be in UNIX seconds, received ${minute}`);
 		}
 
-		this.endTimestamp = timestamp;
+		this.endMinute = minute;
 	}
 
-	public getColumnVersionNumber() {
-		return this.columnVersionNumber;
+	public getTimeblockColumnId() {
+		return this.timeblockColumnId;
 	}
 
-	public setColumnVersionNumber(columnVersionNumber: number | undefined) {
-		this.columnVersionNumber = columnVersionNumber;
+	public setTimeblockColumnId(timeblockColumnId: string | undefined) {
+		this.timeblockColumnId = timeblockColumnId;
 	}
 }

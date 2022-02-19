@@ -47,3 +47,30 @@ export const timeblockMiddleware: MiddlewareFunction<
 
 	return next({ ctx: { ...ctx, timeblockId: result.data.timeblockId } });
 };
+
+export const timeblockColumnIdInput = z.object({
+	timeblockColumnId: z.string(),
+});
+
+export const timeblockColumnMiddleware: MiddlewareFunction<
+	Context & { accountId: string; timeblockId: string },
+	Context & {
+		accountId: string;
+		timeblockId: string;
+		timeblockColumnId: string;
+	}
+> = async ({ next, ctx, rawInput }) => {
+	const result = timeblockColumnIdInput.safeParse(rawInput);
+	if (!result.success) {
+		throwTrpcError(trpcError.timeblockIdNotProvided);
+	}
+
+	await verifyTimeblockOwner(ctx, {
+		accountId: ctx.accountId,
+		timeblockId: result.data.timeblockColumnId,
+	});
+
+	return next({
+		ctx: { ...ctx, timeblockColumnId: result.data.timeblockColumnId },
+	});
+};
