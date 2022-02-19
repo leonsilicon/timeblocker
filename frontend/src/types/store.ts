@@ -1,7 +1,13 @@
 import type { Timeblock } from '~f/classes/timeblock';
+import type { TimeblockListing } from '~f/types/timeblock';
 
 export type TimeblockStoreState = {
 	activeTimeblockId: string | undefined;
+
+	/**
+	 * A list of the user's timeblocks
+	 */
+	timeblockListings: TimeblockListing[];
 
 	/**
 	 * Whether the task dock is open

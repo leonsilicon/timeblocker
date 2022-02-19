@@ -4,21 +4,29 @@ import { useRouter } from 'vue-router';
 import { client } from '~f/utils/trpc';
 import CircleSpinner from '~f/components/circle-spinner.vue';
 import TimeblockListing from '~f/components/timeblock-listing.vue';
+import { useTimeblockStore } from '~f/store/timeblock';
 
-let timeblocks = $ref<Array<{ id: string; name: string }> | null>(null);
+const timeblockStore = useTimeblockStore();
+let areTimeblockListingsLoading = $ref(true);
 // Retrieve the timeblock tasks from the server
 (async () => {
-	const serverTimeblocks = await client.query('listTimeblocks', {
+	const timeblockListings = await client.query('listTimeblocks', {
 		limit: 10,
 		skip: 0,
 	});
-	timeblocks = serverTimeblocks;
+	areTimeblockListingsLoading = false;
+	for (const { id, name } of timeblockListings) {
+		timeblockStore.addTimeblockListing({
+			timeblockId: id,
+			timeblockName: name,
+		});
+	}
 })();
 
 const router = useRouter();
 async function createNewTimeblock() {
 	const { timeblockId } = await client.mutation('createTimeblock', {
-		name: 'My Timeblock',
+		name: `My Timeblock ${timeblockStore.timeblockListings.length + 1}`,
 	});
 	await router.push(`/timeblock/${timeblockId}`);
 }
@@ -27,7 +35,7 @@ async function createNewTimeblock() {
 <template>
 	<div class="column center p-8">
 		<div class="text-6xl font-bold mb-2">Timeblocks</div>
-		<div v-if="timeblocks === null" class="row center p-4">
+		<div v-if="areTimeblockListingsLoading === true" class="row center p-4">
 			<circle-spinner class="mr-2" /> Loading...
 		</div>
 		<div v-else class="self-stretch column">
@@ -40,10 +48,13 @@ async function createNewTimeblock() {
 			</div>
 			<div class="column self-stretch gap-4">
 				<timeblock-listing
-					v-for="timeblock in timeblocks"
-					:id="timeblock.id"
-					:key="timeblock.id"
-					:name="timeblock.name"
+					v-for="{
+						timeblockId,
+						timeblockName,
+					} in timeblockStore.timeblockListings"
+					:id="timeblockId"
+					:key="timeblockId"
+					:name="timeblockName"
 				/>
 			</div>
 		</div>

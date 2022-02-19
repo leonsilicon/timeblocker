@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import VIcon from 'simple-vue-icon';
 import LoadScript from 'vue-plugin-load-script';
-import { Quasar, Notify } from 'quasar';
+import { Quasar, Notify, Dialog } from 'quasar';
 import { plugin as VueInputAutowidth } from 'vue-input-autowidth';
 import App from './app.vue';
 import './tailwind.css';
@@ -14,8 +16,8 @@ app.use(VIcon);
 app.use(VueInputAutowidth);
 app.use(Quasar, {
 	plugins: {
-		// eslint-disable-next-line @typescript-eslint/naming-convention
 		Notify,
+		Dialog,
 	},
 });
 app.use(LoadScript as any);

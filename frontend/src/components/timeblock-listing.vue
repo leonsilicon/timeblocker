@@ -2,6 +2,7 @@
 import { useRouter } from 'vue-router';
 import { mdiTrashCan } from '@mdi/js';
 import { client } from '~f/utils/trpc';
+import { useTimeblockStore } from '~f/store/timeblock';
 
 const props = defineProps<{
 	id: string;
@@ -10,10 +11,12 @@ const props = defineProps<{
 
 const router = useRouter();
 
+const timeblockStore = useTimeblockStore();
 async function deleteTimeblock() {
 	await client.mutation('deleteTimeblock', {
 		timeblockId: props.id,
 	});
+	timeblockStore.deleteTimeblock(props.id);
 }
 
 async function goToTimeblock() {
