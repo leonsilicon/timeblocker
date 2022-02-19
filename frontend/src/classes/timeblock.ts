@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid';
 import type { Task } from '~f/classes/task';
 import type { TaskBlock } from '~f/classes/task-block';
 import { TimeblockColumn } from '~f/classes/timeblock-column';
@@ -106,11 +105,11 @@ export class Timeblock {
 		return this.orderedTaskIds;
 	}
 
-	public addColumn() {
+	public addColumn(timeblockColumnId: string) {
 		this.columns.push(
 			new TimeblockColumn({
 				timeblock: this,
-				id: nanoid(),
+				id: timeblockColumnId,
 			})
 		);
 	}

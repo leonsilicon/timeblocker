@@ -70,17 +70,22 @@ model TimeblockColumn {
 }
 
 model TimeblockTask {
-  id          String    @id()
-  name        String
-  description String?
-  timeblock   Timeblock @relation(fields: [timeblockId], references: [id], onDelete: Cascade)
-  timeblockId String
+  id                 String               @id()
+  name               String
+  description        String?
+  timeblock          Timeblock            @relation(fields: [timeblockId], references: [id], onDelete: Cascade)
+  timeblockId        String
+  TimeblockTaskBlock TimeblockTaskBlock[]
 }
 
 model TimeblockTaskBlock {
-  id                String          @id()
-  startMinute       Int
-  endMinute         Int
+  id          String @id()
+  startMinute Int
+  endMinute   Int
+
+  task   TimeblockTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId String
+
   timeblockColumn   TimeblockColumn @relation(fields: [timeblockColumnId], references: [id], onDelete: Cascade)
   timeblockColumnId String
 }

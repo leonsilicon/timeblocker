@@ -5,6 +5,7 @@ import { registrationRouter } from '~b/routes/registration.js';
 import { timeblockCrudRouter } from '~b/routes/timeblock/crud.js';
 import { timeblockTaskRouter } from '~b/routes/timeblock/task.js';
 import { timeblockTaskBlockRouter } from '~b/routes/timeblock/task-block.js';
+import { timeblockColumnRouter } from '~b/routes/timeblock/column.js';
 
 export const getAppRouter = onetime(() =>
 	createRouter()
@@ -13,4 +14,5 @@ export const getAppRouter = onetime(() =>
 		.merge(timeblockCrudRouter)
 		.merge(timeblockTaskRouter)
 		.merge(timeblockTaskBlockRouter)
+		.merge(timeblockColumnRouter)
 );

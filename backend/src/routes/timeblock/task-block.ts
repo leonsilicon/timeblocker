@@ -29,12 +29,14 @@ export const timeblockTaskBlockRouter = createRouter()
 			});
 		},
 	})
-	.query('listTimeblockTaskBlocks', {
+	.query('getTimeblockTaskBlocks', {
 		input: timeblockIdInput,
 		async resolve({ ctx }) {
 			const timeblockTaskBlocks = await ctx.prisma.timeblockTaskBlock.findMany({
 				select: {
 					id: true,
+					taskId: true,
+					timeblockColumnId: true,
 					startMinute: true,
 					endMinute: true,
 				},

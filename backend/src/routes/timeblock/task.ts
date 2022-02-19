@@ -28,7 +28,7 @@ export const timeblockTaskRouter = createRouter()
 			});
 		},
 	})
-	.query('listTimeblockTasks', {
+	.query('getTimeblockTasks', {
 		input: timeblockIdInput.merge(
 			z.object({
 				skip: z.number(),

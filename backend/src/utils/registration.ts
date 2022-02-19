@@ -40,6 +40,7 @@ export async function createAccount(
 	const accountId = nanoid();
 	await ctx.prisma.account.create({
 		data: {
+			id: accountId,
 			email,
 			passwordHash,
 		},

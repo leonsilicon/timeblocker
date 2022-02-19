@@ -16,6 +16,7 @@ export const timeblockColumnRouter = createRouter()
 			await ctx.prisma.timeblockColumn.create({
 				data: {
 					id: columnId,
+					timeblockId: ctx.timeblockId,
 				},
 			});
 		},
