@@ -7,6 +7,7 @@ import LoadScript from 'vue-plugin-load-script';
 import { Quasar, Notify, Dialog } from 'quasar';
 import { plugin as VueInputAutowidth } from 'vue-input-autowidth';
 import App from './app.vue';
+import 'quasar/src/css/index.sass';
 import './tailwind.css';
 import { router } from '~f/router';
 import 'tw-elements';
