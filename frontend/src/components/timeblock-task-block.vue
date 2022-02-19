@@ -14,8 +14,8 @@ const task = $computed(() => taskBlock.getTask());
 
 const timeblockTaskBlockStyle = $computed(() => ({
 	'grid-column': '1 / span 1',
-	'grid-row-start': 1 + taskBlock.getStartMinute() / 60,
-	'grid-row-end': 1 + taskBlock.getEndMinute() / 60,
+	'grid-row-start': 1 + taskBlock.getStartMinute(),
+	'grid-row-end': 1 + taskBlock.getEndMinute(),
 }));
 
 function onDragStart(event: DragEvent) {

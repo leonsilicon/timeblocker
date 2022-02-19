@@ -18,6 +18,33 @@ const props = defineProps<{
 
 const timeblockStore = useTimeblockStore();
 
+(async () => {
+	const timeblockTaskBlocks = await client.query('getTimeblockTaskBlocks', {
+		timeblockColumnId: props.timeblockColumnId,
+	});
+
+	const timeblock = timeblockStore.activeTimeblock;
+
+	for (const {
+		taskId,
+		startMinute,
+		endMinute,
+		timeblockColumnId,
+		id,
+	} of timeblockTaskBlocks) {
+		const taskBlock = new TaskBlock({
+			id,
+			startMinute,
+			endMinute,
+			timeblockColumnId,
+			task: timeblock.getTask(taskId),
+			timeblock,
+		});
+		timeblock.addTaskBlock(taskBlock);
+		timeblock.getColumn(timeblockColumnId)?.addTaskBlock(id);
+	}
+})();
+
 const taskBlocks = $computed(
 	() =>
 		timeblockStore.activeTimeblock
@@ -91,6 +118,7 @@ async function onDrop(event: DragEvent) {
 
 				await client.mutation('addTimeblockTaskBlock', {
 					taskBlockId: taskBlock.getId(),
+					taskId: payload.taskId,
 					timeblockColumnId: props.timeblockColumnId,
 					startMinute,
 					endMinute,

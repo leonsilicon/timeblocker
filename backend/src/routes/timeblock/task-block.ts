@@ -13,24 +13,29 @@ export const timeblockTaskBlockRouter = createRouter()
 	.mutation('addTimeblockTaskBlock', {
 		input: timeblockColumnIdInput.merge(
 			z.object({
+				taskId: z.string(),
 				taskBlockId: z.string(),
 				startMinute: z.number(),
 				endMinute: z.number(),
 			})
 		),
-		async resolve({ ctx, input: { taskBlockId, endMinute, startMinute } }) {
+		async resolve({
+			ctx,
+			input: { taskBlockId, endMinute, startMinute, taskId },
+		}) {
 			await ctx.prisma.timeblockTaskBlock.create({
 				data: {
 					timeblockColumnId: ctx.timeblockColumnId,
 					endMinute,
 					id: taskBlockId,
+					taskId,
 					startMinute,
 				},
 			});
 		},
 	})
 	.query('getTimeblockTaskBlocks', {
-		input: timeblockIdInput,
+		input: timeblockColumnIdInput,
 		async resolve({ ctx }) {
 			const timeblockTaskBlocks = await ctx.prisma.timeblockTaskBlock.findMany({
 				select: {
