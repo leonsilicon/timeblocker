@@ -20,7 +20,6 @@ let newTaskName = $ref('');
 let newTaskDescription = $ref('');
 const taskNameInputEl = $ref<HTMLInputElement>();
 const taskDescriptionInputEl = $ref<HTMLInputElement>();
-let focusedTextbox = $ref<'name' | 'description' | undefined>();
 
 /**
  * Adds the task to the store only if the task name isn't empty
@@ -54,26 +53,26 @@ async function addTask() {
 	isNewTaskTemplateVisible = false;
 }
 
-async function onTaskNameFocusOut() {
-	if (focusedTextbox !== undefined && focusedTextbox !== 'name') return;
-	await addTask();
+async function onTaskNameFocusOut(event: FocusEvent) {
+	if (event.relatedTarget !== taskDescriptionInputEl) {
+		await addTask();
+	}
 }
 
-async function onTaskDescriptionFocusOut() {
-	if (focusedTextbox !== undefined && focusedTextbox !== 'description') return;
-	await addTask();
+async function onTaskDescriptionFocusOut(event: FocusEvent) {
+	if (event.relatedTarget !== taskNameInputEl) {
+		await addTask();
+	}
 }
 
 function onTaskNameKeydown(event: KeyboardEvent) {
 	if (event.key === 'Enter') {
-		focusedTextbox = 'name';
 		taskDescriptionInputEl.focus();
 	}
 }
 
 function onTaskDescriptionKeydown(event: KeyboardEvent) {
 	if (event.key === 'Enter') {
-		focusedTextbox = undefined;
 		// This blur will automatically trigger the `onFocusOut` callback
 		taskDescriptionInputEl.blur();
 	}
@@ -105,7 +104,6 @@ async function onAddTaskClick() {
 					placeholder="Task Name"
 					type="text"
 					class="bg-red-100 outline-none w-full px-4"
-					@focus="focusedTextbox = 'name'"
 					@focusout="onTaskNameFocusOut"
 					@keydown="onTaskNameKeydown"
 				/>
@@ -115,7 +113,6 @@ async function onAddTaskClick() {
 					placeholder="Task Description"
 					type="text"
 					class="bg-red-100 outline-none w-full px-4 text-sm"
-					@focus="focusedTextbox = 'description'"
 					@focusout="onTaskDescriptionFocusOut"
 					@keydown="onTaskDescriptionKeydown"
 				/>
