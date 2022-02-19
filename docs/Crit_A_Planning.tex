@@ -1,10 +1,17 @@
-\documentclass[12pt, notitlepage]{report}
+\documentclass[12pt, notitlepage]{article}
 \usepackage[margin=1in]{geometry}
 \usepackage{tabularx}
 \usepackage{xltabular}
 \usepackage{xcolor}
 \usepackage{fontspec}
 \usepackage{ragged2e}
+\usepackage{bashful}
+\usepackage{shellesc}
+
+\newcommand\wordcount{%
+\immediate\write18{texcount -sub=section \jobname.tex | grep "Section" | sed -e 's/+.*//' | sed -n \thesection p > 'out/count.txt'}%
+\noindent Word count: \input{out/count.txt}words
+}
 
 \title{Criterion A: Planning}
 \definecolor{msblue}{HTML}{5AB5D8}
@@ -19,19 +26,20 @@
 \\
 \textbf{Advisor:} Mark Si (my dad)
 
-\section*{1. Problem Description}
-Many people, especially students, have many tasks they need to finish in a day.
-However, an unstructured plan for a day can be inefficient in terms of spending time.
-Luckily, there's a solution called Timeboxing that encourages people to schedule the tasks they want to complete in a day with concrete start and end times.
-Timeboxing is beneficial for many reasons: it gives students a clear idea and goal of how they would like to spend their time in a day, it reduces the friction between starting new tasks, and it also helps students focus on a specific task because they explicitly decide to work on a single task, thereby preventing multitasking which is bad for becoming fully productive.
-While Timeboxing is a powerful strategy, there's no good online solution that solely focuses on this scheduling strategy; current solutions like Google Calendar make this process extremely difficult and time-consuming.
-Thus, I want to create an app that allows students to easily apply the strategy of timeboxing into their schedule in the most simple and straightforward way possible.
+\section{Problem Description}
+Many people, especially students like me, have many tasks they need to finish in a day.
+However, an unstructured daily plan can be inefficient: that's where Timeblocking comes in.
+Timeblocking is a strategy where you dedicate chunks of time in your day to work on specific tasks.
+I use timeblocking in my daily life to help keep my tasks under control.
+While timeblocking is a powerful strategy, there's no online program focused on timeblocking: current solutions like Google Calendar make this process difficult and time-consuming.
+Thus, I want to create an app that allows me (and other students!) to easily create a timeblocking schedule that will sync between multiple devices.
 
-\section*{2. Proposed Solution}
-My app, named Timeblocker, will provide a simple and straightforward way to practice this scheduling strategy that will help students create a better structure for their day that will allow them to have a clear focus of what they need to work on throughout their day.
-My app will contain two parts: task boxes and a schedule.
-The boxes will represent tasks, and the user will be able to drag the boxes onto the schedule, where they'll be able to resize the boxes to fit the time on the schedule during when they would like to work on it.
-The user can create and reuse task blocks, so that they don't need to create a separate event each time.
+\bigskip
+\wordcount
+
+\section{Proposed Solution}
+My app, Timeblocker, will provide an interface that allows students to add tasks to a daily timeblocking schedule.
+My app will contain two parts: task boxes and a schedule. The boxes will represent tasks, and the user will be able to drag the boxes onto the schedule, where they'll be able to resize the boxes to fit the time on the schedule during when they would like to work on it. The user can create and reuse task blocks, so that they don't need to create a separate event each time.
 
 Each task block will have a title (the name of the task), a description, and extra information based on the box type.
 There will be multiple types of boxes, such as a school based box, an entertainment box, etc.
@@ -45,10 +53,13 @@ Optimally, users should be able to simply visit a website to plan out their day 
 This would also make their schedule accessible from anywhere, including at school.
 I chose to use TypeScript instead of JavaScript because TypeScript will help eliminate as many type errors as possible from typos and/or mixing up variables, and it will also help with classes by throwing errors if I try calling a class method that doesn't exist on a certain class.
 
-\section*{3. Functionality}
+\bigskip
+\wordcount
+
+\section{Functionality}
 \begin{itemize}
-	\item Create, edit, duplicate, and delete task boxes
-	\item Drag task boxes onto the schedule
+	\item Create, edit, and delete tasks
+	\item Drag tasks onto the schedule to create task blocks
 	\item Categorize task boxes to have specific features (e.g. task box with subtasks)
 	\item Import/export schedule as a file
 	\item Creating multiple schedules
@@ -61,10 +72,10 @@ I chose to use TypeScript instead of JavaScript because TypeScript will help eli
 	\item Schedule autosave every time changes are made
 \end{itemize}
 
-\section*{4. Target Market}
+\section{Target Market}
 The target market of this software is people that are looking to schedule their day in a way that saves them time and helps them get more done in a day.
 
-\section*{5. Solution Mastery Aspect}
+\section{Solution Mastery Aspect}
 \textbf{IB Standard Level}
 \vspace{-6pt}
 \noindent\begin{xltabular}{\textwidth}{|p{0.3\textwidth\RaggedRight}|X|}
