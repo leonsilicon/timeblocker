@@ -1,5 +1,5 @@
-import { nanoid } from '@leonzalion/nanoid-good';
 import process from 'node:process';
+import { nanoid } from '@leonzalion/nanoid-good';
 import type { Context } from '~b/types/context.js';
 import { getSmtpTransport } from '~b/utils/smtp.js';
 

@@ -8,7 +8,8 @@ const prismaClient: FastifyPluginCallback<Record<string, never>> = async (
 	next
 ) => {
 	if (app.prisma) {
-		return next(new Error('fastify-prisma-client has been defined before'));
+		next(new Error('fastify-prisma-client has been defined before'));
+		return;
 	}
 
 	const prisma = new PrismaClient();
@@ -18,11 +19,11 @@ const prismaClient: FastifyPluginCallback<Record<string, never>> = async (
 		.decorate('prisma', { getter: () => prisma })
 		.decorateRequest('prisma', { getter: () => app.prisma })
 		.addHook('onClose', async (closedApp, done) => {
-			closedApp.prisma.$disconnect();
+			await closedApp.prisma.$disconnect();
 			done();
 		});
 
-	return next();
+	next();
 };
 
 const fastifyPrismaPlugin = fp(prismaClient, {

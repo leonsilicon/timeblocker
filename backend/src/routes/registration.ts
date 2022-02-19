@@ -26,7 +26,7 @@ export const registrationRouter = createRouter()
 			else {
 				// For the ICS IA, don't support registration via email
 				throwTrpcError(trpcError.notAtExampleEmail);
-				// await ctx.prisma.accountRegistrationRequest.create({
+				// Await ctx.prisma.accountRegistrationRequest.create({
 				// 	data: {
 				// 		confirmationCode,
 				// 		passwordHash,
@@ -67,7 +67,7 @@ export const registrationRouter = createRouter()
 			}
 
 			if (account.confirmationCode === confirmationCode) {
-				createAccount(ctx, {
+				await createAccount(ctx, {
 					email,
 					passwordHash: account.passwordHash,
 				});

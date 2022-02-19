@@ -1,5 +1,5 @@
-import { TimeblockTask } from '~s/types/task.js';
 import { z } from 'zod';
+import type { TimeblockTask } from '~s/types/task.js';
 import { accountMiddleware } from '~b/utils/auth.js';
 import { createRouter } from '~b/utils/router.js';
 import { timeblockIdInput, timeblockMiddleware } from '~b/utils/timeblock.js';

@@ -2,24 +2,24 @@ import process from 'node:process';
 import fastify from 'fastify';
 import { fastifyTRPCPlugin } from '@trpc/server/adapters/fastify/dist/trpc-server-adapters-fastify.cjs.js';
 import fastifyCookie from 'fastify-cookie';
-import { getAppRouter } from '~b/routes/router.js';
-import { createContext, getPrismaClient } from '~b/utils/index.js';
 import fastifyCors from 'fastify-cors';
 import fp from 'fastify-plugin';
+import { getAppRouter } from '~b/routes/router.js';
+import { createContext, getPrismaClient } from '~b/utils/index.js';
 
 // Ensure the prisma client is connected to the database
 await getPrismaClient();
 
 const app = fastify();
-app.register(fastifyCors);
-app.register(fp(fastifyTRPCPlugin as any), {
+void app.register(fastifyCors);
+void app.register(fp(fastifyTRPCPlugin as any), {
 	prefix: '/trpc',
 	trpcOptions: {
 		router: getAppRouter(),
 		createContext,
 	},
 });
-app.register(fastifyCookie, {
+void app.register(fastifyCookie, {
 	secret: process.env.APP_SECRET,
 	parseOptions: {
 		httpOnly: false,

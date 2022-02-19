@@ -1,4 +1,4 @@
-import { CreateFastifyContextOptions } from '@trpc/server/adapters/fastify';
+import type { CreateFastifyContextOptions } from '@trpc/server/adapters/fastify/dist/trpc-server-adapters-fastify.cjs.js';
 import type { Context } from '~b/types/context.js';
 import { getPrismaClient } from '~b/utils/prisma.js';
 
