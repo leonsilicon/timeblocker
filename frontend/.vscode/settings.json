@@ -1,3 +1,7 @@
 {
-	"typescript.preferences.importModuleSpecifierEnding": "auto"
+	"typescript.preferences.importModuleSpecifierEnding": "auto",
+	"volar.lowPowerMode": true,
+	"volar.autoCompleteRefs": false,
+	"javascript.suggest.autoImports": false,
+	"typescript.suggest.autoImports": false
 }
