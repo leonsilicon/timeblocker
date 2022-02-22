@@ -2,6 +2,10 @@
 import { useAppStore } from '~f/store/app';
 import { LocalStorageKey } from '~f/types/local-storage';
 
+(async() => {
+	// Pings heroku so the Dyno wakes up earlier
+	await client.query('ping');
+})();
 const appStore = useAppStore();
 
 const sessionToken = window.localStorage.getItem(LocalStorageKey.sessionToken);

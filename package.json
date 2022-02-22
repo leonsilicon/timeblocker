@@ -11,6 +11,8 @@
 	},
 	"type": "module",
 	"scripts": {
+		"heroku-preinstall": "rm -rf frontend scripts",
+		"heroku-postinstall": "pnpm build --filter=./backend",
 		"up": "docker compose up",
 		"gen": "pnpm gen --filter=./backend",
 		"migrate": "pnpm migrate --filter=./backend",

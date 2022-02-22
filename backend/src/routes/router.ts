@@ -15,4 +15,9 @@ export const getAppRouter = onetime(() =>
 		.merge(timeblockTaskRouter)
 		.merge(timeblockTaskBlockRouter)
 		.merge(timeblockColumnRouter)
+		.query('ping', {
+			resolve() {
+				return 'pong';
+			},
+		})
 );

@@ -1,0 +1,1 @@
+web: node ./backend/dist/backend/src/bin/start.js
