@@ -29,9 +29,13 @@ export const trpcError = defineErrors({
 		code: 'BAD_REQUEST',
 		message: 'Email must end in @example.com',
 	},
-	badUsernamePassword: {
+	emailAlreadyExists: {
 		code: 'BAD_REQUEST',
-		message: 'Username or password not found.',
+		message: 'Email already exists.',
+	},
+	badEmailPassword: {
+		code: 'BAD_REQUEST',
+		message: 'Email or password not found.',
 	},
 	timeblockNotFound: {
 		code: 'BAD_REQUEST',

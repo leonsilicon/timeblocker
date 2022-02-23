@@ -73,74 +73,105 @@ const taskBlockShadowStyle = reactive({
 
 const timeblockColumnEl = $ref<HTMLDivElement>();
 function onDragOver(event: DragEvent) {
-	const y = event.clientY - timeblockColumnEl.getBoundingClientRect().top;
+	const { activeDraggingTaskBlock } = timeblockStore;
+
 	isTaskBlockShadowActive = true;
-	const nearest15 = Math.round(y / 15) * 15;
-	taskBlockShadowStyle['grid-row-start'] = nearest15 + 1;
-	taskBlockShadowStyle['grid-row-end'] = nearest15 + 1 + 60;
+
+	if (activeDraggingTaskBlock === undefined) {
+		const y = event.pageY - timeblockColumnEl.getBoundingClientRect().y;
+		const nearest15 = Math.round(y / 15) * 15;
+		taskBlockShadowStyle['grid-row-start'] = nearest15 + 1;
+		taskBlockShadowStyle['grid-row-end'] = nearest15 + 1 + 60;
+	} else {
+		const taskBlock = timeblockStore.activeTimeblock.getTaskBlock(
+			activeDraggingTaskBlock.id
+		);
+		const y =
+			taskBlock.getStartMinute() +
+			(event.pageY - activeDraggingTaskBlock.initialMouseY);
+		const nearest15 = Math.round(y / 15) * 15;
+		taskBlockShadowStyle['grid-row-start'] = nearest15 + 1;
+		taskBlockShadowStyle['grid-row-end'] =
+			nearest15 + 1 + (taskBlock.getEndMinute() - taskBlock.getStartMinute());
+	}
+}
+
+function onDragLeave() {
+	isTaskBlockShadowActive = false;
 }
 
 async function onDrop(event: DragEvent) {
 	isTaskBlockShadowActive = false;
 	const dropDataString = event.dataTransfer?.getData('text');
-	if (dropDataString !== undefined) {
-		const dropData = JSON.parse(dropDataString) as TaskBoxDropData;
-		if (dropData.type === TaskBoxDropType.taskBoxDrop) {
-			const { payload } = dropData;
+	const { activeDraggingTaskBlock } = timeblockStore;
+	if (activeDraggingTaskBlock === undefined) return;
+	if (dropDataString === undefined) return;
+	const dropData = JSON.parse(dropDataString) as TaskBoxDropData;
+	if (dropData.type === TaskBoxDropType.taskBoxDrop) {
+		const { payload } = dropData;
 
+		const { activeTimeblock } = timeblockStore;
+
+		if ('taskId' in payload) {
 			const y = event.clientY - timeblockColumnEl.getBoundingClientRect().top;
-			const nearest15 = Math.round(y / 15) * 15;
+			const startMinute = Math.round(y / 15) * 15;
+			const endMinute = startMinute + 60; // Tasks are by default 1 hour long
+			const task = activeTimeblock.getTask(payload.taskId);
+			if (task === undefined) {
+				displayError('Task not found.');
+				return;
+			}
 
-			const { activeTimeblock } = timeblockStore;
-			const startMinute = nearest15;
-			const endMinute = nearest15 + 60;
+			const taskBlock = new TaskBlock({
+				id: nanoid(),
+				timeblock: activeTimeblock,
+				task,
+				startMinute,
+				endMinute,
+				timeblockColumnId: props.timeblockColumnId,
+			});
 
-			if ('taskId' in payload) {
-				const task = activeTimeblock.getTask(payload.taskId);
-				if (task === undefined) {
-					displayError('Task not found.');
-					return;
-				}
+			activeTimeblock.addTaskBlock(taskBlock);
+			activeTimeblock
+				.getColumn(props.timeblockColumnId)
+				?.addTaskBlock(taskBlock.getId());
 
-				const taskBlock = new TaskBlock({
-					id: nanoid(),
-					timeblock: activeTimeblock,
-					task,
-					startMinute,
-					endMinute,
-					timeblockColumnId: props.timeblockColumnId,
-				});
+			await client.mutation('addTimeblockTaskBlock', {
+				taskBlockId: taskBlock.getId(),
+				taskId: payload.taskId,
+				timeblockColumnId: props.timeblockColumnId,
+				startMinute,
+				endMinute,
+			});
+		} else if ('sourceTaskBlockId' in payload) {
+			const taskBlock = activeTimeblock.getTaskBlock(payload.sourceTaskBlockId);
 
-				activeTimeblock.addTaskBlock(taskBlock);
+			const y =
+				taskBlock.getStartMinute() +
+				(event.pageY - activeDraggingTaskBlock.initialMouseY);
+			const startMinute = Math.round(y / 15) * 15;
+			const endMinute =
+				startMinute + taskBlock.getEndMinute() - taskBlock.getStartMinute();
+
+			if (taskBlock === undefined) {
+				displayError(`Task block is undefined.`);
+			} else {
+				taskBlock.setStartMinute(startMinute);
+				taskBlock.setEndMinute(endMinute);
+				const sourceTimeblockColumnId = taskBlock.getTimeblockColumnId()!;
+				activeTimeblock
+					.getColumn(sourceTimeblockColumnId)
+					?.removeTaskBlock(taskBlock.getId());
 				activeTimeblock
 					.getColumn(props.timeblockColumnId)
 					?.addTaskBlock(taskBlock.getId());
 
-				await client.mutation('addTimeblockTaskBlock', {
+				await client.mutation('updateTimeblockTaskBlock', {
+					timeblockColumnId: sourceTimeblockColumnId,
 					taskBlockId: taskBlock.getId(),
-					taskId: payload.taskId,
-					timeblockColumnId: props.timeblockColumnId,
 					startMinute,
 					endMinute,
 				});
-			} else if ('sourceTaskBlockId' in payload) {
-				const taskBlock = activeTimeblock.getTaskBlock(
-					payload.sourceTaskBlockId
-				);
-
-				if (taskBlock === undefined) {
-					displayError(`Task block is undefined.`);
-				} else {
-					taskBlock.setStartMinute(startMinute);
-					taskBlock.setEndMinute(endMinute);
-					const sourceTimeblockColumnId = taskBlock.getTimeblockColumnId()!;
-					activeTimeblock
-						.getColumn(sourceTimeblockColumnId)
-						?.removeTaskBlock(taskBlock.getId());
-					activeTimeblock
-						.getColumn(props.timeblockColumnId)
-						?.addTaskBlock(taskBlock.getId());
-				}
 			}
 		}
 	}
@@ -154,6 +185,7 @@ async function onDrop(event: DragEvent) {
 		class="border-b border-gray-200 -z-1"
 		@drop="onDrop"
 		@dragover.prevent="onDragOver"
+		@dragleave.prevent="onDragLeave"
 	>
 		<div
 			v-if="isTaskBlockShadowActive"

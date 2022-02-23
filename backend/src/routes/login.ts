@@ -22,7 +22,7 @@ export const loginRouter = createRouter().mutation('login', {
 		});
 
 		if (account === null) {
-			throwTrpcError(trpcError.badUsernamePassword);
+			throwTrpcError(trpcError.badEmailPassword);
 		}
 
 		if (await bcrypt.compare(password, account.passwordHash)) {
@@ -30,7 +30,7 @@ export const loginRouter = createRouter().mutation('login', {
 				accountId: account.id,
 			});
 		} else {
-			throwTrpcError(trpcError.badUsernamePassword);
+			throwTrpcError(trpcError.badEmailPassword);
 		}
 	},
 });

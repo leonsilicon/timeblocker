@@ -51,7 +51,7 @@ const features = [
 	</div>
 
 	<!-- Features -->
-	<div class="mb-8 row items-stretch px-8 gap-4">
+	<div class="mx-auto mb-8 row items-stretch px-8 gap-4 max-w-5xl">
 		<div
 			v-for="(feature, index) in features"
 			:key="index"

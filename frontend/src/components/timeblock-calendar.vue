@@ -3,6 +3,7 @@ import { mdiPlusCircleOutline } from '@mdi/js';
 import { nanoid } from 'nanoid';
 import TimeblockColumns from '~f/components/timeblock-columns.vue';
 import { useTimeblockStore } from '~f/store/timeblock';
+import { client } from '~f/utils/trpc';
 
 /**
  * @param hour Hour from 0-25 (25 = 12AM of the next day)
@@ -32,8 +33,12 @@ const timeblockCalendarStyle = $computed(() => ({
 	}, 1fr) auto`,
 }));
 
-function addNewColumn() {
+async function addNewColumn() {
 	const timeblockColumnId = nanoid();
+	await client.mutation('addTimeblockColumn', {
+		columnId: timeblockColumnId,
+		timeblockId: timeblockStore.activeTimeblock.getId(),
+	});
 	timeblockStore.activeTimeblock.addColumn(timeblockColumnId);
 }
 </script>

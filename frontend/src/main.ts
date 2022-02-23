@@ -11,6 +11,7 @@ import 'quasar/src/css/index.sass';
 import './tailwind.css';
 import { router } from '~f/router';
 import 'tw-elements';
+import { displayError } from '~f/utils/error';
 
 const app = createApp(App);
 app.use(VIcon);
@@ -25,3 +26,8 @@ app.use(LoadScript as any);
 app.use(createPinia());
 app.use(router);
 app.mount('#app');
+
+app.config.errorHandler = (error) => {
+	displayError(error);
+	console.error(error);
+};

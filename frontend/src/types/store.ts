@@ -2,7 +2,20 @@ import type { Timeblock } from '~f/classes/timeblock';
 import type { TimeblockListing } from '~f/types/timeblock';
 
 export type TimeblockStoreState = {
+	/**
+	 * The ID of the timeblock the user is currently on
+	 */
 	activeTimeblockId: string | undefined;
+
+	/**
+	 * The ID of the task block that is currently being dragged
+	 */
+	activeDraggingTaskBlock:
+		| {
+				id: string;
+				initialMouseY: number;
+		  }
+		| undefined;
 
 	/**
 	 * A list of the user's timeblocks

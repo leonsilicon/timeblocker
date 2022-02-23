@@ -4,7 +4,6 @@ import { createRouter } from '~b/utils/router.js';
 import {
 	timeblockColumnIdInput,
 	timeblockColumnMiddleware,
-	timeblockIdInput,
 } from '~b/utils/timeblock.js';
 
 export const timeblockTaskBlockRouter = createRouter()
@@ -54,11 +53,13 @@ export const timeblockTaskBlockRouter = createRouter()
 		},
 	})
 	.mutation('updateTimeblockTaskBlock', {
-		input: z.object({
-			taskBlockId: z.string(),
-			startMinute: z.number().optional(),
-			endMinute: z.number().optional(),
-		}),
+		input: timeblockColumnIdInput.merge(
+			z.object({
+				taskBlockId: z.string(),
+				startMinute: z.number().optional(),
+				endMinute: z.number().optional(),
+			})
+		),
 		async resolve({ ctx, input: { startMinute, endMinute, taskBlockId } }) {
 			await ctx.prisma.timeblockTaskBlock.update({
 				data: {
@@ -72,9 +73,11 @@ export const timeblockTaskBlockRouter = createRouter()
 		},
 	})
 	.mutation('deleteTimeblockTaskBlock', {
-		input: z.object({
-			taskBlockId: z.string(),
-		}),
+		input: timeblockColumnIdInput.merge(
+			z.object({
+				taskBlockId: z.string(),
+			})
+		),
 		async resolve({ ctx, input: { taskBlockId } }) {
 			await ctx.prisma.timeblockTaskBlock.delete({
 				where: {

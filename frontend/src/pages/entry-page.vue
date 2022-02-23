@@ -3,6 +3,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { client } from '~f/utils/trpc';
 import CircleSpinner from '~f/components/circle-spinner.vue';
 import { LocalStorageKey } from '~f/types/local-storage';
+import { getErrorMessage } from '~f/utils/error';
 
 const route = useRoute();
 const router = useRouter();
@@ -27,7 +28,7 @@ async function login() {
 		window.localStorage.setItem(LocalStorageKey.sessionToken, sessionToken);
 		await router.push('/timeblocks');
 	} catch (error: unknown) {
-		entryError = (error as Error).message;
+		entryError = getErrorMessage(error);
 	} finally {
 		isRequestLoading = false;
 	}
@@ -41,13 +42,15 @@ async function register() {
 
 		entryError = '';
 		isRequestLoading = true;
-		await client.mutation('createRegistrationRequest', {
+		const { sessionToken } = await client.mutation('register', {
 			email,
 			password,
 		});
+
+		window.localStorage.setItem(LocalStorageKey.sessionToken, sessionToken);
 		await router.push('/timeblocks');
 	} catch (error: unknown) {
-		entryError = (error as Error).message;
+		entryError = getErrorMessage(error);
 	} finally {
 		isRequestLoading = false;
 	}

@@ -28,6 +28,9 @@ export const timeblockColumnRouter = createRouter()
 				select: {
 					id: true,
 				},
+				where: {
+					timeblockId: ctx.timeblockId,
+				},
 			});
 
 			return timeblockColumns;

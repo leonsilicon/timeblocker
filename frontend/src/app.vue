@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { useAppStore } from '~f/store/app';
 import { LocalStorageKey } from '~f/types/local-storage';
+import { client } from '~f/utils/trpc';
 
-(async() => {
+(async () => {
 	// Pings heroku so the Dyno wakes up earlier
 	await client.query('ping');
 })();
+
 const appStore = useAppStore();
 
 const sessionToken = window.localStorage.getItem(LocalStorageKey.sessionToken);

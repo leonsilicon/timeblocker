@@ -5,6 +5,7 @@ import type { TimeblockStoreState } from '~f/types/store';
 function createTimeblockStoreState(): TimeblockStoreState {
 	return {
 		activeTimeblockId: undefined,
+		activeDraggingTaskBlock: undefined,
 		timeblockListings: [],
 		timeblockMap: new Map(),
 		isTaskDockOpen: true,

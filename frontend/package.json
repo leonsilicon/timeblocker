@@ -24,6 +24,7 @@
 		"@quasar/extras": "^1.12.5",
 		"@tailwindcss/typography": "^0.5.1",
 		"@trpc/client": "^9.19.0",
+		"@vueuse/core": "^7.6.2",
 		"daisyui": "^1.25.4",
 		"dateformat": "^5.0.2",
 		"dayjs": "^1.10.7",
