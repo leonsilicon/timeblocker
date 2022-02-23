@@ -10,6 +10,7 @@ import { TaskBlock } from '~f/classes/task-block';
 import { TaskBoxDropData, TaskBoxDropType } from '~f/types/task-box';
 import { displayError } from '~f/utils/error';
 import { client } from '~f/utils/trpc';
+import { roundToNearest15 } from '~f/utils/round';
 
 const props = defineProps<{
 	timeblockColumnId: string;
@@ -79,7 +80,7 @@ function onDragOver(event: DragEvent) {
 
 	if (activeDraggingTaskBlock === undefined) {
 		const y = event.pageY - timeblockColumnEl.getBoundingClientRect().y;
-		const nearest15 = Math.round(y / 15) * 15;
+		const nearest15 = roundToNearest15(y);
 		taskBlockShadowStyle['grid-row-start'] = nearest15 + 1;
 		taskBlockShadowStyle['grid-row-end'] = nearest15 + 1 + 60;
 	} else {
@@ -89,7 +90,7 @@ function onDragOver(event: DragEvent) {
 		const y =
 			taskBlock.getStartMinute() +
 			(event.pageY - activeDraggingTaskBlock.initialMouseY);
-		const nearest15 = Math.round(y / 15) * 15;
+		const nearest15 = roundToNearest15(y);
 		taskBlockShadowStyle['grid-row-start'] = nearest15 + 1;
 		taskBlockShadowStyle['grid-row-end'] =
 			nearest15 + 1 + (taskBlock.getEndMinute() - taskBlock.getStartMinute());
@@ -103,9 +104,10 @@ function onDragLeave() {
 async function onDrop(event: DragEvent) {
 	isTaskBlockShadowActive = false;
 	const dropDataString = event.dataTransfer?.getData('text');
+
 	const { activeDraggingTaskBlock } = timeblockStore;
-	if (activeDraggingTaskBlock === undefined) return;
 	if (dropDataString === undefined) return;
+
 	const dropData = JSON.parse(dropDataString) as TaskBoxDropData;
 	if (dropData.type === TaskBoxDropType.taskBoxDrop) {
 		const { payload } = dropData;
@@ -144,14 +146,19 @@ async function onDrop(event: DragEvent) {
 				endMinute,
 			});
 		} else if ('sourceTaskBlockId' in payload) {
+			if (activeDraggingTaskBlock === undefined) return;
+
 			const taskBlock = activeTimeblock.getTaskBlock(payload.sourceTaskBlockId);
+			console.log(taskBlock);
 
 			const y =
 				taskBlock.getStartMinute() +
 				(event.pageY - activeDraggingTaskBlock.initialMouseY);
 			const startMinute = Math.round(y / 15) * 15;
 			const endMinute =
-				startMinute + taskBlock.getEndMinute() - taskBlock.getStartMinute();
+				startMinute + (taskBlock.getEndMinute() - taskBlock.getStartMinute());
+
+			console.log(endMinute - startMinute);
 
 			if (taskBlock === undefined) {
 				displayError(`Task block is undefined.`);
@@ -167,7 +174,7 @@ async function onDrop(event: DragEvent) {
 					?.addTaskBlock(taskBlock.getId());
 
 				await client.mutation('updateTimeblockTaskBlock', {
-					timeblockColumnId: sourceTimeblockColumnId,
+					timeblockColumnId: props.timeblockColumnId,
 					taskBlockId: taskBlock.getId(),
 					startMinute,
 					endMinute,
@@ -198,6 +205,7 @@ async function onDrop(event: DragEvent) {
 			:key="taskBlock.getId()"
 			:task-block-id="taskBlock.getId()"
 			:height-ratio="taskBlockHeightRatios[i]!"
+			:timeblock-column-id="timeblockColumnId"
 		/>
 	</div>
 </template>

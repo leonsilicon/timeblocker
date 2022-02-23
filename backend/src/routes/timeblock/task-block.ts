@@ -65,6 +65,7 @@ export const timeblockTaskBlockRouter = createRouter()
 				data: {
 					startMinute,
 					endMinute,
+					timeblockColumnId: ctx.timeblockColumnId,
 				},
 				where: {
 					id: taskBlockId,

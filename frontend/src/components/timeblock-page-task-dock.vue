@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { nanoid } from 'nanoid';
 import { nextTick } from 'vue';
+import { mdiDelete } from '@mdi/js';
 import { Task } from '~f/classes/task';
 import TimeblockTask from '~f/components/timeblock-task.vue';
 import { useTimeblockStore } from '~f/store';
+import { TaskBoxDropData, TaskBoxDropType } from '~f/types/task-box';
 import { displayError } from '~f/utils/error';
 import { client } from '~f/utils/trpc';
 
@@ -84,13 +86,63 @@ async function onAddTaskClick() {
 	await nextTick();
 	taskNameInputEl.focus();
 }
+
+let isDeleteOverlayVisible = $ref(false);
+
+function onDragOver() {
+	isDeleteOverlayVisible = true;
+}
+
+function onDragLeave() {
+	isDeleteOverlayVisible = false;
+}
+
+async function onDrop(event: DragEvent) {
+	isDeleteOverlayVisible = false;
+
+	const data = event.dataTransfer?.getData('text');
+	if (data === undefined) return;
+
+	const dropData = JSON.parse(data) as TaskBoxDropData;
+	if (dropData.type === TaskBoxDropType.taskBoxDrop) {
+		const { payload } = dropData;
+
+		if ('sourceTaskBlockId' in payload) {
+			const taskBlock = timeblockStore.activeTimeblock.getTaskBlock(
+				payload.sourceTaskBlockId
+			);
+			const columnId = taskBlock.getTimeblockColumnId()!;
+
+			timeblockStore.activeTimeblock
+				.getColumn(columnId)
+				?.removeTaskBlock(payload.sourceTaskBlockId);
+
+			await client.mutation('deleteTimeblockTaskBlock', {
+				taskBlockId: payload.sourceTaskBlockId,
+				timeblockColumnId: columnId,
+			});
+		}
+	}
+}
 </script>
 
 <template>
 	<div
 		v-show="timeblockStore.isTaskDockOpen"
-		class="items-center column shrink-0 w-[250px]"
+		class="relative items-center column shrink-0 w-[250px]"
+		@drop="onDrop"
+		@dragover.prevent="onDragOver"
+		@dragleave="onDragLeave"
 	>
+		<!-- Delete overlay -->
+		<div
+			v-if="isDeleteOverlayVisible"
+			class="rounded-md column center absolute inset-0 bg-[rgba(255,0,0,0.5)] pointer-events-none"
+		>
+			<v-icon :size="50" :icon="mdiDelete"></v-icon>
+			<div class="text-black">Delete Task Block</div>
+		</div>
+
 		<div class="font-bold text-3xl mb-2">Tasks</div>
 		<div class="btn btn-primary btn-sm min-h-2 h-2" @click="onAddTaskClick">
 			Add Task

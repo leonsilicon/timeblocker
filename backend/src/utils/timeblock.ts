@@ -36,6 +36,7 @@ export const timeblockMiddleware: MiddlewareFunction<
 	Context & { accountId: string; timeblockId: string }
 > = async ({ next, ctx, rawInput }) => {
 	const result = timeblockIdInput.safeParse(rawInput);
+
 	if (!result.success) {
 		throwTrpcError(trpcError.timeblockIdNotProvided);
 	}

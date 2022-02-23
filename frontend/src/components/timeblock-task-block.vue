@@ -3,8 +3,11 @@ import { watch } from 'vue';
 import { useMouse } from '@vueuse/core';
 import { useTimeblockStore } from '~f/store/timeblock';
 import { TaskBoxDropData, TaskBoxDropType } from '~f/types/task-box';
+import { roundToNearest15 } from '~f/utils/round';
+import { client } from '~f/utils/trpc';
 
 const props = defineProps<{
+	timeblockColumnId: string;
 	taskBlockId: string;
 	heightRatio: number;
 }>();
@@ -59,55 +62,89 @@ function onTopBorderMouseDown(event: MouseEvent) {
 	topBorderInitialMouseY = event.pageY;
 }
 
-function onTopBorderMouseUp() {
-	if (topBorderInitialMouseY !== undefined) {
-		isTopBorderDragging = false;
-		timeblockStore.activeTimeblock
-			.getTaskBlock(props.taskBlockId)
-			.setStartMinute(
-				1 + taskBlock.getStartMinute() + (mouseY - topBorderInitialMouseY)
-			);
-	}
+window.addEventListener('mouseup', async () => {
+	if (!isTopBorderDragging) return;
+	isTopBorderDragging = false;
+
+	const newStartMinute = getNewStartMinute();
+	timeblockStore.activeTimeblock
+		.getTaskBlock(props.taskBlockId)
+		.setStartMinute(newStartMinute);
+
+	await client.mutation('updateTimeblockTaskBlock', {
+		timeblockColumnId: props.timeblockColumnId,
+		taskBlockId: props.taskBlockId,
+		startMinute: newStartMinute,
+	});
 
 	topBorderInitialMouseY = undefined;
-}
+});
 
 function onBottomBorderMouseDown(event: MouseEvent) {
 	isBottomBorderDragging = true;
 	bottomBorderInitialMouseY = event.pageY;
 }
 
-function onBottomBorderMouseUp() {
-	if (bottomBorderInitialMouseY !== undefined) {
-		isBottomBorderDragging = false;
-		timeblockStore.activeTimeblock
-			.getTaskBlock(props.taskBlockId)
-			.setEndMinute(
-				1 + taskBlock.getEndMinute() + (mouseY - bottomBorderInitialMouseY)
-			);
-	}
-}
+window.addEventListener('mouseup', async () => {
+	if (!isBottomBorderDragging) return;
+
+	isBottomBorderDragging = false;
+	const newEndMinute = getNewEndMinute();
+	timeblockStore.activeTimeblock
+		.getTaskBlock(props.taskBlockId)
+		.setEndMinute(newEndMinute);
+
+	await client.mutation('updateTimeblockTaskBlock', {
+		timeblockColumnId: props.timeblockColumnId,
+		taskBlockId: props.taskBlockId,
+		endMinute: newEndMinute,
+	});
+
+	bottomBorderInitialMouseY = undefined;
+});
 
 let borderDraggingTimeblockTaskBlockStyle = $ref<{
 	gridRowStart?: number;
 	gridRowEnd?: number;
 }>({});
 
+function getNewStartMinute() {
+	if (topBorderInitialMouseY === undefined) return taskBlock.getStartMinute();
+
+	return Math.min(
+		taskBlock.getEndMinute() - 16,
+		1 +
+			roundToNearest15(
+				taskBlock.getStartMinute() + (mouseY - topBorderInitialMouseY)
+			)
+	);
+}
+
+function getNewEndMinute() {
+	if (bottomBorderInitialMouseY === undefined) return taskBlock.getEndMinute();
+
+	return Math.max(
+		taskBlock.getStartMinute() + 16,
+		1 +
+			roundToNearest15(
+				taskBlock.getEndMinute() + (mouseY - bottomBorderInitialMouseY)
+			)
+	);
+}
+
 watch(
 	() => [isTopBorderDragging, isBottomBorderDragging, mouseY],
 	() => {
 		if (isTopBorderDragging && topBorderInitialMouseY !== undefined) {
 			borderDraggingTimeblockTaskBlockStyle = {
-				gridRowStart:
-					1 + taskBlock.getStartMinute() + (mouseY - topBorderInitialMouseY),
+				gridRowStart: getNewStartMinute(),
 			};
 		} else if (
 			isBottomBorderDragging &&
 			bottomBorderInitialMouseY !== undefined
 		) {
 			borderDraggingTimeblockTaskBlockStyle = {
-				gridRowEnd:
-					1 + taskBlock.getEndMinute() + (mouseY - bottomBorderInitialMouseY),
+				gridRowEnd: getNewEndMinute(),
 			};
 		}
 	}
@@ -124,15 +161,13 @@ watch(
 		@dragend="onDragEnd"
 	>
 		<div
-			class="absolute left-0 right-0 h-2 top-0 cursor-n-resize"
+			class="absolute left-0 right-0 h-[4px] top-0 cursor-ns-resize"
 			@mousedown.stop="onTopBorderMouseDown"
-			@mouseup="onTopBorderMouseUp"
 		></div>
 		{{ task.getName() }}
 		<div
-			class="absolute left-0 right-0 h-2 bottom-0 cursor-s-resize"
+			class="absolute left-0 right-0 h-[4px] bottom-0 cursor-ns-resize"
 			@mousedown.stop="onBottomBorderMouseDown"
-			@mouseup="onBottomBorderMouseUp"
 		></div>
 	</div>
 </template>
