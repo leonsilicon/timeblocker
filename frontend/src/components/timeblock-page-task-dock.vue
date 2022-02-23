@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid-nice';
 import { nextTick } from 'vue';
 import { Task } from '~f/classes/task';
 import TimeblockTask from '~f/components/timeblock-task.vue';

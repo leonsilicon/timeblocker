@@ -31,7 +31,6 @@ importers:
 
   backend:
     specifiers:
-      '@leonzalion/nanoid-good': ^1.0.3
       '@prisma/client': ^3.9.2
       '@trpc/server': ^9.19.0
       '@types/bcrypt': ^5.0.0
@@ -47,6 +46,7 @@ importers:
       googleapis: ^94.0.0
       got: ^12.0.1
       lion-system: ^1.0.9
+      nanoid-nice: ^0.0.1
       nodemailer: ^6.7.2
       nodemon: ^2.0.15
       onetime: ^6.0.0
@@ -55,7 +55,6 @@ importers:
       typescript: ^4.5.4
       zod: ^3.11.6
     dependencies:
-      '@leonzalion/nanoid-good': 1.0.3
       '@prisma/client': 3.9.2_prisma@3.9.2
       '@trpc/server': 9.19.0
       bcrypt: 5.0.1
@@ -65,6 +64,7 @@ importers:
       fastify-plugin: 3.0.1
       googleapis: 94.0.0
       got: 12.0.1
+      nanoid-nice: 0.0.1
       nodemailer: 6.7.2
       onetime: 6.0.0
       zod: 3.11.6
@@ -86,7 +86,6 @@ importers:
       '@fullcalendar/daygrid': ^5.10.1
       '@fullcalendar/timegrid': ^5.10.1
       '@headlessui/vue': ^1.4.3
-      '@leonzalion/nanoid-good': ^1.0.4
       '@mdi/js': ^6.5.95
       '@prisma/client': ^3.9.2
       '@quasar/extras': ^1.12.5
@@ -103,7 +102,7 @@ importers:
       dayjs: ^1.10.7
       desm: ^1.2.0
       jest: ^27.4.5
-      nanoid: ^3.2.0
+      nanoid-nice: ^0.0.1
       pinia: ^2.0.11
       postcss: ^8.4.5
       quasar: ^2.5.5
@@ -125,7 +124,6 @@ importers:
       '@fullcalendar/daygrid': 5.10.1
       '@fullcalendar/timegrid': 5.10.1
       '@headlessui/vue': 1.4.3_vue@3.2.29
-      '@leonzalion/nanoid-good': 1.0.4
       '@mdi/js': 6.5.95
       '@prisma/client': 3.9.2
       '@quasar/extras': 1.12.5
@@ -135,7 +133,7 @@ importers:
       dateformat: 5.0.2
       dayjs: 1.10.7
       desm: 1.2.0
-      nanoid: 3.2.0
+      nanoid-nice: 0.0.1
       pinia: 2.0.11_typescript@4.5.5+vue@3.2.29
       quasar: 2.5.5
       simple-vue-icon: 1.1.12_vue@3.2.29
@@ -1049,20 +1047,6 @@ packages:
       - typescript
       - webpack
     dev: true
-
-  /@leonzalion/nanoid-good/1.0.3:
-    resolution: {integrity: sha512-e+XgQKZuE95zO9xWHXdqL7hNZcAtcged/wZokBaonQxDsP+QLJFJ56SoJ/6Eg6/OfSWgztt1IZQ5EpfIfDGrow==}
-    dependencies:
-      nanoid: 3.2.0
-      naughty-words: 1.2.0
-    dev: false
-
-  /@leonzalion/nanoid-good/1.0.4:
-    resolution: {integrity: sha512-WZkPvB6oGayvqOUjZvXJ4tWG4leVtT+/5tjPIDZXhqmESd9PaiOtgyITkfl4iyzJ9mk2b13Vs798XhIggbCUJw==}
-    dependencies:
-      nanoid: 3.2.0
-      naughty-words: 1.2.0
-    dev: false
 
   /@mapbox/node-pre-gyp/1.0.8:
     resolution: {integrity: sha512-CMGKi28CF+qlbXh26hDe6NxCd7amqeAzEqnS6IHeO6LoaKyM/n+Xw3HT1COdq8cuioOdlKdqn/hCmqPUOMOywg==}
@@ -5932,10 +5916,23 @@ packages:
     resolution: {integrity: sha512-bSsErQQnYdNE/qa0u2WBjZbTgngELOPgfEs+pgHEsHPNHo/CfVg2cZyc3VcCWtgEcdgxpa+IYec1ah04FlW3Gw==}
     engines: {node: '>=12.0.0'}
 
+  /nanoid-nice/0.0.1:
+    resolution: {integrity: sha512-aGB8UVC40JRaOLNy/PHir604hh74DiPhkvpR3vPb7fbRA/PCSVn64Y5/3ULSHUoxyHaFYSDbPcY3WEcz09kDDA==}
+    dependencies:
+      nanoid: 3.3.1
+      naughty-words: 1.2.0
+    dev: false
+
   /nanoid/3.2.0:
     resolution: {integrity: sha512-fmsZYa9lpn69Ad5eDn7FMcnnSR+8R34W9qJEijxYhTbfOWzr22n1QxCMzXLK+ODyW2973V3Fux959iQoUxzUIA==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
+
+  /nanoid/3.3.1:
+    resolution: {integrity: sha512-n6Vs/3KGyxPQd6uO0eH4Bv0ojGSUvuLlIHtC3Y0kEO23YRge8H9x1GCzLn28YX0H66pMkxuaeESFq4tKISKwdw==}
+    engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
+    hasBin: true
+    dev: false
 
   /natural-compare/1.4.0:
     resolution: {integrity: sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=}

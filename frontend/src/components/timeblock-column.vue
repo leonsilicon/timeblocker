@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid-nice';
 import { useTimeblockStore } from '~f/store/timeblock';
 import { TimeblockDate } from '~f/types/date';
 import { calculateTaskBlocksRatios } from '~f/utils/task-block';
