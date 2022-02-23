@@ -6,6 +6,11 @@ import { TaskBoxDropData, TaskBoxDropType } from '~f/types/task-box';
 import { roundToNearest15 } from '~f/utils/round';
 import { client } from '~f/utils/trpc';
 
+let borderDraggingTimeblockTaskBlockStyle = $ref<{
+	'grid-row-start'?: number;
+	'grid-row-end'?: number;
+}>({});
+
 const props = defineProps<{
 	timeblockColumnId: string;
 	taskBlockId: string;
@@ -78,6 +83,7 @@ window.addEventListener('mouseup', async () => {
 	});
 
 	topBorderInitialMouseY = undefined;
+	borderDraggingTimeblockTaskBlockStyle = {};
 });
 
 function onBottomBorderMouseDown(event: MouseEvent) {
@@ -101,22 +107,17 @@ window.addEventListener('mouseup', async () => {
 	});
 
 	bottomBorderInitialMouseY = undefined;
+	borderDraggingTimeblockTaskBlockStyle = {};
 });
-
-let borderDraggingTimeblockTaskBlockStyle = $ref<{
-	gridRowStart?: number;
-	gridRowEnd?: number;
-}>({});
 
 function getNewStartMinute() {
 	if (topBorderInitialMouseY === undefined) return taskBlock.getStartMinute();
 
 	return Math.min(
 		taskBlock.getEndMinute() - 16,
-		1 +
-			roundToNearest15(
-				taskBlock.getStartMinute() + (mouseY - topBorderInitialMouseY)
-			)
+		roundToNearest15(
+			taskBlock.getStartMinute() + (mouseY - topBorderInitialMouseY)
+		)
 	);
 }
 
@@ -125,10 +126,9 @@ function getNewEndMinute() {
 
 	return Math.max(
 		taskBlock.getStartMinute() + 16,
-		1 +
-			roundToNearest15(
-				taskBlock.getEndMinute() + (mouseY - bottomBorderInitialMouseY)
-			)
+		roundToNearest15(
+			taskBlock.getEndMinute() + (mouseY - bottomBorderInitialMouseY)
+		)
 	);
 }
 
@@ -137,14 +137,14 @@ watch(
 	() => {
 		if (isTopBorderDragging && topBorderInitialMouseY !== undefined) {
 			borderDraggingTimeblockTaskBlockStyle = {
-				gridRowStart: getNewStartMinute(),
+				'grid-row-start': 1 + getNewStartMinute(),
 			};
 		} else if (
 			isBottomBorderDragging &&
 			bottomBorderInitialMouseY !== undefined
 		) {
 			borderDraggingTimeblockTaskBlockStyle = {
-				gridRowEnd: getNewEndMinute(),
+				'grid-row-end': 1 + getNewEndMinute(),
 			};
 		}
 	}

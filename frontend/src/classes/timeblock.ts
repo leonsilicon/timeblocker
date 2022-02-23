@@ -118,6 +118,15 @@ export class Timeblock {
 		return this.columns.find((c) => c.getId() === id);
 	}
 
+	public deleteColumn(id: string) {
+		const columnIndex = this.columns.findIndex((c) => c.getId() === id);
+		if (columnIndex === -1) {
+			throw new Error('Column not found.');
+		}
+
+		this.columns.splice(columnIndex, 1);
+	}
+
 	public getDate() {
 		return this.date;
 	}

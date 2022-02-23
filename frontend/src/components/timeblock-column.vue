@@ -149,7 +149,6 @@ async function onDrop(event: DragEvent) {
 			if (activeDraggingTaskBlock === undefined) return;
 
 			const taskBlock = activeTimeblock.getTaskBlock(payload.sourceTaskBlockId);
-			console.log(taskBlock);
 
 			const y =
 				taskBlock.getStartMinute() +
@@ -157,8 +156,6 @@ async function onDrop(event: DragEvent) {
 			const startMinute = Math.round(y / 15) * 15;
 			const endMinute =
 				startMinute + (taskBlock.getEndMinute() - taskBlock.getStartMinute());
-
-			console.log(endMinute - startMinute);
 
 			if (taskBlock === undefined) {
 				displayError(`Task block is undefined.`);

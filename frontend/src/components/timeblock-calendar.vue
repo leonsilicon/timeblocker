@@ -19,7 +19,7 @@ function getHourString(hour: number) {
 
 function getTimeStyle({ hour, minute }: { hour: number; minute: number }) {
 	return {
-		'grid-row-start': 1 + (hour * 60 + minute),
+		'grid-row-start': 2 + (hour * 60 + minute),
 		'grid-row-end': 1 + ((hour + 1) * 60 + minute),
 	};
 }
@@ -27,7 +27,7 @@ function getTimeStyle({ hour, minute }: { hour: number; minute: number }) {
 const timeblockStore = useTimeblockStore();
 const timeblockCalendarStyle = $computed(() => ({
 	display: 'grid',
-	'grid-template-rows': 'repeat(1440, 1px)', // 1440 minutes in a day
+	'grid-template-rows': '60px repeat(1440, 1px)', // 1440 minutes in a day
 	'grid-template-columns': `60px repeat(${
 		timeblockStore.activeTimeblock.getColumns().length
 	}, 1fr) auto`,
