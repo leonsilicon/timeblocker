@@ -8,7 +8,7 @@ importers:
       '@types/node': ^17.0.14
       eslint: ^8.8.0
       lint-staged: ^12.3.4
-      lion-git-hooks: ^1.0.3
+      lion-git-hooks: ^1.0.4
       pinia: ^2.0.11
       prettier: ^2.5.1
       sync-index: ^1.0.11
@@ -23,7 +23,7 @@ importers:
       '@types/node': 17.0.14
       eslint: 8.8.0
       lint-staged: 12.3.4
-      lion-git-hooks: 1.0.3
+      lion-git-hooks: 1.0.4
       prettier: 2.5.1
       sync-index: 1.0.11
       ts-node: 10.4.0_43d2036524ce97aa8076ce68340fa9ec
@@ -4666,6 +4666,11 @@ packages:
     dependencies:
       is-extglob: 2.1.1
 
+  /is-heroku/3.0.0:
+    resolution: {integrity: sha512-V3P8GqHrRV+UJ931DDDXFxOYqB7PkKZKz+71OGX0OWlx5SZbAtmXpm07QS7ATGWk72PVsUqIh/JaFVZ2tt5+4A==}
+    engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
+    dev: true
+
   /is-installed-globally/0.4.0:
     resolution: {integrity: sha512-iwGqO3J21aaSkC7jWnHP/difazwS7SFeIqxv6wEtLU8Y5KlzFTjyqcSIT0d8s4+dDhKytsk9PJZ2BkS5eZwQRQ==}
     engines: {node: '>=10'}
@@ -5600,8 +5605,8 @@ packages:
       - enquirer
     dev: true
 
-  /lion-git-hooks/1.0.3:
-    resolution: {integrity: sha512-tYENifVx77SbUFvyqagrh0m8Wiscb4ULGwN/PV+nvuh3IVvXB+e36J/MDFNXgGBqOrmJ/uf+NIOnpNLS0mJcWw==}
+  /lion-git-hooks/1.0.4:
+    resolution: {integrity: sha512-yr8VUeuOTMuZNiVmlifbSZoisxlqGzpqtcPTf3CY+QlPKXJgq2X5lMBrNhgsoE1gj/JaAbobvvXb0JJPioqvuw==}
     hasBin: true
     requiresBuild: true
     dependencies:
@@ -5609,6 +5614,7 @@ packages:
       find-up: 6.2.0
       globby: 13.1.1
       is-ci: 3.0.1
+      is-heroku: 3.0.0
       map-obj: 5.0.0
       minimist: 1.2.5
       pkg-dir: 6.0.1
