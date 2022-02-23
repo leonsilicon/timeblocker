@@ -26,7 +26,7 @@
 		"dateformat": "^5.0.2",
 		"dayjs": "^1.10.7",
 		"desm": "^1.2.0",
-		"nanoid-nice": "^0.0.1",
+		"nanoid-nice": "^0.0.2",
 		"pinia": "^2.0.11",
 		"quasar": "^2.5.5",
 		"simple-vue-icon": "^1.1.12",
