@@ -8,6 +8,7 @@
 \usepackage[table]{xcolor}
 \usepackage{array}
 \usepackage{pythontex}
+\usepackage{authoraftertitle}
 
 \setmainfont{Calibri}
 \definecolor{msblue}{HTML}{5AB5D8}
@@ -35,42 +36,44 @@ def task(task_string):
 		time_estimated,
 		target_completion_date,
 		criterion
-	] = [line.strip() for line in task_string.strip().split("-")[1:]]
+	] = [line.strip() for line in task_string.strip().split("- ")[1:]]
 	task_number += 1
-	return f"""
+	return f"""\
+		\\\\\\hline
 		{task_number} &
 		{planned_action} &
 		{planned_outcome} &
 		{time_estimated} &
 		{target_completion_date} &
-		{criterion} &
-		\\\\\hline
+		{criterion}
 	"""
 \end{pycode}
 % \end{noindent}
 
 % Title
 \centerline{\textcolor{msblue}{
-		\fontspec{Cambria}\textbf{\fontsize{13}{13}\@title}
+		\fontspec{Cambria}\textbf{\fontsize{13}{13}\MyTitle}
 	}}
 \bigskip
+
 % Record of Tasks Table
+\def\arraystretch{1.5}
 \begin{xltabular}{\textwidth}{|
-		p{0.5cm\RaggedRight}|
+		p{1.5cm\RaggedRight}|
 		>{\RaggedRight} X|
 		>{\RaggedRight} X|
-		>{\RaggedRight} X|
+		p{1.7cm\RaggedRight}|
 		p{2cm\RaggedRight}|
 		p{1cm\RaggedRight}|
 	}
+	\hline
 	\rowcolor{gray!40}
-	\parbox[c]{\hsize}{Task number} &
-	\parbox[c]{\hsize}{Planned action} &
-	\parbox[c]{\hsize}{Planned outcome} &
-	\parbox[c]{\hsize}{Time estimated} &
-	\parbox[c]{\hsize}{Target \newline completion date} &
-	\parbox[c]{\hsize}{Criterion}
-	\\[20pt]\hline
+	Task number &
+	Planned action &
+	Planned outcome &
+	Time \newline estimated &
+	Target \newline completion date &
+	Criterion
 	\py{task("""
 		- Brainstorm IA ideas
 		- Created a document filled with possible ideas and decided to create a timeblocking app—an app that I wish existed and would love to use myself.
@@ -82,71 +85,56 @@ def task(task_string):
 		- Brainstormed features
 		- Created a document filled with features that I'd need to implement in my app to be eventually incorporated
 		- 2 hours
-		- October 9, 2021
+		- October 10, 2021
 		- A
 		""")}
 	\py{task("""
 		- Brainstorm solution mastery
 		- Create a list of the techniques that I would need to incorporate into my app to satisfy the IB criteria, which influenced the types of features I decided to add to my app
 		- 2 hours
-		- October 9, 2021
+		- October 12, 2021
 		- A
 		""")}
 	\py{task("""
 		- Researching the problem
 		- Understanding more about timeblocking and how I should structure my app to make creating timeblockers easier
 		- 2 hours
-		- October 10, 2021
+		- October 13, 2021
 		- A
 		""")}
 	\py{task("""
 		- Creating a detailed plan for the application
-		Have an outline of the functionality completed
-		-
+		- Have an outline of the functionality completed
 		- 3 hours
-		- October 11, 2021
+		- October 16, 2021
 		- A
 		""")}
 	\py{task("""
-		- Initial discussion with my advisor--my father
+		- Initial discussion with my advisor—my father
 		- To have ideas approved by my advisor and to have reiceved some feedback on my idea.
 		- 0.5 hours
-		- October 11, 2021
+		- October 22, 2021
 		- A
 		""")}
 	\py{task("""
 		- Consider the technologies I plan to use in my program
 		- Decided to build a website that would be easily accessible from any device with a browser and Internet which would also sync data across multiple devices using a server
-		- 5 hour
-		- October 12, 2021
-		A
-		""")}
-	\py{task("""
-		- Create testing plan
-		-
-		-
-		-
+		- 5 hours
+		- October 25, 2021
 		- A
 		""")}
 	\py{task("""
-		- Creating an initial UI design in Figma
-		- Create a timeblock page in Figma containing month, week, and day views, as well as login and registration pages.
-		- 20 hours
-		- October 16, 2021
-		- B
-		""")}
-	\py{task("""
-		- Sketch GUI on paper
-		-
-		-
-		-
-		- B
+		- Create testing plan
+		- Create a list of tasks that my program needs to be able to accomplish in order for me to consider it finished.
+		- 2 hours
+		- November 1, 2021
+		- A
 		""")}
 	\py{task("""
 		- Find software for creating the flowchart
-		-
-		-
-		- October 17, 2021
+		- Searched and experimented with many design apps, considered using multiple free designeasiet apps, from GIMP (an open-source image editor), Inkscape, Gravit, but ended up using FigJam because for me it was the easiest to use.
+		- 4 hours
+		- November 3, 2021
 		- B
 		""")}
 	\py{task("""
@@ -157,31 +145,45 @@ def task(task_string):
 		- B
 		""")}
 	\py{task("""
+		- Sketch GUI on paper
+		- Have a basic GUI drawn on paper to get a better idea of how I want my UI to look (I plan to polish it further with using an actual design app)
+		- 5 hours
+		- October 18, 2021
+		- B
+		""")}
+	\py{task("""
+		- Find software for creating the design pages
+		- Experimented with apps (the same apps I experimented with when finding a flowchart creator), eventually settled on Figma because it was popular and easy to use.
+		- 4 hours
+		- October 20, 2021
+		- B
+		""")}
+	\py{task("""
+		- Creating an initial UI design in Figma
+		- Create a timeblock page in Figma containing month, week, and day views, as well as login and registration pages.
+		- 20 hours
+		- November 15, 2021
+		- B
+		""")}
+	\py{task("""
 		- Designing the class hierarchy of my program.
 		- Creating a hierarchy of classes involving inheritance, composition, and polymorphism that represents the relationships between data in my code.
 		- 2 hours
-		-
+		- November 20, 2021
 		- B
 		""")}
 	\py{task("""
 		- Learning a library called tRPC for creating type-safe API endpoints
 		- Reading the documentation at trpc.io
 		- 3 hours
-		-
+		- November 27, 2021
 		- C
 		""")}
 	\py{task("""
 		- Learning web security and adding measures to avoid CSRF attacks and minimize the damage of XSS attacks
-		- Implementing a CSRF token into the authentication flow and using a httpOnly cookie to prevent access to the cookie via JavaScript.
-		- 8 hours
+		- Learned about cookies, session tokens and session state, danger of XSS attacks. Browsed through the Amazon Cognito JavaScript library to find out how they store user tokens, and discovered they use the browser's localStorage. Thus, I decided to store session tokens for timeblocker.io via the browser's localStorage.
+		- 20 hours
 		- December 12, 2021
-		- C
-		""")}
-	\py{task("""
-		- Set up a working local development environment for easy local development on the website
-		- To finish configuring ESLint (a code linter), Prettier (a code formatter), pnpm (a package manager), Vite (a build tool), and git (a version control system).
-		- 4 hours
-		- December 13, 2021
 		- C
 		""")}
 	\py{task("""
@@ -192,58 +194,65 @@ def task(task_string):
 		- C
 		""")}
 	\py{task("""
+		- Set up TailwindCSS
+		- Have TailwindCSS integrated into my project that allows me to use utility classes in my HTML code to make it easier to style content in my website. In addition, have a popular TailwindCSS UI library (daisyUI) installed that allows me to easily embed customizable, accessible, and battle-tested UI components like buttons and checkboxes.
+		- 4 hours
+		- December 17, 2021
+		- C
+		""")}
+	\py{task("""
+		- Create a basic landing page for timeblocker.io
+		- Added a large title, a header (Login, Register), and a call-to-action button.
+		- 2 hours
+		- December 20, 2021
+		- C
+		""")}
+	\py{task("""
 		- Hosting the website on GitHub pages and integrating GitHub Actions
 		- Have the website publicly accessible on a GitHub domain (https://<username>.github.io/timeblocker) and have 404 redirects work properly, and have a GitHub Action run every time the code is pushed to the main branch.
 		- 4 hours
-		- December 15, 2021
+		- December 22, 2021
 		- C
 		""")}
 	\py{task("""
 		- Linking the website to a public domain for anybody to access
 		- Have the website accessible on a public domain (https://timeblocker.io)
 		- 2 hours
-		- December 16, 2021
+		- December 24, 2021
 		- C
 		""")}
 	\py{task("""
-		- Hosting the server publicly on Heroku (a cloud application platform)
+		- Hosting the backend server publicly on Heroku (a cloud application platform)
 		- The server is public and linked to a Heroku domain and CORS (cross-origin resource sharing) is restricted to only accept requests from https://timeblocker.io
 		- 2 hours
-		-
+		- December 28, 2021
+		- C
+		""")}
+	\py{task("""
+		- Creating a Dockerfile and integrating Docker for easier local development
+		- Having a docker-compose.yaml file in the root of the project to automatically build and start a PostgreSQL container with the database when `docker compose up` is run on a local machine with Docker installed.
+		- 3 hours
+		- December 31, 2021
 		- C
 		""")}
 	\py{task("""
 		- Setting up Prisma on the backend
 		- Having Prisma installed and integrated into the backend and having the ORM models defined in the schema.prisma file.
 		- 4 hours
-		-
-		- C
-		""")}
-	\py{task("""
-		- Creating a Dockerfile and integrating Docker for easier local development
-		- Having a docker-compose.yaml file in the root of the project to automatically build and start a PostgreSQL container with the database when `docker compose up` is run on a local machine with Docker installed.
-		- 1 hour
-		-
+		- January 4, 2022
 		- C
 		""")}
 	\py{task("""
 		- Implementing authentication in the frontend and backend
-		- Creating a functional registration and login page with captcha protection to prevent attackers from flooding the site with unwanted registration requests. Implementing cookie-based authentication in the backend. In addition, the registration page should send the user a confirmation email to ensure they entered their email correctly (which is necessary for security-related emails like password reset requests).
-		- 40 hours
-		-
+		- Creating a functional registration and login page with proper web security. Implementing headers-based authentication in the backend.
+		- 15 hours
+		- January 10, 2022
 		- C
 		""")}
 	\py{task("""
 		- Setting up page routing on my website
 		- Have a Vue Router configuration object containing routes that point to the various pages in my program. Adding Vue Router links to the code that allow users to navigate to different pages through button clicks in my website.
 		- 2 hours
-		-
-		- C
-		""")}
-	\py{task("""
-		- Integrating TypeDoc into my project to automatically generate documentation from the inline JSDoc comments in my code
-		- Have a documentation page of the code generated.
-		-
 		-
 		- C
 		""")}
@@ -265,48 +274,6 @@ def task(task_string):
 		- Implementing drag and drop API for dragging tasks and task blocks
 		- Have a landing page that is presented to the user when they visit the home page (https://timeblocker.io) that includes a call-to-action and buttons to create an account or log into an existing account.
 		- 3 hours
-		-
-		- C
-		""")}
-	\py{task("""
-		- Set up pnpm and pnpm workspaces
-		-
-		-
-		-
-		-
-		""")}
-	\py{task("""
-		- Set up Vite
-		- Have Vite (a build tool for JavaScript projects) set up locally, such that whenever I make a change to my code, Vite will automatically update the local website without me needing to refresh the page or restart the development server.
-		- 2 hours
-		-
-		- C
-		""")}
-	\py{task("""
-		- Set up ESLint
-		- Have ESLint (a code linter) set up with Vue and TypeScript support. This will help prevent bugs in my code, especially the TypeScript plugin with a rule that enforces strong static typing on all variables.
-		- 2 hours
-		-
-		- C
-		""")}
-	\py{task("""
-		- Set up Prettier
-		- Have Prettier (a code formatter) set up and integrated with my IDE (VSCode) so I can easily format my code by pressing a shortcut and running a command from the command line.
-		- 0.5 hours
-		-
-		- C
-		""")}
-	\py{task("""
-		- Set up VSCode
-		- Have the necessary extensions (Volar, Prettier, ESLint) for developing Vue projects installed and configured. Have keybinds registered for ESLint and Prettier that allow me to easily lint and format my code using keyboard shortcuts.
-		- 0.5 hours
-		-
-		- C
-		""")}
-	\py{task("""
-		- Set up TailwindCSS
-		- Have TailwindCSS integrated into my project that allows me to use utility classes in my HTML code to make it easier to style content in my website. In addition, have a popular TailwindCSS UI library (daisyUI) installed that allows me to easily embed customizable, accessible, and battle-tested UI components like buttons and checkboxes.
-		- 4 hours
 		-
 		- C
 		""")}
@@ -336,8 +303,8 @@ def task(task_string):
 		-
 		-
 		-
-		-
+		- C
 		""")}
-	\\hline
+	\\\hline
 \end{xltabular}
 \end{document}
