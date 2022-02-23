@@ -8,7 +8,7 @@ importers:
       '@types/node': ^17.0.14
       eslint: ^8.8.0
       lint-staged: ^12.3.4
-      lion-git-hooks: ^1.0.4
+      lion-git-hooks: ^1.0.5
       pinia: ^2.0.11
       prettier: ^2.5.1
       sync-index: ^1.0.11
@@ -23,7 +23,7 @@ importers:
       '@types/node': 17.0.14
       eslint: 8.8.0
       lint-staged: 12.3.4
-      lion-git-hooks: 1.0.4
+      lion-git-hooks: 1.0.5
       prettier: 2.5.1
       sync-index: 1.0.11
       ts-node: 10.4.0_43d2036524ce97aa8076ce68340fa9ec
@@ -5605,8 +5605,8 @@ packages:
       - enquirer
     dev: true
 
-  /lion-git-hooks/1.0.4:
-    resolution: {integrity: sha512-yr8VUeuOTMuZNiVmlifbSZoisxlqGzpqtcPTf3CY+QlPKXJgq2X5lMBrNhgsoE1gj/JaAbobvvXb0JJPioqvuw==}
+  /lion-git-hooks/1.0.5:
+    resolution: {integrity: sha512-wpgmdbob99dWO5wBjG8oZ1vITlYkJNbzvv2hrfM2y/DcfWFe/lN6tTlG0k+uCCDlYArFLxqZgZl21/7/bZmCQg==}
     hasBin: true
     requiresBuild: true
     dependencies:
