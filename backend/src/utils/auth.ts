@@ -1,4 +1,4 @@
-import { nanoid } from '@leonzalion/nanoid-good';
+import { nanoid } from 'nanoid-nice';
 import type { MiddlewareFunction } from '@trpc/server/dist/declarations/src/internals/middlewares';
 import type { Context } from '~b/types/context.js';
 import { throwTrpcError } from '~b/utils/error.js';

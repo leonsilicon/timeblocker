@@ -1,4 +1,4 @@
-import { nanoid } from '@leonzalion/nanoid-good';
+import { nanoid } from 'nanoid-nice';
 import { z } from 'zod';
 import { accountMiddleware } from '~b/utils/auth.js';
 import { throwTrpcError } from '~b/utils/error.js';
