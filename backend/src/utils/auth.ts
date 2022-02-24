@@ -9,6 +9,15 @@ export type GetCtxAccountIdOpts = {
 	optional: boolean;
 };
 
+export function getCtxSessionToken(ctx: Context) {
+	const { authorization } = ctx.request.headers;
+	if (authorization === undefined) {
+		throw new Error('Authorization token not provided.');
+	}
+
+	return authorization.replace('Bearer ', '');
+}
+
 export async function getCtxAccountId<Opts extends GetCtxAccountIdOpts>(
 	ctx: Context,
 	opts?: { optional: boolean }
@@ -26,10 +35,7 @@ export async function getCtxAccountId<Opts extends GetCtxAccountIdOpts>(
 			throwTrpcError(trpcError.userNotAuthenticated);
 		}
 	} else {
-		clientSessionToken = ctx.request.headers.authorization.replace(
-			'Bearer ',
-			''
-		);
+		clientSessionToken = getCtxSessionToken(ctx);
 	}
 
 	const accountSessionToken = await ctx.prisma.accountSessionToken.findFirst({
