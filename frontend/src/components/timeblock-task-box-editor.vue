@@ -1,8 +1,15 @@
 <script setup lang="ts">
-import { Task } from '~f/classes/task';
 import { nanoid } from 'nanoid-nice';
-import { nextTick } from 'vue';
+import { Task } from '~f/classes/task';
+import { useTimeblockStore } from '~f/store/timeblock';
 import { displayError } from '~f/utils/error';
+import { client } from '~f/utils/trpc';
+
+const timeblockStore = useTimeblockStore();
+const newTaskName = $ref('');
+const newTaskDescription = $ref('');
+const taskNameInputEl = $ref<HTMLInputElement>();
+const taskDescriptionInputEl = $ref<HTMLInputElement>();
 
 async function addTask() {
 	if (newTaskName.trim() !== '') {
@@ -34,13 +41,6 @@ async function addTask() {
 	isNewTaskTemplateVisible = false;
 }
 
-async function onAddTaskClick() {
-	isNewTaskTemplateVisible = true;
-	// Wait until the input appears in the DOM
-	await nextTick();
-	taskNameInputEl.focus();
-}
-
 async function onTaskNameFocusOut(event: FocusEvent) {
 	if (event.relatedTarget !== taskDescriptionInputEl) {
 		await addTask();
@@ -65,7 +65,13 @@ function onTaskDescriptionKeydown(event: KeyboardEvent) {
 		taskDescriptionInputEl.blur();
 	}
 }
+
+defineExpose({
+	focusNameInput,
+	focusDescriptionInput,
+});
 </script>
+
 <template>
 	<div class="py-2 rounded-lg text-center self-stretch m-2 bg-red-100">
 		<input

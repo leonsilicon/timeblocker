@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { nanoid } from 'nanoid-nice';
 import { mdiDelete } from '@mdi/js';
+import { nextTick } from 'vue';
 import TimeblockTaskBox from '~f/components/timeblock-task-box.vue';
 import { useTimeblockStore } from '~f/store';
 import { TaskBoxDropData, TaskBoxDropType } from '~f/types/task-box';
 import { client } from '~f/utils/trpc';
+import TimeblockTaskBoxEditor from '~f/components/timeblock-task-box-editor.vue';
 
 const timeblockStore = useTimeblockStore();
 
@@ -14,11 +15,16 @@ const tasks = $computed(() =>
 		.map((taskId) => timeblockStore.activeTimeblock.getTask(taskId)!)
 );
 
-const isNewTaskTemplateVisible = $ref(false);
-const newTaskName = $ref('');
-const newTaskDescription = $ref('');
-const taskNameInputEl = $ref<HTMLInputElement>();
-const taskDescriptionInputEl = $ref<HTMLInputElement>();
+let isNewTaskTemplateVisible = $ref(false);
+const timeblockTaskBoxEditor =
+	$ref<InstanceType<typeof TimeblockTaskBoxEditor>>(false);
+
+async function onAddTaskClick() {
+	isNewTaskTemplateVisible = true;
+	// Wait until the input appears in the DOM
+	await nextTick();
+	timeblockTaskBoxEditor.focusNameInput();
+}
 
 /**
  * Adds the task to the store only if the task name isn't empty
@@ -93,6 +99,8 @@ async function onDrop(event: DragEvent) {
 		<div class="btn btn-primary btn-sm min-h-2 h-2" @click="onAddTaskClick">
 			Add Task
 		</div>
+
+		<TimeblockTaskBoxEditor v-if="isNewTaskTemplateVisible" />
 
 		<TimeblockTaskBox
 			v-for="task of tasks"
