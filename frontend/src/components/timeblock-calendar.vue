@@ -54,12 +54,13 @@ async function addNewColumn() {
 			{{ getHourString(hour - 1) }}
 		</div>
 		<TimeblockColumns />
-		<div class="column items-center">
-			<v-icon
-				class="px-3 text-gray-700 cursor-pointer"
-				:icon="mdiPlusCircleOutline"
-				@click="addNewColumn"
-			/>
+		<div
+			style="grid-row: 1 / span 1; grid-column: -1 / span 1"
+			class="self-center px-2"
+		>
+			<div class="text-gray-500 hover:text-black cursor-pointer">
+				<v-icon :icon="mdiPlusCircleOutline" @click="addNewColumn" />
+			</div>
 		</div>
 	</div>
 </template>

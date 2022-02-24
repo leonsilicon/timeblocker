@@ -103,10 +103,10 @@ function onDragLeave() {
 
 async function onDrop(event: DragEvent) {
 	isTaskBlockShadowActive = false;
-	const dropDataString = event.dataTransfer?.getData('text');
+	const dropDataString = event.dataTransfer?.getData('text') ?? '';
 
 	const { activeDraggingTaskBlock } = timeblockStore;
-	if (dropDataString === undefined) return;
+	if (dropDataString === '') return;
 
 	const dropData = JSON.parse(dropDataString) as TaskBoxDropData;
 	if (dropData.type === TaskBoxDropType.taskBoxDrop) {
