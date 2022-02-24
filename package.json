@@ -11,9 +11,8 @@
 	},
 	"type": "module",
 	"scripts": {
-		"heroku-preinstall": "rm -rf frontend scripts",
-		"heroku-postinstall": "pnpm build --filter=./backend",
-		"prepare": "prisma generate",
+		"heroku-prebuild": "npm i -g pnpm && npm install --unsafe-perm --quiet -g \"npm@7\" && rm -rf frontend scripts",
+		"heroku-postbuild": "pnpm gen && pnpm build --filter=./backend",
 		"up": "docker compose up",
 		"gen": "pnpm gen --filter=./backend",
 		"migrate": "pnpm migrate --filter=./backend",
