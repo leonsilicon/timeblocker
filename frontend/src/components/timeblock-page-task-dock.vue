@@ -1,29 +1,66 @@
 <script setup lang="ts">
 import { mdiDelete } from '@mdi/js';
 import { nextTick } from 'vue';
+import { nanoid } from 'nanoid-nice';
 import TimeblockTaskBox from '~f/components/timeblock-task-box.vue';
 import { useTimeblockStore } from '~f/store';
 import { TaskBoxDropData, TaskBoxDropType } from '~f/types/task-box';
 import { client } from '~f/utils/trpc';
 import TimeblockTaskBoxEditor from '~f/components/timeblock-task-box-editor.vue';
+import { Task } from '~f/classes/task';
+import { displayError } from '~f/utils/error';
 
 const timeblockStore = useTimeblockStore();
 
-const tasks = $computed(() =>
+const visibleTasks = $computed(() =>
 	timeblockStore.activeTimeblock
 		.getOrderedTaskIds()
-		.map((taskId) => timeblockStore.activeTimeblock.getTask(taskId)!)
+		.map((taskId) => timeblockStore.activeTimeblock.getTask(taskId))
+		.filter((task) => !task.getIsHidden())
 );
 
 let isNewTaskTemplateVisible = $ref(false);
-const timeblockTaskBoxEditor =
-	$ref<InstanceType<typeof TimeblockTaskBoxEditor>>(false);
+const timeblockTaskBoxEditorEl =
+	$ref<InstanceType<typeof TimeblockTaskBoxEditor>>();
 
 async function onAddTaskClick() {
 	isNewTaskTemplateVisible = true;
 	// Wait until the input appears in the DOM
 	await nextTick();
-	timeblockTaskBoxEditor.focusNameInput();
+	timeblockTaskBoxEditorEl.focusNameInput();
+}
+
+let newTaskName = $ref('');
+let newTaskDescription = $ref('');
+
+async function addTask() {
+	if (newTaskName.trim() !== '') {
+		const taskId = nanoid();
+		const newTask = new Task({
+			id: taskId,
+			name: newTaskName,
+			description: newTaskDescription,
+			isHidden: false,
+		});
+
+		timeblockStore.activeTimeblock.addTask(newTask);
+
+		try {
+			await client.mutation('addTimeblockTask', {
+				timeblockId: timeblockStore.activeTimeblock.getId(),
+				id: taskId,
+				name: newTaskName,
+				description: newTaskDescription,
+			});
+		} catch (error: unknown) {
+			displayError(error);
+		}
+	}
+
+	// Reset the new task textbox
+	newTaskName = '';
+	newTaskDescription = '';
+	isNewTaskTemplateVisible = false;
 }
 
 /**
@@ -100,10 +137,16 @@ async function onDrop(event: DragEvent) {
 			Add Task
 		</div>
 
-		<TimeblockTaskBoxEditor v-if="isNewTaskTemplateVisible" />
+		<TimeblockTaskBoxEditor
+			v-if="isNewTaskTemplateVisible"
+			ref="timeblockTaskBoxEditorEl"
+			v-model:name="newTaskName"
+			v-model:description="newTaskDescription"
+			@blur="addTask"
+		/>
 
 		<TimeblockTaskBox
-			v-for="task of tasks"
+			v-for="task of visibleTasks"
 			:id="task.getId()"
 			:key="task.getId()"
 		/>

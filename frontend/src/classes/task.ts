@@ -65,7 +65,7 @@ export class Task {
 	 * Sets the name of the task.
 	 * @param name The new name of the task.
 	 */
-	setName(name: string) {
+	public setName(name: string) {
 		this.name = name;
 	}
 
@@ -73,7 +73,7 @@ export class Task {
 	 * Gets the name of the task.
 	 * @returns The name of the task.
 	 */
-	getName() {
+	public getName() {
 		return this.name;
 	}
 
@@ -81,7 +81,7 @@ export class Task {
 	 * Gets the ID of the task.
 	 * @returns The ID of the task.
 	 */
-	getId() {
+	public getId() {
 		return this.id;
 	}
 
@@ -89,7 +89,7 @@ export class Task {
 	 * Gets the color of the task.
 	 * @returns The color of the task.
 	 */
-	getColor() {
+	public getColor() {
 		return this.color;
 	}
 
@@ -97,11 +97,22 @@ export class Task {
 	 * Sets the color of the task.
 	 * @param color The color of the task.
 	 */
-	setColor(color: string) {
+	public setColor(color: string) {
 		this.color = color;
 	}
 
-	setIsHidden(isHidden: boolean) {
+	/**
+	 * Gets whether the task is hidden.
+	 */
+	public getIsHidden() {
+		return this.isHidden;
+	}
+
+	/**
+	 * Sets whether the task is hidden
+	 * @param isHidden Whether the task is hidden.
+	 */
+	public setIsHidden(isHidden: boolean) {
 		this.isHidden = isHidden;
 	}
 
@@ -109,7 +120,7 @@ export class Task {
 	 * Gets the description of the task.
 	 * @returns The description of the task.
 	 */
-	getDescription() {
+	public getDescription() {
 		return this.description;
 	}
 
@@ -117,14 +128,14 @@ export class Task {
 	 * Sets the description of the task.
 	 * @param description The description of the task.
 	 */
-	setDescription(description: string) {
+	public setDescription(description: string) {
 		this.description = description;
 	}
 
 	/**
 	 * Removes the description of the task.
 	 */
-	removeDescription() {
+	public removeDescription() {
 		this.description = undefined;
 	}
 }

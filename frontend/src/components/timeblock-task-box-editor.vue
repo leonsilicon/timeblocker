@@ -1,55 +1,23 @@
 <script setup lang="ts">
-import { nanoid } from 'nanoid-nice';
-import { Task } from '~f/classes/task';
-import { useTimeblockStore } from '~f/store/timeblock';
-import { displayError } from '~f/utils/error';
-import { client } from '~f/utils/trpc';
+defineProps<{
+	name: string;
+	description: string;
+}>();
 
-const timeblockStore = useTimeblockStore();
-const newTaskName = $ref('');
-const newTaskDescription = $ref('');
+const emit = defineEmits(['update:name', 'update:description', 'blur']);
+
 const taskNameInputEl = $ref<HTMLInputElement>();
 const taskDescriptionInputEl = $ref<HTMLInputElement>();
 
-async function addTask() {
-	if (newTaskName.trim() !== '') {
-		const taskId = nanoid();
-		const newTask = new Task({
-			id: taskId,
-			name: newTaskName,
-			description: newTaskDescription,
-			isHidden: false,
-		});
-
-		timeblockStore.activeTimeblock.addTask(newTask);
-
-		try {
-			await client.mutation('addTimeblockTask', {
-				timeblockId: timeblockStore.activeTimeblock.getId(),
-				id: taskId,
-				name: newTaskName,
-				description: newTaskDescription,
-			});
-		} catch (error: unknown) {
-			displayError(error);
-		}
-	}
-
-	// Reset the new task textbox
-	newTaskName = '';
-	newTaskDescription = '';
-	isNewTaskTemplateVisible = false;
-}
-
 async function onTaskNameFocusOut(event: FocusEvent) {
 	if (event.relatedTarget !== taskDescriptionInputEl) {
-		await addTask();
+		emit('blur');
 	}
 }
 
 async function onTaskDescriptionFocusOut(event: FocusEvent) {
 	if (event.relatedTarget !== taskNameInputEl) {
-		await addTask();
+		emit('blur');
 	}
 }
 
@@ -66,6 +34,14 @@ function onTaskDescriptionKeydown(event: KeyboardEvent) {
 	}
 }
 
+function focusNameInput() {
+	taskNameInputEl.focus();
+}
+
+function focusDescriptionInput() {
+	taskDescriptionInputEl.focus();
+}
+
 defineExpose({
 	focusNameInput,
 	focusDescriptionInput,
@@ -76,19 +52,21 @@ defineExpose({
 	<div class="py-2 rounded-lg text-center self-stretch m-2 bg-red-100">
 		<input
 			ref="taskNameInputEl"
-			v-model="newTaskName"
+			:value="name"
 			placeholder="Task Name"
 			type="text"
 			class="bg-red-100 outline-none w-full px-4"
+			@input="emit('update:name', ($event.target as HTMLInputElement).value)"
 			@focusout="onTaskNameFocusOut"
 			@keydown="onTaskNameKeydown"
 		/>
 		<input
 			ref="taskDescriptionInputEl"
-			v-model="newTaskDescription"
+			:value="description"
 			placeholder="Task Description"
 			type="text"
-			class="bg-red-100 outline-none w-full px-4 text-sm"
+			class="bg-red-100 outline-none w-full px-4 text-sm text-gray-500"
+			@input="emit('update:description', ($event.target as HTMLInputElement).value)"
 			@focusout="onTaskDescriptionFocusOut"
 			@keydown="onTaskDescriptionKeydown"
 		/>
