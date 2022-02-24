@@ -43,7 +43,7 @@ async function deleteTimeblockColumn(columnId: string) {
 					timeblockColumns.length > 1 &&
 					timeblockColumnIndex === timeblockColumns.length - 1
 				"
-				class="cursor-pointer border-2 border-red-200 hover:border-red-500 row text-xs pr-[7px] pl-1 text-red-200 hover:text-red-500 rounded-md"
+				class="row cursor-pointer rounded-md border-2 border-red-200 pr-[7px] pl-1 text-xs text-red-200 hover:border-red-500 hover:text-red-500"
 				@click="deleteTimeblockColumn(timeblockColumn.getId())"
 			>
 				<v-icon size="15" :icon="mdiDelete"></v-icon>

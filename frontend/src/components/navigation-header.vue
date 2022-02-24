@@ -5,10 +5,10 @@ const appStore = useAppStore();
 </script>
 
 <template>
-	<div class="row bg-white p-4 items-center">
+	<div class="row items-center bg-white p-4">
 		<router-link
 			to="/"
-			class="font-bold text-xl hover:text-primary transition-all"
+			class="hover:text-primary text-xl font-bold transition-all"
 		>
 			timeblocker.io
 		</router-link>

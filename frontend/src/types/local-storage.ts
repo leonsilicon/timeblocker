@@ -1,3 +1,3 @@
 export enum LocalStorageKey {
-	sessionToken = 'session-token'
+	sessionToken = 'session-token',
 }

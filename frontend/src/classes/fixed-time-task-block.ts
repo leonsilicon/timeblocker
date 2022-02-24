@@ -1,15 +1,15 @@
-import type { TaskBlockConstructorProps } from './task-block';
-import { TaskBlock } from './task-block';
+import type { TaskConstructorProps } from '~f/classes/task';
+import { Task } from '~f/classes/task';
 
-export type FixedTimeTaskBlockConstructorProps = TaskBlockConstructorProps & {
+export type FixedTimeTaskConstructorProps = TaskConstructorProps & {
 	startTime: string;
 	endTime: string;
 };
 
 /**
- * A task block that represents a task that always starts and ends at the same time.
+ * A task that represents a task that always starts and ends at the same time.
  */
-export class FixedTimeTaskBlock extends TaskBlock {
+export class FixedTimeTask extends Task {
 	/**
 	 * The start time of the task block.
 	 */
@@ -26,7 +26,7 @@ export class FixedTimeTaskBlock extends TaskBlock {
 	 * @param startTime The time the task block always starts on
 	 * @param endTime The time the task block always ends on
 	 */
-	constructor(props: FixedTimeTaskBlockConstructorProps) {
+	constructor(props: FixedTimeTaskConstructorProps) {
 		super(props);
 		this.setStartTime(props.startTime);
 		this.setEndTime(props.endTime);

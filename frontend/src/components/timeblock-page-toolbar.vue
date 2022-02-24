@@ -27,8 +27,8 @@ function onKeyPress(event: KeyboardEvent) {
 </script>
 
 <template>
-	<div class="row items-center justify-center mb-2">
-		<div class="flex-1 p-4 mr-auto row gap-2">
+	<div class="row mb-2 items-center justify-center">
+		<div class="row mr-auto flex-1 gap-2 p-4">
 			<router-link to="/timeblocks">
 				<v-icon :icon="mdiChevronLeft" class="cursor-pointer"></v-icon>
 			</router-link>
@@ -38,16 +38,16 @@ function onKeyPress(event: KeyboardEvent) {
 				@click="toggleTaskDock"
 			></v-icon>
 		</div>
-		<div class="flex-1 row justify-center">
+		<div class="row flex-1 justify-center">
 			<input
 				ref="timeblockNameInput"
 				v-model="timeblockNameInputValue"
 				v-autowidth
-				class="input input-sm text-xl font-bold px-2 hover:border-md hover:border-gray-300 rounded-md transition-[border]"
+				class="input input-sm hover:border-md rounded-md px-2 text-xl font-bold transition-[border] hover:border-gray-300"
 				@keypress="onKeyPress"
 				@focusout="updateTimeblockName"
 			/>
 		</div>
-		<div class="flex-1 ml-auto"></div>
+		<div class="ml-auto flex-1"></div>
 	</div>
 </template>

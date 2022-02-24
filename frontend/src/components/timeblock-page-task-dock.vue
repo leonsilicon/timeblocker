@@ -109,7 +109,7 @@ async function onDrop(event: DragEvent) {
 <template>
 	<div
 		v-show="timeblockStore.isTaskDockOpen"
-		class="relative items-center column shrink-0 w-[250px]"
+		class="column relative w-[250px] shrink-0 items-center"
 		@drop="onDrop"
 		@dragover.prevent="onDragOver"
 		@dragleave="onDragLeave"
@@ -117,16 +117,14 @@ async function onDrop(event: DragEvent) {
 		<!-- Delete overlay -->
 		<div
 			v-if="isDeleteOverlayVisible"
-			class="rounded-md column center absolute inset-0 bg-[rgba(255,0,0,0.5)] pointer-events-none"
+			class="column center pointer-events-none absolute inset-0 rounded-md bg-[rgba(255,0,0,0.5)]"
 		>
 			<v-icon :size="50" :icon="mdiDelete"></v-icon>
 			<div class="text-black">Delete Task Block</div>
 		</div>
 
-		<div class="font-bold text-3xl mb-2">Tasks</div>
-		<div class="btn btn-primary btn-sm min-h-2 h-2" @click="onAddTaskClick">
-			Add Task
-		</div>
+		<div class="mb-2 text-3xl font-bold">Tasks</div>
+		<TimeblockPageTaskDockAddTaskButton />
 
 		<TimeblockTaskBoxEditor
 			v-if="isNewTaskTemplateVisible"

@@ -49,13 +49,13 @@ defineExpose({
 </script>
 
 <template>
-	<div class="py-2 rounded-lg text-center self-stretch m-2 bg-red-100">
+	<div class="m-2 self-stretch rounded-lg bg-red-100 py-2 text-center">
 		<input
 			ref="taskNameInputEl"
 			:value="name"
 			placeholder="Task Name"
 			type="text"
-			class="bg-red-100 outline-none w-full px-4"
+			class="w-full bg-red-100 px-4 outline-none"
 			@input="emit('update:name', ($event.target as HTMLInputElement).value)"
 			@focusout="onTaskNameFocusOut"
 			@keydown="onTaskNameKeydown"
@@ -65,7 +65,7 @@ defineExpose({
 			:value="description"
 			placeholder="Task Description"
 			type="text"
-			class="bg-red-100 outline-none w-full px-4 text-sm text-gray-500"
+			class="w-full bg-red-100 px-4 text-sm text-gray-500 outline-none"
 			@input="emit('update:description', ($event.target as HTMLInputElement).value)"
 			@focusout="onTaskDescriptionFocusOut"
 			@keydown="onTaskDescriptionKeydown"

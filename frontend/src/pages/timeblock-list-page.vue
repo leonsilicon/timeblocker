@@ -56,19 +56,19 @@ onMounted(() => {
 
 <template>
 	<div class="column center p-8">
-		<div class="text-6xl font-bold mb-2">Timeblocks</div>
+		<div class="mb-2 text-6xl font-bold">Timeblocks</div>
 		<div v-if="areTimeblockListingsLoading === true" class="row center p-4">
 			<CircleSpinner class="mr-2" /> Loading...
 		</div>
-		<div v-else class="self-stretch column">
+		<div v-else class="column self-stretch">
 			<div
-				class="btn btn-primary btn-sm self-center mb-4"
+				class="btn btn-primary btn-sm mb-4 self-center"
 				@click="createNewTimeblock"
 			>
 				<v-icon :icon="mdiPlus" />
 				Create New Timeblock
 			</div>
-			<div class="column self-stretch gap-4">
+			<div class="column gap-4 self-stretch">
 				<TimeblockListing
 					v-for="{
 						timeblockId,

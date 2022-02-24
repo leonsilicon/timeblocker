@@ -59,9 +59,9 @@ async function register() {
 
 <template>
 	<div
-		class="my-auto self-center column items-center gap-3 py-8 px-20 border-2 rounded-md border-gray-300"
+		class="column my-auto items-center gap-3 self-center rounded-md border-2 border-gray-300 py-8 px-20"
 	>
-		<h1 class="font-bold text-6xl">{{ isLogin ? 'Login' : 'Register' }}</h1>
+		<h1 class="text-6xl font-bold">{{ isLogin ? 'Login' : 'Register' }}</h1>
 
 		<div>
 			<label class="label p-1">

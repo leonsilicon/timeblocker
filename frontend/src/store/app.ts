@@ -4,7 +4,7 @@ import type { AppStoreState } from '~f/types/store';
 function createAppStoreState(): AppStoreState {
 	return {
 		isLoggedIn: undefined,
-		accountId: undefined
+		accountId: undefined,
 	};
 }
 

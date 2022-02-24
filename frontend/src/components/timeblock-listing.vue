@@ -47,15 +47,15 @@ const timeblockListingClasses = $computed(() => {
 
 <template>
 	<button
-		class="py-4 px-4 border-2 center row rounded-md border-primary cursor-pointer hover:scale-[1.01] hover:bg-green-100 transition-all"
+		class="center row border-primary cursor-pointer rounded-md border-2 py-4 px-4 transition-all hover:scale-[1.01] hover:bg-green-100"
 		:class="timeblockListingClasses"
 		@click="goToTimeblock"
 	>
-		<div class="flex-1 mr-auto"></div>
+		<div class="mr-auto flex-1"></div>
 		<div class="flex-1">{{ name }}</div>
-		<div class="flex-1 ml-auto row justify-end">
+		<div class="row ml-auto flex-1 justify-end">
 			<button
-				class="hover:bg-red-300 rounded-full p-2 transition-all"
+				class="rounded-full p-2 transition-all hover:bg-red-300"
 				@mouseover="isMouseOverDeleteButton = true"
 				@mouseout="isMouseOverDeleteButton = false"
 				@click.stop="onDeleteButtonPress"

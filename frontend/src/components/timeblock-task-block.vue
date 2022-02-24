@@ -155,24 +155,24 @@ watch(
 	<div
 		ref="taskBlockEl"
 		draggable="true"
-		class="relative column center rounded-md bg-red-200 cursor-grab active:cursor-grabbing"
+		class="column center relative cursor-grab rounded-md bg-red-200 active:cursor-grabbing"
 		:style="[timeblockTaskBlockStyle, borderDraggingTimeblockTaskBlockStyle]"
 		@dragstart="onDragStart"
 		@dragend="onDragEnd"
 	>
 		<div
-			class="absolute left-0 right-0 h-[4px] top-0 cursor-ns-resize"
+			class="absolute left-0 right-0 top-0 h-[4px] cursor-ns-resize"
 			@mousedown.stop="onTopBorderMouseDown"
 		></div>
 		{{ task.getName() }}
 		<div
 			v-if="taskBlock.getEndMinute() - taskBlock.getStartMinute() > 30"
-			class="text-gray-500 text-sm"
+			class="text-sm text-gray-500"
 		>
 			{{ task.getDescription() }}
 		</div>
 		<div
-			class="absolute left-0 right-0 h-[4px] bottom-0 cursor-ns-resize"
+			class="absolute left-0 right-0 bottom-0 h-[4px] cursor-ns-resize"
 			@mousedown.stop="onBottomBorderMouseDown"
 		></div>
 	</div>

@@ -1,3 +1,3 @@
 <template>
-	<div class="spinner-border w-6 h-6 animate-spin rounded-full"></div>
+	<div class="spinner-border h-6 w-6 animate-spin rounded-full"></div>
 </template>

@@ -38,8 +38,8 @@ const features = [
 
 <template>
 	<div class="column items-center py-16">
-		<div class="font-bold mb-2 text-5xl text-center">timeblocker.io</div>
-		<div class="text-center max-w-2xl px-8">
+		<div class="mb-2 text-center text-5xl font-bold">timeblocker.io</div>
+		<div class="max-w-2xl px-8 text-center">
 			Timeblocking is a way to manage your time more efficiently and effectively
 			by chunking the hours in a day into "blocks," and assigning a single task
 			to each of these blocks.
@@ -51,14 +51,14 @@ const features = [
 	</div>
 
 	<!-- Features -->
-	<div class="mx-auto mb-8 row items-stretch px-8 gap-4 max-w-5xl">
+	<div class="row mx-auto mb-8 max-w-5xl items-stretch gap-4 px-8">
 		<div
 			v-for="(feature, index) in features"
 			:key="index"
 			class="column flex-1"
 		>
 			<v-icon class="self-center pb-4" size="70" :icon="feature.icon" />
-			<h1 class="text-bold text-xl text-center">{{ feature.title }}</h1>
+			<h1 class="text-bold text-center text-xl">{{ feature.title }}</h1>
 			<p clkss="text-gray-500 text-sm text-cente">{{ feature.description }}</p>
 		</div>
 	</div>
