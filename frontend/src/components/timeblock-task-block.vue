@@ -166,6 +166,12 @@ watch(
 		></div>
 		{{ task.getName() }}
 		<div
+			v-if="taskBlock.getEndMinute() - taskBlock.getStartMinute() > 30"
+			class="text-gray-500 text-sm"
+		>
+			{{ task.getDescription() }}
+		</div>
+		<div
 			class="absolute left-0 right-0 h-[4px] bottom-0 cursor-ns-resize"
 			@mousedown.stop="onBottomBorderMouseDown"
 		></div>

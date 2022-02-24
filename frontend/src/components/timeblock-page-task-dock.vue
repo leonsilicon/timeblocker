@@ -68,18 +68,9 @@ async function addTask() {
  */
 let isDeleteOverlayVisible = $ref(false);
 
-function onDragOver(event: DragEvent) {
-	const data = event.dataTransfer?.getData('text') ?? '';
-	if (data === '') return;
-
-	const dropData = JSON.parse(data) as TaskBoxDropData;
-	if (dropData.type === TaskBoxDropType.taskBoxDrop) {
-		const { payload } = dropData;
-
-		if ('sourceTaskBlockId' in payload) {
-			isDeleteOverlayVisible = true;
-		}
-	}
+function onDragOver() {
+	if (timeblockStore.activeDraggingTaskBlock === undefined) return;
+	isDeleteOverlayVisible = true;
 }
 
 function onDragLeave() {

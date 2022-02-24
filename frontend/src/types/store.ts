@@ -3,12 +3,12 @@ import type { TimeblockListing } from '~f/types/timeblock';
 
 export type TimeblockStoreState = {
 	/**
-	 * The ID of the timeblock the user is currently on
+	 * The ID of the timeblock the user is currently on.
 	 */
 	activeTimeblockId: string | undefined;
 
 	/**
-	 * The ID of the task block that is currently being dragged
+	 * Information about the task block that is currently being resized
 	 */
 	activeDraggingTaskBlock:
 		| {
@@ -18,17 +18,17 @@ export type TimeblockStoreState = {
 		| undefined;
 
 	/**
-	 * A list of the user's timeblocks
+	 * A list of the user's timeblocks.
 	 */
 	timeblockListings: TimeblockListing[];
 
 	/**
-	 * Whether the task dock is open
+	 * Whether the task dock is open.
 	 */
 	isTaskDockOpen: boolean;
 
 	/**
-	 * Map of timeblock IDs to timeblocks
+	 * Map of timeblock IDs to timeblocks.
 	 */
 	timeblockMap: Map<string, Timeblock>;
 };
