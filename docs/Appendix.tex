@@ -4,6 +4,8 @@
 \usepackage{xcolor}
 \usepackage{authoraftertitle}
 \usepackage{pythontex}
+\usepackage{xltabular}
+\usepackage{ragged2e}
 
 \title{Appendix}
 \definecolor{msblue}{HTML}{5AB5D8}
@@ -15,12 +17,13 @@
 	}}
 
 \section*{Third-party libraries}
-My program makes heavy use of third-party libraries.
+My program makes heavy use of third-party libraries:
 
 % \begin{noindent}
 \begin{pycode}
+from tex_escape import tex_escape
 
-frontend_packages = [
+packages = [
 	(
 		"@fullcalendar/core",
 		"FullCalendar provides a highly customizable and easy-to-use calendar to display on my website. I use it on the timeblock listing page where the user can create/select the timeblock for a certain date.",
@@ -73,19 +76,22 @@ frontend_packages = [
 	),
 	(
 		"autoprefixer",
-		"A package that automatically adds vendor prefixes to CSS classes for supporting older browsers. I don't use it directly in Timeblocker; TailwindCSS depends on it.
+		"A package that automatically adds vendor prefixes to CSS classes for supporting older browsers. I don't use it directly in Timeblocker; TailwindCSS depends on it.",
+		"Frontend"
 	),
 	(
 		"postcss",
-		"A tool for transforming CSS with JavaScript. I don't use it directly in Timeblocker; TailwindCSS depends on it."
+		"A tool for transforming CSS with JavaScript. I don't use it directly in Timeblocker; TailwindCSS depends on it.",
+		"Frontend"
 	),
 	(
 		"@trpc/client",
-		"The client package for tRPC that allows me to easily create type-safe API endpoints for the server. The client package is the package that makes the requests to the server."
+		"The client package for tRPC that allows me to easily create type-safe API endpoints for the server. The client package is the package that makes the requests to the server.",
+		"Frontend"
 	),
 	(
 		"@vueuse/core",
-		"Provides many useful Vue composition functions (e.g., useMouse() that returns reactive variables f$or the mouse position).",
+		"Provides many useful Vue composition functions (e.g., useMouse() that returns reactive variables for the mouse position).",
 		"Frontend"
 	),
 	(
@@ -170,31 +176,48 @@ frontend_packages = [
 	),
 	(
 		"nodemon",
-		"A build tool that automatically reloads my Node server when my TypeScript files change."
+		"A build tool that automatically reloads my Node server when my TypeScript files change.",
+		"Backend"
 	),
 	(
-
-	)
-
-
+		"bcrypt",
+		"TODO",
+		"Backend"
+	),
+	("fastify","TODO", "Backend"),
+	("fastify-cookie","TODO", "Backend"),
+	("fastify-cors","TODO", "Backend"),
+	("fastify-plugin","TODO", "Backend"),
+	("got","TODO", "Backend"),
+	("onetime","TODO", "Backend"),
+	("zod","TODO", "Backend"),
+	("execa","TODO", "Backend"),
+	("lion-system","TODO", "Backend"),
+	("nodemon","TODO", "Backend"),
+	("tsc-alias","TODO", "Backend"),
 ]
 
-backend_packages = [
-	"bcrypt",
-	"fastify",
-	"fastify-cookie",
-	"fastify-cors",
-	"fastify-plugin",
-	"got",
-	"onetime",
-	"zod",
-	"execa",
-	"lion-system",
-	"nodemon",
-	"tsc-alias",
-]
+def create_libraries_table():
+	table_string = ""
+	for (package_name, package_description, package_usage) in packages:
+		table_string += f"""
+			\\\\\\hline
+			{tex_escape(package_name)} &
+			{tex_escape(package_description)} &
+			{tex_escape(package_usage)}
+		"""
+	return table_string
 \end{pycode}
 % \end{noindent}
 
+\def\arraystretch{1.5}
+\noindent\begin{xltabular}{\textwidth}{|p{0.3\textwidth\RaggedRight}|X|p{0.1\textwidth\RaggedRight}|}
+	\hline
+	Name &
+	Description &
+	Usage
+	\py{create_libraries_table()}
+	\\\hline
+\end{xltabular}
 % TODO: Add initial consultation with client and/or advisor
 \end{document}
