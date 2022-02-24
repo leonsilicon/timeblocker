@@ -10,13 +10,17 @@ export const timeblockColumnRouter = createRouter()
 		input: timeblockIdInput.merge(
 			z.object({
 				columnId: z.string(),
+				taskBlockIds: z.string().array(),
 			})
 		),
-		async resolve({ ctx, input: { columnId } }) {
+		async resolve({ ctx, input: { columnId, taskBlockIds } }) {
 			await ctx.prisma.timeblockColumn.create({
 				data: {
 					id: columnId,
 					timeblockId: ctx.timeblockId,
+					timeblockTaskBlocks: {
+						connect: taskBlockIds.map((taskBlockId) => ({ id: taskBlockId })),
+					},
 				},
 			});
 		},

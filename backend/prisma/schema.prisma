@@ -76,6 +76,9 @@ model TimeblockTask {
   timeblock          Timeblock            @relation(fields: [timeblockId], references: [id], onDelete: Cascade)
   timeblockId        String
   TimeblockTaskBlock TimeblockTaskBlock[]
+
+  // Deleted tasks are hidden so that previous tasks on the timeblock are not lost
+  isHidden Boolean
 }
 
 model TimeblockTaskBlock {

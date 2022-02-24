@@ -60,6 +60,7 @@ let isLoading = $ref(true);
 					id: task.id,
 					name: task.name,
 					description: task.description,
+					isHidden: task.isHidden
 				})
 			);
 		}

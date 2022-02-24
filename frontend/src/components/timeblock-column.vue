@@ -138,12 +138,16 @@ async function onDrop(event: DragEvent) {
 				.getColumn(props.timeblockColumnId)
 				?.addTaskBlock(taskBlock.getId());
 
-			await client.mutation('addTimeblockTaskBlock', {
-				taskBlockId: taskBlock.getId(),
-				taskId: payload.taskId,
+			await client.mutation('createTimeblockTaskBlocks', {
 				timeblockColumnId: props.timeblockColumnId,
-				startMinute,
-				endMinute,
+				taskBlocks: [
+					{
+						taskBlockId: taskBlock.getId(),
+						taskId: payload.taskId,
+						startMinute,
+						endMinute,
+					},
+				],
 			});
 		} else if ('sourceTaskBlockId' in payload) {
 			if (activeDraggingTaskBlock === undefined) return;

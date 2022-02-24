@@ -34,11 +34,27 @@ const timeblockCalendarStyle = $computed(() => ({
 }));
 
 async function addNewColumn() {
+	const mostRecentColumn = timeblockStore.activeTimeblock.getColumns().at(-1)!;
+	const mostRecentColumnTaskBlocks = mostRecentColumn.getTaskBlocks();
+	const newTaskBlocks = mostRecentColumnTaskBlocks.map((taskBlock) => ({
+		taskId: taskBlock.getTask().getId(),
+		taskBlockId: nanoid(),
+		startMinute: taskBlock.getStartMinute(),
+		endMinute: taskBlock.getEndMinute(),
+	}));
+
+	await client.mutation('createTimeblockTaskBlocks', {
+		timeblockColumnId: mostRecentColumn.getId(),
+		taskBlocks: newTaskBlocks,
+	});
+
 	const timeblockColumnId = nanoid();
 	await client.mutation('addTimeblockColumn', {
 		columnId: timeblockColumnId,
 		timeblockId: timeblockStore.activeTimeblock.getId(),
+		taskBlockIds: newTaskBlocks.map(({ taskBlockId }) => taskBlockId),
 	});
+
 	timeblockStore.activeTimeblock.addColumn(timeblockColumnId);
 }
 </script>

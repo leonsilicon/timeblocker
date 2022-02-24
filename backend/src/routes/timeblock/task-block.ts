@@ -9,27 +9,30 @@ import {
 export const timeblockTaskBlockRouter = createRouter()
 	.middleware(accountMiddleware)
 	.middleware(timeblockColumnMiddleware)
-	.mutation('addTimeblockTaskBlock', {
+	.mutation('createTimeblockTaskBlocks', {
 		input: timeblockColumnIdInput.merge(
 			z.object({
-				taskId: z.string(),
-				taskBlockId: z.string(),
-				startMinute: z.number(),
-				endMinute: z.number(),
+				taskBlocks: z
+					.object({
+						taskId: z.string(),
+						taskBlockId: z.string(),
+						startMinute: z.number(),
+						endMinute: z.number(),
+					})
+					.array(),
 			})
 		),
-		async resolve({
-			ctx,
-			input: { taskBlockId, endMinute, startMinute, taskId },
-		}) {
-			await ctx.prisma.timeblockTaskBlock.create({
-				data: {
-					timeblockColumnId: ctx.timeblockColumnId,
-					endMinute,
-					id: taskBlockId,
-					taskId,
-					startMinute,
-				},
+		async resolve({ ctx, input: { taskBlocks } }) {
+			await ctx.prisma.timeblockTaskBlock.createMany({
+				data: taskBlocks.map(
+					({ endMinute, taskBlockId, taskId, startMinute }) => ({
+						timeblockColumnId: ctx.timeblockColumnId,
+						endMinute,
+						id: taskBlockId,
+						taskId,
+						startMinute,
+					})
+				),
 			});
 		},
 	})

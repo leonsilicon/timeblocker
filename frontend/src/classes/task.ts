@@ -1,10 +1,9 @@
-import { getRandomTaskColor } from '~f/utils/task';
-
 export type TaskConstructorProps = {
 	id: string;
 	name: string;
 	color?: string;
 	description?: string;
+	isHidden: boolean;
 };
 
 /**
@@ -32,20 +31,34 @@ export class Task {
 	private description?: string;
 
 	/**
+	 * Whether the task is shown in the task dock.
+	 */
+	private isHidden: boolean;
+
+	/**
 	 * Creates a new task.
 	 * @param props The properties to set on the task.
 	 * @param props.id The ID of the task.
 	 * @param props.name The name of the task.
 	 * @param props.description The description of the task.
 	 * @param props.color The color of the task.
+	 * @param props.isHidden Whether the task is shown in the task dock.
 	 */
-	constructor({ id, name, description, color }: TaskConstructorProps) {
+	constructor({
+		id,
+		name,
+		description,
+		color,
+		isHidden,
+	}: TaskConstructorProps) {
 		this.id = id;
 		this.setName(name);
 		this.setColor(color ?? 'lightred');
 		if (description !== undefined) {
 			this.setDescription(description);
 		}
+
+		this.setIsHidden(isHidden);
 	}
 
 	/**
@@ -86,6 +99,10 @@ export class Task {
 	 */
 	setColor(color: string) {
 		this.color = color;
+	}
+
+	setIsHidden(isHidden: boolean) {
+		this.isHidden = isHidden;
 	}
 
 	/**

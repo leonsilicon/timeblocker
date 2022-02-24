@@ -24,6 +24,7 @@ export const timeblockTaskRouter = createRouter()
 					name,
 					description,
 					timeblockId: ctx.timeblockId,
+					isHidden: false,
 				},
 			});
 		},
@@ -40,7 +41,14 @@ export const timeblockTaskRouter = createRouter()
 				select: {
 					id: true,
 					name: true,
-					tasks: true,
+					tasks: {
+						select: {
+							id: true,
+							name: true,
+							description: true,
+							isHidden: true,
+						},
+					},
 				},
 				where: {
 					id: ctx.timeblockId,
@@ -73,14 +81,17 @@ export const timeblockTaskRouter = createRouter()
 			});
 		},
 	})
-	.mutation('deleteTimeblockTask', {
+	.mutation('hideTimeblockTask', {
 		input: timeblockIdInput.merge(
 			z.object({
 				taskId: z.string(),
 			})
 		),
 		async resolve({ ctx, input: { taskId } }) {
-			await ctx.prisma.timeblockTask.delete({
+			await ctx.prisma.timeblockTask.update({
+				data: {
+					isHidden: true,
+				},
 				where: {
 					id: taskId,
 				},
