@@ -1,66 +1,59 @@
-import type { TaskConstructorProps } from '~f/classes/task';
-import { Task } from '~f/classes/task';
+import type { FixedTimeTask } from '~f/classes/fixed-time-task';
+import type { TaskBlockConstructorProps } from '~f/classes/task-block';
+import { TaskBlock } from '~f/classes/task-block';
 
-export type FixedTimeTaskConstructorProps = TaskConstructorProps & {
-	startTime: string;
-	endTime: string;
+export type FixedTimeTaskBlockConstructorProps = TaskBlockConstructorProps & {
+	task: FixedTimeTask;
 };
 
 /**
- * A task that represents a task that always starts and ends at the same time.
+ * A task block that represents a task that always starts and ends at the same time.
  */
-export class FixedTimeTask extends Task {
-	/**
-	 * The start time of the task block.
-	 */
-	private startTime: string;
+export class FixedTimeTaskBlock extends TaskBlock {
+	protected task: FixedTimeTask;
 
-	/**
-	 * The end time of the task block.
-	 */
-	private endTime: string;
-
-	/**
-	 * Creates a new fixed time task block.
-	 * @param props The properties to set on the task block.
-	 * @param startTime The time the task block always starts on
-	 * @param endTime The time the task block always ends on
-	 */
-	constructor(props: FixedTimeTaskConstructorProps) {
+	constructor(props: FixedTimeTaskBlockConstructorProps) {
 		super(props);
-		this.setStartTime(props.startTime);
-		this.setEndTime(props.endTime);
+		this.task = props.task;
+	}
+
+	public override getTask() {
+		return this.task;
+	}
+
+	public override setTask(task: FixedTimeTask) {
+		this.task = task;
 	}
 
 	/**
 	 * Gets the time the task always starts on.
 	 * @returns The time the task always starts on.
 	 */
-	getStartTime() {
-		return this.startTime;
+	public override getStartMinute() {
+		return this.getTask().getStartMinute();
 	}
 
 	/**
 	 * Sets the time the task always starts on.
-	 * @param startTime The new time the task always starts on.
+	 * @param startMinute The new time the task always starts on.
 	 */
-	setStartTime(startTime: string) {
-		this.startTime = startTime;
+	public override setStartMinute(startMinute: number) {
+		this.getTask().setStartMinute(startMinute);
 	}
 
 	/**
-	 * Gets the time the task always ends on.
-	 * @returns The time the task always ends on.
+	 * Gets the minute the task always ends on.
+	 * @returns The minute the task always ends on.
 	 */
-	getEndTime() {
-		return this.endTime;
+	public override getEndMinute() {
+		return this.getTask().getEndMinute();
 	}
 
 	/**
 	 * Sets the time the task always ends on.
 	 * @param endTime The new time the task always ends on.
 	 */
-	setEndTime(endTime: string) {
-		this.endTime = endTime;
+	setEndMinute(endMinute: number) {
+		this.getTask().setEndMinute(endMinute);
 	}
 }

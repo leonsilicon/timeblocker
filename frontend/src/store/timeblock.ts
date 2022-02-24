@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import type { Timeblock } from '~f/classes/timeblock';
+import { TimeblockDate } from '~f/types/date.js';
 import type { TimeblockStoreState } from '~f/types/store';
 
 function createTimeblockStoreState(): TimeblockStoreState {
@@ -21,13 +22,16 @@ export const useTimeblockStore = defineStore('timeblock', {
 		addTimeblockListing({
 			timeblockId,
 			timeblockName,
+			timeblockDate,
 		}: {
 			timeblockId: string;
 			timeblockName: string;
+			timeblockDate: TimeblockDate;
 		}) {
 			this.timeblockListings.push({
 				timeblockId,
 				timeblockName,
+				timeblockDate,
 			});
 		},
 		hasTimeblock(timeblockId: string) {

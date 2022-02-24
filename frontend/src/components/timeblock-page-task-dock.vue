@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { mdiDelete } from '@mdi/js';
 import { nextTick } from 'vue';
 import { nanoid } from 'nanoid-nice';
+import { mdiDelete } from '@mdi/js';
+import { displayError } from '~f/utils/error';
+import { Task } from '~f/classes/task';
 import TimeblockTaskBox from '~f/components/timeblock-task-box.vue';
 import { useTimeblockStore } from '~f/store';
 import { TaskBoxDropData, TaskBoxDropType } from '~f/types/task-box';
 import { client } from '~f/utils/trpc';
 import TimeblockTaskBoxEditor from '~f/components/timeblock-task-box-editor.vue';
-import { Task } from '~f/classes/task';
-import { displayError } from '~f/utils/error';
+import TimeblockPageTaskDockAddTaskButton from '~f/components/timeblock-page-task-dock-add-task-button.vue';
 
 const timeblockStore = useTimeblockStore();
 
@@ -19,19 +20,19 @@ const visibleTasks = $computed(() =>
 		.filter((task) => !task.getIsHidden())
 );
 
-let isNewTaskTemplateVisible = $ref(false);
 const timeblockTaskBoxEditorEl =
 	$ref<InstanceType<typeof TimeblockTaskBoxEditor>>();
 
-async function onAddTaskClick() {
-	isNewTaskTemplateVisible = true;
-	// Wait until the input appears in the DOM
+let newTaskName = $ref('');
+let newTaskDescription = $ref('');
+let selectedTaskType = $ref('');
+let isNewTaskEditorVisible = $ref(false);
+
+async function onNewTaskSelect(taskType: string) {
+	selectedTaskType = taskType;
 	await nextTick();
 	timeblockTaskBoxEditorEl.focusNameInput();
 }
-
-let newTaskName = $ref('');
-let newTaskDescription = $ref('');
 
 async function addTask() {
 	if (newTaskName.trim() !== '') {
@@ -47,7 +48,6 @@ async function addTask() {
 
 		try {
 			await client.mutation('addTimeblockTask', {
-				timeblockId: timeblockStore.activeTimeblock.getId(),
 				id: taskId,
 				name: newTaskName,
 				description: newTaskDescription,
@@ -60,7 +60,7 @@ async function addTask() {
 	// Reset the new task textbox
 	newTaskName = '';
 	newTaskDescription = '';
-	isNewTaskTemplateVisible = false;
+	isNewTaskEditorVisible = false;
 }
 
 /**
@@ -124,13 +124,14 @@ async function onDrop(event: DragEvent) {
 		</div>
 
 		<div class="mb-2 text-3xl font-bold">Tasks</div>
-		<TimeblockPageTaskDockAddTaskButton />
+		<TimeblockPageTaskDockAddTaskButton @select="onNewTaskSelect" />
 
 		<TimeblockTaskBoxEditor
-			v-if="isNewTaskTemplateVisible"
+			v-if="isNewTaskEditorVisible"
 			ref="timeblockTaskBoxEditorEl"
 			v-model:name="newTaskName"
 			v-model:description="newTaskDescription"
+			:task-type="selectedTaskType"
 			@blur="addTask"
 		/>
 

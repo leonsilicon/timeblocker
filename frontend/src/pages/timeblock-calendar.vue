@@ -17,12 +17,9 @@ let areTimeblockListingsLoading = $ref(true);
 
 // Retrieve the timeblock tasks from the server
 (async () => {
-	const timeblockListings = await client.query('listTimeblocks', {
-		limit: 10,
-		skip: 0,
-	});
+	const timeblockListings = await client.query('listTimeblocks');
 	areTimeblockListingsLoading = false;
-	for (const { id, name } of timeblockListings) {
+	for (const { id, name, date } of timeblockListings) {
 		if (
 			!timeblockStore.timeblockListings.some(
 				(listing) => listing.timeblockId === id
@@ -31,6 +28,7 @@ let areTimeblockListingsLoading = $ref(true);
 			timeblockStore.addTimeblockListing({
 				timeblockId: id,
 				timeblockName: name,
+				timeblockDate: date,
 			});
 		}
 	}
@@ -44,6 +42,7 @@ onMounted(() => {
 		plugins: [dayGridPlugin],
 		dayCellContent(ctx) {
 			const div = document.createElement('div');
+			div.classList.add('grow');
 			mountComponent(
 				TimeblockCalendarAddTimeblockButton,
 				{
@@ -68,26 +67,6 @@ onMounted(() => {
 		<div class="mb-2 text-6xl font-bold">Timeblocks</div>
 		<div v-if="areTimeblockListingsLoading === true" class="row center p-4">
 			<CircleSpinner class="mr-2" /> Loading...
-		</div>
-		<div v-else class="column self-stretch">
-			<div
-				class="btn btn-primary btn-sm mb-4 self-center"
-				@click="createNewTimeblock"
-			>
-				<v-icon :icon="mdiPlus" />
-				Create New Timeblock
-			</div>
-			<div class="column gap-4 self-stretch">
-				<TimeblockListing
-					v-for="{
-						timeblockId,
-						timeblockName,
-					} in timeblockStore.timeblockListings"
-					:id="timeblockId"
-					:key="timeblockId"
-					:name="timeblockName"
-				/>
-			</div>
 		</div>
 		<div ref="calendarEl" class="w-full max-w-6xl"></div>
 	</div>

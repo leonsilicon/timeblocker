@@ -31,7 +31,6 @@ let isLoading = $ref(true);
 				timeblockId: routeParams.id,
 			}),
 			client.query('getTimeblockTasks', {
-				timeblockId: routeParams.id,
 				limit: 10,
 				skip: 0,
 			}),

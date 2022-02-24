@@ -15,14 +15,19 @@ export type TaskBlockConstructorProps = {
  */
 export class TaskBlock {
 	/**
-	 * The unique ID of this task block
+	 * The type of task block.
 	 */
-	private readonly id: string;
+	protected type: string;
 
 	/**
 	 * The task this task block references
 	 */
-	private task: Task;
+	protected task: Task;
+
+	/**
+	 * The unique ID of this task block
+	 */
+	private readonly id: string;
 
 	/**
 	 * The UNIX minute of the start time of this block
@@ -65,6 +70,7 @@ export class TaskBlock {
 		this.id = id;
 		this.timeblock = timeblock;
 		this.task = task;
+		this.type = 'normal';
 		this.setStartMinute(startMinute);
 		this.setEndMinute(endMinute);
 		this.setTimeblockColumnId(timeblockColumnId);

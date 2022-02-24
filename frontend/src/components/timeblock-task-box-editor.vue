@@ -2,6 +2,7 @@
 defineProps<{
 	name: string;
 	description: string;
+	taskType: string;
 }>();
 
 const emit = defineEmits(['update:name', 'update:description', 'blur']);

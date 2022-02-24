@@ -1,9 +1,10 @@
 import type { FixedTimeTaskBlockConstructorProps } from './fixed-time-task-block';
 import { FixedTimeTaskBlock } from './fixed-time-task-block';
+import type { FixedWeeklyTimeTask } from '~f/classes/fixed-weekly-time-task';
 
 export type FixedWeeklyTimeTaskBlockConstructorProps =
 	FixedTimeTaskBlockConstructorProps & {
-		dayOfWeek: number;
+		task: FixedWeeklyTimeTask;
 	};
 
 /**
@@ -11,7 +12,7 @@ export type FixedWeeklyTimeTaskBlockConstructorProps =
  * occurs at the same time every week.
  */
 export class FixedWeeklyTimeTaskBlock extends FixedTimeTaskBlock {
-	dayOfWeek: number;
+	public override task: FixedWeeklyTimeTask;
 
 	/**
 	 * Creates a new fixed weekly time task block.
@@ -19,26 +20,14 @@ export class FixedWeeklyTimeTaskBlock extends FixedTimeTaskBlock {
 	 */
 	constructor(props: FixedWeeklyTimeTaskBlockConstructorProps) {
 		super(props);
-		this.setDayOfWeek(props.dayOfWeek);
+		this.task = props.task;
 	}
 
-	/**
-	 * Sets the day of the week the task repeats on.
-	 * @param dayOfWeek The new day of the week the task repeats on.
-	 */
-	setDayOfWeek(dayOfWeek: number) {
-		if (dayOfWeek < 0 || dayOfWeek > 6) {
-			throw new Error('Day of week must be between 0 and 6 inclusive.');
-		}
-
-		this.dayOfWeek = dayOfWeek;
+	public override getTask() {
+		return this.task;
 	}
 
-	/**
-	 * Gets the day of the week the task repeats on.
-	 * @returns The day of the week the task repeats on.
-	 */
-	getDayOfWeek() {
-		return this.dayOfWeek;
+	public override setTask(task: FixedWeeklyTimeTask) {
+		this.task = task;
 	}
 }

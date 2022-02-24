@@ -18,6 +18,7 @@ model Account {
 
   accountSessionTokens AccountSessionToken[]
   accountCsrfTokens    AccountCsrfToken[]
+  TimeblockTask        TimeblockTask[]
 }
 
 enum AuthenticationMethod {
@@ -64,7 +65,6 @@ model Timeblock {
   //}
   date Json
 
-  tasks            TimeblockTask[]
   timeblockColumns TimeblockColumn[]
 }
 
@@ -77,11 +77,13 @@ model TimeblockColumn {
 }
 
 model TimeblockTask {
-  id                 String               @id()
-  name               String
-  description        String?
-  timeblock          Timeblock            @relation(fields: [timeblockId], references: [id], onDelete: Cascade)
-  timeblockId        String
+  id          String  @id()
+  name        String
+  description String?
+
+  ownerAccount   Account @relation(fields: [ownerAccountId], references: [id], onDelete: Cascade)
+  ownerAccountId String
+
   TimeblockTaskBlock TimeblockTaskBlock[]
 
   // Deleted tasks are hidden so that previous tasks on the timeblock are not lost

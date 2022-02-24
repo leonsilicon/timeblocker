@@ -11,6 +11,11 @@ export type TaskConstructorProps = {
  */
 export class Task {
 	/**
+	 * The type of task.
+	 */
+	protected type: string;
+
+	/**
 	 * The unique ID of the task.
 	 */
 	private readonly id: string;
@@ -58,6 +63,8 @@ export class Task {
 			this.setDescription(description);
 		}
 
+		this.type = 'normal';
+
 		this.setIsHidden(isHidden);
 	}
 
@@ -67,6 +74,14 @@ export class Task {
 	 */
 	public setName(name: string) {
 		this.name = name;
+	}
+
+	/**
+	 * Gets the type of the task.
+	 * @returns The type of the task.
+	 */
+	public getType() {
+		return this.type;
 	}
 
 	/**

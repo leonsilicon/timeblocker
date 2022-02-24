@@ -68,24 +68,27 @@ export const timeblockCrudRouter = createRouter()
 		},
 	})
 	.query('listTimeblocks', {
-		input: z.object({
-			skip: z.number(),
-			limit: z.number(),
-		}),
-		async resolve({ ctx, input: { skip, limit } }) {
+		async resolve({ ctx }) {
 			const timeblocks = await ctx.prisma.timeblock.findMany({
 				select: {
 					id: true,
 					name: true,
+					date: true,
 				},
 				where: {
 					ownerAccountId: ctx.accountId,
 				},
-				skip,
-				take: limit,
 			});
 
-			return timeblocks;
+			return timeblocks as Array<{
+				id: string;
+				name: string;
+				date: {
+					year: number;
+					month: number;
+					day: number;
+				};
+			}>;
 		},
 	})
 	.mutation('updateTimeblock', {

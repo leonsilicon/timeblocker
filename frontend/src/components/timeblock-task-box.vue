@@ -38,7 +38,6 @@ async function onDeleteClick() {
 
 	await client.mutation('hideTimeblockTask', {
 		taskId: task.getId(),
-		timeblockId: timeblockStore.activeTimeblock.getId(),
 	});
 }
 
@@ -62,7 +61,6 @@ async function updateTask() {
 
 	await client.mutation('updateTimeblockTask', {
 		taskId: task.getId(),
-		timeblockId: timeblockStore.activeTimeblock.getId(),
 		description: taskNewDescription,
 		name: taskNewName,
 	});
@@ -74,6 +72,7 @@ async function updateTask() {
 		v-if="isTaskEditorShowing"
 		v-model:name="taskNewName"
 		v-model:description="taskNewDescription"
+		:task-type="task.getType()"
 		@blur="updateTask"
 	/>
 	<div
