@@ -99,6 +99,9 @@ def task(task_string):
 	Time \newline estimated &
 	Target \newline completion date &
 	Criterion
+
+	% Criterion A Tasks
+
 	\py{task("""
 		- Brainstorm IA ideas
 		- Created a document filled with possible ideas and decided to create a timeblocking app—an app that I wish existed and would love to use myself.
@@ -155,6 +158,9 @@ def task(task_string):
 		- November 1, 2021
 		- A
 		""")}
+
+	% Criterion B Tasks
+
 	\py{task("""
 		- Find software for creating the flowchart
 		- Searched and experimented with many design apps, considered using multiple free designeasiet apps, from GIMP (an open-source image editor), Inkscape, Gravit, but ended up using FigJam because for me it was the easiest to use.
@@ -198,7 +204,7 @@ def task(task_string):
 		- B
 		""")}
 
-	% Frontend Tasks
+	% Criterion C Tasks (Frontend)
 
 	\py{task("""
 		- Set up Vite
@@ -361,7 +367,9 @@ def task(task_string):
 		-
 		- C
 		""")}
-	% Backend Tasks
+
+	% Criterion C Tasks - Backend
+
 	\py{task("""
 		- Learning a library called tRPC for creating type-safe API endpoints
 		- Reading the documentation at trpc.io
@@ -383,12 +391,47 @@ def task(task_string):
 		-
 		- C
 		""")}
-	\\\hline
+	\py{task("""
+		- Set up tRPC
+		- Installed the necessary libraries, set up the TypeScript configuration in tsconfig.json, installed the tRPC fastify adapter to integrate with Fastify, set up tRPC context so that all operations have access to the Fastify request and reply variables, as well as access to the Prisma client instance.
+		- 6 hours
+		-
+		- C
+		""")}
+	\py{task("""
+		- Debug tRPC frontend issues
+		- TypeScript throwing a compiler error in frontend saying that it can't find TypeScript definitions for fastify even though fastify is a backend library. After some investigation, turns out this was because of how tRPC worked, as I needed to import types from the backend. I fixed it by adding a manual entry in the frontend's tsconfig.json.
+		- 3 hours
+		-
+		- C
+		""")}
+	\py{task("""
+		"""
+		- Create registration and login routes
+		- Implement the registration and login routers for tRPC and merge the routers sessions in the backend via session tokens.
+		- 2 hours
+		-
+		- C
+		)}
+	\py{task("""
+		- Create timeblock CRUD (Create, Read, Update, Delete) routes
+		- Implement all the necessary routes along with their database implementations for creating new timeblocks, new timeblock tasks, and new timeblock task blocks. Also modified the prisma.schema to reflect these new models.
+		- 15 hours
+		-
+		- C
+		""")}
+	\py{task("""
+		- Debug issue with creating new accounts where it gives the error message "token not found."
+		- Fixed the bug with registration; I mistakenly thought the return value of createAccount was the sessionToken when in reality it was the accountId, so I ended up sending the accountId to the client and it was sending the server the accountId as if it was the session token, which lead to the "token not found" error.
+		- 1 hour
+		-
+		- C
+		""")}
 	\py{task("""
 		- Hosting the backend server publicly on Heroku (a cloud application platform)
 		- The server is public and linked to a Heroku domain and CORS (cross-origin resource sharing) is restricted to only accept requests from https://ib.timeblocker.io
 		- 4 hours
-		- February 14, 2021
+		-
 		- C
 		""")}
 	\py{task("""
