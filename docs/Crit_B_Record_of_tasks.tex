@@ -172,25 +172,14 @@ def task(task_string):
 		- November 20, 2021
 		- B
 		""")}
+
+	% Frontend Tasks
+
 	\py{task("""
-		- Learning a library called tRPC for creating type-safe API endpoints
-		- Reading the documentation at trpc.io
-		- 3 hours
-		- November 27, 2021
-		- C
-		""")}
-	\py{task("""
-		- Learning web security and adding measures to avoid CSRF attacks and minimize the damage of XSS attacks
-		- Learned about cookies, session tokens and session state, danger of XSS attacks. Browsed through the Amazon Cognito JavaScript library to find out how they store user tokens, and discovered they use the browser's localStorage. Thus, I decided to store session tokens for ib.timeblocker.io via the browser's localStorage.
-		- 20 hours
-		- December 12, 2021
-		- C
-		""")}
-	\py{task("""
-		- Learn Vue 3.2's ref sugar syntax
-		- Integrate Vue 3.2's ref sugar syntax into the project and use it for reactive variables to reduce boilerplate needed to write Vue template files.
+		- Set up Vite
+		- Installed Vite, a frontend build tool that allows local development of a website. It also has the extremely useful feature of automatically updating the website when changes are made to the code without needing to refresh the page.
 		- 2 hours
-		- December 14, 2021
+		-
 		- C
 		""")}
 	\py{task("""
@@ -205,6 +194,27 @@ def task(task_string):
 		- Have TypeScript (a strongly-typed superset of JavaScript) set up so that common bugs like passing the wrong type to functions or typos in object keys can be caught at compile-time instead of runtime. Also improves IDE IntelliSense when coding.
 		- 4 hours
 		- December 19, 2021
+		- C
+		""")}
+	\py{task("""
+		- Setting up page routing on my website
+		- Have a Vue Router configuration object containing routes that point to the various pages in my program. Adding Vue Router links to the code that allow users to navigate to different pages through button clicks in my website. Also configure GitHub pages to redirect user to proper 404 page when the user's link doesn't exist.
+		- 2 hours
+		- January 16, 2022
+		- C
+		""")}
+	\py{task("""
+		- Set up state manegement on my website
+		- There will be state that many different components need to access, and the best practice is to use a global data store that can be accessed by all components. I decided to use Pinia, a type-safe store library for Vue since it has great TypeScript and IntelliSense support.
+		- 2 hours
+		-
+		- C
+		""")}
+	\py{task("""
+		- Learn Vue 3.2's ref sugar syntax
+		- Integrate Vue 3.2's ref sugar syntax into the project and use it for reactive variables to reduce boilerplate needed to write Vue template files.
+		- 2 hours
+		- December 14, 2021
 		- C
 		""")}
 	\py{task("""
@@ -257,13 +267,6 @@ def task(task_string):
 		- C
 		""")}
 	\py{task("""
-		- Setting up page routing on my website
-		- Have a Vue Router configuration object containing routes that point to the various pages in my program. Adding Vue Router links to the code that allow users to navigate to different pages through button clicks in my website. Also configure GitHub pages to redirect user to proper 404 page when the user's link doesn't exist.
-		- 2 hours
-		- January 16, 2022
-		- C
-		""")}
-	\py{task("""
 		- Learning and integrating the TailwindCSS library DaisyUI into my program
 		- Have the UI elements of my program use battle-tested and accessible components from a popular TailwindCSS component library called DaisyUI.
 		- 4 hours
@@ -291,17 +294,63 @@ def task(task_string):
 		-
 		- C
 		""")}
+
 	\py{task("""
-		- Set up Prisma
+		""")}
+	\py{task("""
+		- Implement ability to resize task blocks on the schedule
+		- Allow the user to drag up/down on the edges of the task blocks to easily resize their tassk. Had to add validation to prevent user from dragging it too high/low that it would make the task block "0 minutes long"
+		- 3 hours
 		-
+		- C
+		""")}
+	\py{task("""
+		- Add a timeblock calendar that allows users to create a timeblock for each day
+		- Use the FullCalendar library . Had to find out how to dynamically render a Vue component since I needed to return a DOM element for the dayCellContent property in the FullCalendar component, and the Vue component doesn't return HTML by default. Solved the problem by mounting the component into a dynamically created <div> element.
+		- 3 hours
+		-
+		- C
+		""")}
+	\py{task("""
+		- Change the scoping of tasks
+		- Before, tasks were scoped to individual timeblocks. However, it's more likely that users want to reuse their tasks across timeblocks. Thus, I need to scope the tasks to an account and not each individual timeblock.
 		- 1 hour
 		-
 		- C
 		""")}
 	\py{task("""
-		- Set up nodemon
 		-
 		-
+		-
+		-
+		-
+		""")}
+	\py{task("""
+		-
+		-
+		-
+		-
+		-
+		""")}
+	% Backend Tasks
+	\py{task("""
+		- Learning a library called tRPC for creating type-safe API endpoints
+		- Reading the documentation at trpc.io
+		- 3 hours
+		- November 27, 2021
+		- C
+		""")}
+	\py{task("""
+		- Learning web security and adding measures to avoid CSRF attacks and minimize the damage of XSS attacks
+		- Learned about cookies, session tokens and session state, danger of XSS attacks. Browsed through the Amazon Cognito JavaScript library to find out how they store user tokens, and discovered they use the browser's localStorage. Thus, I decided to store session tokens for ib.timeblocker.io via the browser's localStorage.
+		- 20 hours
+		- December 12, 2021
+		- C
+		""")}
+	\py{task("""
+		- Set up Prisma
+		- Have the prisma packages installed and create
+		- 1 hour
 		-
 		- C
 		""")}
@@ -313,11 +362,19 @@ def task(task_string):
 		- February 14, 2021
 		- C
 		""")}
-		\py{task("""
-		- Debug issues with Heroku
+	\py{task("""
+		- Debug pnpm issues with Heroku
 		- Heroku doesn't natively support the package manager that I used for Timeblocker (pnpm), so I had to experiment with numerous workarounds to try and get it working with Heroku.
 		- 20 hours
-		- February
+		-
+		- C
+		""")}
+	\py{task("""
+		- Debug fastify issues with Heroku
+		- The Heroku server kept failing because Fastify wasn't binding to the port; turns out there was two issues: one was I needed to explicitly specify the 0.0.0.0 address for Heroku, and the second issue was that I forgot to read the PORT variablce from the environment.
+		- 2 hours
+		-
+		- C
 		""")}
 \end{xltabular}
 \end{document}
