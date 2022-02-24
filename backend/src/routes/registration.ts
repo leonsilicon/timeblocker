@@ -4,6 +4,7 @@ import { createRouter } from '~b/utils/router.js';
 import { createAccount } from '~b/utils/registration.js';
 import { throwTrpcError } from '~b/utils/error.js';
 import { trpcError } from '~s/types/error.js';
+import { authenticateClient } from '~b/utils/auth.js';
 
 export const registrationRouter = createRouter().mutation('register', {
 	input: z.object({
@@ -23,11 +24,15 @@ export const registrationRouter = createRouter().mutation('register', {
 
 		const passwordHash = await bcrypt.hash(password, 10);
 
-		const sessionToken = await createAccount(ctx, {
+		const accountId = await createAccount(ctx, {
 			email,
 			passwordHash,
 		});
 
-		return { sessionToken };
+		const { sessionToken } = await authenticateClient(ctx, {
+			accountId,
+		});
+
+		return { accountId, sessionToken };
 	},
 });

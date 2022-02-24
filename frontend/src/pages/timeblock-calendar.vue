@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { mdiPlus } from '@mdi/js';
 import { Calendar } from '@fullcalendar/core';
 import { onMounted } from 'vue';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import dayjs from 'dayjs';
 import { client } from '~f/utils/trpc';
 import CircleSpinner from '~f/components/circle-spinner.vue';
-import TimeblockListing from '~f/components/timeblock-listing.vue';
 import { useTimeblockStore } from '~f/store/timeblock';
 import TimeblockCalendarAddTimeblockButton from '~f/components/timeblock-calendar-add-timeblock-button.vue';
 import { mountComponent } from '~f/utils/component';
