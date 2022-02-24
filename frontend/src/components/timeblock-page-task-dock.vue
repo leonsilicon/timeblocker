@@ -30,6 +30,7 @@ let isNewTaskEditorVisible = $ref(false);
 
 async function onNewTaskSelect(taskType: string) {
 	selectedTaskType = taskType;
+	isNewTaskEditorVisible = true;
 	await nextTick();
 	timeblockTaskBoxEditorEl.focusNameInput();
 }
@@ -127,7 +128,7 @@ async function onDrop(event: DragEvent) {
 		<TimeblockPageTaskDockAddTaskButton @select="onNewTaskSelect" />
 
 		<TimeblockTaskBoxEditor
-			v-if="isNewTaskEditorVisible"
+			v-show="isNewTaskEditorVisible"
 			ref="timeblockTaskBoxEditorEl"
 			v-model:name="newTaskName"
 			v-model:description="newTaskDescription"
