@@ -155,7 +155,7 @@ watch(
 	<div
 		ref="taskBlockEl"
 		draggable="true"
-		class="relative bg-red-200 rounded-md cursor-grab active:cursor-grabbing column center"
+		class="column center relative cursor-grab rounded-md bg-red-200 active:cursor-grabbing"
 		:style="[timeblockTaskBlockStyle, borderDraggingTimeblockTaskBlockStyle]"
 		@dragstart="onDragStart"
 		@dragend="onDragEnd"

@@ -20,7 +20,7 @@ if (sessionToken === null) {
 </script>
 
 <template>
-	<div class="w-full h-full" data-theme="emerald">
+	<div class="h-full w-full" data-theme="emerald">
 		<router-view />
 	</div>
 </template>

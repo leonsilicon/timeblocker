@@ -29,7 +29,7 @@ async function createNewTimeblock(date: TimeblockDate) {
 </script>
 
 <template>
-	<div class="h-full row">
+	<div class="row h-full">
 		<v-icon v-if="doesTimeblockExist" :icon="mdiCircleEditOutline" />
 		<v-icon class="text-green-500" :icon="mdiPlusBox" />
 		{{ date.day }}

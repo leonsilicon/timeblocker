@@ -5,10 +5,10 @@ const appStore = useAppStore();
 </script>
 
 <template>
-	<div class="items-center p-4 bg-white row">
+	<div class="row items-center bg-white p-4">
 		<router-link
 			to="/"
-			class="text-xl font-bold transition-all hover:text-primary"
+			class="hover:text-primary text-xl font-bold transition-all"
 		>
 			timeblocker.io
 		</router-link>
@@ -19,7 +19,7 @@ const appStore = useAppStore();
 				</router-link>
 			</template>
 			<template v-else>
-				<router-link to="/login" class="mr-2 btn btn-primary btn-sm">
+				<router-link to="/login" class="btn btn-primary btn-sm mr-2">
 					Login
 				</router-link>
 				<router-link to="/register" class="btn btn-secondary btn-sm">

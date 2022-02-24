@@ -74,7 +74,7 @@ async function addNewColumn() {
 			style="grid-row: 1 / span 1; grid-column: -1 / span 1"
 			class="self-center px-2"
 		>
-			<div class="text-gray-500 hover:text-black cursor-pointer">
+			<div class="cursor-pointer text-gray-500 hover:text-black">
 				<v-icon :icon="mdiPlusCircleOutline" @click="addNewColumn" />
 			</div>
 		</div>

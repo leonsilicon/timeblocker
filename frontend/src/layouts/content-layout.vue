@@ -3,9 +3,9 @@ import NavigationHeader from '~f/components/navigation-header.vue';
 </script>
 
 <template>
-	<div class="w-full h-full column">
+	<div class="column h-full w-full">
 		<NavigationHeader />
-		<div class="grow column">
+		<div class="column grow">
 			<router-view />
 		</div>
 	</div>
