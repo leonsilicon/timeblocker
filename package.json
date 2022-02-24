@@ -12,7 +12,7 @@
 	"type": "module",
 	"scripts": {
 		"heroku-prebuild": "npm i -g pnpm && npm install --unsafe-perm --quiet -g \"npm@7\" && rm -rf frontend scripts",
-		"heroku-postbuild": "pnpm gen && pnpm build --filter=./backend",
+		"heroku-postinstall": "pnpm gen && pnpm build --filter=./backend",
 		"up": "docker compose up",
 		"gen": "pnpm gen --filter=./backend",
 		"migrate": "pnpm migrate --filter=./backend",
