@@ -41,7 +41,7 @@ export const timeblockTaskRouter = createRouter()
 				},
 			});
 
-			return tasks as TimeblockTask[];
+			return tasks;
 		},
 	})
 	.mutation('updateTimeblockTask', {

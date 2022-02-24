@@ -1,28 +1,27 @@
 function merge<T>(left: T[], right: T[]) {
-	const sortedArray = [];
+	const sortedArray: T[] = [];
 
-	const leftIndex = 0;
-	const rightIndex = 0;
+	let leftIndex = 0;
+	let rightIndex = 0;
 
-	// Break out of loop if any one of the array gets empty
-	while (left.length > 0 && right.length > 0) {
-		// Pick the smaller among the smallest element of left and right sub arrays
-		if (left[0] < right[0]) {
-			arr.push(left.shift());
+	while (leftIndex < left.length && rightIndex < right.length) {
+		if (left[leftIndex]! < right[rightIndex]!) {
+			sortedArray.push(left[leftIndex]!);
+			leftIndex += 1;
 		} else {
-			arr.push(right.shift());
+			sortedArray.push(right[rightIndex]!);
+			rightIndex += 1;
 		}
 	}
 
 	// Concatenating the leftover elements
 	// (in case we didn't go through the entire left or right array)
-	return [...arr, ...left, ...right];
+	return [...sortedArray, ...left.slice(leftIndex), ...right.slice(rightIndex)];
 }
 
-export function mergeSort() {
+export function mergeSort<T>(array: T[]): T[] {
 	const half = array.length / 2;
 
-	// Base case or terminating case
 	if (array.length < 2) {
 		return array;
 	}
