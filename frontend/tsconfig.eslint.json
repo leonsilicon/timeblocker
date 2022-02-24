@@ -8,7 +8,6 @@
 		"postcss.config.cjs",
 		"tailwind.config.cjs",
 		"vite.config.ts",
-		"jest.config.mjs",
 		".eslintrc.cjs"
 	]
 }

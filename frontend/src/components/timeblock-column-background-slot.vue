@@ -14,6 +14,6 @@ const slotStyle = $computed(() => ({
 <template>
 	<div
 		:style="slotStyle"
-		class="-z-1 h-full w-full border-x border-t border-gray-200"
+		class="w-full h-full border-x border-t border-gray-200 -z-1"
 	></div>
 </template>

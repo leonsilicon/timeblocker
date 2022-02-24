@@ -190,7 +190,7 @@ async function onDrop(event: DragEvent) {
 	<div
 		ref="timeblockColumnEl"
 		:style="timeblockColumnStyle"
-		class="-z-1 border-b border-gray-200"
+		class="border-b border-gray-200 -z-1"
 		@drop="onDrop"
 		@dragover.prevent="onDragOver"
 		@dragleave.prevent="onDragLeave"
@@ -198,7 +198,7 @@ async function onDrop(event: DragEvent) {
 		<div
 			v-if="isTaskBlockShadowActive"
 			:style="taskBlockShadowStyle"
-			class="rounded-md bg-red-100"
+			class="bg-red-100 rounded-md"
 		></div>
 		<TimeblockColumnBackground style="grid-row: 1 / -1; grid-column: 1 / -1" />
 		<TimeblockTaskBlock

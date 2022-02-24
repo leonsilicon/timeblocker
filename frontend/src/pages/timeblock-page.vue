@@ -82,7 +82,7 @@ let isLoading = $ref(true);
 	</div>
 	<div v-else class="column">
 		<TimeblockPageToolbar />
-		<div class="row px-4">
+		<div class="px-4 row">
 			<TimeblockPageTaskDock />
 			<TimeblockSchedule />
 		</div>

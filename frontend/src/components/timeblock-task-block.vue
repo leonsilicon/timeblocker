@@ -155,13 +155,13 @@ watch(
 	<div
 		ref="taskBlockEl"
 		draggable="true"
-		class="column center relative cursor-grab rounded-md bg-red-200 active:cursor-grabbing"
+		class="relative bg-red-200 rounded-md cursor-grab active:cursor-grabbing column center"
 		:style="[timeblockTaskBlockStyle, borderDraggingTimeblockTaskBlockStyle]"
 		@dragstart="onDragStart"
 		@dragend="onDragEnd"
 	>
 		<div
-			class="absolute left-0 right-0 top-0 h-[4px] cursor-ns-resize"
+			class="absolute inset-x-0 top-0 h-[4px] cursor-ns-resize"
 			@mousedown.stop="onTopBorderMouseDown"
 		></div>
 		{{ task.getName() }}
@@ -172,7 +172,7 @@ watch(
 			{{ task.getDescription() }}
 		</div>
 		<div
-			class="absolute left-0 right-0 bottom-0 h-[4px] cursor-ns-resize"
+			class="absolute inset-x-0 bottom-0 h-[4px] cursor-ns-resize"
 			@mousedown.stop="onBottomBorderMouseDown"
 		></div>
 	</div>

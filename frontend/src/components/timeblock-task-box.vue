@@ -79,20 +79,20 @@ async function updateTask() {
 	<div
 		v-else
 		draggable="true"
-		class="column m-2 cursor-grab self-stretch rounded-lg bg-red-100 py-2 text-center active:cursor-grabbing"
+		class="self-stretch py-2 m-2 text-center bg-red-100 rounded-lg cursor-grab active:cursor-grabbing column"
 		@dragstart="onDragStart"
 		@mouseover="onMouseOver"
 		@mouseout="onMouseOut"
 	>
-		<div class="row items-center justify-between">
+		<div class="justify-between items-center row">
 			<div v-show="areTaskBoxOptionsShowing" class="ml-4">
 				<v-icon
 					:icon="mdiDeleteCircle"
-					class="transform cursor-pointer text-red-500 transition-all hover:scale-105"
+					class="text-red-500 transition-all hover:scale-105 cursor-pointer"
 					@click="onDeleteClick"
 				></v-icon>
 			</div>
-			<div class="column mx-auto">
+			<div class="mx-auto column">
 				<div>
 					{{ task.getName() }}
 				</div>
@@ -103,7 +103,7 @@ async function updateTask() {
 			<div v-show="areTaskBoxOptionsShowing" class="mr-4">
 				<v-icon
 					:icon="mdiPencilCircle"
-					class="transform cursor-pointer text-green-500 transition-all hover:scale-105"
+					class="text-green-500 transition-all hover:scale-105 cursor-pointer"
 					@click="onEditClick"
 				></v-icon>
 			</div>

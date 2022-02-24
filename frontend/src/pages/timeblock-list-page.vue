@@ -2,7 +2,6 @@
 import { mdiPlus } from '@mdi/js';
 import { useRouter } from 'vue-router';
 import { Calendar } from '@fullcalendar/core';
-import dayGridPlugin from '@fullcalendar/daygrid';
 import { onMounted } from 'vue';
 import { client } from '~f/utils/trpc';
 import CircleSpinner from '~f/components/circle-spinner.vue';
@@ -45,7 +44,6 @@ const calendarEl = $ref<HTMLDivElement>();
 
 onMounted(() => {
 	const calendar = new Calendar(calendarEl, {
-		plugins: [dayGridPlugin],
 		headerToolbar: false,
 		initialView: 'dayGridMonth',
 	});
@@ -55,20 +53,20 @@ onMounted(() => {
 </script>
 
 <template>
-	<div class="column center p-8">
+	<div class="p-8 column center">
 		<div class="mb-2 text-6xl font-bold">Timeblocks</div>
-		<div v-if="areTimeblockListingsLoading === true" class="row center p-4">
+		<div v-if="areTimeblockListingsLoading === true" class="p-4 row center">
 			<CircleSpinner class="mr-2" /> Loading...
 		</div>
-		<div v-else class="column self-stretch">
+		<div v-else class="self-stretch column">
 			<div
-				class="btn btn-primary btn-sm mb-4 self-center"
+				class="self-center mb-4 btn btn-primary btn-sm"
 				@click="createNewTimeblock"
 			>
 				<v-icon :icon="mdiPlus" />
 				Create New Timeblock
 			</div>
-			<div class="column gap-4 self-stretch">
+			<div class="gap-4 self-stretch column">
 				<TimeblockListing
 					v-for="{
 						timeblockId,

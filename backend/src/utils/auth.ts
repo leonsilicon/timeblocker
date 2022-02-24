@@ -17,20 +17,19 @@ export async function getCtxAccountId<Opts extends GetCtxAccountIdOpts>(
 
 	let clientSessionToken: string;
 
-	if (ctx.request.headers.authorization !== undefined) {
-		clientSessionToken = ctx.request.headers.authorization.replace(
-			'Bearer ',
-			''
-		);
-	}
 	// User is unauthenticated
-	else {
+	if (ctx.request.headers.authorization === undefined) {
 		if (optional) {
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 			return undefined as any;
 		} else {
 			throwTrpcError(trpcError.userNotAuthenticated);
 		}
+	} else {
+		clientSessionToken = ctx.request.headers.authorization.replace(
+			'Bearer ',
+			''
+		);
 	}
 
 	const accountSessionToken = await ctx.prisma.accountSessionToken.findFirst({

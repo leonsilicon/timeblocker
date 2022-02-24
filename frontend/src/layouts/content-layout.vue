@@ -4,9 +4,9 @@ import WebsiteFooter from '~f/components/website-footer.vue';
 </script>
 
 <template>
-	<div class="column h-full w-full">
+	<div class="w-full h-full column">
 		<NavigationHeader />
-		<div class="column flex-grow">
+		<div class="grow column">
 			<router-view />
 		</div>
 		<WebsiteFooter />

@@ -15,9 +15,7 @@ export default defineConfig({
 	 */
 	optimizeDeps: {
 		exclude: [
-			'@fullcalendar/core',
-			'@fullcalendar/daygrid',
-			'@fullcalendar/timegrid',
+			'@fullcalendar/core'
 		],
 	},
 	plugins: [

@@ -59,45 +59,45 @@ async function register() {
 
 <template>
 	<div
-		class="column my-auto items-center gap-3 self-center rounded-md border-2 border-gray-300 py-8 px-20"
+		class="gap-3 items-center self-center py-8 px-20 my-auto rounded-md border-2 border-gray-300 column"
 	>
 		<h1 class="text-6xl font-bold">{{ isLogin ? 'Login' : 'Register' }}</h1>
 
 		<div>
-			<label class="label p-1">
-				<span class="label-text font-bold">Email</span>
+			<label class="p-1 label">
+				<span class="font-bold label-text">Email</span>
 			</label>
 			<input
 				v-model="email"
-				class="input input-bordered w-[20rem]"
+				class="w-[20rem] input input-bordered"
 				type="text"
 			/>
 		</div>
 
 		<div>
-			<label class="label p-1">
-				<span class="label-text font-bold">Password</span>
+			<label class="p-1 label">
+				<span class="font-bold label-text">Password</span>
 			</label>
 			<input
 				v-model="password"
-				class="input input-bordered w-[20rem]"
+				class="w-[20rem] input input-bordered"
 				type="password"
 			/>
 		</div>
 
 		<div v-if="isRegister">
-			<label class="label p-1">
-				<span class="label-text font-bold">Confirm Password</span>
+			<label class="p-1 label">
+				<span class="font-bold label-text">Confirm Password</span>
 			</label>
 			<input
 				v-model="confirmPassword"
-				class="input input-bordered w-[20rem]"
+				class="w-[20rem] input input-bordered"
 				type="password"
 			/>
 		</div>
 
 		<button
-			class="btn btn-primary mt-2 px-8"
+			class="px-8 mt-2 btn btn-primary"
 			@click="isLogin ? login() : register()"
 		>
 			<circle-spinner v-if="isRequestLoading" />
@@ -109,7 +109,7 @@ async function register() {
 		</div>
 
 		<router-link
-			class="link hover:text-secondary transition-all"
+			class="transition-all link hover:text-secondary"
 			:to="{ force: true, path: isLogin ? '/register' : '/login' }"
 		>
 			{{ isLogin ? "Don't have an account?" : 'Already have an account?' }}

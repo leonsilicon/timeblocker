@@ -3,6 +3,7 @@
 \usepackage{fontspec}
 \usepackage{xcolor}
 \usepackage{authoraftertitle}
+\usepackage{pythontex}
 
 \title{Appendix}
 \definecolor{msblue}{HTML}{5AB5D8}
@@ -12,6 +13,188 @@
 \centerline{\textcolor{msblue}{
 		\fontspec{Cambria}\textbf{\fontsize{13}{13}\MyTitle}
 	}}
+
+\section*{Third-party libraries}
+My program makes heavy use of third-party libraries.
+
+% \begin{noindent}
+\begin{pycode}
+
+frontend_packages = [
+	(
+		"@fullcalendar/core",
+		"FullCalendar provides a highly customizable and easy-to-use calendar to display on my website. I use it on the timeblock listing page where the user can create/select the timeblock for a certain date.",
+		"Frontend"
+	),
+	(
+		"@mdi/js",
+		"""Provides a set of icons ("mdi" stands for "Material Design Icons") that improve the user interface; I've used these icons throughout various parts of Timeblocker.""",
+		"Frontend"
+	),
+	(
+		"quasar",
+		"The Quasar Framework provides many useful UI components that I've used throughout the website.",
+		"Frontend"
+	),
+	(
+		"@quasar/extras",
+		"Includes utilities provided by the @quasar/extras framework (e.g., a confirmation dialog when a user tries to delete a timeblock).",
+		"Frontend"
+	),
+	(
+		"vite",
+		"A frontend build tool that allows changes in my file to be instantly displayed in my browser without me needing to refresh the page (refreshing the page would destroy the page state).",
+		"Frontend"
+	),
+	(
+		"@quasar/vite-plugin",
+		"A Quasar plugin that allows me to use Quasar within Vite.",
+		"Frontend"
+	),
+	(
+		"@vitejs/plugin-vue",
+		"A Vite plugin that enables using Vue with Vite (the build tool I'm using).",
+		"Frontend"
+	),
+	(
+		"sass",
+		"A CSS Framework (I don't use it in Timeblocker directly; the Quasar package depends on it).",
+		"Frontend"
+	),
+	(
+		"tailwindcss",
+		"A utility-first CSS framework that provides many out-of-the-box classes that can be easily embedded inside HTML. For me, it makes styling HTML much easier.",
+		"Frontend"
+	),
+	(
+		"@tailwindcss/typography",
+		"A typography plugin for TailwindCSS that provides CSS classes that come with preconfigured classes that make prose text look great.",
+		"Frontend"
+	),
+	(
+		"autoprefixer",
+		"A package that automatically adds vendor prefixes to CSS classes for supporting older browsers. I don't use it directly in Timeblocker; TailwindCSS depends on it.
+	),
+	(
+		"postcss",
+		"A tool for transforming CSS with JavaScript. I don't use it directly in Timeblocker; TailwindCSS depends on it."
+	),
+	(
+		"@trpc/client",
+		"The client package for tRPC that allows me to easily create type-safe API endpoints for the server. The client package is the package that makes the requests to the server."
+	),
+	(
+		"@vueuse/core",
+		"Provides many useful Vue composition functions (e.g., useMouse() that returns reactive variables f$or the mouse position).",
+		"Frontend"
+	),
+	(
+		"daisyui",
+		"A TailwindCSS components library that comes with many useful components (e.g. buttons and textboxes)",
+		"Frontend"
+	),
+	(
+		"dayjs",
+		"A date-manipulation library for JavaScript.",
+		"Frontend"
+	),
+	(
+		"nanoid-nice",
+		"A wrapper around nanoid (a custom ID generator) that filters out obscene words accidentally generated from random IDs.",
+		"Frontend & Backend"
+	),
+	(
+		"pinia",
+		"A type-safe state management library for Vue.",
+		"Frontend"
+	),
+	(
+		"simple-vue-icon",
+		"A customizable Vue component that easily integrates with @mdi/js to display an icon on the page.",
+		"Frontend"
+	),
+	(
+		"tw-elements",
+		"Another TailwindCSS component library that provides useful UI components.",
+		"Frontend"
+	),
+	(
+		"vue",
+		"A progressive JavaScript framework for building user interfaces.",
+		"Frontend"
+	),
+	(
+		"vue-input-autowidth",
+		"A vue directive that makes a textbox automatically resize to the width of its text",
+		"Frontend"
+	),
+	(
+		"vue-router",
+		"A router library for Vue that enables me to create separate web pages within Vue.",
+		"Frontend"
+	),
+	(
+		"@types/node",
+		"TypeScript definitions for Node.",
+		"Frontend & Backend"
+	),
+	(
+		"typescript",
+		"A strongly-typed superset of JavaScript that eliminates many type errors (e.g., from typos, passing wrong variable types to functions, calling a class method that doesn't exist on a certain class.",
+		"Frontend & Backend"
+	),
+	(
+		"vue-tsc",
+		"A TypeScript checker that supports type checking Vue files (which can have TypeScript inside them).",
+		"Frontend"
+	),
+	(
+		"desm",
+		"A utility package for retrieving the file path of the current file.",
+		"Frontend & Backend"
+	),
+	(
+		"prisma",
+		"Prisma is a TypeScript ORM (Object-relational mapping) for SQL that is strongly-typed. Compared to raw SQL, Prisma is more secure, integrates better with TypeScript, and also supports extra features like database migrations. `prisma` is the CLI package that handles non-runtime tasks (e.g. schema generation, database migration, etc.).",
+		"Backend"
+	),
+	(
+		"@prisma/client",
+		"The Prisma package that is used for runtime-tasks, like connecting to the database, executing SQL queries, etc.",
+		"Backend"
+	),
+	(
+		"@trpc/server",
+		"The tRPC package that is used on the server to define the server's API endpoints and routes. Also provides features like input validation to verify that the frontend is sending correctly-formatted data.",
+		"Backend"
+	),
+	(
+		"nodemon",
+		"A build tool that automatically reloads my Node server when my TypeScript files change."
+	),
+	(
+
+	)
+
+
+]
+
+backend_packages = [
+	"bcrypt",
+	"fastify",
+	"fastify-cookie",
+	"fastify-cors",
+	"fastify-plugin",
+	"got",
+	"onetime",
+	"zod",
+	"execa",
+	"lion-system",
+	"nodemon",
+	"tsc-alias",
+]
+\end{pycode}
+% \end{noindent}
 
 % TODO: Add initial consultation with client and/or advisor
 \end{document}

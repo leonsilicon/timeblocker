@@ -1,11 +1,11 @@
 function merge<T>(left: T[], right: T[]) {
 	const sortedArray = [];
 
-	let leftIndex = 0;
-	let rightIndex = 0;
+	const leftIndex = 0;
+	const rightIndex = 0;
 
 	// Break out of loop if any one of the array gets empty
-	while (left.length && right.length) {
+	while (left.length > 0 && right.length > 0) {
 		// Pick the smaller among the smallest element of left and right sub arrays
 		if (left[0] < right[0]) {
 			arr.push(left.shift());
