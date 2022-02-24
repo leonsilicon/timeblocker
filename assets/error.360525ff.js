@@ -1,1 +1,0 @@
-import{N as t,H as a}from"./vendor.3ed3fef2.js";function c(e){const s=o(e);t.create({message:s,type:"negative",icon:a})}function o(e){if(typeof e=="object"&&e!==null&&"message"in e){const s=e.message,n=s.indexOf(": ");return n===-1?s:s.slice(n+2)}else return String(e)}export{c as d,o as g};
