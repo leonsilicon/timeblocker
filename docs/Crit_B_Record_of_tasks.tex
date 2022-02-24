@@ -229,13 +229,6 @@ def task(task_string):
 		- C
 		""")}
 	\py{task("""
-		- Hosting the backend server publicly on Heroku (a cloud application platform)
-		- The server is public and linked to a Heroku domain and CORS (cross-origin resource sharing) is restricted to only accept requests from https://ib.timeblocker.io
-		- 2 hours
-		- December 28, 2021
-		- C
-		""")}
-	\py{task("""
 		- Creating a Dockerfile and integrating Docker for easier local development
 		- Having a docker-compose.yaml file in the root of the project to automatically build and start a PostgreSQL container with the database when `docker compose up` is run on a local machine with Docker installed.
 		- 3 hours
@@ -313,5 +306,18 @@ def task(task_string):
 		- C
 		""")}
 	\\\hline
+	\py{task("""
+		- Hosting the backend server publicly on Heroku (a cloud application platform)
+		- The server is public and linked to a Heroku domain and CORS (cross-origin resource sharing) is restricted to only accept requests from https://ib.timeblocker.io
+		- 4 hours
+		- February 14, 2021
+		- C
+		""")}
+		\py{task("""
+		- Debug issues with Heroku
+		- Heroku doesn't natively support the package manager that I used for Timeblocker (pnpm), so I had to experiment with numerous workarounds to try and get it working with Heroku.
+		- 20 hours
+		- February
+		""")}
 \end{xltabular}
 \end{document}

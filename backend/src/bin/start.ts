@@ -33,7 +33,7 @@ void app.register(fastifyCookie, {
 	},
 });
 
-app.listen(5000, '0.0.0.0', (err, address) => {
+app.listen(process.env.PORT ?? 5000, '0.0.0.0', (err, address) => {
 	if (err) {
 		console.error(err);
 	} else {
