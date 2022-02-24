@@ -15,6 +15,7 @@
 		"heroku-postinstall": "pnpm build --filter=./backend",
 		"up": "docker compose up",
 		"gen": "pnpm gen --filter=./backend",
+		"prepare": "lion-git-hooks",
 		"migrate": "pnpm migrate --filter=./backend",
 		"sync-index": "pnpm sync-index --recursive",
 		"dev:frontend": "pnpm dev --filter=./frontend",
