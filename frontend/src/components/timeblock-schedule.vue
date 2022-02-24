@@ -25,7 +25,7 @@ function getTimeStyle({ hour, minute }: { hour: number; minute: number }) {
 }
 
 const timeblockStore = useTimeblockStore();
-const timeblockCalendarStyle = $computed(() => ({
+const timeblockScheduleStyle = $computed(() => ({
 	display: 'grid',
 	'grid-template-rows': '60px repeat(1440, 1px)', // 1440 minutes in a day
 	'grid-template-columns': `60px repeat(${
@@ -60,7 +60,7 @@ async function addNewColumn() {
 </script>
 
 <template>
-	<div :style="timeblockCalendarStyle" class="w-full">
+	<div :style="timeblockScheduleStyle" class="w-full">
 		<div
 			v-for="hour in 25"
 			:key="hour - 1"

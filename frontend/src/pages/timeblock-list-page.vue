@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { mdiPlus } from '@mdi/js';
 import { useRouter } from 'vue-router';
+import { Calendar } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import { onMounted } from 'vue';
 import { client } from '~f/utils/trpc';
 import CircleSpinner from '~f/components/circle-spinner.vue';
 import TimeblockListing from '~f/components/timeblock-listing.vue';
@@ -37,13 +40,25 @@ async function createNewTimeblock() {
 	});
 	await router.push(`/timeblock/${timeblockId}`);
 }
+
+const calendarEl = $ref<HTMLDivElement>();
+
+onMounted(() => {
+	const calendar = new Calendar(calendarEl, {
+		plugins: [dayGridPlugin],
+		headerToolbar: false,
+		initialView: 'dayGridMonth',
+	});
+
+	calendar.render();
+});
 </script>
 
 <template>
 	<div class="column center p-8">
 		<div class="text-6xl font-bold mb-2">Timeblocks</div>
 		<div v-if="areTimeblockListingsLoading === true" class="row center p-4">
-			<circle-spinner class="mr-2" /> Loading...
+			<CircleSpinner class="mr-2" /> Loading...
 		</div>
 		<div v-else class="self-stretch column">
 			<div
@@ -54,7 +69,7 @@ async function createNewTimeblock() {
 				Create New Timeblock
 			</div>
 			<div class="column self-stretch gap-4">
-				<timeblock-listing
+				<TimeblockListing
 					v-for="{
 						timeblockId,
 						timeblockName,
@@ -65,5 +80,6 @@ async function createNewTimeblock() {
 				/>
 			</div>
 		</div>
+		<div ref="calendarEl"></div>
 	</div>
 </template>

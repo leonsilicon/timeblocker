@@ -12,7 +12,7 @@ const props = defineProps<{
 
 async function onDeleteButtonPress() {
 	Dialog.create({
-		message: `Are you sure you want to delete timeblock ${props.name}? This action is not reversible!`,
+		message: `Are you sure you want to delete timeblock "${props.name}"? This action is not reversible!`,
 		cancel: true,
 		focus: 'cancel',
 		ok: {

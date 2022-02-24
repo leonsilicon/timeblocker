@@ -2,7 +2,7 @@
 import dayjs from 'dayjs';
 import { watch } from 'vue';
 import { useRoute } from 'vue-router';
-import TimeblockCalendar from '~f/components/timeblock-calendar.vue';
+import TimeblockSchedule from '~f/components/timeblock-schedule.vue';
 import TimeblockPageToolbar from '~f/components/timeblock-page-toolbar.vue';
 import TimeblockPageTaskDock from '~f/components/timeblock-page-task-dock.vue';
 import { useTimeblockStore } from '~f/store/timeblock';
@@ -84,7 +84,7 @@ let isLoading = $ref(true);
 		<TimeblockPageToolbar />
 		<div class="row px-4">
 			<TimeblockPageTaskDock />
-			<TimeblockCalendar />
+			<TimeblockSchedule />
 		</div>
 	</div>
 </template>
