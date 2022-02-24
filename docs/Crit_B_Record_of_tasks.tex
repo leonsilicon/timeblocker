@@ -29,6 +29,7 @@
 \begin{pycode}
 task_number = 0
 def task(task_string):
+	last_date =
 	global task_number
 	[
 		planned_action,
@@ -38,6 +39,7 @@ def task(task_string):
 		criterion
 	] = [line.strip() for line in task_string.strip().split("- ")[1:]]
 	task_number += 1
+
 	return f"""\
 		\\\\\\hline
 		{task_number} &

@@ -31,7 +31,10 @@ export function mountComponent(
 	app.mount(selectorOrElement);
 
 	app.config.errorHandler = (error) => {
-		displayError(error);
+		if (import.meta.env.DEV) {
+			displayError(error);
+		}
+
 		console.error(error);
 	};
 }
