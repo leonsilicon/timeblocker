@@ -57,6 +57,13 @@ model Timeblock {
   owner          Account @relation(fields: [ownerAccountId], references: [id], onDelete: Cascade)
   ownerAccountId String
 
+  //{
+  //	year: string;
+  //	month: string;
+  //	day: string
+  //}
+  date Json
+
   tasks            TimeblockTask[]
   timeblockColumns TimeblockColumn[]
 }

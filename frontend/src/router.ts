@@ -27,7 +27,7 @@ export const routes: RouteRecordRaw[] = [
 	},
 	{
 		path: '/timeblocks',
-		component: async () => import('~f/pages/timeblock-list-page.vue'),
+		component: async () => import('~f/pages/timeblock-calendar.vue'),
 	},
 	{
 		path: '/timeblock/:id',

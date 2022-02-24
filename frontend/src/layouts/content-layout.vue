@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import NavigationHeader from '~f/components/navigation-header.vue';
-import WebsiteFooter from '~f/components/website-footer.vue';
 </script>
 
 <template>
@@ -9,6 +8,5 @@ import WebsiteFooter from '~f/components/website-footer.vue';
 		<div class="grow column">
 			<router-view />
 		</div>
-		<WebsiteFooter />
 	</div>
 </template>

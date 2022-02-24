@@ -10,13 +10,19 @@ export const timeblockCrudRouter = createRouter()
 	.mutation('createTimeblock', {
 		input: z.object({
 			name: z.string(),
+			date: z.object({
+				year: z.number(),
+				month: z.number(),
+				day: z.number(),
+			}),
 		}),
-		async resolve({ ctx, input: { name } }) {
+		async resolve({ ctx, input: { name, date } }) {
 			const timeblockId = nanoid();
 			await ctx.prisma.timeblock.create({
 				data: {
 					id: timeblockId,
 					name,
+					date,
 					ownerAccountId: ctx.accountId,
 				},
 				select: {
