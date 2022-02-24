@@ -20,7 +20,6 @@
 		"dev:frontend": "pnpm dev --filter=./frontend",
 		"build:frontend": "pnpm build --filter=./frontend",
 		"dev:backend": "pnpm dev --filter=./backend",
-		"prepare": "lion-git-hooks",
 		"lint": "pnpm lint --recursive",
 		"prettier": "pnpm prettier --recursive",
 		"tc": "pnpm tc --recursive"
