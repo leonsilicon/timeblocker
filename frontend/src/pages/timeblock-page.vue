@@ -58,7 +58,7 @@ let isLoading = $ref(true);
 				new Task({
 					id: task.id,
 					name: task.name,
-					description: task.description,
+					description: task.description ?? '',
 					isHidden: task.isHidden,
 				})
 			);
