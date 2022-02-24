@@ -57,8 +57,9 @@ def task(task_string):
 	if hours_remaining >= time_estimated_hours:
 		hours_remaining -= time_estimated_hours
 	else:
-		last_date += timedelta(days=1)
-		hours_remaining += hours_per_day
+		while hours_remaining < time_estimated_hours:
+			last_date += timedelta(days=1)
+			hours_remaining += hours_per_day
 
 	if target_completion_date.strip() == '':
 		target_completion_date = last_date.strftime("%B %-d, %Y")
@@ -406,13 +407,12 @@ def task(task_string):
 		- C
 		""")}
 	\py{task("""
-		"""
 		- Create registration and login routes
 		- Implement the registration and login routers for tRPC and merge the routers sessions in the backend via session tokens.
 		- 2 hours
 		-
 		- C
-		)}
+		""")}
 	\py{task("""
 		- Create timeblock CRUD (Create, Read, Update, Delete) routes
 		- Implement all the necessary routes along with their database implementations for creating new timeblocks, new timeblock tasks, and new timeblock task blocks. Also modified the prisma.schema to reflect these new models.
