@@ -11,7 +11,7 @@
 	},
 	"type": "module",
 	"scripts": {
-		"heroku-prebuild": "npm i -g pnpm && rm -rf frontend scripts && pnpm i --prod=false",
+		"heroku-prebuild": "npm i -g npm && rm -rf frontend scripts",
 		"heroku-postbuild": "pnpm gen && pnpm build --filter=./backend",
 		"up": "docker compose up",
 		"gen": "pnpm gen --filter=./backend",
@@ -49,5 +49,9 @@
 			"pnpm run lint",
 			"pnpm run prettier"
 		]
-	}
+	},
+	"workspaces": [
+		"backend"
+	]
+
 }
