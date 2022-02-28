@@ -15,7 +15,6 @@ import { LocalStorageKey } from '~f/types/local-storage';
 const getPinia = onetime(() => createPinia());
 let isWindowErrorHandlerSet = false;
 
-
 export function mountComponent(
 	component: Component,
 	props: Record<string, unknown> | null,

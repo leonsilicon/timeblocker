@@ -65,11 +65,12 @@ let isLoading = $ref(true);
 		}
 
 		timeblockStore.addTimeblock(timeblock);
-		timeblockStore.activeTimeblockId = timeblock.getId();
 		for (const timeblockColumn of timeblockColumns) {
 			timeblock.addColumn(timeblockColumn.id);
 		}
 	}
+
+	timeblockStore.activeTimeblockId = timeblockId;
 
 	isLoading = false;
 })();
