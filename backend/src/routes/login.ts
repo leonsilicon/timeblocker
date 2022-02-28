@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
-import { authenticateClient, getCtxSessionToken } from '~b/utils/auth.js';
+import { authenticateClient, getCtxAccountId, getCtxSessionToken } from '~b/utils/auth.js';
 import { throwTrpcError } from '~b/utils/error.js';
 import { createRouter } from '~b/utils/index.js';
 import { trpcError } from '~s/types/error.js';
@@ -44,5 +44,15 @@ export const loginRouter = createRouter()
 					token: sessionToken,
 				},
 			});
+		},
+	})
+	.query('checkToken', {
+		async resolve({ ctx }) {
+			try {
+				const _accountId = await getCtxAccountId(ctx);
+				return true;
+			} catch {
+				return false;
+			}
 		},
 	});

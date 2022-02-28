@@ -10,6 +10,21 @@ export function displayError(error: unknown) {
 	});
 }
 
+export function getErrorCode(error: unknown) {
+	if (typeof error === 'object' && error !== null && 'message' in error) {
+		const rawMessage = (error as { message: string }).message;
+		const colonIndex = rawMessage.indexOf(': ');
+		if (colonIndex === -1) {
+			return rawMessage;
+		}
+
+		const code = rawMessage.slice(0, colonIndex);
+		return code;
+	} else {
+		return undefined;
+	}
+}
+
 export function getErrorMessage(error: unknown) {
 	if (typeof error === 'object' && error !== null && 'message' in error) {
 		const rawMessage = (error as { message: string }).message;

@@ -3,12 +3,20 @@ import { useAppStore } from '~f/store/app';
 import { LocalStorageKey } from '~f/types/local-storage';
 import { client } from '~f/utils/trpc';
 
-(async () => {
-	// Pings heroku so the Dyno wakes up earlier
-	await client.query('ping');
-})();
-
 const appStore = useAppStore();
+
+(async () => {
+	if (appStore.isLoggedIn) {
+		const isValidToken = await client.query('checkToken');
+		if (!isValidToken) {
+			window.localStorage.removeItem(LocalStorageKey.sessionToken);
+			appStore.isLoggedIn = false;
+		}
+	} else {
+		// Pings heroku so the Dyno wakes up earlier
+		await client.query('ping');
+	}
+})();
 
 const sessionToken = window.localStorage.getItem(LocalStorageKey.sessionToken);
 
