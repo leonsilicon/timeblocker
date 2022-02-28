@@ -9,10 +9,12 @@ import { Quasar, Notify, Dialog } from 'quasar';
 import { plugin as VueInputAutowidth } from 'vue-input-autowidth';
 import { router } from '~f/router';
 import { displayError, getErrorCode } from '~f/utils/error';
-import { useAppStore } from '~f/store/app.js';
-import { LocalStorageKey } from '~f/types/local-storage.js';
+import { useAppStore } from '~f/store/app';
+import { LocalStorageKey } from '~f/types/local-storage';
 
 const getPinia = onetime(() => createPinia());
+let isWindowErrorHandlerSet = false;
+
 
 export function mountComponent(
 	component: Component,
@@ -20,20 +22,8 @@ export function mountComponent(
 	selectorOrElement: string | HTMLElement
 ) {
 	const app = createApp(component, props);
-	app.use(getPinia());
-	app.use(VIcon);
-	app.use(VueInputAutowidth);
-	app.use(Quasar, {
-		plugins: {
-			Notify,
-			Dialog,
-		},
-	});
-	app.use(router);
-	app.mount(selectorOrElement);
 
-	app.config.errorHandler = (error) => {
-		console.log('oasethu', error)
+	function errorHandler(error: unknown) {
 		if (getErrorCode(error) === 'tokenNotFound') {
 			window.localStorage.removeItem(LocalStorageKey.sessionToken);
 			const appStore = useAppStore();
@@ -45,5 +35,31 @@ export function mountComponent(
 		}
 
 		console.error(error);
-	};
+	}
+
+	app.config.errorHandler = errorHandler;
+	if (!isWindowErrorHandlerSet) {
+		window.addEventListener('error', (event: ErrorEvent) => {
+			errorHandler(event.error);
+		});
+		window.addEventListener(
+			'unhandledrejection',
+			(event: PromiseRejectionEvent) => {
+				errorHandler(new Error(event.reason));
+			}
+		);
+		isWindowErrorHandlerSet = true;
+	}
+
+	app.use(getPinia());
+	app.use(VIcon);
+	app.use(VueInputAutowidth);
+	app.use(Quasar, {
+		plugins: {
+			Notify,
+			Dialog,
+		},
+	});
+	app.use(router);
+	app.mount(selectorOrElement);
 }
