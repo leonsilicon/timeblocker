@@ -1,11 +1,10 @@
 import { z } from 'zod';
-import type { TimeblockTask } from '~s/types/task.js';
 import { accountMiddleware } from '~b/utils/auth.js';
 import { createRouter } from '~b/utils/router.js';
 
 export const timeblockTaskRouter = createRouter()
 	.middleware(accountMiddleware)
-	.mutation('addTimeblockTask', {
+	.mutation('createTimeblockTask', {
 		input: z.object({
 			id: z.string(),
 			name: z.string(),

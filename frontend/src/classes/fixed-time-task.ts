@@ -10,7 +10,7 @@ export type FixedTimeTaskConstructorProps = TaskConstructorProps & {
  * A task that represents a task that always starts and ends at the same time.
  */
 export class FixedTimeTask extends Task {
-	static color = 'orange';
+	static color = '#ffd9b3';
 	/**
 	 * The start minute of the task.
 	 */

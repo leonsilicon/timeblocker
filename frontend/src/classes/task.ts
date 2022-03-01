@@ -10,7 +10,7 @@ export type TaskConstructorProps = {
  * A task created by the user.
  */
 export class Task {
-	static color = 'red';
+	static color = '#ffcccc';
 	/**
 	 * The type of task.
 	 */

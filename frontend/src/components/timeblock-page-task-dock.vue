@@ -89,16 +89,19 @@ async function addTask() {
 
 		timeblockStore.activeTimeblock.addTask(newTask);
 
+		const taskName = newTaskName;
+		const taskDescription = newTaskDescription;
+
 		// Reset the new task textbox
 		newTaskName = '';
 		newTaskDescription = '';
 		isNewTaskEditorVisible = false;
 
 		try {
-			await client.mutation('addTimeblockTask', {
+			await client.mutation('createTimeblockTask', {
 				id: taskId,
-				name: newTaskName,
-				description: newTaskDescription,
+				name: taskName,
+				description: taskDescription,
 				type: selectedTaskType,
 			});
 		} catch (error: unknown) {
