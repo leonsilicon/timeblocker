@@ -11,6 +11,8 @@ import { TaskBoxDropData, TaskBoxDropType } from '~f/types/task-box';
 import { displayError } from '~f/utils/error';
 import { client } from '~f/utils/trpc';
 import { roundToNearest15 } from '~f/utils/round';
+import { FixedWeeklyTimeTaskBlock } from '~f/classes/fixed-weekly-time-task-block';
+import { FixedTimeTaskBlock } from '~f/classes/fixed-time-task-block';
 
 const props = defineProps<{
 	timeblockColumnId: string;
@@ -26,23 +28,52 @@ const timeblockStore = useTimeblockStore();
 
 	const timeblock = timeblockStore.activeTimeblock;
 
-	for (const {
-		taskId,
-		startMinute,
-		endMinute,
-		timeblockColumnId,
-		id,
-	} of timeblockTaskBlocks) {
-		const taskBlock = new TaskBlock({
-			id,
-			startMinute,
-			endMinute,
-			timeblockColumnId,
-			task: timeblock.getTask(taskId),
-			timeblock,
-		});
+	for (const block of timeblockTaskBlocks) {
+		let taskBlock: TaskBlock;
+		const taskType = timeblock.getTask(block.taskId).getType();
+		switch (taskType) {
+			case 'normal': {
+				taskBlock = new TaskBlock({
+					id: block.id,
+					startMinute: block.startMinute,
+					endMinute: block.endMinute,
+					timeblockColumnId: block.timeblockColumnId,
+					task: timeblock.getTask(block.taskId),
+					timeblock,
+				});
+				break;
+			}
+
+			case 'fixed-time': {
+				taskBlock = new FixedTimeTaskBlock({
+					id: block.id,
+					startMinute: block.startMinute,
+					endMinute: block.endMinute,
+					timeblockColumnId: block.timeblockColumnId,
+					task: timeblock.getTask(taskId),
+					timeblock,
+				});
+				break;
+			}
+
+			case 'fixed-weekly-time': {
+				taskBlock = new FixedWeeklyTimeTaskBlock({
+					id: block.id,
+					startMinute: block.startMinute,
+					endMinute: block.endMinute,
+					timeblockColumnId: block.timeblockColumnId,
+					task: timeblock.getTask(taskId),
+					timeblock,
+				});
+				break;
+			}
+
+			default:
+				throw new Error(`Unrecognized task type ${taskType}`);
+		}
+
 		timeblock.addTaskBlock(taskBlock);
-		timeblock.getColumn(timeblockColumnId)?.addTaskBlock(id);
+		timeblock.getColumn(block.timeblockColumnId)?.addTaskBlock(block.id);
 	}
 })();
 
@@ -70,6 +101,12 @@ const taskBlockShadowStyle = reactive({
 	'grid-column': '1 / span 1',
 	'grid-row-start': 1,
 	'grid-row-end': 61,
+	'background-color':
+		timeblockStore.activeDraggingTaskBlock === undefined
+			? 'white'
+			: timeblockStore.activeTimeblock
+					.getTask(timeblockStore.activeDraggingTaskBlock.id)
+					.getColor(),
 });
 
 const timeblockColumnEl = $ref<HTMLDivElement>();
@@ -199,7 +236,7 @@ async function onDrop(event: DragEvent) {
 		<div
 			v-if="isTaskBlockShadowActive"
 			:style="taskBlockShadowStyle"
-			class="rounded-md bg-red-100"
+			class="rounded-md"
 		></div>
 		<TimeblockColumnBackground style="grid-row: 1 / -1; grid-column: 1 / -1" />
 		<TimeblockTaskBlock

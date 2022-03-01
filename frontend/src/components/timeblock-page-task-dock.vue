@@ -31,10 +31,14 @@ let selectedTaskType = $ref('');
 let isNewTaskEditorVisible = $ref(false);
 
 async function onNewTaskSelect(taskType: string) {
-	selectedTaskType = taskType;
-	isNewTaskEditorVisible = true;
-	await nextTick();
-	timeblockTaskBoxEditorEl.focusNameInput();
+	if (!isNewTaskEditorVisible) {
+		selectedTaskType = taskType;
+		isNewTaskEditorVisible = true;
+		newTaskName = '';
+		newTaskDescription = '';
+		await nextTick();
+		timeblockTaskBoxEditorEl.focusNameInput();
+	}
 }
 
 async function addTask() {
@@ -85,6 +89,11 @@ async function addTask() {
 
 		timeblockStore.activeTimeblock.addTask(newTask);
 
+		// Reset the new task textbox
+		newTaskName = '';
+		newTaskDescription = '';
+		isNewTaskEditorVisible = false;
+
 		try {
 			await client.mutation('addTimeblockTask', {
 				id: taskId,
@@ -96,11 +105,6 @@ async function addTask() {
 			displayError(error);
 		}
 	}
-
-	// Reset the new task textbox
-	newTaskName = '';
-	newTaskDescription = '';
-	isNewTaskEditorVisible = false;
 }
 
 /**

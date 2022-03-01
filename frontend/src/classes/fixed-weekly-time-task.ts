@@ -11,6 +11,9 @@ export type FixedWeeklyTimeTaskConstructorProps =
  * occurs at the same time every week.
  */
 export class FixedWeeklyTimeTask extends FixedTimeTask {
+	static color = 'lightgreen';
+
+
 	dayOfWeek: number | undefined;
 
 	/**
@@ -19,6 +22,7 @@ export class FixedWeeklyTimeTask extends FixedTimeTask {
 	 */
 	constructor(props: FixedWeeklyTimeTaskConstructorProps) {
 		super(props);
+		this.setColor(FixedWeeklyTimeTask.color);
 		this.type = 'fixed-weekly-time';
 		this.setDayOfWeek(props.dayOfWeek);
 	}

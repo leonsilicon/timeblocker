@@ -1,5 +1,7 @@
 <script setup lang="ts">
-defineProps<{
+import { getColorFromTaskType } from '~f/utils/color';
+
+const props = defineProps<{
 	name: string;
 	description: string;
 	taskType: string;
@@ -7,18 +9,23 @@ defineProps<{
 
 const emit = defineEmits(['update:name', 'update:description', 'blur']);
 
+const backgroundColor = $computed(() => getColorFromTaskType(props.taskType));
+
 const taskNameInputEl = $ref<HTMLInputElement>();
 const taskDescriptionInputEl = $ref<HTMLInputElement>();
+let isFocused = $ref(false);
 
 async function onTaskNameFocusOut(event: FocusEvent) {
-	if (event.relatedTarget !== taskDescriptionInputEl) {
+	if (isFocused && event.relatedTarget !== taskDescriptionInputEl) {
 		emit('blur');
+		isFocused = false;
 	}
 }
 
 async function onTaskDescriptionFocusOut(event: FocusEvent) {
-	if (event.relatedTarget !== taskNameInputEl) {
+	if (isFocused && event.relatedTarget !== taskNameInputEl) {
 		emit('blur');
+		isFocused = false;
 	}
 }
 
@@ -37,10 +44,12 @@ function onTaskDescriptionKeydown(event: KeyboardEvent) {
 
 function focusNameInput() {
 	taskNameInputEl.focus();
+	isFocused = true;
 }
 
 function focusDescriptionInput() {
 	taskDescriptionInputEl.focus();
+	isFocused = true;
 }
 
 defineExpose({
@@ -50,26 +59,36 @@ defineExpose({
 </script>
 
 <template>
-	<div class="m-2 self-stretch rounded-lg bg-red-100 py-2 text-center">
+	<div
+		class="task-box-editor m-2 self-stretch rounded-lg py-2 text-center"
+	>
 		<input
 			ref="taskNameInputEl"
 			:value="name"
 			placeholder="Task Name"
 			type="text"
-			class="w-full bg-red-100 px-4 outline-none"
+			class="w-full px-4 outline-none"
 			@input="emit('update:name', ($event.target as HTMLInputElement).value)"
 			@focusout="onTaskNameFocusOut"
 			@keydown="onTaskNameKeydown"
+			@focus="isFocused = true"
 		/>
 		<input
 			ref="taskDescriptionInputEl"
 			:value="description"
 			placeholder="Task Description"
 			type="text"
-			class="w-full bg-red-100 px-4 text-sm text-gray-500 outline-none"
+			class="w-full px-4 text-sm text-gray-500 outline-none"
 			@input="emit('update:description', ($event.target as HTMLInputElement).value)"
 			@focusout="onTaskDescriptionFocusOut"
 			@keydown="onTaskDescriptionKeydown"
+			@focus="isFocused = true"
 		/>
 	</div>
 </template>
+
+<style scoped>
+.task-box-editor, .task-box-editor > input {
+	background-color: v-bind(backgroundColor)
+}
+</style>

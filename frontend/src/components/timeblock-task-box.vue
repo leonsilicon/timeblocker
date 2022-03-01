@@ -12,6 +12,10 @@ const props = defineProps<{
 const timeblockStore = useTimeblockStore();
 const task = $computed(() => timeblockStore.activeTimeblock.getTask(props.id)!);
 
+const taskBoxStyle = $computed(() => ({
+	'background-color': task.getColor(),
+}));
+
 function onDragStart(event: DragEvent) {
 	event.dataTransfer?.setData(
 		'text',
@@ -78,7 +82,8 @@ async function updateTask() {
 	<div
 		v-else
 		draggable="true"
-		class="column m-2 cursor-grab self-stretch rounded-lg bg-red-100 py-2 text-center active:cursor-grabbing"
+		class="column m-2 cursor-grab self-stretch rounded-lg py-2 text-center active:cursor-grabbing"
+		:style="taskBoxStyle"
 		@dragstart="onDragStart"
 		@mouseover="onMouseOver"
 		@mouseout="onMouseOut"

@@ -5,6 +5,7 @@ import { useTimeblockStore } from '~f/store/timeblock';
 import { TaskBoxDropData, TaskBoxDropType } from '~f/types/task-box';
 import { roundToNearest15 } from '~f/utils/round';
 import { client } from '~f/utils/trpc';
+import { getColorFromTaskType } from '~f/utils/color';
 
 let borderDraggingTimeblockTaskBlockStyle = $ref<{
 	'grid-row-start'?: number;
@@ -26,6 +27,7 @@ const timeblockTaskBlockStyle = $computed(() => ({
 	'grid-column': '1 / span 1',
 	'grid-row-start': 1 + taskBlock.getStartMinute(),
 	'grid-row-end': 1 + taskBlock.getEndMinute(),
+	'background-color': taskBlock.getTask().getColor()
 }));
 
 let isTopBorderDragging = $ref(false);
@@ -163,7 +165,7 @@ const shouldDescriptionShow = $computed(() => {
 	<div
 		ref="taskBlockEl"
 		draggable="true"
-		class="column center relative cursor-grab rounded-md bg-red-200 active:cursor-grabbing"
+		class="column center relative cursor-grab rounded-md active:cursor-grabbing"
 		:style="[timeblockTaskBlockStyle, borderDraggingTimeblockTaskBlockStyle]"
 		@dragstart="onDragStart"
 		@dragend="onDragEnd"

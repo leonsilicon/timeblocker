@@ -43,6 +43,10 @@ export const timeblockTaskRouter = createRouter()
 					name: true,
 					description: true,
 					isHidden: true,
+					type: true,
+					startMinute: true,
+					endMinute: true,
+					dayOfWeek: true,
 				},
 				where: {
 					ownerAccountId: ctx.accountId,

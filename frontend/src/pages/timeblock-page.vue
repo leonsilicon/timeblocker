@@ -10,6 +10,8 @@ import { Timeblock } from '~f/classes/timeblock';
 import { Task } from '~f/classes/task';
 import { client } from '~f/utils/trpc';
 import CircleSpinner from '~f/components/circle-spinner.vue';
+import { FixedWeeklyTimeTask } from '~f/classes/fixed-weekly-time-task';
+import { FixedTimeTask } from '~f/classes/fixed-time-task';
 
 const route = useRoute();
 const routeParams = $computed(() => route.params as { id: string });
@@ -54,14 +56,49 @@ let isLoading = $ref(true);
 		});
 
 		for (const task of timeblockTasksResult) {
-			timeblock.addTask(
-				new Task({
-					id: task.id,
-					name: task.name,
-					description: task.description ?? '',
-					isHidden: task.isHidden,
-				})
-			);
+			let taskToAdd: Task;
+			switch (task.type) {
+				case 'normal': {
+					taskToAdd = new Task({
+						id: task.id,
+						name: task.name,
+						description: task.description ?? '',
+						isHidden: task.isHidden,
+					});
+
+					break;
+				}
+
+				case 'fixed-time': {
+					taskToAdd = new FixedTimeTask({
+						id: task.id,
+						name: task.name,
+						description: task.description ?? '',
+						isHidden: task.isHidden,
+						startMinute: task.startMinute ?? undefined,
+						endMinute: task.endMinute ?? undefined,
+					});
+
+					break;
+				}
+
+				case 'fixed-weekly-time': {
+					taskToAdd = new FixedWeeklyTimeTask({
+						id: task.id,
+						name: task.name,
+						description: task.description ?? '',
+						isHidden: task.isHidden,
+						startMinute: task.startMinute ?? undefined,
+						endMinute: task.endMinute ?? undefined,
+						dayOfWeek: task.dayOfWeek ?? undefined,
+					});
+
+					break;
+				}
+				// No default
+			}
+
+			timeblock.addTask(taskToAdd);
 		}
 
 		timeblockStore.addTimeblock(timeblock);

@@ -10,6 +10,7 @@ export type TaskConstructorProps = {
  * A task created by the user.
  */
 export class Task {
+	static color = 'red';
 	/**
 	 * The type of task.
 	 */
@@ -58,7 +59,7 @@ export class Task {
 	}: TaskConstructorProps) {
 		this.id = id;
 		this.setName(name);
-		this.setColor(color ?? 'lightred');
+		this.setColor(color ?? Task.color);
 		if (description !== undefined) {
 			this.setDescription(description);
 		}

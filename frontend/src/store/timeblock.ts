@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import type { Timeblock } from '~f/classes/timeblock';
-import { TimeblockDate } from '~f/types/date.js';
+import type { TimeblockDate } from '~f/types/date';
 import type { TimeblockStoreState } from '~f/types/store';
 
 function createTimeblockStoreState(): TimeblockStoreState {
