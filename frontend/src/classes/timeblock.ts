@@ -5,7 +5,6 @@ import type { TimeblockDate } from '~f/types/date';
 
 export type TimeblockConstructorProps = {
 	id: string;
-	name: string;
 	date: TimeblockDate;
 };
 
@@ -22,11 +21,6 @@ export class Timeblock {
 	 * The date this timeblock is for.
 	 */
 	private date: TimeblockDate;
-
-	/**
-	 * The name of the timeblock.
-	 */
-	private name: string;
 
 	/**
 	 * Multiple columns in case the tasks change.
@@ -48,9 +42,8 @@ export class Timeblock {
 	 */
 	private readonly taskBlockToColumnNumberMap: Map<string, number>;
 
-	constructor({ id, date, name }: TimeblockConstructorProps) {
+	constructor({ id, date }: TimeblockConstructorProps) {
 		this.id = id;
-		this.name = name;
 		this.date = date;
 		this.taskMap = new Map();
 		this.taskBlockMap = new Map();
@@ -60,14 +53,6 @@ export class Timeblock {
 
 	public getId() {
 		return this.id;
-	}
-
-	public getName() {
-		return this.name;
-	}
-
-	public setName(name: string) {
-		this.name = name;
 	}
 
 	public addTask(task: Task, index = 0) {

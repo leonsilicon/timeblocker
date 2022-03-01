@@ -27,7 +27,7 @@ const timeblockTaskBlockStyle = $computed(() => ({
 	'grid-column': '1 / span 1',
 	'grid-row-start': 1 + taskBlock.getStartMinute(),
 	'grid-row-end': 1 + taskBlock.getEndMinute(),
-	'background-color': taskBlock.getTask().getColor()
+	'background-color': taskBlock.getTask().getColor(),
 }));
 
 let isTopBorderDragging = $ref(false);
@@ -98,9 +98,10 @@ window.addEventListener('mouseup', async () => {
 
 	isBottomBorderDragging = false;
 	const newEndMinute = getNewEndMinute();
-	timeblockStore.activeTimeblock
-		.getTaskBlock(props.taskBlockId)
-		.setEndMinute(newEndMinute);
+	const taskBlock = timeblockStore.activeTimeblock.getTaskBlock(
+		props.taskBlockId
+	);
+	taskBlock.setEndMinute(newEndMinute);
 
 	await client.mutation('updateTimeblockTaskBlock', {
 		timeblockColumnId: props.timeblockColumnId,

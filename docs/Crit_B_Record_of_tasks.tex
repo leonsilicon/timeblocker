@@ -67,7 +67,7 @@ def task(task_string):
 
 	return f"""\
 		\\\\\\hline
-		{tex_escape(task_number)} &
+		{task_number} &
 		{tex_escape(planned_action)} &
 		{tex_escape(planned_outcome)} &
 		{tex_escape(time_estimated)} &
@@ -449,5 +449,6 @@ def task(task_string):
 		-
 		- C
 		""")}
+	\\\hline
 \end{xltabular}
 \end{document}

@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { client } from '~f/utils/trpc';
 import CircleSpinner from '~f/components/circle-spinner.vue';
 import { useTimeblockStore } from '~f/store/timeblock';
-import TimeblockCalendarAddTimeblockButton from '~f/components/timeblock-calendar-add-timeblock-button.vue';
+import TimeblockCalenderDateCell from '~f/components/timeblock-calendar-date-cell.vue';
 import { mountComponent } from '~f/utils/component';
 import { dayjsToTimeblockDate } from '~f/utils/date';
 
@@ -42,7 +42,7 @@ onMounted(() => {
 			const div = document.createElement('div');
 			div.classList.add('grow');
 			mountComponent(
-				TimeblockCalendarAddTimeblockButton,
+				TimeblockCalenderDateCell,
 				{
 					date: dayjsToTimeblockDate(dayjs(ctx.date)),
 				},

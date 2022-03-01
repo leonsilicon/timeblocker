@@ -13,6 +13,8 @@ import { client } from '~f/utils/trpc';
 import { roundToNearest15 } from '~f/utils/round';
 import { FixedWeeklyTimeTaskBlock } from '~f/classes/fixed-weekly-time-task-block';
 import { FixedTimeTaskBlock } from '~f/classes/fixed-time-task-block';
+import { FixedTimeTask } from '~f/classes/fixed-time-task';
+import { FixedWeeklyTimeTask } from '~f/classes/fixed-weekly-time-task';
 
 const props = defineProps<{
 	timeblockColumnId: string;
@@ -50,7 +52,7 @@ const timeblockStore = useTimeblockStore();
 					startMinute: block.startMinute,
 					endMinute: block.endMinute,
 					timeblockColumnId: block.timeblockColumnId,
-					task: timeblock.getTask(taskId),
+					task: timeblock.getTask(block.taskId) as FixedTimeTask,
 					timeblock,
 				});
 				break;
@@ -62,7 +64,7 @@ const timeblockStore = useTimeblockStore();
 					startMinute: block.startMinute,
 					endMinute: block.endMinute,
 					timeblockColumnId: block.timeblockColumnId,
-					task: timeblock.getTask(taskId),
+					task: timeblock.getTask(block.taskId) as FixedWeeklyTimeTask,
 					timeblock,
 				});
 				break;
@@ -101,12 +103,7 @@ const taskBlockShadowStyle = reactive({
 	'grid-column': '1 / span 1',
 	'grid-row-start': 1,
 	'grid-row-end': 61,
-	'background-color':
-		timeblockStore.activeDraggingTaskBlock === undefined
-			? 'white'
-			: timeblockStore.activeTimeblock
-					.getTask(timeblockStore.activeDraggingTaskBlock.id)
-					.getColor(),
+	'background-color': 'white',
 });
 
 const timeblockColumnEl = $ref<HTMLDivElement>();
@@ -131,6 +128,10 @@ function onDragOver(event: DragEvent) {
 		taskBlockShadowStyle['grid-row-start'] = nearest15 + 1;
 		taskBlockShadowStyle['grid-row-end'] =
 			nearest15 + 1 + (taskBlock.getEndMinute() - taskBlock.getStartMinute());
+		taskBlockShadowStyle['background-color'] = timeblockStore.activeTimeblock
+			.getTaskBlock(activeDraggingTaskBlock.id)
+			.getTask()
+			.getColor();
 	}
 }
 

@@ -11,6 +11,7 @@ const emit = defineEmits(['select']);
 			:dropdown-icon="mdiMenuDown"
 			color="primary"
 			label="Add Task"
+			class='mb-2'
 			@click="emit('select', 'normal')"
 		>
 			<q-list>

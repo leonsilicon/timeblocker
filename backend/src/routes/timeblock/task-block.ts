@@ -35,6 +35,36 @@ export const timeblockTaskBlockRouter = createRouter()
 					})
 				),
 			});
+
+			const tasks = await ctx.prisma.timeblockTask.findMany({
+				select: {
+					id: true,
+					type: true,
+				},
+				where: {
+					id: {
+						in: taskBlocks.map((taskBlock) => taskBlock.taskId),
+					},
+				},
+			});
+
+			await ctx.prisma.timeblockTask.updateMany({
+				data: tasks
+					.filter(
+						(task) =>
+							task.type === 'fixed-time' || task.type === 'fixed-weekly-time'
+					)
+					.map((task) => {
+						const taskBlock = taskBlocks.find(
+							(taskBlock) => task.id === taskBlock.taskId
+						);
+						return {
+							startMinute: taskBlock?.startMinute,
+							endMinute: taskBlock?.endMinute,
+							dayOfWeek: taskBlock?.dayOfWeek,
+						};
+					}),
+			});
 		},
 	})
 	.query('getTimeblockTaskBlocks', {
@@ -97,6 +127,35 @@ export const timeblockTaskBlockRouter = createRouter()
 			})
 		),
 		async resolve({ ctx, input: { startMinute, endMinute, taskBlockId } }) {
+			const taskBlock = await ctx.prisma.timeblockTaskBlock.findFirst({
+				select: {
+					task: {
+						select: {
+							id: true,
+							type: true,
+						},
+					},
+				},
+				where: {
+					id: taskBlockId,
+				},
+			});
+
+			if (
+				taskBlock?.task.type === 'fixed-weekly-time' ||
+				taskBlock?.task.type === 'fixed-time'
+			) {
+				await ctx.prisma.timeblockTask.update({
+					data: {
+						startMinute,
+						endMinute,
+					},
+					where: {
+						id: taskBlock.task.id,
+					},
+				});
+			}
+
 			await ctx.prisma.timeblockTaskBlock.update({
 				data: {
 					startMinute,

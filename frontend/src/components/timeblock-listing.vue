@@ -10,30 +10,6 @@ const props = defineProps<{
 	name: string;
 }>();
 
-async function onDeleteButtonPress() {
-	Dialog.create({
-		message: `Are you sure you want to delete timeblock "${props.name}"? This action is not reversible!`,
-		cancel: true,
-		focus: 'cancel',
-		ok: {
-			label: 'Delete',
-			color: 'transparent',
-			flat: true,
-			textColor: 'red',
-		},
-	}).onOk(async () => {
-		await deleteTimeblock();
-	});
-}
-
-const timeblockStore = useTimeblockStore();
-async function deleteTimeblock() {
-	await client.mutation('deleteTimeblock', {
-		timeblockId: props.id,
-	});
-	timeblockStore.deleteTimeblock(props.id);
-}
-
 const router = useRouter();
 async function goToTimeblock() {
 	await router.push(`/timeblock/${props.id}`);

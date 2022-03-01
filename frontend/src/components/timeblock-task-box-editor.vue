@@ -41,27 +41,10 @@ function onTaskDescriptionKeydown(event: KeyboardEvent) {
 		taskDescriptionInputEl.blur();
 	}
 }
-
-function focusNameInput() {
-	taskNameInputEl.focus();
-	isFocused = true;
-}
-
-function focusDescriptionInput() {
-	taskDescriptionInputEl.focus();
-	isFocused = true;
-}
-
-defineExpose({
-	focusNameInput,
-	focusDescriptionInput,
-});
 </script>
 
 <template>
-	<div
-		class="task-box-editor m-2 self-stretch rounded-lg py-2 text-center"
-	>
+	<div class="task-box-editor m-2 self-stretch rounded-lg py-2 text-center">
 		<input
 			ref="taskNameInputEl"
 			:value="name"
@@ -71,7 +54,7 @@ defineExpose({
 			@input="emit('update:name', ($event.target as HTMLInputElement).value)"
 			@focusout="onTaskNameFocusOut"
 			@keydown="onTaskNameKeydown"
-			@focus="isFocused = true"
+			@focus='isFocused = true'
 		/>
 		<input
 			ref="taskDescriptionInputEl"
@@ -82,13 +65,14 @@ defineExpose({
 			@input="emit('update:description', ($event.target as HTMLInputElement).value)"
 			@focusout="onTaskDescriptionFocusOut"
 			@keydown="onTaskDescriptionKeydown"
-			@focus="isFocused = true"
+			@focus='isFocused = true'
 		/>
 	</div>
 </template>
 
 <style scoped>
-.task-box-editor, .task-box-editor > input {
-	background-color: v-bind(backgroundColor)
+.task-box-editor,
+.task-box-editor > input {
+	background-color: v-bind(backgroundColor);
 }
 </style>

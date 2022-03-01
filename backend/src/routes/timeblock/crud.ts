@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid-nice';
 import { z } from 'zod';
+import dayjs from 'dayjs';
 import { accountMiddleware } from '~b/utils/auth.js';
 import { throwTrpcError } from '~b/utils/error.js';
 import { createRouter } from '~b/utils/router.js';
@@ -9,19 +10,18 @@ export const timeblockCrudRouter = createRouter()
 	.middleware(accountMiddleware)
 	.mutation('createTimeblock', {
 		input: z.object({
-			name: z.string(),
 			date: z.object({
 				year: z.number(),
 				month: z.number(),
 				day: z.number(),
 			}),
 		}),
-		async resolve({ ctx, input: { name, date } }) {
+		async resolve({ ctx, input: { date } }) {
 			const timeblockId = nanoid();
+
 			await ctx.prisma.timeblock.create({
 				data: {
 					id: timeblockId,
-					name,
 					date,
 					ownerAccountId: ctx.accountId,
 				},
@@ -38,6 +38,67 @@ export const timeblockCrudRouter = createRouter()
 				},
 			});
 
+			// Create a task block for each fixed-time timeblock task
+			const fixedTimeTasks = await ctx.prisma.timeblockTask.findMany({
+				select: {
+					id: true,
+					startMinute: true,
+					endMinute: true,
+				},
+				where: {
+					type: 'fixed-time',
+					ownerAccountId: ctx.accountId,
+					isHidden: false,
+				},
+			});
+
+			await ctx.prisma.timeblockTaskBlock.createMany({
+				data: fixedTimeTasks
+					.filter(
+						({ startMinute, endMinute }) =>
+							startMinute !== null && endMinute !== null
+					)
+					.map(({ startMinute, endMinute, id }) => ({
+						id: nanoid(),
+						startMinute: startMinute!,
+						endMinute: endMinute!,
+						taskId: id,
+						timeblockColumnId,
+					})),
+			});
+
+			const dayjsDate = dayjs().set(date);
+			const dayOfWeek = dayjsDate.day();
+
+			await ctx.prisma.timeblockTask.findMany({
+				select: {
+					id: true,
+					startMinute: true,
+					endMinute: true,
+				},
+				where: {
+					type: 'fixed-weekly-time',
+					ownerAccountId: ctx.accountId,
+					isHidden: false,
+					dayOfWeek,
+				},
+			});
+
+			await ctx.prisma.timeblockTaskBlock.createMany({
+				data: fixedTimeTasks
+					.filter(
+						({ startMinute, endMinute }) =>
+							startMinute !== null && endMinute !== null
+					)
+					.map(({ id, startMinute, endMinute }) => ({
+						id: nanoid(),
+						taskId: id,
+						startMinute: startMinute!,
+						endMinute: endMinute!,
+						timeblockColumnId,
+					})),
+			});
+
 			return {
 				timeblockId,
 				timeblockColumnId,
@@ -52,7 +113,7 @@ export const timeblockCrudRouter = createRouter()
 			const timeblock = await ctx.prisma.timeblock.findFirst({
 				select: {
 					id: true,
-					name: true,
+					date: true,
 				},
 				where: {
 					id: timeblockId,
@@ -72,7 +133,6 @@ export const timeblockCrudRouter = createRouter()
 			const timeblocks = await ctx.prisma.timeblock.findMany({
 				select: {
 					id: true,
-					name: true,
 					date: true,
 				},
 				where: {
@@ -89,22 +149,6 @@ export const timeblockCrudRouter = createRouter()
 					day: number;
 				};
 			}>;
-		},
-	})
-	.mutation('updateTimeblock', {
-		input: z.object({
-			timeblockId: z.string(),
-			name: z.string(),
-		}),
-		async resolve({ ctx, input: { name, timeblockId } }) {
-			await ctx.prisma.timeblock.update({
-				data: {
-					name,
-				},
-				where: {
-					id: timeblockId,
-				},
-			});
 		},
 	})
 	.mutation('deleteTimeblock', {

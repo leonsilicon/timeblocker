@@ -1,28 +1,16 @@
 <script setup lang="ts">
 import { mdiMenu, mdiChevronLeft } from '@mdi/js';
 import { useTimeblockStore } from '~f/store/timeblock';
-import { client } from '~f/utils/trpc';
+import { timeblockDateToDayjs } from '~f/utils/date';
 
 const timeblockStore = useTimeblockStore();
 
+const timeblockDate = $computed(() =>
+	timeblockDateToDayjs(timeblockStore.activeTimeblock.getDate()).format('LL')
+);
+
 function toggleTaskDock() {
 	timeblockStore.isTaskDockOpen = !timeblockStore.isTaskDockOpen;
-}
-
-const timeblockNameInputValue = $ref(timeblockStore.activeTimeblock.getName());
-const timeblockNameInput = $ref<HTMLInputElement>();
-
-async function updateTimeblockName() {
-	await client.mutation('updateTimeblock', {
-		timeblockId: timeblockStore.activeTimeblock.getId(),
-		name: timeblockNameInputValue,
-	});
-}
-
-function onKeyPress(event: KeyboardEvent) {
-	if (event.key === 'Enter') {
-		timeblockNameInput.blur();
-	}
 }
 </script>
 
@@ -39,14 +27,9 @@ function onKeyPress(event: KeyboardEvent) {
 			></v-icon>
 		</div>
 		<div class="row flex-1 justify-center">
-			<input
-				ref="timeblockNameInput"
-				v-model="timeblockNameInputValue"
-				v-autowidth
-				class="input input-sm hover:border-md rounded-md px-2 text-xl font-bold transition-[border] hover:border-gray-300"
-				@keypress="onKeyPress"
-				@focusout="updateTimeblockName"
-			/>
+			<div class="rounded-md px-2 text-xl font-bold">
+				{{ timeblockDate }}
+			</div>
 		</div>
 		<div class="ml-auto flex-1"></div>
 	</div>

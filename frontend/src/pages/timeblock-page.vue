@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import dayjs from 'dayjs';
 import { watch } from 'vue';
 import { useRoute } from 'vue-router';
 import TimeblockSchedule from '~f/components/timeblock-schedule.vue';
@@ -12,6 +11,7 @@ import { client } from '~f/utils/trpc';
 import CircleSpinner from '~f/components/circle-spinner.vue';
 import { FixedWeeklyTimeTask } from '~f/classes/fixed-weekly-time-task';
 import { FixedTimeTask } from '~f/classes/fixed-time-task';
+import { TimeblockDate } from '~f/types/date';
 
 const route = useRoute();
 const routeParams = $computed(() => route.params as { id: string });
@@ -41,18 +41,11 @@ let isLoading = $ref(true);
 			}),
 		]);
 
-	const today = dayjs();
-
 	// Avoid creating duplicate timeblocks
 	if (!timeblockStore.hasTimeblock(timeblockId)) {
 		const timeblock = new Timeblock({
 			id: timeblockId,
-			name: timeblockResult.name,
-			date: {
-				day: today.date(),
-				month: today.month(),
-				year: today.year(),
-			},
+			date: timeblockResult.date as TimeblockDate,
 		});
 
 		for (const task of timeblockTasksResult) {
@@ -95,7 +88,9 @@ let isLoading = $ref(true);
 
 					break;
 				}
-				// No default
+
+				default:
+					throw new Error(`Unrecognized task type ${task.type}`);
 			}
 
 			timeblock.addTask(taskToAdd);

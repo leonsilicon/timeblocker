@@ -4,8 +4,12 @@ import { fastifyTRPCPlugin } from '@trpc/server/adapters/fastify/dist/trpc-serve
 import fastifyCookie from 'fastify-cookie';
 import fastifyCors from 'fastify-cors';
 import fp from 'fastify-plugin';
+import dayjs from 'dayjs';
+import objectSupport from 'dayjs/plugin/objectSupport.js';
 import { getAppRouter } from '~b/routes/router.js';
 import { createContext, getPrismaClient } from '~b/utils/index.js';
+
+dayjs.extend(objectSupport);
 
 // Ensure the prisma client is connected to the database
 await getPrismaClient();

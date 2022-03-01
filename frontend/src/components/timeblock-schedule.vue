@@ -61,7 +61,7 @@ async function addNewColumn() {
 </script>
 
 <template>
-	<div :style="timeblockScheduleStyle" class="w-full overflow-y-scroll">
+	<div :style="timeblockScheduleStyle" class="w-full">
 		<div
 			v-for="hour in 25"
 			:key="hour - 1"

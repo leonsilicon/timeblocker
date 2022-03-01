@@ -37,12 +37,16 @@ async function onNewTaskSelect(taskType: string) {
 		newTaskName = '';
 		newTaskDescription = '';
 		await nextTick();
-		timeblockTaskBoxEditorEl.focusNameInput();
 	}
 }
 
 async function addTask() {
-	if (newTaskName.trim() !== '') {
+	if (newTaskName.trim() === '') {
+		// Reset the new task textbox
+		newTaskName = '';
+		newTaskDescription = '';
+		isNewTaskEditorVisible = false;
+	} else {
 		const taskId = nanoid();
 
 		let newTask: Task;
