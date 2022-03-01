@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { mdiPlusCircleOutline } from '@mdi/js';
 import { nanoid } from 'nanoid-nice';
+import { FixedWeeklyTimeTask } from '~f/classes/fixed-weekly-time-task';
 import TimeblockColumns from '~f/components/timeblock-columns.vue';
 import { useTimeblockStore } from '~f/store/timeblock';
 import { client } from '~f/utils/trpc';
@@ -36,13 +37,18 @@ const timeblockScheduleStyle = $computed(() => ({
 async function addNewColumn() {
 	const mostRecentColumn = timeblockStore.activeTimeblock.getColumns().at(-1)!;
 	const mostRecentColumnTaskBlocks = mostRecentColumn.getTaskBlocks();
-	const newTaskBlocks = mostRecentColumnTaskBlocks.map((taskBlock) => ({
-		taskId: taskBlock.getTask().getId(),
-		taskBlockId: nanoid(),
-		startMinute: taskBlock.getStartMinute(),
-		endMinute: taskBlock.getEndMinute(),
-		type: taskBlock.getType(),
-	}));
+	const newTaskBlocks = mostRecentColumnTaskBlocks.map((taskBlock) => {
+		const task = taskBlock.getTask();
+		return {
+			taskId: task.getId(),
+			taskBlockId: nanoid(),
+			startMinute: taskBlock.getStartMinute(),
+			endMinute: taskBlock.getEndMinute(),
+			dayOfWeek:
+				task instanceof FixedWeeklyTimeTask ? task.getDayOfWeek() : undefined,
+			type: taskBlock.getType(),
+		};
+	});
 
 	await client.mutation('createTimeblockTaskBlocks', {
 		timeblockColumnId: mostRecentColumn.getId(),

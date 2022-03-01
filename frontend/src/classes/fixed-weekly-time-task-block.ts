@@ -2,10 +2,12 @@ import type { FixedTimeTaskBlockConstructorProps } from './fixed-time-task-block
 import { FixedTimeTaskBlock } from './fixed-time-task-block';
 import type { FixedWeeklyTimeTask } from '~f/classes/fixed-weekly-time-task';
 
-export type FixedWeeklyTimeTaskBlockConstructorProps =
-	Omit<FixedTimeTaskBlockConstructorProps, 'task'> & {
-		task: FixedWeeklyTimeTask;
-	};
+export type FixedWeeklyTimeTaskBlockConstructorProps = Omit<
+	FixedTimeTaskBlockConstructorProps,
+	'task'
+> & {
+	task: FixedWeeklyTimeTask;
+};
 
 /**
  * A task block that represents a task that always starts and ends at the same time and

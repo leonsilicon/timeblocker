@@ -67,10 +67,14 @@ export const timeblockCrudRouter = createRouter()
 					})),
 			});
 
-			const dayjsDate = dayjs().set(date);
+			const dayjsDate = dayjs(0)
+				.set('year', date.year)
+				.set('month', date.month)
+				.set('date', date.day);
+
 			const dayOfWeek = dayjsDate.day();
 
-			await ctx.prisma.timeblockTask.findMany({
+			const fixedWeeklyTimeTasks = await ctx.prisma.timeblockTask.findMany({
 				select: {
 					id: true,
 					startMinute: true,
@@ -85,7 +89,7 @@ export const timeblockCrudRouter = createRouter()
 			});
 
 			await ctx.prisma.timeblockTaskBlock.createMany({
-				data: fixedTimeTasks
+				data: fixedWeeklyTimeTasks
 					.filter(
 						({ startMinute, endMinute }) =>
 							startMinute !== null && endMinute !== null

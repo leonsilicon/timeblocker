@@ -15,6 +15,7 @@ import { FixedWeeklyTimeTaskBlock } from '~f/classes/fixed-weekly-time-task-bloc
 import { FixedTimeTaskBlock } from '~f/classes/fixed-time-task-block';
 import { FixedTimeTask } from '~f/classes/fixed-time-task';
 import { FixedWeeklyTimeTask } from '~f/classes/fixed-weekly-time-task';
+import dayjs from 'dayjs';
 
 const props = defineProps<{
 	timeblockColumnId: string;
@@ -33,6 +34,7 @@ const timeblockStore = useTimeblockStore();
 	for (const block of timeblockTaskBlocks) {
 		let taskBlock: TaskBlock;
 		const taskType = timeblock.getTask(block.taskId).getType();
+
 		switch (taskType) {
 			case 'normal': {
 				taskBlock = new TaskBlock({
@@ -162,14 +164,53 @@ async function onDrop(event: DragEvent) {
 				return;
 			}
 
-			const taskBlock = new TaskBlock({
-				id: nanoid(),
-				timeblock: activeTimeblock,
-				task,
-				startMinute,
-				endMinute,
-				timeblockColumnId: props.timeblockColumnId,
-			});
+			let taskBlock: TaskBlock;
+
+			switch (task.getType()) {
+				case 'normal': {
+					taskBlock = new TaskBlock({
+						id: nanoid(),
+						timeblock: activeTimeblock,
+						task,
+						startMinute,
+						endMinute,
+						timeblockColumnId: props.timeblockColumnId,
+					});
+
+					break;
+				}
+
+				case 'fixed-time': {
+					taskBlock = new FixedTimeTaskBlock({
+						id: nanoid(),
+						timeblock: activeTimeblock,
+						task: task as FixedTimeTask,
+						startMinute,
+						endMinute,
+						timeblockColumnId: props.timeblockColumnId,
+					});
+
+					break;
+				}
+
+				case 'fixed-weekly-time': {
+					taskBlock = new FixedWeeklyTimeTaskBlock({
+						id: nanoid(),
+						timeblock: activeTimeblock,
+						task: task as FixedWeeklyTimeTask,
+						startMinute,
+						endMinute,
+						timeblockColumnId: props.timeblockColumnId,
+					});
+
+					(task as FixedWeeklyTimeTask).setDayOfWeek(dayjs().day());
+
+					break;
+				}
+
+				default:
+					throw new Error(`Unrecognized task type ${task.getType()}`);
+			}
 
 			activeTimeblock.addTaskBlock(taskBlock);
 			activeTimeblock
@@ -184,6 +225,10 @@ async function onDrop(event: DragEvent) {
 						taskId: payload.taskId,
 						startMinute,
 						endMinute,
+						dayOfWeek:
+							task instanceof FixedWeeklyTimeTask
+								? task.getDayOfWeek()
+								: undefined,
 					},
 				],
 			});

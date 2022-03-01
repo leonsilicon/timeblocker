@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import dayjs from 'dayjs';
 import { accountMiddleware } from '~b/utils/auth.js';
 import { createRouter } from '~b/utils/router.js';
 import {
@@ -18,12 +19,24 @@ export const timeblockTaskBlockRouter = createRouter()
 						taskBlockId: z.string(),
 						startMinute: z.number(),
 						endMinute: z.number(),
-						dayOfWeek: z.number().optional(),
 					})
 					.array(),
 			})
 		),
 		async resolve({ ctx, input: { taskBlocks } }) {
+			const timeblockColumn = await ctx.prisma.timeblockColumn.findFirst({
+				select: {
+					timeblock: {
+						select: {
+							date: true,
+						},
+					},
+				},
+				where: {
+					id: ctx.timeblockColumnId,
+				},
+			});
+
 			await ctx.prisma.timeblockTaskBlock.createMany({
 				data: taskBlocks.map(
 					({ endMinute, taskBlockId, taskId, startMinute }) => ({
@@ -48,23 +61,44 @@ export const timeblockTaskBlockRouter = createRouter()
 				},
 			});
 
-			await ctx.prisma.timeblockTask.updateMany({
-				data: tasks
+			await Promise.all(
+				tasks
 					.filter(
 						(task) =>
 							task.type === 'fixed-time' || task.type === 'fixed-weekly-time'
 					)
-					.map((task) => {
+
+					.map(async (task) => {
 						const taskBlock = taskBlocks.find(
 							(taskBlock) => task.id === taskBlock.taskId
 						);
-						return {
-							startMinute: taskBlock?.startMinute,
-							endMinute: taskBlock?.endMinute,
-							dayOfWeek: taskBlock?.dayOfWeek,
+
+						const date = timeblockColumn!.timeblock.date as {
+							year: number;
+							month: number;
+							day: number;
 						};
-					}),
-			});
+
+						const dayjsDate = dayjs(0)
+							.set('year', date.year)
+							.set('month', date.month)
+							.set('date', date.day);
+
+						await ctx.prisma.timeblockTask.update({
+							data: {
+								startMinute: taskBlock?.startMinute,
+								endMinute: taskBlock?.endMinute,
+								dayOfWeek:
+									task.type === 'fixed-weekly-time'
+										? dayjsDate.day()
+										: undefined,
+							},
+							where: {
+								id: task.id,
+							},
+						});
+					})
+			);
 		},
 	})
 	.query('getTimeblockTaskBlocks', {

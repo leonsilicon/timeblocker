@@ -13,8 +13,7 @@ export type FixedWeeklyTimeTaskConstructorProps =
 export class FixedWeeklyTimeTask extends FixedTimeTask {
 	static color = '#e6ffe6';
 
-
-	dayOfWeek: number | undefined;
+	private dayOfWeek: number | undefined;
 
 	/**
 	 * Creates a new fixed weekly time task block.
@@ -31,7 +30,7 @@ export class FixedWeeklyTimeTask extends FixedTimeTask {
 	 * Sets the day of the week the task repeats on.
 	 * @param dayOfWeek The new day of the week the task repeats on.
 	 */
-	setDayOfWeek(dayOfWeek: number | undefined) {
+	public setDayOfWeek(dayOfWeek: number | undefined) {
 		if (dayOfWeek !== undefined && (dayOfWeek < 0 || dayOfWeek > 6)) {
 			throw new Error('Day of week must be between 0 and 6 inclusive.');
 		}
@@ -43,7 +42,7 @@ export class FixedWeeklyTimeTask extends FixedTimeTask {
 	 * Gets the day of the week the task repeats on.
 	 * @returns The day of the week the task repeats on.
 	 */
-	getDayOfWeek() {
+	public getDayOfWeek() {
 		return this.dayOfWeek;
 	}
 }
