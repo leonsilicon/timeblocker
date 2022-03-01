@@ -3,7 +3,7 @@ import { FixedTimeTaskBlock } from './fixed-time-task-block';
 import type { FixedWeeklyTimeTask } from '~f/classes/fixed-weekly-time-task';
 
 export type FixedWeeklyTimeTaskBlockConstructorProps =
-	FixedTimeTaskBlockConstructorProps & {
+	Omit<FixedTimeTaskBlockConstructorProps, 'task'> & {
 		task: FixedWeeklyTimeTask;
 	};
 

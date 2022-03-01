@@ -2,7 +2,7 @@ import type { FixedTimeTask } from '~f/classes/fixed-time-task';
 import type { TaskBlockConstructorProps } from '~f/classes/task-block';
 import { TaskBlock } from '~f/classes/task-block';
 
-export type FixedTimeTaskBlockConstructorProps = TaskBlockConstructorProps & {
+export type FixedTimeTaskBlockConstructorProps = Omit<TaskBlockConstructorProps, 'task'> & {
 	task: FixedTimeTask;
 };
 
