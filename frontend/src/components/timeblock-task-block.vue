@@ -149,6 +149,14 @@ watch(
 		}
 	}
 );
+
+const shouldDescriptionShow = $computed(() => {
+	if (isTopBorderDragging) {
+		return getNewEndMinute() - getNewStartMinute() > 30;
+	} else {
+		return taskBlock.getEndMinute() - taskBlock.getStartMinute() > 30;
+	}
+});
 </script>
 
 <template>
@@ -165,10 +173,7 @@ watch(
 			@mousedown.stop="onTopBorderMouseDown"
 		></div>
 		{{ task.getName() }}
-		<div
-			v-if="taskBlock.getEndMinute() - taskBlock.getStartMinute() > 30"
-			class="text-sm text-gray-500"
-		>
+		<div v-if="shouldDescriptionShow" class="text-sm text-gray-500">
 			{{ task.getDescription() }}
 		</div>
 		<div

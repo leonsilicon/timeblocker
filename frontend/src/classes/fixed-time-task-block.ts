@@ -30,7 +30,7 @@ export class FixedTimeTaskBlock extends TaskBlock {
 	 * @returns The time the task always starts on.
 	 */
 	public override getStartMinute() {
-		return this.getTask().getStartMinute();
+		return this.getTask().getStartMinute()!;
 	}
 
 	/**
@@ -46,7 +46,7 @@ export class FixedTimeTaskBlock extends TaskBlock {
 	 * @returns The minute the task always ends on.
 	 */
 	public override getEndMinute() {
-		return this.getTask().getEndMinute();
+		return this.getTask().getEndMinute()!;
 	}
 
 	/**

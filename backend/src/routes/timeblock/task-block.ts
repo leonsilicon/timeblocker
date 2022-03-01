@@ -16,7 +16,6 @@ export const timeblockTaskBlockRouter = createRouter()
 					.object({
 						taskId: z.string(),
 						taskBlockId: z.string(),
-						type: z.string(),
 						startMinute: z.number(),
 						endMinute: z.number(),
 						dayOfWeek: z.number().optional(),
@@ -27,13 +26,12 @@ export const timeblockTaskBlockRouter = createRouter()
 		async resolve({ ctx, input: { taskBlocks } }) {
 			await ctx.prisma.timeblockTaskBlock.createMany({
 				data: taskBlocks.map(
-					({ endMinute, taskBlockId, taskId, startMinute, type }) => ({
+					({ endMinute, taskBlockId, taskId, startMinute }) => ({
 						timeblockColumnId: ctx.timeblockColumnId,
 						endMinute,
 						id: taskBlockId,
 						taskId,
 						startMinute,
-						type,
 					})
 				),
 			});

@@ -90,7 +90,7 @@ async function addTask() {
 				id: taskId,
 				name: newTaskName,
 				description: newTaskDescription,
-				
+				type: selectedTaskType,
 			});
 		} catch (error: unknown) {
 			displayError(error);

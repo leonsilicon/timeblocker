@@ -41,6 +41,7 @@ async function addNewColumn() {
 		taskBlockId: nanoid(),
 		startMinute: taskBlock.getStartMinute(),
 		endMinute: taskBlock.getEndMinute(),
+		type: taskBlock.getType(),
 	}));
 
 	await client.mutation('createTimeblockTaskBlocks', {
@@ -64,7 +65,7 @@ async function addNewColumn() {
 		<div
 			v-for="hour in 25"
 			:key="hour - 1"
-			class="-mt-[12px] mr-2 text-right text-gray-500"
+			class="mt-[-12px] mr-2 text-right text-gray-500"
 			:style="getTimeStyle({ hour: hour - 1, minute: 0 })"
 		>
 			{{ getHourString(hour - 1) }}
