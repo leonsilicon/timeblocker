@@ -29,6 +29,7 @@
 \begin{pycode}
 import dateparser
 from datetime import datetime, timedelta
+from tex_escape import tex_escape
 
 task_number = 0
 last_date = None
@@ -66,12 +67,12 @@ def task(task_string):
 
 	return f"""\
 		\\\\\\hline
-		{task_number} &
-		{planned_action} &
-		{planned_outcome} &
-		{time_estimated} &
-		{target_completion_date} &
-		{criterion}
+		{tex_escape(task_number)} &
+		{tex_escape(planned_action)} &
+		{tex_escape(planned_outcome)} &
+		{tex_escape(time_estimated)} &
+		{tex_escape(target_completion_date)} &
+		{tex_escape(criterion)}
 	"""
 \end{pycode}
 % \end{noindent}
@@ -356,16 +357,16 @@ def task(task_string):
 		""")}
 	\py{task("""
 		- Figure out why Vue's global errorHandler isn't working with async callbacks
-		- Learned that Vue's errorHandler only works with errors that are thrown in the `setup()` function and don't work with errors that are thrown in callbacks (including async callbacks)
+		- Learned that Vue's errorHandler only works with errors that are thrown in the `setup()` function and don't work with errors that are thrown in callbacks (including async callbacks). Fixed by using window.addEventListener('error') and window.addEventListener('unhandledRejection')
 		- 2 hours
 		- February 28, 2021
 		- C
 		""")}
 	\py{task("""
-		-
+		- Finish implementing the fixed time tasks & task blocks and the fixed weekly time tasks & task blocks
 		-
 		- 2 hours
-		-
+		- March 1, 2021
 		- C
 		""")}
 
