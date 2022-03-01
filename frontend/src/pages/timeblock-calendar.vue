@@ -62,7 +62,7 @@ onMounted(() => {
 
 <template>
 	<div class="column center p-8">
-		<div class="mb-2 text-6xl font-bold">Timeblocks</div>
+		<div class="mb-4 text-6xl font-bold">Timeblocks</div>
 		<div v-if="areTimeblockListingsLoading === true" class="row center p-4">
 			<CircleSpinner class="mr-2" /> Loading...
 		</div>
