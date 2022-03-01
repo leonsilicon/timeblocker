@@ -225,10 +225,6 @@ async function onDrop(event: DragEvent) {
 						taskId: payload.taskId,
 						startMinute,
 						endMinute,
-						dayOfWeek:
-							task instanceof FixedWeeklyTimeTask
-								? task.getDayOfWeek()
-								: undefined,
 					},
 				],
 			});

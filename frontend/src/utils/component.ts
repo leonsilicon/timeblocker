@@ -52,8 +52,8 @@ export function mountComponent(
 
 	app.use(getPinia());
 	app.use(VIcon);
-	app.use(VueInputAutowidth);
-	app.use(Quasar, {
+	app.use(VueInputAutowidth as any);
+	app.use(Quasar as any, {
 		plugins: {
 			Notify,
 			Dialog,

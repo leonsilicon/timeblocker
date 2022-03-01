@@ -35,7 +35,7 @@ let areTimeblockListingsLoading = $ref(true);
 const calendarEl = $ref<HTMLDivElement>();
 
 onMounted(() => {
-	const calendar = new Calendar(calendarEl, {
+	const calendar = new Calendar(calendarEl as HTMLDivElement, {
 		headerToolbar: false,
 		plugins: [dayGridPlugin],
 		dayCellContent(ctx) {

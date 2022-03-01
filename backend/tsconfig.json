@@ -14,5 +14,5 @@
 	},
 	"include": [
 		"./src"
-, "../frontend/src/utils/component.ts"	]
+	]
 }
