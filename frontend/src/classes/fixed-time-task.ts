@@ -2,8 +2,8 @@ import type { TaskConstructorProps } from '~f/classes/task';
 import { Task } from '~f/classes/task';
 
 export type FixedTimeTaskConstructorProps = TaskConstructorProps & {
-	startMinute: number;
-	endMinute: number;
+	startMinute: number | undefined;
+	endMinute: number | undefined;
 };
 
 /**
@@ -13,12 +13,12 @@ export class FixedTimeTask extends Task {
 	/**
 	 * The start minute of the task.
 	 */
-	private startMinute: number;
+	private startMinute: number | undefined;
 
 	/**
 	 * The end minute of the task.
 	 */
-	private endMinute: number;
+	private endMinute: number | undefined;
 
 	/**
 	 * Creates a new fixed time task.
@@ -45,7 +45,7 @@ export class FixedTimeTask extends Task {
 	 * Sets the minute the task always starts on.
 	 * @param startMinute The new minute the task always starts on.
 	 */
-	setStartMinute(startMinute: number) {
+	setStartMinute(startMinute: number | undefined) {
 		this.startMinute = startMinute;
 	}
 
@@ -61,7 +61,7 @@ export class FixedTimeTask extends Task {
 	 * Sets the time the task always ends on.
 	 * @param endMinute The new minute the task always ends on.
 	 */
-	setEndMinute(endMinute: number) {
+	setEndMinute(endMinute: number | undefined) {
 		this.endMinute = endMinute;
 	}
 }

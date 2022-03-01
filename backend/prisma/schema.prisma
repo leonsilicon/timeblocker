@@ -80,6 +80,14 @@ model TimeblockTask {
   id          String  @id()
   name        String
   description String?
+  type        String @default("normal")
+
+	// Only for type 'fixed-time'
+  startMinute Int?
+  endMinute   Int?
+
+	// Only for type 'fixed-weekly-time'
+  dayOfWeek   Int?
 
   ownerAccount   Account @relation(fields: [ownerAccountId], references: [id], onDelete: Cascade)
   ownerAccountId String

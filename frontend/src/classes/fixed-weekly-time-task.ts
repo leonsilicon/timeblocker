@@ -3,7 +3,7 @@ import { FixedTimeTask } from './fixed-time-task';
 
 export type FixedWeeklyTimeTaskConstructorProps =
 	FixedTimeTaskConstructorProps & {
-		dayOfWeek: number;
+		dayOfWeek: number | undefined;
 	};
 
 /**
@@ -11,7 +11,7 @@ export type FixedWeeklyTimeTaskConstructorProps =
  * occurs at the same time every week.
  */
 export class FixedWeeklyTimeTask extends FixedTimeTask {
-	dayOfWeek: number;
+	dayOfWeek: number | undefined;
 
 	/**
 	 * Creates a new fixed weekly time task block.
@@ -27,8 +27,8 @@ export class FixedWeeklyTimeTask extends FixedTimeTask {
 	 * Sets the day of the week the task repeats on.
 	 * @param dayOfWeek The new day of the week the task repeats on.
 	 */
-	setDayOfWeek(dayOfWeek: number) {
-		if (dayOfWeek < 0 || dayOfWeek > 6) {
+	setDayOfWeek(dayOfWeek: number | undefined) {
+		if (dayOfWeek !== undefined && (dayOfWeek < 0 || dayOfWeek > 6)) {
 			throw new Error('Day of week must be between 0 and 6 inclusive.');
 		}
 

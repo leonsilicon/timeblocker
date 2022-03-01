@@ -157,4 +157,8 @@ export class TaskBlock {
 	public setTimeblockColumnId(timeblockColumnId: string | undefined) {
 		this.timeblockColumnId = timeblockColumnId;
 	}
+
+	public getType() {
+		return this.type;
+	}
 }

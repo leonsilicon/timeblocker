@@ -10,8 +10,12 @@ export const timeblockTaskRouter = createRouter()
 			id: z.string(),
 			name: z.string(),
 			description: z.string().optional(),
+			type: z.string(),
+			dayOfWeek: z.number().optional(),
+			startMinute: z.number().optional(),
+			endMinute: z.number().optional(),
 		}),
-		async resolve({ ctx, input: { id, name, description } }) {
+		async resolve({ ctx, input: { id, name, description, type, dayOfWeek, startMinute, endMinute } }) {
 			await ctx.prisma.timeblockTask.create({
 				data: {
 					id,
@@ -19,6 +23,10 @@ export const timeblockTaskRouter = createRouter()
 					description,
 					ownerAccountId: ctx.accountId,
 					isHidden: false,
+					dayOfWeek,
+					startMinute,
+					endMinute,
+					type,
 				},
 			});
 		},

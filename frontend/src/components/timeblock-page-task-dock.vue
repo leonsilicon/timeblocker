@@ -10,6 +10,8 @@ import { TaskBoxDropData, TaskBoxDropType } from '~f/types/task-box';
 import { client } from '~f/utils/trpc';
 import TimeblockTaskBoxEditor from '~f/components/timeblock-task-box-editor.vue';
 import TimeblockPageTaskDockAddTaskButton from '~f/components/timeblock-page-task-dock-add-task-button.vue';
+import { FixedWeeklyTimeTask } from '~f/classes/fixed-weekly-time-task';
+import { FixedTimeTask } from '~f/classes/fixed-time-task';
 
 const timeblockStore = useTimeblockStore();
 
@@ -38,12 +40,48 @@ async function onNewTaskSelect(taskType: string) {
 async function addTask() {
 	if (newTaskName.trim() !== '') {
 		const taskId = nanoid();
-		const newTask = new Task({
-			id: taskId,
-			name: newTaskName,
-			description: newTaskDescription,
-			isHidden: false,
-		});
+
+		let newTask: Task;
+		switch (selectedTaskType) {
+			case 'normal': {
+				newTask = new Task({
+					id: taskId,
+					name: newTaskName,
+					description: newTaskDescription,
+					isHidden: false,
+				});
+				break;
+			}
+
+			case 'fixed-weekly-time': {
+				newTask = new FixedWeeklyTimeTask({
+					dayOfWeek: undefined,
+					startMinute: undefined,
+					endMinute: undefined,
+					id: taskId,
+					isHidden: false,
+					name: newTaskName,
+					description: newTaskDescription,
+				});
+				break;
+			}
+
+			case 'fixed-time': {
+				newTask = new FixedTimeTask({
+					endMinute: undefined,
+					id: taskId,
+					isHidden: false,
+					name: newTaskName,
+					startMinute: undefined,
+					description: newTaskDescription,
+				});
+				break;
+			}
+
+			default: {
+				throw new Error(`Unrecognized task type ${selectedTaskType}`);
+			}
+		}
 
 		timeblockStore.activeTimeblock.addTask(newTask);
 
@@ -52,6 +90,7 @@ async function addTask() {
 				id: taskId,
 				name: newTaskName,
 				description: newTaskDescription,
+				
 			});
 		} catch (error: unknown) {
 			displayError(error);
@@ -118,7 +157,7 @@ async function onDrop(event: DragEvent) {
 		<!-- Delete overlay -->
 		<div
 			v-if="isDeleteOverlayVisible"
-			class="column center pointer-events-none absolute inset-0 rounded-md bg-[rgba(255,0,0,0.5)]"
+			class="column pointer-events-none absolute inset-0 top-[45px] mt-10 items-center rounded-md bg-[rgba(255,0,0,0.9)] pt-10"
 		>
 			<v-icon :size="50" :icon="mdiDelete"></v-icon>
 			<div class="text-black">Delete Task Block</div>

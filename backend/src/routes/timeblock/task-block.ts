@@ -16,8 +16,10 @@ export const timeblockTaskBlockRouter = createRouter()
 					.object({
 						taskId: z.string(),
 						taskBlockId: z.string(),
+						type: z.string(),
 						startMinute: z.number(),
 						endMinute: z.number(),
+						dayOfWeek: z.number().optional(),
 					})
 					.array(),
 			})
@@ -25,12 +27,13 @@ export const timeblockTaskBlockRouter = createRouter()
 		async resolve({ ctx, input: { taskBlocks } }) {
 			await ctx.prisma.timeblockTaskBlock.createMany({
 				data: taskBlocks.map(
-					({ endMinute, taskBlockId, taskId, startMinute }) => ({
+					({ endMinute, taskBlockId, taskId, startMinute, type }) => ({
 						timeblockColumnId: ctx.timeblockColumnId,
 						endMinute,
 						id: taskBlockId,
 						taskId,
 						startMinute,
+						type,
 					})
 				),
 			});
@@ -39,18 +42,50 @@ export const timeblockTaskBlockRouter = createRouter()
 	.query('getTimeblockTaskBlocks', {
 		input: timeblockColumnIdInput,
 		async resolve({ ctx }) {
-			const timeblockTaskBlocks = await ctx.prisma.timeblockTaskBlock.findMany({
-				select: {
-					id: true,
-					taskId: true,
-					timeblockColumnId: true,
-					startMinute: true,
-					endMinute: true,
-				},
-				where: {
-					timeblockColumnId: ctx.timeblockColumnId,
-				},
-			});
+			const timeblockTaskBlocks = [
+				...(await ctx.prisma.timeblockTaskBlock.findMany({
+					select: {
+						id: true,
+						taskId: true,
+						timeblockColumnId: true,
+						startMinute: true,
+						endMinute: true,
+					},
+					where: {
+						timeblockColumnId: ctx.timeblockColumnId,
+					},
+				})),
+
+				// Also select all timeblocks that are fixed time/fixed weekly
+				...(await ctx.prisma.timeblockTaskBlock.findMany({
+					select: {
+						id: true,
+						taskId: true,
+						timeblockColumnId: true,
+						startMinute: true,
+						endMinute: true,
+					},
+					where: {
+						task: {
+							type: 'fixed-weekly-time',
+						},
+					},
+				})),
+				...(await ctx.prisma.timeblockTaskBlock.findMany({
+					select: {
+						id: true,
+						taskId: true,
+						timeblockColumnId: true,
+						startMinute: true,
+						endMinute: true,
+					},
+					where: {
+						task: {
+							type: 'fixed-time',
+						},
+					},
+				})),
+			];
 
 			return timeblockTaskBlocks;
 		},
