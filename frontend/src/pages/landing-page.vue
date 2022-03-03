@@ -59,7 +59,7 @@ const features = [
 		>
 			<v-icon class="self-center pb-4" size="70" :icon="feature.icon" />
 			<h1 class="text-bold text-center text-xl">{{ feature.title }}</h1>
-			<p clkss="text-gray-500 text-sm text-cente">{{ feature.description }}</p>
+			<p class="text-gray-500 text-sm text-center">{{ feature.description }}</p>
 		</div>
 	</div>
 </template>

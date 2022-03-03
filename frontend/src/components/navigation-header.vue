@@ -9,8 +9,14 @@ const appStore = useAppStore();
 const router = useRouter();
 
 async function logout() {
+	const sessionToken = localStorage.getItem(LocalStorageKey.sessionToken);
+	if (sessionToken !== null) {
+		await client.mutation('logout', {
+			sessionToken,
+		});
+	}
+
 	localStorage.removeItem(LocalStorageKey.sessionToken);
-	await client.mutation('logout');
 	await router.push({ path: '/login', force: true });
 }
 </script>
