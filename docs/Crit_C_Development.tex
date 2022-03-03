@@ -138,12 +138,28 @@ This function sets a variable \code{isRequestLoading} to true so that the loadin
 
 When a user creates an account, the backend saves the password as a one-way bcrypt hash. Two strings that are the same will always produce the same hash. This allows me to confidently check whether the password the user enters matches the account password. In addition, given a password hash, it is computationally infeasible to find the original password. This way, if the information in my database ever gets leaked, users' passwords will still be protected because the original password can't be feasibly recovered from the hash.
 
-\section*{Timeblock Calendar}
+\section*{Timeblock Sidebar}
 
-\includegraphics[width=1\textwidth]{}
+I sort the tasks using a recursive merge sort algorithm:
+
+\includegraphics[width=1\textwidth]{merge-sort.png}
 
 Once the
-The timeblock page consists of two main views: the ``Task Dock'' and the ``Timeblock Schedule.''
+
+\section*{Timeblock Schedule}
+
+To represent the different types of tasks (normal, fixed time, and fixed weekly time), I used inheritance by extending the base Task and TaskBlock classes:
+
+\includegraphics[width=1\textwidth]{inheritance.png}
+
+The FixedTimeTaskBlock class overrides the \code{getStartTime} and \code{getEndTime} methods of the base TaskBlock class. For the FixedTimeTaskBlock class, the start time and the end time are stored in the FixedTimeTask class that the task block is linked to, hence it returns the start time and end time of the task instead. By using inheritance and method overriding, I'm able to leverage polymorphism, as shown in the following code:
+
+\includegraphics[width=1\textwidth]{polymorphism.png}
+
+In the above code, I'm retrieving the task block using the Timeblock class method \code{getTaskBlock(taskBlockId)}. My code doesn't care which type of TaskBlock it is; the TaskBlock just needs to have a \code{getStartMinute} and \code{getEndMinute} function. When the task block is a FixedTimeTaskBlock, the \code{getStartMinute} and \code{getEndMinute} of the FixedTimeTaskBlock class will be called instead of the \code{getStartMinute} and \code{getEndMinute} of the base TaskBlock class.
+
+\section*{Timeblock Column}
+
 
 The task dock contains all the user's tasks, and the user has the option to add and delete tasks. The user can add a task by pressing on the “Add Task” button. The calendar contains all the “task blocks,” which represent chunks of time dedicated to a user's task. The user can toggle the task dock on and off by pressing the menu in the top left. To create a new task block, the user can drag one of their existing tasks onto the calendar. Then, a new task block will appear on the calendar that the user can resize or drag to a different time slot.
 

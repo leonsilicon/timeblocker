@@ -5,7 +5,6 @@ import { useTimeblockStore } from '~f/store/timeblock';
 import { TaskBoxDropData, TaskBoxDropType } from '~f/types/task-box';
 import { roundToNearest15 } from '~f/utils/round';
 import { client } from '~f/utils/trpc';
-import { getColorFromTaskType } from '~f/utils/color';
 
 let borderDraggingTimeblockTaskBlockStyle = $ref<{
 	'grid-row-start'?: number;

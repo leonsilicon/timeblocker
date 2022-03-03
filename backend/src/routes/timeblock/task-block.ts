@@ -67,7 +67,6 @@ export const timeblockTaskBlockRouter = createRouter()
 						(task) =>
 							task.type === 'fixed-time' || task.type === 'fixed-weekly-time'
 					)
-
 					.map(async (task) => {
 						const taskBlock = taskBlocks.find(
 							(taskBlock) => task.id === taskBlock.taskId
