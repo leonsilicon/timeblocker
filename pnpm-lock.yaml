@@ -147,13 +147,13 @@ importers:
     specifiers:
       '@commitlint/cli': ^15.0.0
       execa: ^6.0.0
-      lion-system: ^1.0.9
+      lion-system: ^1.0.10
       outdent: ^0.8.0
       tsc-alias: ^1.5.0
     dependencies:
       '@commitlint/cli': 15.0.0
       execa: 6.0.0
-      lion-system: 1.0.9
+      lion-system: 1.0.10
       outdent: 0.8.0
       tsc-alias: 1.5.0
 
@@ -2974,6 +2974,21 @@ packages:
       signal-exit: 3.0.6
       strip-final-newline: 3.0.0
 
+  /execa/6.1.0:
+    resolution: {integrity: sha512-QVWlX2e50heYJcCPG0iWtf8r0xjEYfz/OYLGDYH+IyjWezzPNxz63qNFOu0l4YftGWuizFVZHHs8PrLU5p2IDA==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dependencies:
+      cross-spawn: 7.0.3
+      get-stream: 6.0.1
+      human-signals: 3.0.1
+      is-stream: 3.0.0
+      merge-stream: 2.0.0
+      npm-run-path: 5.1.0
+      onetime: 6.0.0
+      signal-exit: 3.0.7
+      strip-final-newline: 3.0.0
+    dev: false
+
   /expand-tilde/2.0.2:
     resolution: {integrity: sha1-l+gBqgUt8CRU3kawK/YhZCzchQI=}
     engines: {node: '>=0.10.0'}
@@ -4055,10 +4070,18 @@ packages:
       pkg-dir: 6.0.1
     dev: true
 
+  /lion-system/1.0.10:
+    resolution: {integrity: sha512-aSnSCC3g0wIwbyQOyjs+24LbhDv7F2YFqj6XQsUifuS3aXGfoojV+Hfmo+oO/kekxaOGdigL0DnD1HacD2y5+Q==}
+    dependencies:
+      execa: 6.1.0
+      pkg-up: 4.0.0
+    dev: false
+
   /lion-system/1.0.9:
     resolution: {integrity: sha512-kOomq2SrAljYpUkzzXHAors4Bibe9+sP51uGSyfi2ilYCx6e0scHiYg3t6oyhWhr4276QjIbjNGwkBEylAB1ww==}
     dependencies:
       pkg-up: 4.0.0
+    dev: true
 
   /listr2/4.0.4:
     resolution: {integrity: sha512-vJOm5KD6uZXjSsrwajr+mNacIjf87gWvlBEltPWLbTkslUscWAzquyK4xfe9Zd4RDgO5nnwFyV06FC+uVR+5mg==}
@@ -4468,6 +4491,13 @@ packages:
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
       path-key: 4.0.0
+
+  /npm-run-path/5.1.0:
+    resolution: {integrity: sha512-sJOdmRGrY2sjNTRMbSvluQqg+8X7ZK61yvzBEIDhz4f8z1TZFYABsqjjCBd/0PUNE9M6QDgHJXQkGUEm7Q+l9Q==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dependencies:
+      path-key: 4.0.0
+    dev: false
 
   /npmlog/5.0.1:
     resolution: {integrity: sha512-AqZtDUWOMKs1G/8lwylVjrdYgqA4d9nu8hc+0gzRxlDb1I10+FHBGMXs6aiQHFdCUUlqH99MUMuLfzWDNDtfxw==}
