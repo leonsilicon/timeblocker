@@ -1,11 +1,11 @@
-function merge<T>(left: T[], right: T[]) {
+function merge<T>(left: T[], right: T[], cmp: (a: T, b: T) => boolean) {
 	const sortedArray: T[] = [];
 
 	let leftIndex = 0;
 	let rightIndex = 0;
 
 	while (leftIndex < left.length && rightIndex < right.length) {
-		if (left[leftIndex]! < right[rightIndex]!) {
+		if (cmp(left[leftIndex]!, right[rightIndex]!)) {
 			sortedArray.push(left[leftIndex]!);
 			leftIndex += 1;
 		} else {
@@ -19,7 +19,11 @@ function merge<T>(left: T[], right: T[]) {
 	return [...sortedArray, ...left.slice(leftIndex), ...right.slice(rightIndex)];
 }
 
-export function mergeSort<T>(array: T[]): T[] {
+/**
+ * Sorts an array using merge sort
+ * @param cmp A comparison function that takes two elements of the array to compare. It returns true if the first argument is greater than the second argument and return false otherwise.  
+ */
+export function mergeSort<T>(array: T[], cmp: (a: T, b: T) => boolean): T[] {
 	const half = array.length / 2;
 
 	if (array.length < 2) {
@@ -27,5 +31,5 @@ export function mergeSort<T>(array: T[]): T[] {
 	}
 
 	const left = array.splice(0, half);
-	return merge(mergeSort(left), mergeSort(array));
+	return merge(mergeSort(left), mergeSort(array), cmp);
 }

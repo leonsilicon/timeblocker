@@ -12,15 +12,23 @@ import TimeblockTaskBoxEditor from '~f/components/timeblock-task-box-editor.vue'
 import TimeblockPageTaskDockAddTaskButton from '~f/components/timeblock-page-task-dock-add-task-button.vue';
 import { FixedWeeklyTimeTask } from '~f/classes/fixed-weekly-time-task';
 import { FixedTimeTask } from '~f/classes/fixed-time-task';
+import { mergeSort } from '~f/utils/sort';
 
 const timeblockStore = useTimeblockStore();
 
-const visibleTasks = $computed(() =>
-	timeblockStore.activeTimeblock
+const areTasksSortedByName = $ref(false);
+
+const visibleTasks = $computed(() => {
+	const unsortedTasks = timeblockStore.activeTimeblock
 		.getOrderedTaskIds()
 		.map((taskId) => timeblockStore.activeTimeblock.getTask(taskId))
 		.filter((task) => !task.getIsHidden())
-);
+	if (areTasksSortedByName) {
+		return mergeSort(unsortedTasks);
+	} else {
+		return unsortedTasks;
+	}
+});
 
 const timeblockTaskBoxEditorEl =
 	$ref<InstanceType<typeof TimeblockTaskBoxEditor>>();
