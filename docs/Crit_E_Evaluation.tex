@@ -3,7 +3,7 @@
 \usepackage{fontspec}
 \usepackage{xcolor}
 \usepackage{authoraftertitle}
-\usepackage{tabularx}
+\usepackage{xltabular}
 
 \title{Criterion E: Evaluation}
 \definecolor{msblue}{HTML}{5AB5D8}
@@ -18,9 +18,12 @@
 
 \section*{Success Criteria Evaluation}
 
-\begin{tabularx}{\linewidth}{|X|X|}
-	Criteria
-	 & Was it fulfilled?
+\def\arraystretch{1.5}
+\begin{xltabular}{\linewidth}{|X|X|}
+	\hline
+	\textbf{Criteria}
+	&
+	\textbf{Was it fulfilled?}
 	\\\hline
 	Create, edit, and delete tasks
 	&
@@ -45,15 +48,23 @@
 	Changing the schedule view between day and week
 	&
 	Instead of a week view, I decided to implement a month view instead since it would be more useful than a week view. So, I still consider this success criteria met because the user can view any month on their timeblock calendar and create a timeblock on any day of the month.
-
-	\item Registering and logging into accounts
-	\item Server-side synchronization with a database to access schedules across devices
+	\\\hline
+	Registering and logging into accounts
+	&
+	Yes, the user is able to create an account on Timeblocker and log into their account from any device with a browser.
+	\\\hline
+	Server-side synchronization with a database to access schedules across devices
+	&
+	Yes, the timeblocks are synchronized on the backend with a PostgreSQL database so that the user can make changes to their timeblock on one device and have it automatically update on another device.
 	\\\hline
 	Exporting the timeblock as a file
 	&
 	In the end, I decided that importing/exporting timeblocks into files are unnecessary as the timeblock is stored in a database, so all the user needs to do to access the timeblock is to log in to Timeblocker with his account: they don't need to import a timeblock from a file to view it.
 	\\\hline
-	\item Schedule autosaves every time changes are made
-\end{tabularx}
+	Schedule autosaves every time changes are made
+	&
+	Yes, I designed Timeblocker so that whenever the user makes a change to the schedule, it will send a request to the server updating the database with the user's local changes so that they can be reflected on other devices.
+	\\\hline
+\end{xltabular}
 
 \end{document}
