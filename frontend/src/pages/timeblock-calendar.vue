@@ -36,7 +36,6 @@ const calendarEl = $ref<HTMLDivElement>();
 
 onMounted(() => {
 	const calendar = new Calendar(calendarEl as HTMLDivElement, {
-		headerToolbar: false,
 		plugins: [dayGridPlugin],
 		dayCellContent(ctx) {
 			const div = document.createElement('div');

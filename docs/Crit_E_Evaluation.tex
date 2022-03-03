@@ -34,12 +34,25 @@
 	&
 	Yes, the user can create timeblocks for each day of the month. In addition, the user also has the ability to create timeblock columns which clones all the current task blocks on the schedule.
 	\\\hline
-	\item Searching through task boxes
-	\item Sorting task boxes based on name/category
-	\item Resizing the task boxes that are on the schedule
-	\item Changing the schedule view between day and week
+	Searching through task boxes
+	&
+	Yes, in the sidebar, there is a search box that allows the user to type in a search term and it will only display the tasks whose name or description contains the search term (using a case-insensitive search).
+	\\\hline
+	Resizing the task boxes that are on the schedule
+	&
+	Yes, the user is able to resize the task blocks that are on the schedule by dragging on the edges.
+	\\\hline
+	Changing the schedule view between day and week
+	&
+	Instead of a week view, I decided to implement a month view instead since it would be more useful than a week view. So, I still consider this success criteria met because the user can view any month on their timeblock calendar and create a timeblock on any day of the month.
+
 	\item Registering and logging into accounts
 	\item Server-side synchronization with a database to access schedules across devices
+	\\\hline
+	Exporting the timeblock as a file
+	&
+	In the end, I decided that importing/exporting timeblocks into files are unnecessary as the timeblock is stored in a database, so all the user needs to do to access the timeblock is to log in to Timeblocker with his account: they don't need to import a timeblock from a file to view it.
+	\\\hline
 	\item Schedule autosaves every time changes are made
 \end{tabularx}
 
