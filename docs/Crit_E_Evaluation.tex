@@ -3,6 +3,7 @@
 \usepackage{fontspec}
 \usepackage{xcolor}
 \usepackage{authoraftertitle}
+\usepackage{tabularx}
 
 \title{Criterion E: Evaluation}
 \definecolor{msblue}{HTML}{5AB5D8}
@@ -14,4 +15,32 @@
 	}}
 
 % TODO: Add initial consultation with client and/or advisor
+
+\section*{Success Criteria Evaluation}
+
+\begin{tabularx}{\linewidth}{|X|X|}
+	Criteria
+	 & Was it fulfilled?
+	\\\hline
+	Create, edit, and delete tasks
+	&
+	Yes, the user can successfully create new tasks, edit existing tasks, and delete tasks.
+	\\\hline
+	Drag tasks onto the schedule to create task blocks
+	&
+	Yes, the user can drag tasks from the sidebar onto the schedule to create task blocks that take up a certain block of time in the day.
+	\\\hline
+	Creating multiple timeblocks
+	&
+	Yes, the user can create timeblocks for each day of the month. In addition, the user also has the ability to create timeblock columns which clones all the current task blocks on the schedule.
+	\\\hline
+	\item Searching through task boxes
+	\item Sorting task boxes based on name/category
+	\item Resizing the task boxes that are on the schedule
+	\item Changing the schedule view between day and week
+	\item Registering and logging into accounts
+	\item Server-side synchronization with a database to access schedules across devices
+	\item Schedule autosaves every time changes are made
+\end{tabularx}
+
 \end{document}

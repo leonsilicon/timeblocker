@@ -21,7 +21,7 @@ function merge<T>(left: T[], right: T[], cmp: (a: T, b: T) => boolean) {
 
 /**
  * Sorts an array using merge sort
- * @param cmp A comparison function that takes two elements of the array to compare. It returns true if the first argument is greater than the second argument and return false otherwise.  
+ * @param cmp A comparison function that takes two elements of the array to compare. It returns true if the first argument is less than the second argument and return false otherwise.
  */
 export function mergeSort<T>(array: T[], cmp: (a: T, b: T) => boolean): T[] {
 	const half = array.length / 2;
@@ -31,5 +31,5 @@ export function mergeSort<T>(array: T[], cmp: (a: T, b: T) => boolean): T[] {
 	}
 
 	const left = array.splice(0, half);
-	return merge(mergeSort(left), mergeSort(array), cmp);
+	return merge(mergeSort(left, cmp), mergeSort(array, cmp), cmp);
 }

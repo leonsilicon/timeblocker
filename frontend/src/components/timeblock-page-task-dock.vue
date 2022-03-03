@@ -17,17 +17,33 @@ import { mergeSort } from '~f/utils/sort';
 const timeblockStore = useTimeblockStore();
 
 const areTasksSortedByName = $ref(false);
+const searchTaskInput = $ref('');
 
 const visibleTasks = $computed(() => {
-	const unsortedTasks = timeblockStore.activeTimeblock
+	let tasks = timeblockStore.activeTimeblock
 		.getOrderedTaskIds()
 		.map((taskId) => timeblockStore.activeTimeblock.getTask(taskId))
-		.filter((task) => !task.getIsHidden())
+		.filter((task) => !task.getIsHidden());
+
 	if (areTasksSortedByName) {
-		return mergeSort(unsortedTasks);
-	} else {
-		return unsortedTasks;
+		tasks = mergeSort(
+			tasks,
+			(task1, task2) => task1.getName() < task2.getName()
+		);
 	}
+
+	if (searchTaskInput !== '') {
+		tasks = tasks.filter(
+			(task) =>
+				task.getName().toLowerCase().includes(searchTaskInput.toLowerCase()) ||
+				task
+					.getDescription()
+					?.toLowerCase()
+					.includes(searchTaskInput.toLowerCase())
+		);
+	}
+
+	return tasks;
 });
 
 const timeblockTaskBoxEditorEl =
@@ -176,14 +192,26 @@ async function onDrop(event: DragEvent) {
 		<!-- Delete overlay -->
 		<div
 			v-if="isDeleteOverlayVisible"
-			class="column pointer-events-none absolute inset-0 top-[45px] mt-10 items-center rounded-md bg-[rgba(255,0,0,0.9)] pt-10"
+			class="column pointer-events-none absolute inset-0 top-[45px] mt-10 items-center rounded-md bg-[rgba(255,0,0,0.9)] pt-10 z-10"
 		>
 			<v-icon :size="50" :icon="mdiDelete"></v-icon>
 			<div class="text-black">Delete Task Block</div>
 		</div>
 
 		<div class="mb-2 text-3xl font-bold">Tasks</div>
+
 		<TimeblockPageTaskDockAddTaskButton @select="onNewTaskSelect" />
+
+		<q-checkbox
+			v-model="areTasksSortedByName"
+			label="Sort Tasks by Name"
+		></q-checkbox>
+
+		<input
+			v-model="searchTaskInput"
+			class="input input-sm input-bordered my-2"
+			placeholder="Search Tasks"
+		/>
 
 		<TimeblockTaskBoxEditor
 			v-show="isNewTaskEditorVisible"
