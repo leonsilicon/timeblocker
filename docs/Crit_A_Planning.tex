@@ -9,10 +9,23 @@
 \usepackage{shellesc}
 \usepackage{authoraftertitle}
 \usepackage{hyperref}
+\usepackage{pythontex}
 
-\newcommand\wordcount{%
-\immediate\write18{texcount -sub=section \jobname.tex | grep "Section" | sed -e 's/+.*//' | sed -n \thesection p > 'out/count.txt'}%
-\noindent Word count: \input{out/count.txt}words
+\setpythontexcontext{jobname=\jobname}
+
+% \begin{noindent}
+\begin{pycode}
+import subprocess
+from shlex import split
+def word_count(thesection):
+	result = subprocess.run(split(f"""texcount -sub=section {pytex.context.jobname}.tex | grep "Section" | sed -e 's/+.*//' | sed -n "{thesection}" p"""), shell=True)
+	return f"Word count: {result.stdout}words"
+\end{pycode}
+% \end{noindent}
+
+\newcommand\wordcount[2]{%
+\py{word_count(#1, #2)}
+\noindent Word count: \input{count.txt}words
 }
 
 \title{Criterion A: Planning}
@@ -39,7 +52,7 @@ Initially, I considered building a plugin for these apps that would add the addi
 Thus, I want to create an app from scratch that allows me (and other students!) to easily create a timeblocking schedule that will sync between multiple devices.
 
 \bigskip
-\wordcount
+\py{word_count()}
 
 \section{Proposed Solution}
 My app, Timeblocker, will provide an interface that allows students to add tasks to a daily timeblocking schedule.

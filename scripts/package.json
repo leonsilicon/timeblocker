@@ -10,8 +10,8 @@
 		"@commitlint/cli": "^15.0.0",
 		"desm": "^1.2.0",
 		"execa": "^6.0.0",
-		"latex-workflow": "^1.0.11",
-		"lion-system": "^1.0.10",
+		"latex-workflow": "^1.1.2",
+		"lion-system": "^1.0.11",
 		"outdent": "^0.8.0",
 		"tsc-alias": "^1.5.0"
 	}

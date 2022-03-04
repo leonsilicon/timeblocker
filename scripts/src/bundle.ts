@@ -9,7 +9,7 @@ import { compileLatex } from 'latex-workflow';
 chProjectDir(import.meta.url);
 
 console.info('Removing old bundle/code folder...');
-fs.rmSync('bundle', { force: true, recursive: true });
+fs.rmSync('bundle/code', { force: true, recursive: true });
 
 console.info('Cloning the repository...');
 exec('git clone git@github.com:leonzalion/timeblocker bundle/code', {
@@ -31,7 +31,6 @@ console.info('Building frontend...');
 exec('pnpm build:frontend', { stdio: 'inherit' });
 
 // Copying the PDFs into the bundle
-
 const projectDir = getProjectDir(import.meta.url);
 const docsFolder = path.join(projectDir, 'docs');
 
@@ -46,8 +45,13 @@ const latexFilenames = [
 ];
 
 for (const latexFilename of latexFilenames) {
-	compileLatex({
-		latexFilePath: latexFilename,
+	await compileLatex({
+		latexFilePath: path.join(docsFolder, latexFilename),
 		outputDirectory: 'out',
 	});
+	const latexDocumentName = `${path.basename(latexFilename, '.tex')}.pdf`;
+	await fs.promises.cp(
+		path.join(docsFolder, 'out', latexDocumentName),
+		path.join('bundle/code', latexDocumentName)
+	);
 }

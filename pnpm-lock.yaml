@@ -148,16 +148,16 @@ importers:
       '@commitlint/cli': ^15.0.0
       desm: ^1.2.0
       execa: ^6.0.0
-      latex-workflow: ^1.0.11
-      lion-system: ^1.0.10
+      latex-workflow: ^1.1.1
+      lion-system: ^1.0.11
       outdent: ^0.8.0
       tsc-alias: ^1.5.0
     dependencies:
       '@commitlint/cli': 15.0.0
       desm: 1.2.0
       execa: 6.0.0
-      latex-workflow: 1.0.11
-      lion-system: 1.0.10
+      latex-workflow: 1.1.1
+      lion-system: 1.0.11
       outdent: 0.8.0
       tsc-alias: 1.5.0
 
@@ -4019,8 +4019,8 @@ packages:
       package-json: 6.5.0
     dev: true
 
-  /latex-workflow/1.0.11:
-    resolution: {integrity: sha512-jYRx8NgYgkyfR8r2Y87z0g8yXzX1hCE5IKmbzSefdk+8T4Xhd89fhb5lkHIyKE4dF+AweOs8LXNDzBR/rqmwdw==}
+  /latex-workflow/1.1.1:
+    resolution: {integrity: sha512-3m1SkfSVprHBXdb2ztJvdZSWL29UnDjU9lsgUjIKYhhRbsH9WVSQpN/R4MLNxRL+cAnphQVUPRCgG3woCMYThA==}
     hasBin: true
     dependencies:
       commander: 9.0.0
@@ -4098,8 +4098,8 @@ packages:
       pkg-dir: 6.0.1
     dev: true
 
-  /lion-system/1.0.10:
-    resolution: {integrity: sha512-aSnSCC3g0wIwbyQOyjs+24LbhDv7F2YFqj6XQsUifuS3aXGfoojV+Hfmo+oO/kekxaOGdigL0DnD1HacD2y5+Q==}
+  /lion-system/1.0.11:
+    resolution: {integrity: sha512-LqM5rvDiwoPyDniB/1R+YDTZJm9w8eSvC8RWri1BBHGyrzLX53phMolizfje17Bh8h8WN0PFNgHM5sglbUft4Q==}
     dependencies:
       execa: 6.1.0
       pkg-up: 4.0.0
