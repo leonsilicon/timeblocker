@@ -1,3 +1,3 @@
 # Timeblocker
 
-ICS IA
+**bundle/:** The folder that is sent to IB.
