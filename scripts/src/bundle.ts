@@ -62,7 +62,11 @@ await Promise.all(
 
 console.info('Removing node_modules...');
 // Remove node_modules before zipping the file
-exec('rm -rf .git bundle/code/node_modules bundle/code/**/node_modules', { shell: true, stdio: 'inherit' });
+exec('rm -rf .git node_modules **/node_modules', {
+	shell: true,
+	stdio: 'inherit',
+	cwd: bundleCodeFolder,
+});
 
 console.info('Creating zip files...');
 exec('zip -r bundle.zip bundle', { stdio: 'inherit' });

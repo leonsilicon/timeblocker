@@ -54,5 +54,8 @@
 	},
 	"workspaces": [
 		"backend"
-	]
+	],
+	"resolutions": {
+		"vue": "3.2.29"
+	}
 }

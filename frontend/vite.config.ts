@@ -14,16 +14,19 @@ export default defineConfig({
 	 * Complains when the import order isn't exact
 	 */
 	optimizeDeps: {
-		exclude: [
-			'@fullcalendar/core',
-			'@fullcalendar/daygrid'
-		],
+		exclude: ['@fullcalendar/core', '@fullcalendar/daygrid'],
+	},
+	build: {
+		target: 'es2015',
+		minify: false,
 	},
 	plugins: [
 		vue({
 			template: { transformAssetUrls },
 			reactivityTransform: true,
 		}),
-		quasar(),
+		quasar({
+			autoImportComponentCase: 'kebab',
+		}),
 	],
 });

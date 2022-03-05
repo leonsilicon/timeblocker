@@ -1,11 +1,8 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-
 import type { Component } from 'vue';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 import onetime from 'onetime';
 import VIcon from 'simple-vue-icon';
-import { Quasar, Notify, Dialog } from 'quasar';
 import { plugin as VueInputAutowidth } from 'vue-input-autowidth';
 import { router } from '~f/router';
 import { displayError, getErrorCode } from '~f/utils/error';
@@ -53,12 +50,7 @@ export function mountComponent(
 	app.use(getPinia());
 	app.use(VIcon);
 	app.use(VueInputAutowidth as any);
-	app.use(Quasar as any, {
-		plugins: {
-			Notify,
-			Dialog,
-		},
-	});
+
 	app.use(router);
 	app.mount(selectorOrElement);
 }

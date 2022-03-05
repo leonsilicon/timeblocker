@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { mdiMenuDown } from '@mdi/js';
+import { getCurrentInstance } from 'vue';
 
 const emit = defineEmits(['select']);
+console.log(getCurrentInstance());
 </script>
 
 <template>
@@ -11,15 +13,11 @@ const emit = defineEmits(['select']);
 			:dropdown-icon="mdiMenuDown"
 			color="primary"
 			label="Add Task"
-			class='mb-2'
+			class="mb-2"
 			@click="emit('select', 'normal')"
 		>
 			<q-list>
-				<q-item
-					v-close-popup
-					clickable
-					@click="emit('select', 'fixed-time')"
-				>
+				<q-item v-close-popup clickable @click="emit('select', 'fixed-time')">
 					<q-item-section>
 						<q-item-label>Add Fixed Time Task</q-item-label>
 						<q-item-label caption>
