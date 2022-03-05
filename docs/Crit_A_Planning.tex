@@ -1,6 +1,5 @@
 \documentclass[12pt, notitlepage]{article}
 \usepackage[margin=1in]{geometry}
-\usepackage{tabularx}
 \usepackage{xltabular}
 \usepackage{xcolor}
 \usepackage{fontspec}
@@ -45,14 +44,11 @@ def word_count():
 \textbf{Advisor:} Mark Si (my dad)
 
 \section{Problem Description}
-Many people, especially students like me, have many tasks they need to finish in a day.
-However, an unstructured daily plan can be inefficient: that's where Timeblocking comes in.
+Many people, especially students like me, have many tasks they need to finish in a day. However, an unstructured daily plan can be inefficient: that's where Timeblocking comes in.
 
 Timeblocking is a strategy where you dedicate chunks of time of your day to work on specific tasks—I use timeblocking every day to help keep my schedule under control.
 
-While timeblocking is a powerful strategy, there's no online program focused on timeblocking: current solutions like Google Calendar make this process difficult and time-consuming. These apps don't have features that are essential for timeblocking, like an easy way to create a copy of a schedule to resize it
-
-Initially, I considered building a plugin for these apps that would add the additional features, but I eventually learned that they don't expose the necessary functionality for me to fully customize the calendar view.
+While timeblocking is a powerful strategy, there's no online program focused on timeblocking. When speaking with my advisor (see Appendix), he mentioned that there are current solutions like Google Calendar, but having tried these solutions myself, they make applying the specific strategy of timeblocking difficult and time-consuming. These apps don't have features that are essential for timeblocking, like an easy way to create a copy of a schedule to restructure your day.
 
 Thus, I want to create an app from scratch that allows me (and other students!) to easily create a timeblocking schedule.
 
@@ -62,107 +58,31 @@ Because I would benefit from an timeblocking app, I have decided that I will be 
 \py{word_count()}
 
 \section{Proposed Solution}
-My app, Timeblocker, will provide an interface that allows students to add tasks to a daily timeblocking schedule.
-My app will contain two parts: task blocks and a schedule. The user will be able to drag the task blocks onto the schedule. They'll also be able to resize the task boxes to mark the exact time range during which they would like to work on the task.
+My app, Timeblocker, will be a website that allows allows students to create an account and add tasks to a daily timeblocking schedule. I decided to make my app a website so that students can access their schedules from any device with a browser, making it very accessible, which is important for a scheduling app.
 
-Each task block will have a title and a description. There will be multiple types of task blocks, such as one for representing recurring tasks.
+I will be creating this website in TypeScript, a strongly-typed superset of JavaScript. I prefer TypeScript because it helps me catch errors such as typos and passing the wrong types to functions at compile-time instead of at runtime.
 
-In addition, users will have the ability to synchronize their schedules across different devices.
+In order to implement accounts, I need to have a backend for Timeblocker that will be interacting with a database. I have decided to use PostgreSQL for the database since it allows me to declare relations between data (e.g. an account has many timeblocks). I will be creating the backend in TypeScript: by building the frontend and backend in the same language, I'll be able to share code between the frontend and backend, enabling me to reuse code.
 
-I'm building this app in TypeScript (a superset of JavaScript that compiles to JavaScript) because I want this app to be as accessible as possible.
-Since TypeScript compiles to JavaScript, a programming language that all browsers support, users will be able to access my app from any device with a browser:
-all they need to do is visit a website.
+By using accounts, students will be able to synchronize their schedule across different devices, making it very convenient. However, implementing accounts also comes with security concerns, since I will need to make sure I store the users' sensitive data such as their timeblock tasks and account passwords securely.
 
-I decided to use TypeScript instead of plain JavaScript because TypeScript's strongly-typed guarantees help eliminate many type errors at compile-time (e.g., typos, passing wrong types to functions, etc.).
-In addition, I'll also be building the server in TypeScript:
-by building the frontend and backend in the same language, I'll be able to share code between the frontend and backend, enabling me to leverage powerful libraries like tRPC that automatically read the backend's routes to create type-safe functions for the frontend.
+To host the website and server, I will be using GitHub Pages and Heroku, both of which are free. I estimate that development will take around 2-3 months.
 
 \bigskip
 \py{word_count()}
 
 \section{Success Criteria}
 \begin{itemize}
-	\item Create, edit, and delete tasks
+	\item Creating, editing, and delete tasks
 	\item Drag tasks onto the schedule to create task blocks
 	\item Creating multiple timeblocks
-	\item Searching through task boxes
-	\item Resizing the task boxes that are on the schedule
+	\item Searching through task blocks
+	\item Resizing the task blocks that are on the schedule
 	\item Changing the schedule view between day and week
 	\item Registering and logging into accounts
 	\item Server-side synchronization with a database to access schedules across devices
-	\item Exporting the timeblock as a file
 	\item Schedule autosaves every time changes are made
+	\item Exporting the timeblock schedule as a file
 \end{itemize}
 
-\section{Target Market}
-The target market of this software is people that are looking to schedule their day in a way that saves them time and helps them get more done in a day.
-
-\def\arraystretch{1.3}
-\section{Solution Mastery Aspect}
-\textbf{IB Standard Level}
-\vspace{-6pt}
-\noindent\begin{xltabular}{\textwidth}{|p{0.3\textwidth\RaggedRight}|X|}
-	\hline
-	\textbf{Mastery Factor}
-	& \textbf{Where it would be used}
-	\\\hline
-	1. Arrays
-	& Array of tasks in the schedule
-	\\\hline
-	2. User-defined objects
-	& A list of task boxes
-	\\\hline
-	3. Objects as data records
-	& Task box details (title, description, etc.)
-	\\\hline
-	4. Simple selection (if-else)
-	& When the user creates a task, an if statement is used to check if the task name is empty, and if so, cancels creating the task (since a task's name can't be empty).
-	\\\hline
-	5. Complex selection (nested if, if with multiple conditions or switch)
-	& When the user has selected the type of task to create, I use a switch statement when initializing the correct class instance for the type of task the user is creating.
-	\\\hline
-	6. Loops
-	& Looping through all the task blocks that need to be created on the client-side when the list of the user's task blocks are returned from the server.
-	\\\hline
-	7. User-defined methods
-	& The onDrop method that gets called whenever a user drops a task onto the schedule.
-	\\\hline
-	8. User-defined methods with appropriate return values
-	& A method that returns the color based on the type of task so that the different types of tasks are colour-coded.
-	\\\hline
-	9. Sorting
-	& Sorting of task boxes in the preview based on the task names.
-	\\\hline
-	10. Searching
-	& Searching through task boxes based on the name/description.
-	\\\hline
-	11. Use of additional libraries
-	& I will be using various industry-standard frontend and backend development tools and libraries for making development easier. The main ones are Vue.js (a JavaScript framework for building user interfaces) for the frontend, and Fastify (a fast Node.js web framework) for the backend. See Appendix for a complete list of third-party libraries used in Timeblocker.
-	\\\hline
-\end{xltabular}
-
-\bigskip
-
-\noindent\textbf{IB Higher Level}
-\smallskip
-
-\def\arraystretch{1.5}
-\noindent\begin{xltabular}{\textwidth}{|l|X|}
-	\hline
-	\textbf{Mastery Factor}
-	& \textbf{Where it would be used}
-	\\\hline
-	1. Polymorphism
-	& The different types of task blocks and task boxes will have the same method signatures but have different functionality, and I use polymorphism to invoke the unique functionality of each task block.
-	\\\hline
-	2. Inheritance
-	& Specific types of tasks and task blocks (fixed weekly task and fixed weekly time tasks) inherit from the Task and TaskBlock base classes.
-	\\\hline
-	3. Encapsulation
-	& The classes will only expose getters and setters that retrieve private properties on classes. The setters will validate the input to make sure that the new value set on the class instance is valid.
-	\\\hline
-	4. Database
-	& Timeblocker will be using PostgreSQL as the database, using Prisma as the ORM for type-safety with TypeScript.
-	\\\hline
-\end{xltabular}
 \end{document}

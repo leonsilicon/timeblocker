@@ -7,13 +7,13 @@
 \usepackage{helvet}
 \usepackage{wrapfig}
 \usepackage{float}
-\usepackage{tabularx}
 \usepackage[export]{adjustbox}
 \usepackage{fontspec}
 \usepackage{xcolor}
 \usepackage{titling} % https://tex.stackexchange.com/questions/591/removing-vertical-space-inside-maketitle/593
 \usepackage{authoraftertitle}
 \usepackage{pythontex}
+\usepackage{xltabular}
 \renewcommand{\familydefault}{\sfdefault}
 
 \graphicspath{{images/}}
@@ -37,7 +37,7 @@ My timeblocker program is written using a client-server architecture. The client
 The frontend is a single-page application built with Vue, a JavaScript framework for building user interfaces. The files for the frontend are all contained within the `frontend/` folder.
 
 \section*{Significant files/folders:}
-\begin{tabularx}{\textwidth}{
+\begin{xltabular}{\textwidth}{
 		@{}
 		p{0.3\textwidth}
 		X
@@ -66,13 +66,13 @@ The frontend is a single-page application built with Vue, a JavaScript framework
 		\item \textbf{index.html:} Website entrypoint.
 		\item \textbf{Configuration files (*.cjs, *.json, vite.config.ts):} Configuration files for various frontend development tools.
 	\end{itemize}
-\end{tabularx}
+\end{xltabular}
 \section*{Development}
 To develop my program, I used various build tools from the JavaScript ecosystem.
 For the frontend, I used Vite, a build tool that uses a feature called ``Hot Module Reload'' that allows me to update the site without needing to refresh the page.
 
 \section*{User Interface}
-\begin{tabularx}{\textwidth}{
+\begin{xltabular}{\textwidth}{
 		@{}
 		p{0.3\textwidth}
 		X
@@ -84,12 +84,12 @@ For the frontend, I used Vite, a build tool that uses a feature called ``Hot Mod
 	The code responsible for the user interface is stored under the src/pages folder.
 	The \code{.vue} file extension indicates Vue Single-File Components, or SFCs for short.
 	These files contain all the necessary HTML, CSS, and JavaScript to render a component part of a dynamic user interface.
-\end{tabularx}
+\end{xltabular}
 
 \vspace{10pt}
 
 % https://tex.stackexchange.com/questions/205086/do-not-indent-a-tabular
-\noindent\begin{tabularx}{\textwidth}{
+\noindent\begin{xltabular}{\textwidth}{
 		@{}
 		X
 		p{0.6\textwidth}
@@ -100,7 +100,7 @@ For the frontend, I used Vite, a build tool that uses a feature called ``Hot Mod
 	\centerline{\adjustbox{valign=t}{
 			\includegraphics[width=0.6\textwidth]{frontend-vue-sfc.png}
 		}}
-\end{tabularx}
+\end{xltabular}
 
 Most of the SFCs don't contain a \code{<style>} tag because the CSS styles are primarily contained within the HTML using TailwindCSS's utility classes. TailwindCSS is a CSS framework that provides flexible utility classes for making it easier to style HTML. In addition, I used a Tailwind library known as daisyUI that provides out-of-the-box styled components for common HTML components.
 
@@ -168,7 +168,7 @@ On the right side of the timeblock calendar, there is a plus icon that allows th
 \section*{Backend}
 The backend uses tRPC, a TypeScript library for defining type-safe server routes, and Fastify, a low overhead web framework for Node.js. Significant files/folders include:
 
-\noindent\begin{tabularx}{\textwidth}{
+\noindent\begin{xltabular}{\textwidth}{
 		@{}
 		p{0.3\textwidth}
 		X
@@ -185,7 +185,7 @@ The backend uses tRPC, a TypeScript library for defining type-safe server routes
 		\item	\textbf{.env:} Environment secrets (should not be public!)
 		\item	\textbf{Configuration files (*.cjs, *.json):} Configuration files for various backend development tools.
 	\end{itemize}
-\end{tabularx}
+\end{xltabular}
 
 \section*{Database Models}
 \includegraphics[width=1\textwidth]{backend-database-models.png}
@@ -193,5 +193,73 @@ The backend uses tRPC, a TypeScript library for defining type-safe server routes
 \section*{tRPC Routes}
 \includegraphics[width=1\textwidth]{backend-trpc-routes.png}
 
+\def\arraystretch{1.3}
+\section*{Solution Mastery Aspect}
+\textbf{IB Standard Level}
+\vspace{-6pt}
+\noindent\begin{xltabular}{\textwidth}{|p{0.3\textwidth\RaggedRight}|X|}
+	\hline
+	\textbf{Mastery Factor}
+	& \textbf{Where it would be used}
+	\\\hline
+	1. Arrays
+	& Array of tasks in the schedule
+	\\\hline
+	2. User-defined objects
+	& A list of task boxes
+	\\\hline
+	3. Objects as data records
+	& Task box details (title, description, etc.)
+	\\\hline
+	4. Simple selection (if-else)
+	& When the user creates a task, an if statement is used to check if the task name is empty, and if so, cancels creating the task (since a task's name can't be empty).
+	\\\hline
+	5. Complex selection (nested if, if with multiple conditions or switch)
+	& When the user has selected the type of task to create, I use a switch statement when initializing the correct class instance for the type of task the user is creating.
+	\\\hline
+	6. Loops
+	& Looping through all the task blocks that need to be created on the client-side when the list of the user's task blocks are returned from the server.
+	\\\hline
+	7. User-defined methods
+	& The onDrop method that gets called whenever a user drops a task onto the schedule.
+	\\\hline
+	8. User-defined methods with appropriate return values
+	& A method that returns the color based on the type of task so that the different types of tasks are colour-coded.
+	\\\hline
+	9. Sorting
+	& Sorting of task boxes in the preview based on the task names.
+	\\\hline
+	10. Searching
+	& Searching through task boxes based on the name/description.
+	\\\hline
+	11. Use of additional libraries
+	& I will be using various industry-standard frontend and backend development tools and libraries for making development easier. The main ones are Vue.js (a JavaScript framework for building user interfaces) for the frontend, and Fastify (a fast Node.js web framework) for the backend. See Appendix for a complete list of third-party libraries used in Timeblocker.
+	\\\hline
+\end{xltabular}
+
+\bigskip
+
+\noindent\textbf{IB Higher Level}
+\smallskip
+
+\def\arraystretch{1.5}
+\noindent\begin{xltabular}{\textwidth}{|l|X|}
+	\hline
+	\textbf{Mastery Factor}
+	& \textbf{Where it would be used}
+	\\\hline
+	1. Polymorphism
+	& The different types of task blocks and task boxes will have the same method signatures but have different functionality, and I use polymorphism to invoke the unique functionality of each task block.
+	\\\hline
+	2. Inheritance
+	& Specific types of tasks and task blocks (fixed weekly task and fixed weekly time tasks) inherit from the Task and TaskBlock base classes.
+	\\\hline
+	3. Encapsulation
+	& The classes will only expose getters and setters that retrieve private properties on classes. The setters will validate the input to make sure that the new value set on the class instance is valid.
+	\\\hline
+	4. Database
+	& Timeblocker will be using PostgreSQL as the database, using Prisma as the ORM for type-safety with TypeScript.
+	\\\hline
+\end{xltabular}
 
 \end{document}
