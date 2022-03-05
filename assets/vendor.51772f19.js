@@ -622,7 +622,7 @@ function trackEffects(dep, debuggerEventExtraInfo) {
     activeEffect.deps.push(dep);
   }
 }
-function trigger$1(target2, type, key, newValue, oldValue, oldTarget) {
+function trigger$2(target2, type, key, newValue, oldValue, oldTarget) {
   const depsMap = targetMap.get(target2);
   if (!depsMap) {
     return;
@@ -784,9 +784,9 @@ function createSetter(shallow = false) {
     const result = Reflect.set(target2, key, value, receiver);
     if (target2 === toRaw(receiver)) {
       if (!hadKey) {
-        trigger$1(target2, "add", key, value);
+        trigger$2(target2, "add", key, value);
       } else if (hasChanged(value, oldValue)) {
-        trigger$1(target2, "set", key, value);
+        trigger$2(target2, "set", key, value);
       }
     }
     return result;
@@ -797,7 +797,7 @@ function deleteProperty(target2, key) {
   target2[key];
   const result = Reflect.deleteProperty(target2, key);
   if (result && hadKey) {
-    trigger$1(target2, "delete", key, void 0);
+    trigger$2(target2, "delete", key, void 0);
   }
   return result;
 }
@@ -862,7 +862,7 @@ function has$1(key, isReadonly2 = false) {
   !isReadonly2 && track(rawTarget, "has", rawKey);
   return key === rawKey ? target2.has(key) : target2.has(key) || target2.has(rawKey);
 }
-function size(target2, isReadonly2 = false) {
+function size$1(target2, isReadonly2 = false) {
   target2 = target2["__v_raw"];
   !isReadonly2 && track(toRaw(target2), "iterate", ITERATE_KEY);
   return Reflect.get(target2, "size", target2);
@@ -874,7 +874,7 @@ function add(value) {
   const hadKey = proto.has.call(target2, value);
   if (!hadKey) {
     target2.add(value);
-    trigger$1(target2, "add", value, value);
+    trigger$2(target2, "add", value, value);
   }
   return this;
 }
@@ -890,9 +890,9 @@ function set$1(key, value) {
   const oldValue = get2.call(target2, key);
   target2.set(key, value);
   if (!hadKey) {
-    trigger$1(target2, "add", key, value);
+    trigger$2(target2, "add", key, value);
   } else if (hasChanged(value, oldValue)) {
-    trigger$1(target2, "set", key, value);
+    trigger$2(target2, "set", key, value);
   }
   return this;
 }
@@ -907,7 +907,7 @@ function deleteEntry(key) {
   get2 ? get2.call(target2, key) : void 0;
   const result = target2.delete(key);
   if (hadKey) {
-    trigger$1(target2, "delete", key, void 0);
+    trigger$2(target2, "delete", key, void 0);
   }
   return result;
 }
@@ -916,7 +916,7 @@ function clear() {
   const hadItems = target2.size !== 0;
   const result = target2.clear();
   if (hadItems) {
-    trigger$1(target2, "clear", void 0, void 0);
+    trigger$2(target2, "clear", void 0, void 0);
   }
   return result;
 }
@@ -967,7 +967,7 @@ function createInstrumentations() {
       return get$1(this, key);
     },
     get size() {
-      return size(this);
+      return size$1(this);
     },
     has: has$1,
     add,
@@ -981,7 +981,7 @@ function createInstrumentations() {
       return get$1(this, key, false, true);
     },
     get size() {
-      return size(this);
+      return size$1(this);
     },
     has: has$1,
     add,
@@ -995,7 +995,7 @@ function createInstrumentations() {
       return get$1(this, key, true);
     },
     get size() {
-      return size(this, true);
+      return size$1(this, true);
     },
     has(key) {
       return has$1.call(this, key, true);
@@ -1011,7 +1011,7 @@ function createInstrumentations() {
       return get$1(this, key, true, true);
     },
     get size() {
-      return size(this, true);
+      return size$1(this, true);
     },
     has(key) {
       return has$1.call(this, key, true);
@@ -1336,7 +1336,7 @@ function logError$1(err, type, contextVNode, throwInDev = true) {
 }
 let isFlushing = false;
 let isFlushPending = false;
-const queue = [];
+const queue$1 = [];
 let flushIndex = 0;
 const pendingPreFlushCbs = [];
 let activePreFlushCbs = null;
@@ -1353,20 +1353,20 @@ function nextTick(fn) {
 }
 function findInsertionIndex(id) {
   let start = flushIndex + 1;
-  let end = queue.length;
+  let end = queue$1.length;
   while (start < end) {
     const middle = start + end >>> 1;
-    const middleJobId = getId(queue[middle]);
+    const middleJobId = getId(queue$1[middle]);
     middleJobId < id ? start = middle + 1 : end = middle;
   }
   return start;
 }
 function queueJob(job) {
-  if ((!queue.length || !queue.includes(job, isFlushing && job.allowRecurse ? flushIndex + 1 : flushIndex)) && job !== currentPreFlushParentJob) {
+  if ((!queue$1.length || !queue$1.includes(job, isFlushing && job.allowRecurse ? flushIndex + 1 : flushIndex)) && job !== currentPreFlushParentJob) {
     if (job.id == null) {
-      queue.push(job);
+      queue$1.push(job);
     } else {
-      queue.splice(findInsertionIndex(job.id), 0, job);
+      queue$1.splice(findInsertionIndex(job.id), 0, job);
     }
     queueFlush();
   }
@@ -1378,9 +1378,9 @@ function queueFlush() {
   }
 }
 function invalidateJob(job) {
-  const i2 = queue.indexOf(job);
+  const i2 = queue$1.indexOf(job);
   if (i2 > flushIndex) {
-    queue.splice(i2, 1);
+    queue$1.splice(i2, 1);
   }
 }
 function queueCb(cb, activeQueue, pendingQueue, index) {
@@ -1435,11 +1435,11 @@ function flushJobs(seen) {
   isFlushPending = false;
   isFlushing = true;
   flushPreFlushCbs(seen);
-  queue.sort((a, b) => getId(a) - getId(b));
+  queue$1.sort((a, b) => getId(a) - getId(b));
   const check = NOOP;
   try {
-    for (flushIndex = 0; flushIndex < queue.length; flushIndex++) {
-      const job = queue[flushIndex];
+    for (flushIndex = 0; flushIndex < queue$1.length; flushIndex++) {
+      const job = queue$1[flushIndex];
       if (job && job.active !== false) {
         if (false)
           ;
@@ -1448,11 +1448,11 @@ function flushJobs(seen) {
     }
   } finally {
     flushIndex = 0;
-    queue.length = 0;
+    queue$1.length = 0;
     flushPostFlushCbs();
     isFlushing = false;
     currentFlushPromise = null;
-    if (queue.length || pendingPreFlushCbs.length || pendingPostFlushCbs.length) {
+    if (queue$1.length || pendingPreFlushCbs.length || pendingPostFlushCbs.length) {
       flushJobs(seen);
     }
   }
@@ -2283,7 +2283,7 @@ function applyOptions(instance) {
     serverPrefetch,
     expose,
     inheritAttrs,
-    components,
+    components: components2,
     directives,
     filters
   } = options;
@@ -2379,8 +2379,8 @@ function applyOptions(instance) {
   if (inheritAttrs != null) {
     instance.inheritAttrs = inheritAttrs;
   }
-  if (components)
-    instance.components = components;
+  if (components2)
+    instance.components = components2;
   if (directives)
     instance.directives = directives;
 }
@@ -2624,7 +2624,7 @@ function updateProps(instance, rawProps, rawPrevProps, optimized) {
     }
   }
   if (hasAttrsChanged) {
-    trigger$1(instance, "set", "$attrs");
+    trigger$2(instance, "set", "$attrs");
   }
 }
 function setFullProps(instance, rawProps, props2, attrs) {
@@ -2920,7 +2920,7 @@ function createAppContext() {
     emitsCache: new WeakMap()
   };
 }
-let uid$1 = 0;
+let uid$2 = 0;
 function createAppAPI(render, hydrate) {
   return function createApp2(rootComponent, rootProps = null) {
     if (rootProps != null && !isObject(rootProps)) {
@@ -2930,7 +2930,7 @@ function createAppAPI(render, hydrate) {
     const installedPlugins = new Set();
     let isMounted = false;
     const app = context.app = {
-      _uid: uid$1++,
+      _uid: uid$2++,
       _component: rootComponent,
       _props: rootProps,
       _container: null,
@@ -3481,10 +3481,10 @@ function baseCreateRenderer(options, createHydrationFns) {
       }
     };
     const effect = instance.effect = new ReactiveEffect(componentUpdateFn, () => queueJob(instance.update), instance.scope);
-    const update = instance.update = effect.run.bind(effect);
-    update.id = instance.uid;
+    const update2 = instance.update = effect.run.bind(effect);
+    update2.id = instance.uid;
     toggleRecurse(instance, true);
-    update();
+    update2();
   };
   const updateComponentPreRender = (instance, nextVNode, optimized) => {
     nextVNode.component = instance;
@@ -3790,13 +3790,13 @@ function baseCreateRenderer(options, createHydrationFns) {
     hostRemove(end);
   };
   const unmountComponent = (instance, parentSuspense, doRemove) => {
-    const { bum, scope, update, subTree, um } = instance;
+    const { bum, scope, update: update2, subTree, um } = instance;
     if (bum) {
       invokeArrayFns(bum);
     }
     scope.stop();
-    if (update) {
-      update.active = false;
+    if (update2) {
+      update2.active = false;
       unmount(subTree, instance, parentSuspense, doRemove);
     }
     if (um) {
@@ -3860,8 +3860,8 @@ function baseCreateRenderer(options, createHydrationFns) {
     createApp: createAppAPI(render, hydrate)
   };
 }
-function toggleRecurse({ effect, update }, allowed) {
-  effect.allowRecurse = update.allowRecurse = allowed;
+function toggleRecurse({ effect, update: update2 }, allowed) {
+  effect.allowRecurse = update2.allowRecurse = allowed;
 }
 function traverseStaticChildren(n1, n2, shallow = false) {
   const ch1 = n1.children;
@@ -5403,10 +5403,10 @@ function onCompositionEnd(e2) {
   const target2 = e2.target;
   if (target2.composing) {
     target2.composing = false;
-    trigger(target2, "input");
+    trigger$1(target2, "input");
   }
 }
-function trigger(el, type) {
+function trigger$1(el, type) {
   const e2 = document.createEvent("HTMLEvents");
   e2.initEvent(type, true, true);
   el.dispatchEvent(e2);
@@ -13652,6 +13652,5355 @@ var o = { beforeMount: function(i2, t2) {
 const r = { install: (e2) => {
   Number(e2.version.split(".")[0]) < 3 && console.warn("This plugin requires Vue 3"), e2.directive("autowidth", o);
 } };
+const useSizeDefaults = {
+  xs: 18,
+  sm: 24,
+  md: 32,
+  lg: 38,
+  xl: 46
+};
+const useSizeProps = {
+  size: String
+};
+function useSize(props2, sizes = useSizeDefaults) {
+  return computed(() => props2.size !== void 0 ? { fontSize: props2.size in sizes ? `${sizes[props2.size]}px` : props2.size } : null);
+}
+const createComponent = (raw) => markRaw(defineComponent(raw));
+const createDirective = (raw) => markRaw(raw);
+function hSlot(slot, otherwise) {
+  return slot !== void 0 ? slot() || otherwise : otherwise;
+}
+function hUniqueSlot(slot, otherwise) {
+  if (slot !== void 0) {
+    const vnode = slot();
+    if (vnode !== void 0 && vnode !== null) {
+      return vnode.slice();
+    }
+  }
+  return otherwise;
+}
+function hMergeSlot(slot, source) {
+  return slot !== void 0 ? source.concat(slot()) : source;
+}
+function hMergeSlotSafely(slot, source) {
+  if (slot === void 0) {
+    return source;
+  }
+  return source !== void 0 ? source.concat(slot()) : slot();
+}
+const defaultViewBox = "0 0 24 24";
+const sameFn = (i2) => i2;
+const ionFn = (i2) => `ionicons ${i2}`;
+const libMap = {
+  "icon-": sameFn,
+  "bt-": (i2) => `bt ${i2}`,
+  "eva-": (i2) => `eva ${i2}`,
+  "ion-md": ionFn,
+  "ion-ios": ionFn,
+  "ion-logo": ionFn,
+  "mdi-": (i2) => `mdi ${i2}`,
+  "iconfont ": sameFn,
+  "ti-": (i2) => `themify-icon ${i2}`,
+  "bi-": (i2) => `bootstrap-icons ${i2}`
+};
+const matMap = {
+  o_: "-outlined",
+  r_: "-round",
+  s_: "-sharp"
+};
+const libRE = new RegExp("^(" + Object.keys(libMap).join("|") + ")");
+const matRE = new RegExp("^(" + Object.keys(matMap).join("|") + ")");
+const mRE = /^[Mm]\s?[-+]?\.?\d/;
+const imgRE = /^img:/;
+const svgUseRE = /^svguse:/;
+const ionRE = /^ion-/;
+const faLaRE = /^[lf]a[srlbdk]? /;
+var QIcon = createComponent({
+  name: "QIcon",
+  props: __spreadProps(__spreadValues({}, useSizeProps), {
+    tag: {
+      type: String,
+      default: "i"
+    },
+    name: String,
+    color: String,
+    left: Boolean,
+    right: Boolean
+  }),
+  setup(props2, { slots }) {
+    const { proxy: { $q } } = getCurrentInstance();
+    const sizeStyle = useSize(props2);
+    const classes = computed(() => "q-icon" + (props2.left === true ? " on-left" : "") + (props2.right === true ? " on-right" : "") + (props2.color !== void 0 ? ` text-${props2.color}` : ""));
+    const type = computed(() => {
+      let cls;
+      let icon = props2.name;
+      if (icon === "none" || !icon) {
+        return { none: true };
+      }
+      if ($q.iconMapFn !== null) {
+        const res = $q.iconMapFn(icon);
+        if (res !== void 0) {
+          if (res.icon !== void 0) {
+            icon = res.icon;
+            if (icon === "none" || !icon) {
+              return { none: true };
+            }
+          } else {
+            return {
+              cls: res.cls,
+              content: res.content !== void 0 ? res.content : " "
+            };
+          }
+        }
+      }
+      if (mRE.test(icon) === true) {
+        const [def2, viewBox = defaultViewBox] = icon.split("|");
+        return {
+          svg: true,
+          viewBox,
+          nodes: def2.split("&&").map((path) => {
+            const [d, style, transform] = path.split("@@");
+            return h("path", { style, d, transform });
+          })
+        };
+      }
+      if (imgRE.test(icon) === true) {
+        return {
+          img: true,
+          src: icon.substring(4)
+        };
+      }
+      if (svgUseRE.test(icon) === true) {
+        const [def2, viewBox = defaultViewBox] = icon.split("|");
+        return {
+          svguse: true,
+          src: def2.substring(7),
+          viewBox
+        };
+      }
+      let content = " ";
+      const matches = icon.match(libRE);
+      if (matches !== null) {
+        cls = libMap[matches[1]](icon);
+      } else if (faLaRE.test(icon) === true) {
+        cls = icon;
+      } else if (ionRE.test(icon) === true) {
+        cls = `ionicons ion-${$q.platform.is.ios === true ? "ios" : "md"}${icon.substr(3)}`;
+      } else {
+        cls = "notranslate material-icons";
+        const matches2 = icon.match(matRE);
+        if (matches2 !== null) {
+          icon = icon.substring(2);
+          cls += matMap[matches2[1]];
+        }
+        content = icon;
+      }
+      return {
+        cls,
+        content
+      };
+    });
+    return () => {
+      const data = {
+        class: classes.value,
+        style: sizeStyle.value,
+        "aria-hidden": "true",
+        role: "presentation"
+      };
+      if (type.value.none === true) {
+        return h(props2.tag, data, hSlot(slots.default));
+      }
+      if (type.value.img === true) {
+        return h("span", data, hMergeSlot(slots.default, [
+          h("img", { src: type.value.src })
+        ]));
+      }
+      if (type.value.svg === true) {
+        return h("span", data, hMergeSlot(slots.default, [
+          h("svg", {
+            viewBox: type.value.viewBox
+          }, type.value.nodes)
+        ]));
+      }
+      if (type.value.svguse === true) {
+        return h("span", data, hMergeSlot(slots.default, [
+          h("svg", {
+            viewBox: type.value.viewBox
+          }, [
+            h("use", { "xlink:href": type.value.src })
+          ])
+        ]));
+      }
+      if (type.value.cls !== void 0) {
+        data.class += " " + type.value.cls;
+      }
+      return h(props2.tag, data, hMergeSlot(slots.default, [
+        type.value.content
+      ]));
+    };
+  }
+});
+var QAvatar = createComponent({
+  name: "QAvatar",
+  props: __spreadProps(__spreadValues({}, useSizeProps), {
+    fontSize: String,
+    color: String,
+    textColor: String,
+    icon: String,
+    square: Boolean,
+    rounded: Boolean
+  }),
+  setup(props2, { slots }) {
+    const sizeStyle = useSize(props2);
+    const classes = computed(() => "q-avatar" + (props2.color ? ` bg-${props2.color}` : "") + (props2.textColor ? ` text-${props2.textColor} q-chip--colored` : "") + (props2.square === true ? " q-avatar--square" : props2.rounded === true ? " rounded-borders" : ""));
+    const contentStyle = computed(() => props2.fontSize ? { fontSize: props2.fontSize } : null);
+    return () => {
+      const icon = props2.icon !== void 0 ? [h(QIcon, { name: props2.icon })] : void 0;
+      return h("div", {
+        class: classes.value,
+        style: sizeStyle.value
+      }, [
+        h("div", {
+          class: "q-avatar__content row flex-center overflow-hidden",
+          style: contentStyle.value
+        }, hMergeSlotSafely(slots.default, icon))
+      ]);
+    };
+  }
+});
+const useSpinnerProps = {
+  size: {
+    type: [Number, String],
+    default: "1em"
+  },
+  color: String
+};
+function useSpinner(props2) {
+  return {
+    cSize: computed(() => props2.size in useSizeDefaults ? `${useSizeDefaults[props2.size]}px` : props2.size),
+    classes: computed(() => "q-spinner" + (props2.color ? ` text-${props2.color}` : ""))
+  };
+}
+var QSpinner = createComponent({
+  name: "QSpinner",
+  props: __spreadProps(__spreadValues({}, useSpinnerProps), {
+    thickness: {
+      type: Number,
+      default: 5
+    }
+  }),
+  setup(props2) {
+    const { cSize, classes } = useSpinner(props2);
+    return () => h("svg", {
+      class: classes.value + " q-spinner-mat",
+      width: cSize.value,
+      height: cSize.value,
+      viewBox: "25 25 50 50"
+    }, [
+      h("circle", {
+        class: "path",
+        cx: "50",
+        cy: "50",
+        r: "20",
+        fill: "none",
+        stroke: "currentColor",
+        "stroke-width": props2.thickness,
+        "stroke-miterlimit": "10"
+      })
+    ]);
+  }
+});
+function css(element, css2) {
+  const style = element.style;
+  for (const prop in css2) {
+    style[prop] = css2[prop];
+  }
+}
+function getElement(el) {
+  if (el === void 0 || el === null) {
+    return void 0;
+  }
+  if (typeof el === "string") {
+    try {
+      return document.querySelector(el) || void 0;
+    } catch (err) {
+      return void 0;
+    }
+  }
+  const target2 = isRef(el) === true ? el.value : el;
+  if (target2) {
+    return target2.$el || target2;
+  }
+}
+function childHasFocus(el, focusedEl) {
+  if (el === void 0 || el === null || el.contains(focusedEl) === true) {
+    return true;
+  }
+  for (let next = el.nextElementSibling; next !== null; next = next.nextElementSibling) {
+    if (next.contains(focusedEl)) {
+      return true;
+    }
+  }
+  return false;
+}
+const listenOpts = {
+  hasPassive: false,
+  passiveCapture: true,
+  notPassiveCapture: true
+};
+try {
+  const opts = Object.defineProperty({}, "passive", {
+    get() {
+      Object.assign(listenOpts, {
+        hasPassive: true,
+        passive: { passive: true },
+        notPassive: { passive: false },
+        passiveCapture: { passive: true, capture: true },
+        notPassiveCapture: { passive: false, capture: true }
+      });
+    }
+  });
+  window.addEventListener("qtest", null, opts);
+  window.removeEventListener("qtest", null, opts);
+} catch (e2) {
+}
+function noop$1() {
+}
+function position(e2) {
+  if (e2.touches && e2.touches[0]) {
+    e2 = e2.touches[0];
+  } else if (e2.changedTouches && e2.changedTouches[0]) {
+    e2 = e2.changedTouches[0];
+  } else if (e2.targetTouches && e2.targetTouches[0]) {
+    e2 = e2.targetTouches[0];
+  }
+  return {
+    top: e2.clientY,
+    left: e2.clientX
+  };
+}
+function getEventPath(e2) {
+  if (e2.path) {
+    return e2.path;
+  }
+  if (e2.composedPath) {
+    return e2.composedPath();
+  }
+  const path = [];
+  let el = e2.target;
+  while (el) {
+    path.push(el);
+    if (el.tagName === "HTML") {
+      path.push(document);
+      path.push(window);
+      return path;
+    }
+    el = el.parentElement;
+  }
+}
+function stop(e2) {
+  e2.stopPropagation();
+}
+function prevent(e2) {
+  e2.cancelable !== false && e2.preventDefault();
+}
+function stopAndPrevent(e2) {
+  e2.cancelable !== false && e2.preventDefault();
+  e2.stopPropagation();
+}
+function addEvt(ctx, targetName, events) {
+  const name = `__q_${targetName}_evt`;
+  ctx[name] = ctx[name] !== void 0 ? ctx[name].concat(events) : events;
+  events.forEach((evt) => {
+    evt[0].addEventListener(evt[1], ctx[evt[2]], listenOpts[evt[3]]);
+  });
+}
+function cleanEvt(ctx, targetName) {
+  const name = `__q_${targetName}_evt`;
+  if (ctx[name] !== void 0) {
+    ctx[name].forEach((evt) => {
+      evt[0].removeEventListener(evt[1], ctx[evt[2]], listenOpts[evt[3]]);
+    });
+    ctx[name] = void 0;
+  }
+}
+let lastKeyCompositionStatus = false;
+function onKeyDownComposition(evt) {
+  lastKeyCompositionStatus = evt.isComposing === true;
+}
+function shouldIgnoreKey(evt) {
+  return lastKeyCompositionStatus === true || evt !== Object(evt) || evt.isComposing === true || evt.qKeyEvent === true;
+}
+function isKeyCode(evt, keyCodes) {
+  return shouldIgnoreKey(evt) === true ? false : [].concat(keyCodes).includes(evt.keyCode);
+}
+function throttle(fn, limit = 250) {
+  let wait = false, result;
+  return function() {
+    if (wait === false) {
+      wait = true;
+      setTimeout(() => {
+        wait = false;
+      }, limit);
+      result = fn.apply(this, arguments);
+    }
+    return result;
+  };
+}
+function showRipple(evt, el, ctx, forceCenter) {
+  ctx.modifiers.stop === true && stop(evt);
+  const color = ctx.modifiers.color;
+  let center = ctx.modifiers.center;
+  center = center === true || forceCenter === true;
+  const node = document.createElement("span"), innerNode = document.createElement("span"), pos = position(evt), { left, top, width, height } = el.getBoundingClientRect(), diameter2 = Math.sqrt(width * width + height * height), radius2 = diameter2 / 2, centerX = `${(width - diameter2) / 2}px`, x = center ? centerX : `${pos.left - left - radius2}px`, centerY = `${(height - diameter2) / 2}px`, y = center ? centerY : `${pos.top - top - radius2}px`;
+  innerNode.className = "q-ripple__inner";
+  css(innerNode, {
+    height: `${diameter2}px`,
+    width: `${diameter2}px`,
+    transform: `translate3d(${x},${y},0) scale3d(.2,.2,1)`,
+    opacity: 0
+  });
+  node.className = `q-ripple${color ? " text-" + color : ""}`;
+  node.setAttribute("dir", "ltr");
+  node.appendChild(innerNode);
+  el.appendChild(node);
+  const abort = () => {
+    node.remove();
+    clearTimeout(timer);
+  };
+  ctx.abort.push(abort);
+  let timer = setTimeout(() => {
+    innerNode.classList.add("q-ripple__inner--enter");
+    innerNode.style.transform = `translate3d(${centerX},${centerY},0) scale3d(1,1,1)`;
+    innerNode.style.opacity = 0.2;
+    timer = setTimeout(() => {
+      innerNode.classList.remove("q-ripple__inner--enter");
+      innerNode.classList.add("q-ripple__inner--leave");
+      innerNode.style.opacity = 0;
+      timer = setTimeout(() => {
+        node.remove();
+        ctx.abort.splice(ctx.abort.indexOf(abort), 1);
+      }, 275);
+    }, 250);
+  }, 50);
+}
+function updateModifiers(ctx, { modifiers, value, arg, instance }) {
+  const cfg = Object.assign({}, instance.$q.config.ripple, modifiers, value);
+  ctx.modifiers = {
+    early: cfg.early === true,
+    stop: cfg.stop === true,
+    center: cfg.center === true,
+    color: cfg.color || arg,
+    keyCodes: [].concat(cfg.keyCodes || 13)
+  };
+}
+var Ripple = createDirective({
+  name: "ripple",
+  beforeMount(el, binding) {
+    const ctx = {
+      enabled: binding.value !== false,
+      modifiers: {},
+      abort: [],
+      start(evt) {
+        if (ctx.enabled === true && evt.qSkipRipple !== true && (ctx.modifiers.early === true ? ["mousedown", "touchstart"].includes(evt.type) === true : evt.type === "click")) {
+          showRipple(evt, el, ctx, evt.qKeyEvent === true);
+        }
+      },
+      keystart: throttle((evt) => {
+        if (ctx.enabled === true && evt.qSkipRipple !== true && isKeyCode(evt, ctx.modifiers.keyCodes) === true && evt.type === `key${ctx.modifiers.early === true ? "down" : "up"}`) {
+          showRipple(evt, el, ctx, true);
+        }
+      }, 300)
+    };
+    updateModifiers(ctx, binding);
+    el.__qripple = ctx;
+    addEvt(ctx, "main", [
+      [el, "mousedown", "start", "passive"],
+      [el, "touchstart", "start", "passive"],
+      [el, "click", "start", "passive"],
+      [el, "keydown", "keystart", "passive"],
+      [el, "keyup", "keystart", "passive"]
+    ]);
+  },
+  updated(el, binding) {
+    if (binding.oldValue !== binding.value) {
+      const ctx = el.__qripple;
+      ctx.enabled = binding.value !== false;
+      if (ctx.enabled === true && Object(binding.value) === binding.value) {
+        updateModifiers(ctx, binding);
+      }
+    }
+  },
+  beforeUnmount(el) {
+    const ctx = el.__qripple;
+    ctx.abort.forEach((fn) => {
+      fn();
+    });
+    cleanEvt(ctx, "main");
+    delete el._qripple;
+  }
+});
+const alignMap = {
+  left: "start",
+  center: "center",
+  right: "end",
+  between: "between",
+  around: "around",
+  evenly: "evenly",
+  stretch: "stretch"
+};
+const alignValues = Object.keys(alignMap);
+const useAlignProps = {
+  align: {
+    type: String,
+    validator: (v) => alignValues.includes(v)
+  }
+};
+function useAlign(props2) {
+  return computed(() => {
+    const align = props2.align === void 0 ? props2.vertical === true ? "stretch" : "left" : props2.align;
+    return `${props2.vertical === true ? "items" : "justify"}-${alignMap[align]}`;
+  });
+}
+function getParentVm(vm) {
+  if (Object(vm.$parent) === vm.$parent) {
+    return vm.$parent;
+  }
+  vm = vm.$.parent;
+  while (Object(vm) === vm) {
+    if (Object(vm.proxy) === vm.proxy) {
+      return vm.proxy;
+    }
+    vm = vm.parent;
+  }
+}
+function vmHasRouter(vm) {
+  return vm.appContext.config.globalProperties.$router !== void 0;
+}
+function getOriginalPath$1(record) {
+  return record ? record.aliasOf ? record.aliasOf.path : record.path : "";
+}
+function isSameRouteRecord$1(a, b) {
+  return (a.aliasOf || a) === (b.aliasOf || b);
+}
+function includesParams$1(outer, inner) {
+  for (const key in inner) {
+    const innerValue = inner[key], outerValue = outer[key];
+    if (typeof innerValue === "string") {
+      if (innerValue !== outerValue) {
+        return false;
+      }
+    } else if (Array.isArray(outerValue) === false || outerValue.length !== innerValue.length || innerValue.some((value, i2) => value !== outerValue[i2])) {
+      return false;
+    }
+  }
+  return true;
+}
+function isEquivalentArray$1(a, b) {
+  return Array.isArray(b) === true ? a.length === b.length && a.every((value, i2) => value === b[i2]) : a.length === 1 && a[0] === b;
+}
+function isSameRouteLocationParamsValue$1(a, b) {
+  return Array.isArray(a) === true ? isEquivalentArray$1(a, b) : Array.isArray(b) === true ? isEquivalentArray$1(b, a) : a === b;
+}
+function isSameRouteLocationParams$1(a, b) {
+  if (Object.keys(a).length !== Object.keys(b).length) {
+    return false;
+  }
+  for (const key in a) {
+    if (isSameRouteLocationParamsValue$1(a[key], b[key]) === false) {
+      return false;
+    }
+  }
+  return true;
+}
+const useRouterLinkProps = {
+  to: [String, Object],
+  replace: Boolean,
+  exact: Boolean,
+  activeClass: {
+    type: String,
+    default: "q-router-link--active"
+  },
+  exactActiveClass: {
+    type: String,
+    default: "q-router-link--exact-active"
+  },
+  href: String,
+  target: String,
+  disable: Boolean
+};
+function useRouterLink(fallbackTag) {
+  const vm = getCurrentInstance();
+  const { props: props2, proxy } = vm;
+  const hasRouter = vmHasRouter(vm);
+  const hasHrefLink = computed(() => props2.disable !== true && props2.href !== void 0);
+  const hasRouterLinkProps = computed(() => hasRouter === true && props2.disable !== true && hasHrefLink.value !== true && props2.to !== void 0 && props2.to !== null && props2.to !== "");
+  const linkRoute = computed(() => {
+    if (hasRouterLinkProps.value === true) {
+      try {
+        return proxy.$router.resolve(props2.to);
+      } catch (err) {
+      }
+    }
+    return null;
+  });
+  const hasRouterLink = computed(() => linkRoute.value !== null);
+  const hasLink = computed(() => hasHrefLink.value === true || hasRouterLink.value === true);
+  const linkTag = computed(() => props2.type === "a" || hasLink.value === true ? "a" : props2.tag || fallbackTag || "div");
+  const linkProps = computed(() => hasHrefLink.value === true ? {
+    href: props2.href,
+    target: props2.target
+  } : hasRouterLink.value === true ? {
+    href: linkRoute.value.href,
+    target: props2.target
+  } : {});
+  const linkActiveIndex = computed(() => {
+    if (hasRouterLink.value === false) {
+      return null;
+    }
+    const { matched } = linkRoute.value, { length } = matched, routeMatched = matched[length - 1];
+    if (routeMatched === void 0) {
+      return -1;
+    }
+    const currentMatched = proxy.$route.matched;
+    if (currentMatched.length === 0) {
+      return -1;
+    }
+    const index = currentMatched.findIndex(isSameRouteRecord$1.bind(null, routeMatched));
+    if (index > -1) {
+      return index;
+    }
+    const parentRecordPath = getOriginalPath$1(matched[length - 2]);
+    return length > 1 && getOriginalPath$1(routeMatched) === parentRecordPath && currentMatched[currentMatched.length - 1].path !== parentRecordPath ? currentMatched.findIndex(isSameRouteRecord$1.bind(null, matched[length - 2])) : index;
+  });
+  const linkIsActive = computed(() => hasRouterLink.value === true && linkActiveIndex.value > -1 && includesParams$1(proxy.$route.params, linkRoute.value.params));
+  const linkIsExactActive = computed(() => linkIsActive.value === true && linkActiveIndex.value === proxy.$route.matched.length - 1 && isSameRouteLocationParams$1(proxy.$route.params, linkRoute.value.params));
+  const linkClass = computed(() => hasRouterLink.value === true ? linkIsExactActive.value === true ? ` ${props2.exactActiveClass} ${props2.activeClass}` : props2.exact === true ? "" : linkIsActive.value === true ? ` ${props2.activeClass}` : "" : "");
+  function navigateToRouterLink(e2) {
+    if (props2.disable === true || e2.metaKey || e2.altKey || e2.ctrlKey || e2.shiftKey || e2.__qNavigate !== true && e2.defaultPrevented === true || e2.button !== void 0 && e2.button !== 0 || props2.target === "_blank") {
+      return false;
+    }
+    prevent(e2);
+    return proxy.$router[props2.replace === true ? "replace" : "push"](props2.to).catch((err) => err);
+  }
+  return {
+    hasRouterLink,
+    hasHrefLink,
+    hasLink,
+    linkTag,
+    linkRoute,
+    linkIsActive,
+    linkIsExactActive,
+    linkClass,
+    linkProps,
+    navigateToRouterLink
+  };
+}
+const padding = {
+  none: 0,
+  xs: 4,
+  sm: 8,
+  md: 16,
+  lg: 24,
+  xl: 32
+};
+const defaultSizes = {
+  xs: 8,
+  sm: 10,
+  md: 14,
+  lg: 20,
+  xl: 24
+};
+const formTypes = ["button", "submit", "reset"];
+const mediaTypeRE = /[^\s]\/[^\s]/;
+const useBtnProps = __spreadProps(__spreadValues(__spreadValues({}, useSizeProps), useRouterLinkProps), {
+  type: {
+    type: String,
+    default: "button"
+  },
+  label: [Number, String],
+  icon: String,
+  iconRight: String,
+  round: Boolean,
+  outline: Boolean,
+  flat: Boolean,
+  unelevated: Boolean,
+  rounded: Boolean,
+  push: Boolean,
+  glossy: Boolean,
+  size: String,
+  fab: Boolean,
+  fabMini: Boolean,
+  padding: String,
+  color: String,
+  textColor: String,
+  noCaps: Boolean,
+  noWrap: Boolean,
+  dense: Boolean,
+  tabindex: [Number, String],
+  ripple: {
+    type: [Boolean, Object],
+    default: true
+  },
+  align: __spreadProps(__spreadValues({}, useAlignProps.align), {
+    default: "center"
+  }),
+  stack: Boolean,
+  stretch: Boolean,
+  loading: {
+    type: Boolean,
+    default: null
+  },
+  disable: Boolean
+});
+function useBtn(props2) {
+  const sizeStyle = useSize(props2, defaultSizes);
+  const alignClass = useAlign(props2);
+  const { hasRouterLink, hasLink, linkTag, linkProps, navigateToRouterLink } = useRouterLink("button");
+  const style = computed(() => {
+    const obj = props2.fab === false && props2.fabMini === false ? sizeStyle.value : {};
+    return props2.padding !== void 0 ? Object.assign({}, obj, {
+      padding: props2.padding.split(/\s+/).map((v) => v in padding ? padding[v] + "px" : v).join(" "),
+      minWidth: "0",
+      minHeight: "0"
+    }) : obj;
+  });
+  const isRounded = computed(() => props2.rounded === true || props2.fab === true || props2.fabMini === true);
+  const isActionable = computed(() => props2.disable !== true && props2.loading !== true);
+  const tabIndex = computed(() => isActionable.value === true ? props2.tabindex || 0 : -1);
+  const design = computed(() => {
+    if (props2.flat === true)
+      return "flat";
+    if (props2.outline === true)
+      return "outline";
+    if (props2.push === true)
+      return "push";
+    if (props2.unelevated === true)
+      return "unelevated";
+    return "standard";
+  });
+  const attributes = computed(() => {
+    const acc = { tabindex: tabIndex.value };
+    if (hasLink.value === true) {
+      Object.assign(acc, linkProps.value);
+    } else if (formTypes.includes(props2.type) === true) {
+      acc.type = props2.type;
+    }
+    if (linkTag.value === "a") {
+      if (props2.disable === true) {
+        acc["aria-disabled"] = "true";
+      } else if (acc.href === void 0) {
+        acc.role = "button";
+      }
+      if (hasRouterLink.value !== true && mediaTypeRE.test(props2.type) === true) {
+        acc.type = props2.type;
+      }
+    } else if (props2.disable === true) {
+      acc.disabled = "";
+      acc["aria-disabled"] = "true";
+    }
+    if (props2.loading === true && props2.percentage !== void 0) {
+      Object.assign(acc, {
+        role: "progressbar",
+        "aria-valuemin": 0,
+        "aria-valuemax": 100,
+        "aria-valuenow": props2.percentage
+      });
+    }
+    return acc;
+  });
+  const classes = computed(() => {
+    let colors;
+    if (props2.color !== void 0) {
+      if (props2.flat === true || props2.outline === true) {
+        colors = `text-${props2.textColor || props2.color}`;
+      } else {
+        colors = `bg-${props2.color} text-${props2.textColor || "white"}`;
+      }
+    } else if (props2.textColor) {
+      colors = `text-${props2.textColor}`;
+    }
+    return `q-btn--${design.value} q-btn--${props2.round === true ? "round" : `rectangle${isRounded.value === true ? " q-btn--rounded" : ""}`}` + (colors !== void 0 ? " " + colors : "") + (isActionable.value === true ? " q-btn--actionable q-focusable q-hoverable" : props2.disable === true ? " disabled" : "") + (props2.fab === true ? " q-btn--fab" : props2.fabMini === true ? " q-btn--fab-mini" : "") + (props2.noCaps === true ? " q-btn--no-uppercase" : "") + (props2.dense === true ? " q-btn--dense" : "") + (props2.stretch === true ? " no-border-radius self-stretch" : "") + (props2.glossy === true ? " glossy" : "");
+  });
+  const innerClasses = computed(() => alignClass.value + (props2.stack === true ? " column" : " row") + (props2.noWrap === true ? " no-wrap text-no-wrap" : "") + (props2.loading === true ? " q-btn__content--hidden" : ""));
+  return {
+    classes,
+    style,
+    innerClasses,
+    attributes,
+    hasRouterLink,
+    hasLink,
+    linkTag,
+    navigateToRouterLink,
+    isActionable
+  };
+}
+const { passiveCapture } = listenOpts;
+let touchTarget = null, keyboardTarget = null, mouseTarget = null;
+var QBtn = createComponent({
+  name: "QBtn",
+  props: __spreadProps(__spreadValues({}, useBtnProps), {
+    percentage: Number,
+    darkPercentage: Boolean
+  }),
+  emits: ["click", "keydown", "touchstart", "mousedown", "keyup"],
+  setup(props2, { slots, emit }) {
+    const { proxy } = getCurrentInstance();
+    const {
+      classes,
+      style,
+      innerClasses,
+      attributes,
+      hasRouterLink,
+      hasLink,
+      linkTag,
+      navigateToRouterLink,
+      isActionable
+    } = useBtn(props2);
+    const rootRef = ref(null);
+    const blurTargetRef = ref(null);
+    let localTouchTargetEl = null, avoidMouseRipple, mouseTimer;
+    const hasLabel = computed(() => props2.label !== void 0 && props2.label !== null && props2.label !== "");
+    const ripple = computed(() => props2.disable === true || props2.ripple === false ? false : __spreadValues({
+      keyCodes: hasLink.value === true ? [13, 32] : [13]
+    }, props2.ripple === true ? {} : props2.ripple));
+    const rippleProps = computed(() => ({ center: props2.round }));
+    const percentageStyle = computed(() => {
+      const val = Math.max(0, Math.min(100, props2.percentage));
+      return val > 0 ? { transition: "transform 0.6s", transform: `translateX(${val - 100}%)` } : {};
+    });
+    const onEvents = computed(() => {
+      if (props2.loading === true) {
+        return {
+          onMousedown: onLoadingEvt,
+          onTouchstartPassive: onLoadingEvt,
+          onClick: onLoadingEvt,
+          onKeydown: onLoadingEvt,
+          onKeyup: onLoadingEvt
+        };
+      }
+      if (isActionable.value === true) {
+        return {
+          onClick,
+          onKeydown: onKeydown2,
+          onMousedown,
+          onTouchstartPassive
+        };
+      }
+      return {
+        onClick: stopAndPrevent
+      };
+    });
+    const nodeProps = computed(() => __spreadValues(__spreadValues({
+      ref: rootRef,
+      class: "q-btn q-btn-item non-selectable no-outline " + classes.value,
+      style: style.value
+    }, attributes.value), onEvents.value));
+    function onClick(e2) {
+      if (rootRef.value === null) {
+        return;
+      }
+      if (e2 !== void 0) {
+        if (e2.defaultPrevented === true) {
+          return;
+        }
+        const el = document.activeElement;
+        if (props2.type === "submit" && el !== document.body && rootRef.value.contains(el) === false && el.contains(rootRef.value) === false) {
+          rootRef.value.focus();
+          const onClickCleanup = () => {
+            document.removeEventListener("keydown", stopAndPrevent, true);
+            document.removeEventListener("keyup", onClickCleanup, passiveCapture);
+            rootRef.value !== null && rootRef.value.removeEventListener("blur", onClickCleanup, passiveCapture);
+          };
+          document.addEventListener("keydown", stopAndPrevent, true);
+          document.addEventListener("keyup", onClickCleanup, passiveCapture);
+          rootRef.value.addEventListener("blur", onClickCleanup, passiveCapture);
+        }
+      }
+      if (hasRouterLink.value === true) {
+        const go = () => {
+          e2.__qNavigate = true;
+          navigateToRouterLink(e2);
+        };
+        emit("click", e2, go);
+        e2.defaultPrevented !== true && go();
+      } else {
+        emit("click", e2);
+      }
+    }
+    function onKeydown2(e2) {
+      if (rootRef.value === null) {
+        return;
+      }
+      if (isKeyCode(e2, [13, 32]) === true) {
+        stopAndPrevent(e2);
+        if (keyboardTarget !== rootRef.value) {
+          keyboardTarget !== null && cleanup();
+          rootRef.value.focus();
+          keyboardTarget = rootRef.value;
+          rootRef.value.classList.add("q-btn--active");
+          document.addEventListener("keyup", onPressEnd, true);
+          rootRef.value.addEventListener("blur", onPressEnd, passiveCapture);
+        }
+      }
+      emit("keydown", e2);
+    }
+    function onTouchstartPassive(e2) {
+      if (rootRef.value === null) {
+        return;
+      }
+      if (touchTarget !== rootRef.value) {
+        touchTarget !== null && cleanup();
+        touchTarget = rootRef.value;
+        localTouchTargetEl = e2.target;
+        localTouchTargetEl.addEventListener("touchcancel", onPressEnd, passiveCapture);
+        localTouchTargetEl.addEventListener("touchend", onPressEnd, passiveCapture);
+      }
+      avoidMouseRipple = true;
+      clearTimeout(mouseTimer);
+      mouseTimer = setTimeout(() => {
+        avoidMouseRipple = false;
+      }, 200);
+      emit("touchstart", e2);
+    }
+    function onMousedown(e2) {
+      if (rootRef.value === null) {
+        return;
+      }
+      if (mouseTarget !== rootRef.value) {
+        mouseTarget !== null && cleanup();
+        mouseTarget = rootRef.value;
+        rootRef.value.classList.add("q-btn--active");
+        document.addEventListener("mouseup", onPressEnd, passiveCapture);
+      }
+      e2.qSkipRipple = avoidMouseRipple === true;
+      emit("mousedown", e2);
+    }
+    function onPressEnd(e2) {
+      if (rootRef.value === null) {
+        return;
+      }
+      if (e2 !== void 0 && e2.type === "blur" && document.activeElement === rootRef.value) {
+        return;
+      }
+      if (e2 !== void 0 && e2.type === "keyup") {
+        if (keyboardTarget === rootRef.value && isKeyCode(e2, [13, 32]) === true) {
+          const evt = new MouseEvent("click", e2);
+          evt.qKeyEvent = true;
+          e2.defaultPrevented === true && prevent(evt);
+          e2.cancelBubble === true && stop(evt);
+          rootRef.value.dispatchEvent(evt);
+          stopAndPrevent(e2);
+          e2.qKeyEvent = true;
+        }
+        emit("keyup", e2);
+      }
+      cleanup();
+    }
+    function cleanup(destroying) {
+      const blurTarget = blurTargetRef.value;
+      if (destroying !== true && (touchTarget === rootRef.value || mouseTarget === rootRef.value) && blurTarget !== null && blurTarget !== document.activeElement) {
+        blurTarget.setAttribute("tabindex", -1);
+        blurTarget.focus();
+      }
+      if (touchTarget === rootRef.value) {
+        if (localTouchTargetEl !== null) {
+          localTouchTargetEl.removeEventListener("touchcancel", onPressEnd, passiveCapture);
+          localTouchTargetEl.removeEventListener("touchend", onPressEnd, passiveCapture);
+        }
+        touchTarget = localTouchTargetEl = null;
+      }
+      if (mouseTarget === rootRef.value) {
+        document.removeEventListener("mouseup", onPressEnd, passiveCapture);
+        mouseTarget = null;
+      }
+      if (keyboardTarget === rootRef.value) {
+        document.removeEventListener("keyup", onPressEnd, true);
+        rootRef.value !== null && rootRef.value.removeEventListener("blur", onPressEnd, passiveCapture);
+        keyboardTarget = null;
+      }
+      rootRef.value !== null && rootRef.value.classList.remove("q-btn--active");
+    }
+    function onLoadingEvt(evt) {
+      stopAndPrevent(evt);
+      evt.qSkipRipple = true;
+    }
+    onBeforeUnmount(() => {
+      cleanup(true);
+    });
+    Object.assign(proxy, { click: onClick });
+    return () => {
+      let inner = [];
+      props2.icon !== void 0 && inner.push(h(QIcon, {
+        name: props2.icon,
+        left: props2.stack === false && hasLabel.value === true,
+        role: "img",
+        "aria-hidden": "true"
+      }));
+      hasLabel.value === true && inner.push(h("span", { class: "block" }, [props2.label]));
+      inner = hMergeSlot(slots.default, inner);
+      if (props2.iconRight !== void 0 && props2.round === false) {
+        inner.push(h(QIcon, {
+          name: props2.iconRight,
+          right: props2.stack === false && hasLabel.value === true,
+          role: "img",
+          "aria-hidden": "true"
+        }));
+      }
+      const child = [
+        h("span", {
+          class: "q-focus-helper",
+          ref: blurTargetRef
+        })
+      ];
+      if (props2.loading === true && props2.percentage !== void 0) {
+        child.push(h("span", {
+          class: "q-btn__progress absolute-full overflow-hidden"
+        }, [
+          h("span", {
+            class: "q-btn__progress-indicator fit block" + (props2.darkPercentage === true ? " q-btn__progress--dark" : ""),
+            style: percentageStyle.value
+          })
+        ]));
+      }
+      child.push(h("span", {
+        class: "q-btn__content text-center col items-center q-anchor--skip " + innerClasses.value
+      }, inner));
+      props2.loading !== null && child.push(h(Transition, {
+        name: "q-transition--fade"
+      }, () => props2.loading === true ? [
+        h("span", {
+          key: "loading",
+          class: "absolute-full flex flex-center"
+        }, slots.loading !== void 0 ? slots.loading() : [h(QSpinner)])
+      ] : null));
+      return withDirectives(h(linkTag.value, nodeProps.value, child), [[
+        Ripple,
+        ripple.value,
+        void 0,
+        rippleProps.value
+      ]]);
+    };
+  }
+});
+const globalConfig = {};
+let globalConfigIsFrozen = false;
+function freezeGlobalConfig() {
+  globalConfigIsFrozen = true;
+}
+let target = document.body;
+function createGlobalNode(id) {
+  const el = document.createElement("div");
+  if (id !== void 0) {
+    el.id = id;
+  }
+  if (globalConfig.globalNodes !== void 0) {
+    const cls = globalConfig.globalNodes.class;
+    if (cls !== void 0) {
+      el.className = cls;
+    }
+  }
+  target.appendChild(el);
+  return el;
+}
+function removeGlobalNode(el) {
+  el.remove();
+}
+function injectProp(target2, propName, get2, set2) {
+  Object.defineProperty(target2, propName, {
+    get: get2,
+    set: set2,
+    enumerable: true
+  });
+}
+const isRuntimeSsrPreHydration = ref(false);
+let iosCorrection;
+function getMatch(userAgent2, platformMatch) {
+  const match = /(edg|edge|edga|edgios)\/([\w.]+)/.exec(userAgent2) || /(opr)[\/]([\w.]+)/.exec(userAgent2) || /(vivaldi)[\/]([\w.]+)/.exec(userAgent2) || /(chrome|crios)[\/]([\w.]+)/.exec(userAgent2) || /(version)(applewebkit)[\/]([\w.]+).*(safari)[\/]([\w.]+)/.exec(userAgent2) || /(webkit)[\/]([\w.]+).*(version)[\/]([\w.]+).*(safari)[\/]([\w.]+)/.exec(userAgent2) || /(firefox|fxios)[\/]([\w.]+)/.exec(userAgent2) || /(webkit)[\/]([\w.]+)/.exec(userAgent2) || /(opera)(?:.*version|)[\/]([\w.]+)/.exec(userAgent2) || [];
+  return {
+    browser: match[5] || match[3] || match[1] || "",
+    version: match[2] || match[4] || "0",
+    versionNumber: match[4] || match[2] || "0",
+    platform: platformMatch[0] || ""
+  };
+}
+function getPlatformMatch(userAgent2) {
+  return /(ipad)/.exec(userAgent2) || /(ipod)/.exec(userAgent2) || /(windows phone)/.exec(userAgent2) || /(iphone)/.exec(userAgent2) || /(kindle)/.exec(userAgent2) || /(silk)/.exec(userAgent2) || /(android)/.exec(userAgent2) || /(win)/.exec(userAgent2) || /(mac)/.exec(userAgent2) || /(linux)/.exec(userAgent2) || /(cros)/.exec(userAgent2) || /(playbook)/.exec(userAgent2) || /(bb)/.exec(userAgent2) || /(blackberry)/.exec(userAgent2) || [];
+}
+const hasTouch = "ontouchstart" in window || window.navigator.maxTouchPoints > 0;
+function applyIosCorrection(is) {
+  iosCorrection = { is: __spreadValues({}, is) };
+  delete is.mac;
+  delete is.desktop;
+  const platform = Math.min(window.innerHeight, window.innerWidth) > 414 ? "ipad" : "iphone";
+  Object.assign(is, {
+    mobile: true,
+    ios: true,
+    platform,
+    [platform]: true
+  });
+}
+function getPlatform(UA) {
+  const userAgent2 = UA.toLowerCase(), platformMatch = getPlatformMatch(userAgent2), matched = getMatch(userAgent2, platformMatch), browser = {};
+  if (matched.browser) {
+    browser[matched.browser] = true;
+    browser.version = matched.version;
+    browser.versionNumber = parseInt(matched.versionNumber, 10);
+  }
+  if (matched.platform) {
+    browser[matched.platform] = true;
+  }
+  const knownMobiles = browser.android || browser.ios || browser.bb || browser.blackberry || browser.ipad || browser.iphone || browser.ipod || browser.kindle || browser.playbook || browser.silk || browser["windows phone"];
+  if (knownMobiles === true || userAgent2.indexOf("mobile") > -1) {
+    browser.mobile = true;
+    if (browser.edga || browser.edgios) {
+      browser.edge = true;
+      matched.browser = "edge";
+    } else if (browser.crios) {
+      browser.chrome = true;
+      matched.browser = "chrome";
+    } else if (browser.fxios) {
+      browser.firefox = true;
+      matched.browser = "firefox";
+    }
+  } else {
+    browser.desktop = true;
+  }
+  if (browser.ipod || browser.ipad || browser.iphone) {
+    browser.ios = true;
+  }
+  if (browser["windows phone"]) {
+    browser.winphone = true;
+    delete browser["windows phone"];
+  }
+  if (browser.chrome || browser.opr || browser.safari || browser.vivaldi || browser.mobile === true && browser.ios !== true && knownMobiles !== true) {
+    browser.webkit = true;
+  }
+  if (browser.edg) {
+    matched.browser = "edgechromium";
+    browser.edgeChromium = true;
+  }
+  if (browser.safari && browser.blackberry || browser.bb) {
+    matched.browser = "blackberry";
+    browser.blackberry = true;
+  }
+  if (browser.safari && browser.playbook) {
+    matched.browser = "playbook";
+    browser.playbook = true;
+  }
+  if (browser.opr) {
+    matched.browser = "opera";
+    browser.opera = true;
+  }
+  if (browser.safari && browser.android) {
+    matched.browser = "android";
+    browser.android = true;
+  }
+  if (browser.safari && browser.kindle) {
+    matched.browser = "kindle";
+    browser.kindle = true;
+  }
+  if (browser.safari && browser.silk) {
+    matched.browser = "silk";
+    browser.silk = true;
+  }
+  if (browser.vivaldi) {
+    matched.browser = "vivaldi";
+    browser.vivaldi = true;
+  }
+  browser.name = matched.browser;
+  browser.platform = matched.platform;
+  {
+    if (userAgent2.indexOf("electron") > -1) {
+      browser.electron = true;
+    } else if (document.location.href.indexOf("-extension://") > -1) {
+      browser.bex = true;
+    } else {
+      if (window.Capacitor !== void 0) {
+        browser.capacitor = true;
+        browser.nativeMobile = true;
+        browser.nativeMobileWrapper = "capacitor";
+      } else if (window._cordovaNative !== void 0 || window.cordova !== void 0) {
+        browser.cordova = true;
+        browser.nativeMobile = true;
+        browser.nativeMobileWrapper = "cordova";
+      }
+      if (hasTouch === true && browser.mac === true && (browser.desktop === true && browser.safari === true || browser.nativeMobile === true && browser.android !== true && browser.ios !== true && browser.ipad !== true)) {
+        applyIosCorrection(browser);
+      }
+    }
+  }
+  return browser;
+}
+const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+const ssrClient = {
+  has: {
+    touch: false,
+    webStorage: false
+  },
+  within: { iframe: false }
+};
+const client = {
+  userAgent,
+  is: getPlatform(userAgent),
+  has: {
+    touch: hasTouch
+  },
+  within: {
+    iframe: window.self !== window.top
+  }
+};
+const Platform = {
+  install(opts) {
+    const { $q } = opts;
+    if (isRuntimeSsrPreHydration.value === true) {
+      opts.onSSRHydrated.push(() => {
+        isRuntimeSsrPreHydration.value = false;
+        Object.assign($q.platform, client);
+        iosCorrection = void 0;
+      });
+      $q.platform = reactive(this);
+    } else {
+      $q.platform = this;
+    }
+  }
+};
+{
+  let hasWebStorage;
+  injectProp(client.has, "webStorage", () => {
+    if (hasWebStorage !== void 0) {
+      return hasWebStorage;
+    }
+    try {
+      if (window.localStorage) {
+        hasWebStorage = true;
+        return true;
+      }
+    } catch (e2) {
+    }
+    hasWebStorage = false;
+    return false;
+  });
+  client.is.ios === true && window.navigator.vendor.toLowerCase().indexOf("apple") === -1;
+  if (isRuntimeSsrPreHydration.value === true) {
+    Object.assign(Platform, client, iosCorrection, ssrClient);
+  } else {
+    Object.assign(Platform, client);
+  }
+}
+var defineReactivePlugin = (state, plugin) => {
+  const reactiveState = reactive(state);
+  for (const name in state) {
+    injectProp(plugin, name, () => reactiveState[name], (val) => {
+      reactiveState[name] = val;
+    });
+  }
+  return plugin;
+};
+function debounce(fn, wait = 250, immediate) {
+  let timeout;
+  function debounced() {
+    const args = arguments;
+    const later = () => {
+      timeout = void 0;
+      if (immediate !== true) {
+        fn.apply(this, args);
+      }
+    };
+    clearTimeout(timeout);
+    if (immediate === true && timeout === void 0) {
+      fn.apply(this, args);
+    }
+    timeout = setTimeout(later, wait);
+  }
+  debounced.cancel = () => {
+    clearTimeout(timeout);
+  };
+  return debounced;
+}
+const SIZE_LIST = ["sm", "md", "lg", "xl"];
+const { passive } = listenOpts;
+var Screen = defineReactivePlugin({
+  width: 0,
+  height: 0,
+  name: "xs",
+  sizes: {
+    sm: 600,
+    md: 1024,
+    lg: 1440,
+    xl: 1920
+  },
+  lt: {
+    sm: true,
+    md: true,
+    lg: true,
+    xl: true
+  },
+  gt: {
+    xs: false,
+    sm: false,
+    md: false,
+    lg: false
+  },
+  xs: true,
+  sm: false,
+  md: false,
+  lg: false,
+  xl: false
+}, {
+  setSizes: noop$1,
+  setDebounce: noop$1,
+  install({ $q, onSSRHydrated }) {
+    $q.screen = this;
+    if (this.__installed === true) {
+      if ($q.config.screen !== void 0) {
+        if ($q.config.screen.bodyClasses === false) {
+          document.body.classList.remove(`screen--${this.name}`);
+        } else {
+          this.__update(true);
+        }
+      }
+      return;
+    }
+    const { visualViewport } = window;
+    const target2 = visualViewport || window;
+    const scrollingElement = document.scrollingElement || document.documentElement;
+    const getSize = visualViewport === void 0 || client.is.mobile === true ? () => [
+      Math.max(window.innerWidth, scrollingElement.clientWidth),
+      Math.max(window.innerHeight, scrollingElement.clientHeight)
+    ] : () => [
+      visualViewport.width * visualViewport.scale + window.innerWidth - scrollingElement.clientWidth,
+      visualViewport.height * visualViewport.scale + window.innerHeight - scrollingElement.clientHeight
+    ];
+    const classes = $q.config.screen !== void 0 && $q.config.screen.bodyClasses === true;
+    this.__update = (force) => {
+      const [w, h2] = getSize();
+      if (h2 !== this.height) {
+        this.height = h2;
+      }
+      if (w !== this.width) {
+        this.width = w;
+      } else if (force !== true) {
+        return;
+      }
+      let s = this.sizes;
+      this.gt.xs = w >= s.sm;
+      this.gt.sm = w >= s.md;
+      this.gt.md = w >= s.lg;
+      this.gt.lg = w >= s.xl;
+      this.lt.sm = w < s.sm;
+      this.lt.md = w < s.md;
+      this.lt.lg = w < s.lg;
+      this.lt.xl = w < s.xl;
+      this.xs = this.lt.sm;
+      this.sm = this.gt.xs === true && this.lt.md === true;
+      this.md = this.gt.sm === true && this.lt.lg === true;
+      this.lg = this.gt.md === true && this.lt.xl === true;
+      this.xl = this.gt.lg;
+      s = this.xs === true && "xs" || this.sm === true && "sm" || this.md === true && "md" || this.lg === true && "lg" || "xl";
+      if (s !== this.name) {
+        if (classes === true) {
+          document.body.classList.remove(`screen--${this.name}`);
+          document.body.classList.add(`screen--${s}`);
+        }
+        this.name = s;
+      }
+    };
+    let updateEvt, updateSizes = {}, updateDebounce = 16;
+    this.setSizes = (sizes) => {
+      SIZE_LIST.forEach((name) => {
+        if (sizes[name] !== void 0) {
+          updateSizes[name] = sizes[name];
+        }
+      });
+    };
+    this.setDebounce = (deb) => {
+      updateDebounce = deb;
+    };
+    const start = () => {
+      const style = getComputedStyle(document.body);
+      if (style.getPropertyValue("--q-size-sm")) {
+        SIZE_LIST.forEach((name) => {
+          this.sizes[name] = parseInt(style.getPropertyValue(`--q-size-${name}`), 10);
+        });
+      }
+      this.setSizes = (sizes) => {
+        SIZE_LIST.forEach((name) => {
+          if (sizes[name]) {
+            this.sizes[name] = sizes[name];
+          }
+        });
+        this.__update(true);
+      };
+      this.setDebounce = (delay) => {
+        updateEvt !== void 0 && target2.removeEventListener("resize", updateEvt, passive);
+        updateEvt = delay > 0 ? debounce(this.__update, delay) : this.__update;
+        target2.addEventListener("resize", updateEvt, passive);
+      };
+      this.setDebounce(updateDebounce);
+      if (Object.keys(updateSizes).length > 0) {
+        this.setSizes(updateSizes);
+        updateSizes = void 0;
+      } else {
+        this.__update();
+      }
+      classes === true && this.name === "xs" && document.body.classList.add("screen--xs");
+    };
+    if (isRuntimeSsrPreHydration.value === true) {
+      onSSRHydrated.push(start);
+    } else {
+      start();
+    }
+  }
+});
+const Plugin$2 = defineReactivePlugin({
+  isActive: false,
+  mode: false
+}, {
+  __media: void 0,
+  set(val) {
+    Plugin$2.mode = val;
+    if (val === "auto") {
+      if (Plugin$2.__media === void 0) {
+        Plugin$2.__media = window.matchMedia("(prefers-color-scheme: dark)");
+        Plugin$2.__updateMedia = () => {
+          Plugin$2.set("auto");
+        };
+        Plugin$2.__media.addListener(Plugin$2.__updateMedia);
+      }
+      val = Plugin$2.__media.matches;
+    } else if (Plugin$2.__media !== void 0) {
+      Plugin$2.__media.removeListener(Plugin$2.__updateMedia);
+      Plugin$2.__media = void 0;
+    }
+    Plugin$2.isActive = val === true;
+    document.body.classList.remove(`body--${val === true ? "light" : "dark"}`);
+    document.body.classList.add(`body--${val === true ? "dark" : "light"}`);
+  },
+  toggle() {
+    {
+      Plugin$2.set(Plugin$2.isActive === false);
+    }
+  },
+  install({ $q, onSSRHydrated, ssrContext }) {
+    const { dark } = $q.config;
+    $q.dark = this;
+    if (this.__installed === true && dark === void 0) {
+      return;
+    }
+    this.isActive = dark === true;
+    const initialVal = dark !== void 0 ? dark : false;
+    if (isRuntimeSsrPreHydration.value === true) {
+      const ssrSet = (val) => {
+        this.__fromSSR = val;
+      };
+      const originalSet = this.set;
+      this.set = ssrSet;
+      ssrSet(initialVal);
+      onSSRHydrated.push(() => {
+        this.set = originalSet;
+        this.set(this.__fromSSR);
+      });
+    } else {
+      this.set(initialVal);
+    }
+  }
+});
+const getTrue = () => true;
+function filterInvalidPath(path) {
+  return typeof path === "string" && path !== "" && path !== "/" && path !== "#/";
+}
+function normalizeExitPath(path) {
+  path.startsWith("#") === true && (path = path.substr(1));
+  path.startsWith("/") === false && (path = "/" + path);
+  path.endsWith("/") === true && (path = path.substr(0, path.length - 1));
+  return "#" + path;
+}
+function getShouldExitFn(cfg) {
+  if (cfg.backButtonExit === false) {
+    return () => false;
+  }
+  if (cfg.backButtonExit === "*") {
+    return getTrue;
+  }
+  const exitPaths = ["#/"];
+  Array.isArray(cfg.backButtonExit) === true && exitPaths.push(...cfg.backButtonExit.filter(filterInvalidPath).map(normalizeExitPath));
+  return () => exitPaths.includes(window.location.hash);
+}
+var History = {
+  __history: [],
+  add: noop$1,
+  remove: noop$1,
+  install({ $q }) {
+    if (this.__installed === true) {
+      return;
+    }
+    const { cordova, capacitor } = client.is;
+    if (cordova !== true && capacitor !== true) {
+      return;
+    }
+    const qConf = $q.config[cordova === true ? "cordova" : "capacitor"];
+    if (qConf !== void 0 && qConf.backButton === false) {
+      return;
+    }
+    if (capacitor === true && (window.Capacitor === void 0 || window.Capacitor.Plugins.App === void 0)) {
+      return;
+    }
+    this.add = (entry) => {
+      if (entry.condition === void 0) {
+        entry.condition = getTrue;
+      }
+      this.__history.push(entry);
+    };
+    this.remove = (entry) => {
+      const index = this.__history.indexOf(entry);
+      if (index >= 0) {
+        this.__history.splice(index, 1);
+      }
+    };
+    const shouldExit = getShouldExitFn(Object.assign({ backButtonExit: true }, qConf));
+    const backHandler = () => {
+      if (this.__history.length) {
+        const entry = this.__history[this.__history.length - 1];
+        if (entry.condition() === true) {
+          this.__history.pop();
+          entry.handler();
+        }
+      } else if (shouldExit() === true) {
+        navigator.app.exitApp();
+      } else {
+        window.history.back();
+      }
+    };
+    if (cordova === true) {
+      document.addEventListener("deviceready", () => {
+        document.addEventListener("backbutton", backHandler, false);
+      });
+    } else {
+      window.Capacitor.Plugins.App.addListener("backButton", backHandler);
+    }
+  }
+};
+var defaultLang = {
+  isoName: "en-US",
+  nativeName: "English (US)",
+  label: {
+    clear: "Clear",
+    ok: "OK",
+    cancel: "Cancel",
+    close: "Close",
+    set: "Set",
+    select: "Select",
+    reset: "Reset",
+    remove: "Remove",
+    update: "Update",
+    create: "Create",
+    search: "Search",
+    filter: "Filter",
+    refresh: "Refresh"
+  },
+  date: {
+    days: "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"),
+    daysShort: "Sun_Mon_Tue_Wed_Thu_Fri_Sat".split("_"),
+    months: "January_February_March_April_May_June_July_August_September_October_November_December".split("_"),
+    monthsShort: "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec".split("_"),
+    firstDayOfWeek: 0,
+    format24h: false,
+    pluralDay: "days"
+  },
+  table: {
+    noData: "No data available",
+    noResults: "No matching records found",
+    loading: "Loading...",
+    selectedRecords: (rows) => rows === 1 ? "1 record selected." : (rows === 0 ? "No" : rows) + " records selected.",
+    recordsPerPage: "Records per page:",
+    allRows: "All",
+    pagination: (start, end, total) => start + "-" + end + " of " + total,
+    columns: "Columns"
+  },
+  editor: {
+    url: "URL",
+    bold: "Bold",
+    italic: "Italic",
+    strikethrough: "Strikethrough",
+    underline: "Underline",
+    unorderedList: "Unordered List",
+    orderedList: "Ordered List",
+    subscript: "Subscript",
+    superscript: "Superscript",
+    hyperlink: "Hyperlink",
+    toggleFullscreen: "Toggle Fullscreen",
+    quote: "Quote",
+    left: "Left align",
+    center: "Center align",
+    right: "Right align",
+    justify: "Justify align",
+    print: "Print",
+    outdent: "Decrease indentation",
+    indent: "Increase indentation",
+    removeFormat: "Remove formatting",
+    formatting: "Formatting",
+    fontSize: "Font Size",
+    align: "Align",
+    hr: "Insert Horizontal Rule",
+    undo: "Undo",
+    redo: "Redo",
+    heading1: "Heading 1",
+    heading2: "Heading 2",
+    heading3: "Heading 3",
+    heading4: "Heading 4",
+    heading5: "Heading 5",
+    heading6: "Heading 6",
+    paragraph: "Paragraph",
+    code: "Code",
+    size1: "Very small",
+    size2: "A bit small",
+    size3: "Normal",
+    size4: "Medium-large",
+    size5: "Big",
+    size6: "Very big",
+    size7: "Maximum",
+    defaultFont: "Default Font",
+    viewSource: "View Source"
+  },
+  tree: {
+    noNodes: "No nodes available",
+    noResults: "No matching nodes found"
+  }
+};
+function getLocale() {
+  const val = Array.isArray(navigator.languages) === true && navigator.languages.length > 0 ? navigator.languages[0] : navigator.language;
+  if (typeof val === "string") {
+    return val.split(/[-_]/).map((v, i2) => i2 === 0 ? v.toLowerCase() : i2 > 1 || v.length < 4 ? v.toUpperCase() : v[0].toUpperCase() + v.slice(1).toLowerCase()).join("-");
+  }
+}
+const Plugin$1 = defineReactivePlugin({
+  __langPack: {}
+}, {
+  getLocale,
+  set(langObject = defaultLang, ssrContext) {
+    const lang = __spreadProps(__spreadValues({}, langObject), {
+      rtl: langObject.rtl === true,
+      getLocale
+    });
+    {
+      const el = document.documentElement;
+      el.setAttribute("dir", lang.rtl === true ? "rtl" : "ltr");
+      el.setAttribute("lang", lang.isoName);
+      lang.set = Plugin$1.set;
+      Object.assign(Plugin$1.__langPack, lang);
+      Plugin$1.props = lang;
+      Plugin$1.isoName = lang.isoName;
+      Plugin$1.nativeName = lang.nativeName;
+    }
+  },
+  install({ $q, lang, ssrContext }) {
+    {
+      $q.lang = Plugin$1.__langPack;
+      if (this.__installed === true) {
+        lang !== void 0 && this.set(lang);
+      } else {
+        this.set(lang || defaultLang);
+      }
+    }
+  }
+});
+function setCssVar(propName, value, element = document.body) {
+  if (typeof propName !== "string") {
+    throw new TypeError("Expected a string as propName");
+  }
+  if (typeof value !== "string") {
+    throw new TypeError("Expected a string as value");
+  }
+  if (!(element instanceof Element)) {
+    throw new TypeError("Expected a DOM element");
+  }
+  element.style.setProperty(`--q-${propName}`, value);
+}
+function getMobilePlatform(is) {
+  if (is.ios === true)
+    return "ios";
+  if (is.android === true)
+    return "android";
+}
+function getBodyClasses({ is, has: has2, within }, cfg) {
+  const cls = [
+    is.desktop === true ? "desktop" : "mobile",
+    `${has2.touch === false ? "no-" : ""}touch`
+  ];
+  if (is.mobile === true) {
+    const mobile = getMobilePlatform(is);
+    mobile !== void 0 && cls.push("platform-" + mobile);
+  }
+  if (is.nativeMobile === true) {
+    const type = is.nativeMobileWrapper;
+    cls.push(type);
+    cls.push("native-mobile");
+    if (is.ios === true && (cfg[type] === void 0 || cfg[type].iosStatusBarPadding !== false)) {
+      cls.push("q-ios-padding");
+    }
+  } else if (is.electron === true) {
+    cls.push("electron");
+  } else if (is.bex === true) {
+    cls.push("bex");
+  }
+  within.iframe === true && cls.push("within-iframe");
+  return cls;
+}
+function applyClientSsrCorrections() {
+  const classes = document.body.className;
+  let newCls = classes;
+  if (iosCorrection !== void 0) {
+    newCls = newCls.replace("desktop", "platform-ios mobile");
+  }
+  if (client.has.touch === true) {
+    newCls = newCls.replace("no-touch", "touch");
+  }
+  if (client.within.iframe === true) {
+    newCls += " within-iframe";
+  }
+  if (classes !== newCls) {
+    document.body.className = newCls;
+  }
+}
+function setColors(brand) {
+  for (const color in brand) {
+    setCssVar(color, brand[color]);
+  }
+}
+var Body = {
+  install(opts) {
+    if (this.__installed === true) {
+      return;
+    }
+    if (isRuntimeSsrPreHydration.value === true) {
+      applyClientSsrCorrections();
+    } else {
+      const { $q } = opts;
+      $q.config.brand !== void 0 && setColors($q.config.brand);
+      const cls = getBodyClasses(client, $q.config);
+      document.body.classList.add.apply(document.body.classList, cls);
+    }
+    if (client.is.ios === true) {
+      document.body.addEventListener("touchstart", noop$1);
+    }
+    window.addEventListener("keydown", onKeyDownComposition, true);
+  }
+};
+var materialIcons = {
+  name: "material-icons",
+  type: {
+    positive: "check_circle",
+    negative: "warning",
+    info: "info",
+    warning: "priority_high"
+  },
+  arrow: {
+    up: "arrow_upward",
+    right: "arrow_forward",
+    down: "arrow_downward",
+    left: "arrow_back",
+    dropdown: "arrow_drop_down"
+  },
+  chevron: {
+    left: "chevron_left",
+    right: "chevron_right"
+  },
+  colorPicker: {
+    spectrum: "gradient",
+    tune: "tune",
+    palette: "style"
+  },
+  pullToRefresh: {
+    icon: "refresh"
+  },
+  carousel: {
+    left: "chevron_left",
+    right: "chevron_right",
+    up: "keyboard_arrow_up",
+    down: "keyboard_arrow_down",
+    navigationIcon: "lens"
+  },
+  chip: {
+    remove: "cancel",
+    selected: "check"
+  },
+  datetime: {
+    arrowLeft: "chevron_left",
+    arrowRight: "chevron_right",
+    now: "access_time",
+    today: "today"
+  },
+  editor: {
+    bold: "format_bold",
+    italic: "format_italic",
+    strikethrough: "strikethrough_s",
+    underline: "format_underlined",
+    unorderedList: "format_list_bulleted",
+    orderedList: "format_list_numbered",
+    subscript: "vertical_align_bottom",
+    superscript: "vertical_align_top",
+    hyperlink: "link",
+    toggleFullscreen: "fullscreen",
+    quote: "format_quote",
+    left: "format_align_left",
+    center: "format_align_center",
+    right: "format_align_right",
+    justify: "format_align_justify",
+    print: "print",
+    outdent: "format_indent_decrease",
+    indent: "format_indent_increase",
+    removeFormat: "format_clear",
+    formatting: "text_format",
+    fontSize: "format_size",
+    align: "format_align_left",
+    hr: "remove",
+    undo: "undo",
+    redo: "redo",
+    heading: "format_size",
+    code: "code",
+    size: "format_size",
+    font: "font_download",
+    viewSource: "code"
+  },
+  expansionItem: {
+    icon: "keyboard_arrow_down",
+    denseIcon: "arrow_drop_down"
+  },
+  fab: {
+    icon: "add",
+    activeIcon: "close"
+  },
+  field: {
+    clear: "cancel",
+    error: "error"
+  },
+  pagination: {
+    first: "first_page",
+    prev: "keyboard_arrow_left",
+    next: "keyboard_arrow_right",
+    last: "last_page"
+  },
+  rating: {
+    icon: "grade"
+  },
+  stepper: {
+    done: "check",
+    active: "edit",
+    error: "warning"
+  },
+  tabs: {
+    left: "chevron_left",
+    right: "chevron_right",
+    up: "keyboard_arrow_up",
+    down: "keyboard_arrow_down"
+  },
+  table: {
+    arrowUp: "arrow_upward",
+    warning: "warning",
+    firstPage: "first_page",
+    prevPage: "chevron_left",
+    nextPage: "chevron_right",
+    lastPage: "last_page"
+  },
+  tree: {
+    icon: "play_arrow"
+  },
+  uploader: {
+    done: "done",
+    clear: "clear",
+    add: "add_box",
+    upload: "cloud_upload",
+    removeQueue: "clear_all",
+    removeUploaded: "done_all"
+  }
+};
+const Plugin = defineReactivePlugin({
+  iconMapFn: null,
+  __icons: {}
+}, {
+  set(setObject, ssrContext) {
+    const def2 = __spreadProps(__spreadValues({}, setObject), { rtl: setObject.rtl === true });
+    {
+      def2.set = Plugin.set;
+      Object.assign(Plugin.__icons, def2);
+    }
+  },
+  install({ $q, iconSet, ssrContext }) {
+    {
+      if ($q.config.iconMapFn !== void 0) {
+        this.iconMapFn = $q.config.iconMapFn;
+      }
+      $q.iconSet = this.__icons;
+      injectProp($q, "iconMapFn", () => this.iconMapFn, (val) => {
+        this.iconMapFn = val;
+      });
+      if (this.__installed === true) {
+        iconSet !== void 0 && this.set(iconSet);
+      } else {
+        this.set(iconSet || materialIcons);
+      }
+    }
+  }
+});
+const quasarKey = "_q_";
+const formKey = "_q_fo_";
+function isPlainObject(v) {
+  return Object.prototype.toString.call(v) === "[object Object]";
+}
+const autoInstalledPlugins = [
+  Platform,
+  Body,
+  Plugin$2,
+  Screen,
+  History,
+  Plugin$1,
+  Plugin
+];
+function createChildApp(appCfg, parentApp) {
+  const app = createApp(appCfg);
+  app.config.globalProperties = parentApp.config.globalProperties;
+  const _a = parentApp._context, { reload } = _a, appContext = __objRest(_a, ["reload"]);
+  Object.assign(app._context, appContext);
+  return app;
+}
+function installPlugins(pluginOpts, pluginList) {
+  pluginList.forEach((Plugin2) => {
+    Plugin2.install(pluginOpts);
+    Plugin2.__installed = true;
+  });
+}
+function prepareApp(app, uiOpts, pluginOpts) {
+  app.config.globalProperties.$q = pluginOpts.$q;
+  app.provide(quasarKey, pluginOpts.$q);
+  installPlugins(pluginOpts, autoInstalledPlugins);
+  uiOpts.components !== void 0 && Object.values(uiOpts.components).forEach((c) => {
+    if (isPlainObject(c) === true && c.name !== void 0) {
+      app.component(c.name, c);
+    }
+  });
+  uiOpts.directives !== void 0 && Object.values(uiOpts.directives).forEach((d) => {
+    if (isPlainObject(d) === true && d.name !== void 0) {
+      app.directive(d.name, d);
+    }
+  });
+  uiOpts.plugins !== void 0 && installPlugins(pluginOpts, Object.values(uiOpts.plugins).filter((p2) => typeof p2.install === "function" && autoInstalledPlugins.includes(p2) === false));
+  if (isRuntimeSsrPreHydration.value === true) {
+    pluginOpts.$q.onSSRHydrated = () => {
+      pluginOpts.onSSRHydrated.forEach((fn) => {
+        fn();
+      });
+      pluginOpts.$q.onSSRHydrated = () => {
+      };
+    };
+  }
+}
+var installQuasar = function(parentApp, opts = {}) {
+  const $q = { version: "2.5.5" };
+  if (globalConfigIsFrozen === false) {
+    if (opts.config !== void 0) {
+      Object.assign(globalConfig, opts.config);
+    }
+    $q.config = __spreadValues({}, globalConfig);
+    freezeGlobalConfig();
+  } else {
+    $q.config = opts.config || {};
+  }
+  prepareApp(parentApp, opts, {
+    parentApp,
+    $q,
+    lang: opts.lang,
+    iconSet: opts.iconSet,
+    onSSRHydrated: []
+  });
+};
+let uid$1 = 0;
+const defaults = {};
+const groups = {};
+const notificationsList = {};
+const positionClass$1 = {};
+const emptyRE = /^\s*$/;
+const notifRefs = [];
+const positionList = [
+  "top-left",
+  "top-right",
+  "bottom-left",
+  "bottom-right",
+  "top",
+  "bottom",
+  "left",
+  "right",
+  "center"
+];
+const badgePositions = [
+  "top-left",
+  "top-right",
+  "bottom-left",
+  "bottom-right"
+];
+const notifTypes = {
+  positive: {
+    icon: ($q) => $q.iconSet.type.positive,
+    color: "positive"
+  },
+  negative: {
+    icon: ($q) => $q.iconSet.type.negative,
+    color: "negative"
+  },
+  warning: {
+    icon: ($q) => $q.iconSet.type.warning,
+    color: "warning",
+    textColor: "dark"
+  },
+  info: {
+    icon: ($q) => $q.iconSet.type.info,
+    color: "info"
+  },
+  ongoing: {
+    group: false,
+    timeout: 0,
+    spinner: true,
+    color: "grey-8"
+  }
+};
+function addNotification(config, $q, originalApi) {
+  if (!config) {
+    return logError("parameter required");
+  }
+  let Api;
+  const notif = { textColor: "white" };
+  if (config.ignoreDefaults !== true) {
+    Object.assign(notif, defaults);
+  }
+  if (isPlainObject(config) === false) {
+    if (notif.type) {
+      Object.assign(notif, notifTypes[notif.type]);
+    }
+    config = { message: config };
+  }
+  Object.assign(notif, notifTypes[config.type || notif.type], config);
+  if (typeof notif.icon === "function") {
+    notif.icon = notif.icon($q);
+  }
+  if (!notif.spinner) {
+    notif.spinner = false;
+  } else {
+    if (notif.spinner === true) {
+      notif.spinner = QSpinner;
+    }
+    notif.spinner = markRaw(notif.spinner);
+  }
+  notif.meta = {
+    hasMedia: Boolean(notif.spinner !== false || notif.icon || notif.avatar),
+    hasText: hasContent(notif.message) || hasContent(notif.caption)
+  };
+  if (notif.position) {
+    if (positionList.includes(notif.position) === false) {
+      return logError("wrong position", config);
+    }
+  } else {
+    notif.position = "bottom";
+  }
+  if (notif.timeout === void 0) {
+    notif.timeout = 5e3;
+  } else {
+    const t2 = parseInt(notif.timeout, 10);
+    if (isNaN(t2) || t2 < 0) {
+      return logError("wrong timeout", config);
+    }
+    notif.timeout = t2;
+  }
+  if (notif.timeout === 0) {
+    notif.progress = false;
+  } else if (notif.progress === true) {
+    notif.meta.progressClass = "q-notification__progress" + (notif.progressClass ? ` ${notif.progressClass}` : "");
+    notif.meta.progressStyle = {
+      animationDuration: `${notif.timeout + 1e3}ms`
+    };
+  }
+  const actions = (Array.isArray(config.actions) === true ? config.actions : []).concat(config.ignoreDefaults !== true && Array.isArray(defaults.actions) === true ? defaults.actions : []).concat(notifTypes[config.type] !== void 0 && Array.isArray(notifTypes[config.type].actions) === true ? notifTypes[config.type].actions : []);
+  const { closeBtn } = notif;
+  closeBtn && actions.push({
+    label: typeof closeBtn === "string" ? closeBtn : $q.lang.label.close
+  });
+  notif.actions = actions.map((_a) => {
+    var _b = _a, { handler, noDismiss } = _b, item = __objRest(_b, ["handler", "noDismiss"]);
+    return __spreadProps(__spreadValues({
+      flat: true
+    }, item), {
+      onClick: typeof handler === "function" ? () => {
+        handler();
+        noDismiss !== true && dismiss();
+      } : () => {
+        dismiss();
+      }
+    });
+  });
+  if (notif.multiLine === void 0) {
+    notif.multiLine = notif.actions.length > 1;
+  }
+  Object.assign(notif.meta, {
+    class: `q-notification row items-stretch q-notification--${notif.multiLine === true ? "multi-line" : "standard"}` + (notif.color !== void 0 ? ` bg-${notif.color}` : "") + (notif.textColor !== void 0 ? ` text-${notif.textColor}` : "") + (notif.classes !== void 0 ? ` ${notif.classes}` : ""),
+    wrapperClass: "q-notification__wrapper col relative-position border-radius-inherit " + (notif.multiLine === true ? "column no-wrap justify-center" : "row items-center"),
+    contentClass: "q-notification__content row items-center" + (notif.multiLine === true ? "" : " col"),
+    leftClass: notif.meta.hasText === true ? "additional" : "single",
+    attrs: __spreadValues({
+      role: "alert"
+    }, notif.attrs)
+  });
+  if (notif.group === false) {
+    notif.group = void 0;
+    notif.meta.group = void 0;
+  } else {
+    if (notif.group === void 0 || notif.group === true) {
+      notif.group = [
+        notif.message,
+        notif.caption,
+        notif.multiline
+      ].concat(notif.actions.map((props2) => `${props2.label}*${props2.icon}`)).join("|");
+    }
+    notif.meta.group = notif.group + "|" + notif.position;
+  }
+  if (notif.actions.length === 0) {
+    notif.actions = void 0;
+  } else {
+    notif.meta.actionsClass = "q-notification__actions row items-center " + (notif.multiLine === true ? "justify-end" : "col-auto") + (notif.meta.hasMedia === true ? " q-notification__actions--with-media" : "");
+  }
+  if (originalApi !== void 0) {
+    clearTimeout(originalApi.notif.meta.timer);
+    notif.meta.uid = originalApi.notif.meta.uid;
+    const index = notificationsList[notif.position].value.indexOf(originalApi.notif);
+    notificationsList[notif.position].value[index] = notif;
+  } else {
+    const original = groups[notif.meta.group];
+    if (original === void 0) {
+      notif.meta.uid = uid$1++;
+      notif.meta.badge = 1;
+      if (["left", "right", "center"].indexOf(notif.position) !== -1) {
+        notificationsList[notif.position].value.splice(Math.floor(notificationsList[notif.position].value.length / 2), 0, notif);
+      } else {
+        const action = notif.position.indexOf("top") > -1 ? "unshift" : "push";
+        notificationsList[notif.position].value[action](notif);
+      }
+      if (notif.group !== void 0) {
+        groups[notif.meta.group] = notif;
+      }
+    } else {
+      clearTimeout(original.meta.timer);
+      if (notif.badgePosition !== void 0) {
+        if (badgePositions.includes(notif.badgePosition) === false) {
+          return logError("wrong badgePosition", config);
+        }
+      } else {
+        notif.badgePosition = `top-${notif.position.indexOf("left") > -1 ? "right" : "left"}`;
+      }
+      notif.meta.uid = original.meta.uid;
+      notif.meta.badge = original.meta.badge + 1;
+      notif.meta.badgeClass = `q-notification__badge q-notification__badge--${notif.badgePosition}` + (notif.badgeColor !== void 0 ? ` bg-${notif.badgeColor}` : "") + (notif.badgeTextColor !== void 0 ? ` text-${notif.badgeTextColor}` : "") + (notif.badgeClass ? ` ${notif.badgeClass}` : "");
+      const index = notificationsList[notif.position].value.indexOf(original);
+      notificationsList[notif.position].value[index] = groups[notif.meta.group] = notif;
+    }
+  }
+  const dismiss = () => {
+    removeNotification(notif);
+    Api = void 0;
+  };
+  if (notif.timeout > 0) {
+    notif.meta.timer = setTimeout(() => {
+      dismiss();
+    }, notif.timeout + 1e3);
+  }
+  if (notif.group !== void 0) {
+    return (props2) => {
+      if (props2 !== void 0) {
+        logError("trying to update a grouped one which is forbidden", config);
+      } else {
+        dismiss();
+      }
+    };
+  }
+  Api = {
+    dismiss,
+    config,
+    notif
+  };
+  if (originalApi !== void 0) {
+    Object.assign(originalApi, Api);
+    return;
+  }
+  return (props2) => {
+    if (Api !== void 0) {
+      if (props2 === void 0) {
+        Api.dismiss();
+      } else {
+        const newNotif = Object.assign({}, Api.config, props2, {
+          group: false,
+          position: notif.position
+        });
+        addNotification(newNotif, $q, Api);
+      }
+    }
+  };
+}
+function removeNotification(notif) {
+  clearTimeout(notif.meta.timer);
+  const index = notificationsList[notif.position].value.indexOf(notif);
+  if (index !== -1) {
+    if (notif.group !== void 0) {
+      delete groups[notif.meta.group];
+    }
+    const el = notifRefs["" + notif.meta.uid];
+    if (el) {
+      const { width, height } = getComputedStyle(el);
+      el.style.left = `${el.offsetLeft}px`;
+      el.style.width = width;
+      el.style.height = height;
+    }
+    notificationsList[notif.position].value.splice(index, 1);
+    if (typeof notif.onDismiss === "function") {
+      notif.onDismiss();
+    }
+  }
+}
+function hasContent(str) {
+  return str !== void 0 && str !== null && emptyRE.test(str) !== true;
+}
+function logError(error, config) {
+  console.error(`Notify: ${error}`, config);
+  return false;
+}
+function getComponent() {
+  return createComponent({
+    name: "QNotifications",
+    devtools: { hide: true },
+    setup() {
+      return () => h("div", { class: "q-notifications" }, positionList.map((pos) => {
+        return h(TransitionGroup, {
+          key: pos,
+          class: positionClass$1[pos],
+          tag: "div",
+          name: `q-notification--${pos}`
+        }, () => notificationsList[pos].value.map((notif) => {
+          const meta = notif.meta;
+          const mainChild = [];
+          if (meta.hasMedia === true) {
+            if (notif.spinner !== false) {
+              mainChild.push(h(notif.spinner, {
+                class: "q-notification__spinner q-notification__spinner--" + meta.leftClass,
+                color: notif.spinnerColor,
+                size: notif.spinnerSize
+              }));
+            } else if (notif.icon) {
+              mainChild.push(h(QIcon, {
+                class: "q-notification__icon q-notification__icon--" + meta.leftClass,
+                name: notif.icon,
+                color: notif.iconColor,
+                size: notif.iconSize,
+                role: "img"
+              }));
+            } else if (notif.avatar) {
+              mainChild.push(h(QAvatar, {
+                class: "q-notification__avatar q-notification__avatar--" + meta.leftClass
+              }, () => h("img", { src: notif.avatar, "aria-hidden": "true" })));
+            }
+          }
+          if (meta.hasText === true) {
+            let msgChild;
+            const msgData = { class: "q-notification__message col" };
+            if (notif.html === true) {
+              msgData.innerHTML = notif.caption ? `<div>${notif.message}</div><div class="q-notification__caption">${notif.caption}</div>` : notif.message;
+            } else {
+              const msgNode = [notif.message];
+              msgChild = notif.caption ? [
+                h("div", msgNode),
+                h("div", { class: "q-notification__caption" }, [notif.caption])
+              ] : msgNode;
+            }
+            mainChild.push(h("div", msgData, msgChild));
+          }
+          const child = [
+            h("div", { class: meta.contentClass }, mainChild)
+          ];
+          notif.progress === true && child.push(h("div", {
+            key: `${meta.uid}|p|${meta.badge}`,
+            class: meta.progressClass,
+            style: meta.progressStyle
+          }));
+          notif.actions !== void 0 && child.push(h("div", {
+            class: meta.actionsClass
+          }, notif.actions.map((props2) => h(QBtn, props2))));
+          meta.badge > 1 && child.push(h("div", {
+            key: `${meta.uid}|${meta.badge}`,
+            class: notif.meta.badgeClass,
+            style: notif.badgeStyle
+          }, [meta.badge]));
+          return h("div", __spreadValues({
+            ref: (el) => {
+              notifRefs["" + meta.uid] = el;
+            },
+            key: meta.uid,
+            class: meta.class
+          }, meta.attrs), [
+            h("div", { class: meta.wrapperClass }, child)
+          ]);
+        }));
+      }));
+    }
+  });
+}
+var Notify = {
+  setDefaults(opts) {
+    {
+      isPlainObject(opts) === true && Object.assign(defaults, opts);
+    }
+  },
+  registerType(typeName, typeOpts) {
+    if (isPlainObject(typeOpts) === true) {
+      notifTypes[typeName] = typeOpts;
+    }
+  },
+  install({ $q, parentApp }) {
+    $q.notify = this.create = (opts) => addNotification(opts, $q);
+    $q.notify.setDefaults = this.setDefaults;
+    $q.notify.registerType = this.registerType;
+    if ($q.config.notify !== void 0) {
+      this.setDefaults($q.config.notify);
+    }
+    if (this.__installed !== true) {
+      positionList.forEach((pos) => {
+        notificationsList[pos] = ref([]);
+        const vert = ["left", "center", "right"].includes(pos) === true ? "center" : pos.indexOf("top") > -1 ? "top" : "bottom", align = pos.indexOf("left") > -1 ? "start" : pos.indexOf("right") > -1 ? "end" : "center", classes = ["left", "right"].includes(pos) ? `items-${pos === "left" ? "start" : "end"} justify-center` : pos === "center" ? "flex-center" : `items-${align}`;
+        positionClass$1[pos] = `q-notifications__list q-notifications__list--${vert} fixed column no-wrap ${classes}`;
+      });
+      const el = createGlobalNode("q-notify");
+      createChildApp(getComponent(), parentApp).mount(el);
+    }
+  }
+};
+function useHistory(showing, hide, hideOnRouteChange) {
+  let historyEntry;
+  function removeFromHistory() {
+    if (historyEntry !== void 0) {
+      History.remove(historyEntry);
+      historyEntry = void 0;
+    }
+  }
+  onBeforeUnmount(() => {
+    showing.value === true && removeFromHistory();
+  });
+  return {
+    removeFromHistory,
+    addToHistory() {
+      historyEntry = {
+        condition: () => hideOnRouteChange.value === true,
+        handler: hide
+      };
+      History.add(historyEntry);
+    }
+  };
+}
+function useTimeout() {
+  let timer;
+  onBeforeUnmount(() => {
+    clearTimeout(timer);
+  });
+  return {
+    registerTimeout(fn, delay) {
+      clearTimeout(timer);
+      timer = setTimeout(fn, delay);
+    },
+    removeTimeout() {
+      clearTimeout(timer);
+    }
+  };
+}
+function useTick() {
+  let tickFn;
+  onBeforeUnmount(() => {
+    tickFn = void 0;
+  });
+  return {
+    registerTick(fn) {
+      tickFn = fn;
+      nextTick(() => {
+        if (tickFn === fn) {
+          tickFn();
+          tickFn = void 0;
+        }
+      });
+    },
+    removeTick() {
+      tickFn = void 0;
+    }
+  };
+}
+const useModelToggleProps = {
+  modelValue: {
+    type: Boolean,
+    default: null
+  },
+  "onUpdate:modelValue": [Function, Array]
+};
+const useModelToggleEmits = [
+  "before-show",
+  "show",
+  "before-hide",
+  "hide"
+];
+function useModelToggle({
+  showing,
+  canShow,
+  hideOnRouteChange,
+  handleShow,
+  handleHide,
+  processOnMount
+}) {
+  const vm = getCurrentInstance();
+  const { props: props2, emit, proxy } = vm;
+  let payload;
+  function toggle(evt) {
+    if (showing.value === true) {
+      hide(evt);
+    } else {
+      show(evt);
+    }
+  }
+  function show(evt) {
+    if (props2.disable === true || evt !== void 0 && evt.qAnchorHandled === true || canShow !== void 0 && canShow(evt) !== true) {
+      return;
+    }
+    const listener = props2["onUpdate:modelValue"] !== void 0;
+    if (listener === true && true) {
+      emit("update:modelValue", true);
+      payload = evt;
+      nextTick(() => {
+        if (payload === evt) {
+          payload = void 0;
+        }
+      });
+    }
+    if (props2.modelValue === null || listener === false || false) {
+      processShow(evt);
+    }
+  }
+  function processShow(evt) {
+    if (showing.value === true) {
+      return;
+    }
+    showing.value = true;
+    emit("before-show", evt);
+    if (handleShow !== void 0) {
+      handleShow(evt);
+    } else {
+      emit("show", evt);
+    }
+  }
+  function hide(evt) {
+    if (props2.disable === true) {
+      return;
+    }
+    const listener = props2["onUpdate:modelValue"] !== void 0;
+    if (listener === true && true) {
+      emit("update:modelValue", false);
+      payload = evt;
+      nextTick(() => {
+        if (payload === evt) {
+          payload = void 0;
+        }
+      });
+    }
+    if (props2.modelValue === null || listener === false || false) {
+      processHide(evt);
+    }
+  }
+  function processHide(evt) {
+    if (showing.value === false) {
+      return;
+    }
+    showing.value = false;
+    emit("before-hide", evt);
+    if (handleHide !== void 0) {
+      handleHide(evt);
+    } else {
+      emit("hide", evt);
+    }
+  }
+  function processModelChange(val) {
+    if (props2.disable === true && val === true) {
+      if (props2["onUpdate:modelValue"] !== void 0) {
+        emit("update:modelValue", false);
+      }
+    } else if (val === true !== showing.value) {
+      const fn = val === true ? processShow : processHide;
+      fn(payload);
+    }
+  }
+  watch(() => props2.modelValue, processModelChange);
+  if (hideOnRouteChange !== void 0 && vmHasRouter(vm) === true) {
+    watch(() => proxy.$route.fullPath, () => {
+      if (hideOnRouteChange.value === true && showing.value === true) {
+        hide();
+      }
+    });
+  }
+  processOnMount === true && onMounted(() => {
+    processModelChange(props2.modelValue);
+  });
+  const publicMethods = { show, hide, toggle };
+  Object.assign(proxy, publicMethods);
+  return publicMethods;
+}
+const useTransitionProps = {
+  transitionShow: {
+    type: String,
+    default: "fade"
+  },
+  transitionHide: {
+    type: String,
+    default: "fade"
+  },
+  transitionDuration: {
+    type: [String, Number],
+    default: 300
+  }
+};
+function useTransition(props2, showing) {
+  const transitionState = ref(showing.value);
+  watch(showing, (val) => {
+    nextTick(() => {
+      transitionState.value = val;
+    });
+  });
+  return {
+    transition: computed(() => "q-transition--" + (transitionState.value === true ? props2.transitionHide : props2.transitionShow)),
+    transitionStyle: computed(() => `--q-transition-duration: ${props2.transitionDuration}ms`)
+  };
+}
+let queue = [];
+let waitFlags = [];
+function clearFlag(flag) {
+  waitFlags = waitFlags.filter((entry) => entry !== flag);
+}
+function addFocusWaitFlag(flag) {
+  clearFlag(flag);
+  waitFlags.push(flag);
+}
+function removeFocusWaitFlag(flag) {
+  clearFlag(flag);
+  if (waitFlags.length === 0 && queue.length > 0) {
+    queue[queue.length - 1]();
+    queue = [];
+  }
+}
+function addFocusFn(fn) {
+  if (waitFlags.length === 0) {
+    fn();
+  } else {
+    queue.push(fn);
+  }
+}
+function removeFocusFn(fn) {
+  queue = queue.filter((entry) => entry !== fn);
+}
+const portalList = [];
+function getPortalVm(el) {
+  return portalList.find((vm) => vm.__qPortalInnerRef.value !== null && vm.__qPortalInnerRef.value.contains(el));
+}
+function closePortalMenus(vm, evt) {
+  do {
+    if (vm.$options.name === "QMenu") {
+      vm.hide(evt);
+      if (vm.$props.separateClosePopup === true) {
+        return getParentVm(vm);
+      }
+    } else if (vm.__qPortalInnerRef !== void 0) {
+      const parent = getParentVm(vm);
+      if (parent !== void 0 && parent.$options.name === "QPopupProxy") {
+        vm.hide(evt);
+        return parent;
+      } else {
+        return vm;
+      }
+    }
+    vm = getParentVm(vm);
+  } while (vm !== void 0 && vm !== null);
+}
+function closePortals(vm, evt, depth) {
+  while (depth !== 0 && vm !== void 0 && vm !== null) {
+    if (vm.__qPortalInnerRef !== void 0) {
+      depth--;
+      if (vm.$options.name === "QMenu") {
+        vm = closePortalMenus(vm, evt);
+        continue;
+      }
+      vm.hide(evt);
+    }
+    vm = getParentVm(vm);
+  }
+}
+function isOnGlobalDialog(vm) {
+  vm = vm.parent;
+  while (vm !== void 0 && vm !== null) {
+    if (vm.type.name === "QGlobalDialog") {
+      return true;
+    }
+    if (vm.type.name === "QDialog" || vm.type.name === "QMenu") {
+      return false;
+    }
+    vm = vm.parent;
+  }
+  return false;
+}
+function usePortal(vm, innerRef, renderPortalContent, checkGlobalDialog) {
+  const portalIsActive = ref(false);
+  let portalEl = null;
+  const focusObj = {};
+  const onGlobalDialog = checkGlobalDialog === true && isOnGlobalDialog(vm);
+  function showPortal(isReady) {
+    if (isReady === true) {
+      removeFocusWaitFlag(focusObj);
+      return;
+    }
+    if (portalIsActive.value === false) {
+      if (onGlobalDialog === false && portalEl === null) {
+        portalEl = createGlobalNode();
+      }
+      portalIsActive.value = true;
+      portalList.push(vm.proxy);
+      addFocusWaitFlag(focusObj);
+    }
+  }
+  function hidePortal() {
+    removeFocusWaitFlag(focusObj);
+    portalIsActive.value = false;
+    const index = portalList.indexOf(vm.proxy);
+    if (index > -1) {
+      portalList.splice(index, 1);
+    }
+    if (portalEl !== null) {
+      removeGlobalNode(portalEl);
+      portalEl = null;
+    }
+  }
+  onUnmounted(hidePortal);
+  Object.assign(vm.proxy, { __qPortalInnerRef: innerRef });
+  return {
+    showPortal,
+    hidePortal,
+    portalIsActive,
+    renderPortal: () => onGlobalDialog === true ? renderPortalContent() : portalIsActive.value === true ? [h(Teleport, { to: portalEl }, renderPortalContent())] : void 0
+  };
+}
+const scrollTargets = [null, document, document.body, document.scrollingElement, document.documentElement];
+function getScrollTarget(el, targetEl) {
+  let target2 = getElement(targetEl);
+  if (target2 === void 0) {
+    if (el === void 0 || el === null) {
+      return window;
+    }
+    target2 = el.closest(".scroll,.scroll-y,.overflow-auto");
+  }
+  return scrollTargets.includes(target2) ? window : target2;
+}
+function getVerticalScrollPosition(scrollTarget) {
+  return scrollTarget === window ? window.pageYOffset || window.scrollY || document.body.scrollTop || 0 : scrollTarget.scrollTop;
+}
+function getHorizontalScrollPosition(scrollTarget) {
+  return scrollTarget === window ? window.pageXOffset || window.scrollX || document.body.scrollLeft || 0 : scrollTarget.scrollLeft;
+}
+let size;
+function getScrollbarWidth() {
+  if (size !== void 0) {
+    return size;
+  }
+  const inner = document.createElement("p"), outer = document.createElement("div");
+  css(inner, {
+    width: "100%",
+    height: "200px"
+  });
+  css(outer, {
+    position: "absolute",
+    top: "0px",
+    left: "0px",
+    visibility: "hidden",
+    width: "200px",
+    height: "150px",
+    overflow: "hidden"
+  });
+  outer.appendChild(inner);
+  document.body.appendChild(outer);
+  const w1 = inner.offsetWidth;
+  outer.style.overflow = "scroll";
+  let w2 = inner.offsetWidth;
+  if (w1 === w2) {
+    w2 = outer.clientWidth;
+  }
+  outer.remove();
+  size = w1 - w2;
+  return size;
+}
+function hasScrollbar(el, onY = true) {
+  if (!el || el.nodeType !== Node.ELEMENT_NODE) {
+    return false;
+  }
+  return onY ? el.scrollHeight > el.clientHeight && (el.classList.contains("scroll") || el.classList.contains("overflow-auto") || ["auto", "scroll"].includes(window.getComputedStyle(el)["overflow-y"])) : el.scrollWidth > el.clientWidth && (el.classList.contains("scroll") || el.classList.contains("overflow-auto") || ["auto", "scroll"].includes(window.getComputedStyle(el)["overflow-x"]));
+}
+let registered = 0, scrollPositionX, scrollPositionY, maxScrollTop, vpPendingUpdate = false, bodyLeft, bodyTop, closeTimer;
+function onWheel(e2) {
+  if (shouldPreventScroll(e2)) {
+    stopAndPrevent(e2);
+  }
+}
+function shouldPreventScroll(e2) {
+  if (e2.target === document.body || e2.target.classList.contains("q-layout__backdrop")) {
+    return true;
+  }
+  const path = getEventPath(e2), shift = e2.shiftKey && !e2.deltaX, scrollY = !shift && Math.abs(e2.deltaX) <= Math.abs(e2.deltaY), delta = shift || scrollY ? e2.deltaY : e2.deltaX;
+  for (let index = 0; index < path.length; index++) {
+    const el = path[index];
+    if (hasScrollbar(el, scrollY)) {
+      return scrollY ? delta < 0 && el.scrollTop === 0 ? true : delta > 0 && el.scrollTop + el.clientHeight === el.scrollHeight : delta < 0 && el.scrollLeft === 0 ? true : delta > 0 && el.scrollLeft + el.clientWidth === el.scrollWidth;
+    }
+  }
+  return true;
+}
+function onAppleScroll(e2) {
+  if (e2.target === document) {
+    document.scrollingElement.scrollTop = document.scrollingElement.scrollTop;
+  }
+}
+function onAppleResize(evt) {
+  if (vpPendingUpdate === true) {
+    return;
+  }
+  vpPendingUpdate = true;
+  requestAnimationFrame(() => {
+    vpPendingUpdate = false;
+    const { height } = evt.target, { clientHeight, scrollTop } = document.scrollingElement;
+    if (maxScrollTop === void 0 || height !== window.innerHeight) {
+      maxScrollTop = clientHeight - height;
+      document.scrollingElement.scrollTop = scrollTop;
+    }
+    if (scrollTop > maxScrollTop) {
+      document.scrollingElement.scrollTop -= Math.ceil((scrollTop - maxScrollTop) / 8);
+    }
+  });
+}
+function apply(action) {
+  const body = document.body, hasViewport = window.visualViewport !== void 0;
+  if (action === "add") {
+    const { overflowY, overflowX } = window.getComputedStyle(body);
+    scrollPositionX = getHorizontalScrollPosition(window);
+    scrollPositionY = getVerticalScrollPosition(window);
+    bodyLeft = body.style.left;
+    bodyTop = body.style.top;
+    body.style.left = `-${scrollPositionX}px`;
+    body.style.top = `-${scrollPositionY}px`;
+    if (overflowX !== "hidden" && (overflowX === "scroll" || body.scrollWidth > window.innerWidth)) {
+      body.classList.add("q-body--force-scrollbar-x");
+    }
+    if (overflowY !== "hidden" && (overflowY === "scroll" || body.scrollHeight > window.innerHeight)) {
+      body.classList.add("q-body--force-scrollbar-y");
+    }
+    body.classList.add("q-body--prevent-scroll");
+    document.qScrollPrevented = true;
+    if (client.is.ios === true) {
+      if (hasViewport === true) {
+        window.scrollTo(0, 0);
+        window.visualViewport.addEventListener("resize", onAppleResize, listenOpts.passiveCapture);
+        window.visualViewport.addEventListener("scroll", onAppleResize, listenOpts.passiveCapture);
+        window.scrollTo(0, 0);
+      } else {
+        window.addEventListener("scroll", onAppleScroll, listenOpts.passiveCapture);
+      }
+    }
+  }
+  if (client.is.desktop === true && client.is.mac === true) {
+    window[`${action}EventListener`]("wheel", onWheel, listenOpts.notPassive);
+  }
+  if (action === "remove") {
+    if (client.is.ios === true) {
+      if (hasViewport === true) {
+        window.visualViewport.removeEventListener("resize", onAppleResize, listenOpts.passiveCapture);
+        window.visualViewport.removeEventListener("scroll", onAppleResize, listenOpts.passiveCapture);
+      } else {
+        window.removeEventListener("scroll", onAppleScroll, listenOpts.passiveCapture);
+      }
+    }
+    body.classList.remove("q-body--prevent-scroll");
+    body.classList.remove("q-body--force-scrollbar-x");
+    body.classList.remove("q-body--force-scrollbar-y");
+    document.qScrollPrevented = false;
+    body.style.left = bodyLeft;
+    body.style.top = bodyTop;
+    window.scrollTo(scrollPositionX, scrollPositionY);
+    maxScrollTop = void 0;
+  }
+}
+function preventScroll(state) {
+  let action = "add";
+  if (state === true) {
+    registered++;
+    if (closeTimer !== void 0) {
+      clearTimeout(closeTimer);
+      closeTimer = void 0;
+      return;
+    }
+    if (registered > 1) {
+      return;
+    }
+  } else {
+    if (registered === 0) {
+      return;
+    }
+    registered--;
+    if (registered > 0) {
+      return;
+    }
+    action = "remove";
+    if (client.is.ios === true && client.is.nativeMobile === true) {
+      clearTimeout(closeTimer);
+      closeTimer = setTimeout(() => {
+        apply(action);
+        closeTimer = void 0;
+      }, 100);
+      return;
+    }
+  }
+  apply(action);
+}
+function usePreventScroll() {
+  let currentState;
+  return {
+    preventBodyScroll(state) {
+      if (state !== currentState && (currentState !== void 0 || state === true)) {
+        currentState = state;
+        preventScroll(state);
+      }
+    }
+  };
+}
+const handlers$1 = [];
+let escDown;
+function onKeydown(evt) {
+  escDown = evt.keyCode === 27;
+}
+function onBlur() {
+  if (escDown === true) {
+    escDown = false;
+  }
+}
+function onKeyup(evt) {
+  if (escDown === true) {
+    escDown = false;
+    if (isKeyCode(evt, 27) === true) {
+      handlers$1[handlers$1.length - 1](evt);
+    }
+  }
+}
+function update(action) {
+  window[action]("keydown", onKeydown);
+  window[action]("blur", onBlur);
+  window[action]("keyup", onKeyup);
+  escDown = false;
+}
+function addEscapeKey(fn) {
+  if (client.is.desktop === true) {
+    handlers$1.push(fn);
+    if (handlers$1.length === 1) {
+      update("addEventListener");
+    }
+  }
+}
+function removeEscapeKey(fn) {
+  const index = handlers$1.indexOf(fn);
+  if (index > -1) {
+    handlers$1.splice(index, 1);
+    if (handlers$1.length === 0) {
+      update("removeEventListener");
+    }
+  }
+}
+const handlers = [];
+function trigger(e2) {
+  handlers[handlers.length - 1](e2);
+}
+function addFocusout(fn) {
+  if (client.is.desktop === true) {
+    handlers.push(fn);
+    if (handlers.length === 1) {
+      document.body.addEventListener("focusin", trigger);
+    }
+  }
+}
+function removeFocusout(fn) {
+  const index = handlers.indexOf(fn);
+  if (index > -1) {
+    handlers.splice(index, 1);
+    if (handlers.length === 0) {
+      document.body.removeEventListener("focusin", trigger);
+    }
+  }
+}
+let maximizedModals = 0;
+const positionClass = {
+  standard: "fixed-full flex-center",
+  top: "fixed-top justify-center",
+  bottom: "fixed-bottom justify-center",
+  right: "fixed-right items-center",
+  left: "fixed-left items-center"
+};
+const transitions = {
+  standard: ["scale", "scale"],
+  top: ["slide-down", "slide-up"],
+  bottom: ["slide-up", "slide-down"],
+  right: ["slide-left", "slide-right"],
+  left: ["slide-right", "slide-left"]
+};
+var QDialog = createComponent({
+  name: "QDialog",
+  inheritAttrs: false,
+  props: __spreadProps(__spreadValues(__spreadValues({}, useModelToggleProps), useTransitionProps), {
+    transitionShow: String,
+    transitionHide: String,
+    persistent: Boolean,
+    autoClose: Boolean,
+    noEscDismiss: Boolean,
+    noBackdropDismiss: Boolean,
+    noRouteDismiss: Boolean,
+    noRefocus: Boolean,
+    noFocus: Boolean,
+    noShake: Boolean,
+    seamless: Boolean,
+    maximized: Boolean,
+    fullWidth: Boolean,
+    fullHeight: Boolean,
+    square: Boolean,
+    position: {
+      type: String,
+      default: "standard",
+      validator: (val) => val === "standard" || ["top", "bottom", "left", "right"].includes(val)
+    }
+  }),
+  emits: [
+    ...useModelToggleEmits,
+    "shake",
+    "click",
+    "escape-key"
+  ],
+  setup(props2, { slots, emit, attrs }) {
+    const vm = getCurrentInstance();
+    const innerRef = ref(null);
+    const showing = ref(false);
+    const transitionState = ref(false);
+    const animating = ref(false);
+    let shakeTimeout, refocusTarget = null, isMaximized, avoidAutoClose;
+    const hideOnRouteChange = computed(() => props2.persistent !== true && props2.noRouteDismiss !== true && props2.seamless !== true);
+    const { preventBodyScroll } = usePreventScroll();
+    const { registerTimeout, removeTimeout } = useTimeout();
+    const { registerTick, removeTick } = useTick();
+    const { showPortal, hidePortal, portalIsActive, renderPortal } = usePortal(vm, innerRef, renderPortalContent, true);
+    const { hide } = useModelToggle({
+      showing,
+      hideOnRouteChange,
+      handleShow,
+      handleHide,
+      processOnMount: true
+    });
+    const { addToHistory, removeFromHistory } = useHistory(showing, hide, hideOnRouteChange);
+    const classes = computed(() => `q-dialog__inner flex no-pointer-events q-dialog__inner--${props2.maximized === true ? "maximized" : "minimized"} q-dialog__inner--${props2.position} ${positionClass[props2.position]}` + (animating.value === true ? " q-dialog__inner--animating" : "") + (props2.fullWidth === true ? " q-dialog__inner--fullwidth" : "") + (props2.fullHeight === true ? " q-dialog__inner--fullheight" : "") + (props2.square === true ? " q-dialog__inner--square" : ""));
+    const transitionShow = computed(() => "q-transition--" + (props2.transitionShow === void 0 ? transitions[props2.position][0] : props2.transitionShow));
+    const transitionHide = computed(() => "q-transition--" + (props2.transitionHide === void 0 ? transitions[props2.position][1] : props2.transitionHide));
+    const transition = computed(() => transitionState.value === true ? transitionHide.value : transitionShow.value);
+    const transitionStyle = computed(() => `--q-transition-duration: ${props2.transitionDuration}ms`);
+    const useBackdrop = computed(() => showing.value === true && props2.seamless !== true);
+    const onEvents = computed(() => props2.autoClose === true ? { onClick: onAutoClose } : {});
+    const rootClasses = computed(() => [
+      `q-dialog fullscreen no-pointer-events q-dialog--${useBackdrop.value === true ? "modal" : "seamless"}`,
+      attrs.class
+    ]);
+    watch(showing, (val) => {
+      nextTick(() => {
+        transitionState.value = val;
+      });
+    });
+    watch(() => props2.maximized, (state) => {
+      showing.value === true && updateMaximized(state);
+    });
+    watch(useBackdrop, (val) => {
+      preventBodyScroll(val);
+      if (val === true) {
+        addFocusout(onFocusChange);
+        addEscapeKey(onEscapeKey);
+      } else {
+        removeFocusout(onFocusChange);
+        removeEscapeKey(onEscapeKey);
+      }
+    });
+    function handleShow(evt) {
+      removeTimeout();
+      removeTick();
+      addToHistory();
+      refocusTarget = props2.noRefocus === false && document.activeElement !== null ? document.activeElement : null;
+      updateMaximized(props2.maximized);
+      showPortal();
+      animating.value = true;
+      if (props2.noFocus !== true) {
+        document.activeElement !== null && document.activeElement.blur();
+        registerTick(focus);
+      }
+      registerTimeout(() => {
+        if (vm.proxy.$q.platform.is.ios === true) {
+          if (props2.seamless !== true && document.activeElement) {
+            const { top, bottom } = document.activeElement.getBoundingClientRect(), { innerHeight } = window, height = window.visualViewport !== void 0 ? window.visualViewport.height : innerHeight;
+            if (top > 0 && bottom > height / 2) {
+              document.scrollingElement.scrollTop = Math.min(document.scrollingElement.scrollHeight - height, bottom >= innerHeight ? Infinity : Math.ceil(document.scrollingElement.scrollTop + bottom - height / 2));
+            }
+            document.activeElement.scrollIntoView();
+          }
+          avoidAutoClose = true;
+          innerRef.value.click();
+          avoidAutoClose = false;
+        }
+        showPortal(true);
+        animating.value = false;
+        emit("show", evt);
+      }, props2.transitionDuration);
+    }
+    function handleHide(evt) {
+      removeTimeout();
+      removeTick();
+      removeFromHistory();
+      cleanup(true);
+      animating.value = true;
+      if (refocusTarget !== null) {
+        refocusTarget.focus();
+        refocusTarget = null;
+      }
+      registerTimeout(() => {
+        hidePortal();
+        animating.value = false;
+        emit("hide", evt);
+      }, props2.transitionDuration);
+    }
+    function focus() {
+      addFocusFn(() => {
+        let node = innerRef.value;
+        if (node === null || node.contains(document.activeElement) === true) {
+          return;
+        }
+        node = node.querySelector("[autofocus], [data-autofocus]") || node;
+        node.focus({ preventScroll: true });
+      });
+    }
+    function shake() {
+      focus();
+      emit("shake");
+      const node = innerRef.value;
+      if (node !== null) {
+        node.classList.remove("q-animate--scale");
+        node.classList.add("q-animate--scale");
+        clearTimeout(shakeTimeout);
+        shakeTimeout = setTimeout(() => {
+          if (innerRef.value !== null) {
+            node.classList.remove("q-animate--scale");
+            focus();
+          }
+        }, 170);
+      }
+    }
+    function onEscapeKey() {
+      if (props2.seamless !== true) {
+        if (props2.persistent === true || props2.noEscDismiss === true) {
+          props2.maximized !== true && props2.noShake !== true && shake();
+        } else {
+          emit("escape-key");
+          hide();
+        }
+      }
+    }
+    function cleanup(hiding) {
+      clearTimeout(shakeTimeout);
+      if (hiding === true || showing.value === true) {
+        updateMaximized(false);
+        if (props2.seamless !== true) {
+          preventBodyScroll(false);
+          removeFocusout(onFocusChange);
+          removeEscapeKey(onEscapeKey);
+        }
+      }
+      if (hiding !== true) {
+        refocusTarget = null;
+      }
+    }
+    function updateMaximized(active) {
+      if (active === true) {
+        if (isMaximized !== true) {
+          maximizedModals < 1 && document.body.classList.add("q-body--dialog");
+          maximizedModals++;
+          isMaximized = true;
+        }
+      } else if (isMaximized === true) {
+        if (maximizedModals < 2) {
+          document.body.classList.remove("q-body--dialog");
+        }
+        maximizedModals--;
+        isMaximized = false;
+      }
+    }
+    function onAutoClose(e2) {
+      if (avoidAutoClose !== true) {
+        hide(e2);
+        emit("click", e2);
+      }
+    }
+    function onBackdropClick(e2) {
+      if (props2.persistent !== true && props2.noBackdropDismiss !== true) {
+        hide(e2);
+      } else if (props2.noShake !== true) {
+        shake();
+      }
+    }
+    function onFocusChange(evt) {
+      if (showing.value === true && portalIsActive.value === true && childHasFocus(innerRef.value, evt.target) !== true) {
+        focus();
+      }
+    }
+    Object.assign(vm.proxy, {
+      focus,
+      shake,
+      __updateRefocusTarget(target2) {
+        refocusTarget = target2 || null;
+      }
+    });
+    onBeforeUnmount(cleanup);
+    function renderPortalContent() {
+      return h("div", __spreadProps(__spreadValues({}, attrs), {
+        class: rootClasses.value
+      }), [
+        h(Transition, {
+          name: "q-transition--fade",
+          appear: true
+        }, () => useBackdrop.value === true ? h("div", {
+          class: "q-dialog__backdrop fixed-full",
+          style: transitionStyle.value,
+          "aria-hidden": "true",
+          onMousedown: onBackdropClick
+        }) : null),
+        h(Transition, { name: transition.value, appear: true }, () => showing.value === true ? h("div", __spreadValues({
+          ref: innerRef,
+          class: classes.value,
+          style: transitionStyle.value,
+          tabindex: -1
+        }, onEvents.value), hSlot(slots.default)) : null)
+      ]);
+    }
+    return renderPortal;
+  }
+});
+const useDarkProps = {
+  dark: {
+    type: Boolean,
+    default: null
+  }
+};
+function useDark(props2, $q) {
+  return computed(() => props2.dark === null ? $q.dark.isActive : props2.dark);
+}
+var QCard = createComponent({
+  name: "QCard",
+  props: __spreadProps(__spreadValues({}, useDarkProps), {
+    tag: {
+      type: String,
+      default: "div"
+    },
+    square: Boolean,
+    flat: Boolean,
+    bordered: Boolean
+  }),
+  setup(props2, { slots }) {
+    const vm = getCurrentInstance();
+    const isDark = useDark(props2, vm.proxy.$q);
+    const classes = computed(() => "q-card" + (isDark.value === true ? " q-card--dark q-dark" : "") + (props2.bordered === true ? " q-card--bordered" : "") + (props2.square === true ? " q-card--square no-border-radius" : "") + (props2.flat === true ? " q-card--flat no-shadow" : ""));
+    return () => h(props2.tag, { class: classes.value }, hSlot(slots.default));
+  }
+});
+var QCardSection = createComponent({
+  name: "QCardSection",
+  props: {
+    tag: {
+      type: String,
+      default: "div"
+    },
+    horizontal: Boolean
+  },
+  setup(props2, { slots }) {
+    const classes = computed(() => `q-card__section q-card__section--${props2.horizontal === true ? "horiz row no-wrap" : "vert"}`);
+    return () => h(props2.tag, { class: classes.value }, hSlot(slots.default));
+  }
+});
+var QCardActions = createComponent({
+  name: "QCardActions",
+  props: __spreadProps(__spreadValues({}, useAlignProps), {
+    vertical: Boolean
+  }),
+  setup(props2, { slots }) {
+    const alignClass = useAlign(props2);
+    const classes = computed(() => `q-card__actions ${alignClass.value} q-card__actions--${props2.vertical === true ? "vert column" : "horiz row"}`);
+    return () => h("div", { class: classes.value }, hSlot(slots.default));
+  }
+});
+const insetMap = {
+  true: "inset",
+  item: "item-inset",
+  "item-thumbnail": "item-thumbnail-inset"
+};
+const margins = {
+  xs: 2,
+  sm: 4,
+  md: 8,
+  lg: 16,
+  xl: 24
+};
+var QSeparator = createComponent({
+  name: "QSeparator",
+  props: __spreadProps(__spreadValues({}, useDarkProps), {
+    spaced: [Boolean, String],
+    inset: [Boolean, String],
+    vertical: Boolean,
+    color: String,
+    size: String
+  }),
+  setup(props2) {
+    const vm = getCurrentInstance();
+    const isDark = useDark(props2, vm.proxy.$q);
+    const orientation = computed(() => props2.vertical === true ? "vertical" : "horizontal");
+    const orientClass = computed(() => ` q-separator--${orientation.value}`);
+    const insetClass = computed(() => props2.inset !== false ? `${orientClass.value}-${insetMap[props2.inset]}` : "");
+    const classes = computed(() => `q-separator${orientClass.value}${insetClass.value}` + (props2.color !== void 0 ? ` bg-${props2.color}` : "") + (isDark.value === true ? " q-separator--dark" : ""));
+    const style = computed(() => {
+      const acc = {};
+      if (props2.size !== void 0) {
+        acc[props2.vertical === true ? "width" : "height"] = props2.size;
+      }
+      if (props2.spaced !== false) {
+        const size2 = props2.spaced === true ? `${margins.md}px` : props2.spaced in margins ? `${margins[props2.spaced]}px` : props2.spaced;
+        const dir = props2.vertical === true ? ["Left", "Right"] : ["Top", "Bottom"];
+        acc[`margin${dir[0]}`] = acc[`margin${dir[1]}`] = size2;
+      }
+      return acc;
+    });
+    return () => h("hr", {
+      class: classes.value,
+      style: style.value,
+      "aria-orientation": orientation.value
+    });
+  }
+});
+function useFormChild({ validate, resetValidation, requiresQForm }) {
+  const $form = inject(formKey, false);
+  if ($form !== false) {
+    const { props: props2, proxy } = getCurrentInstance();
+    Object.assign(proxy, { validate, resetValidation });
+    watch(() => props2.disable, (val) => {
+      if (val === true) {
+        typeof resetValidation === "function" && resetValidation();
+        $form.unbindComponent(proxy);
+      } else {
+        $form.bindComponent(proxy);
+      }
+    });
+    props2.disable !== true && $form.bindComponent(proxy);
+    onBeforeUnmount(() => {
+      props2.disable !== true && $form.unbindComponent(proxy);
+    });
+  } else if (requiresQForm === true) {
+    console.error("Parent QForm not found on useFormChild()!");
+  }
+}
+const hex = /^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/, hexa = /^#[0-9a-fA-F]{4}([0-9a-fA-F]{4})?$/, hexOrHexa = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/, rgb = /^rgb\(((0|[1-9][\d]?|1[\d]{0,2}|2[\d]?|2[0-4][\d]|25[0-5]),){2}(0|[1-9][\d]?|1[\d]{0,2}|2[\d]?|2[0-4][\d]|25[0-5])\)$/, rgba = /^rgba\(((0|[1-9][\d]?|1[\d]{0,2}|2[\d]?|2[0-4][\d]|25[0-5]),){2}(0|[1-9][\d]?|1[\d]{0,2}|2[\d]?|2[0-4][\d]|25[0-5]),(0|0\.[0-9]+[1-9]|0\.[1-9]+|1)\)$/;
+const testPattern = {
+  date: (v) => /^-?[\d]+\/[0-1]\d\/[0-3]\d$/.test(v),
+  time: (v) => /^([0-1]?\d|2[0-3]):[0-5]\d$/.test(v),
+  fulltime: (v) => /^([0-1]?\d|2[0-3]):[0-5]\d:[0-5]\d$/.test(v),
+  timeOrFulltime: (v) => /^([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d)?$/.test(v),
+  hexColor: (v) => hex.test(v),
+  hexaColor: (v) => hexa.test(v),
+  hexOrHexaColor: (v) => hexOrHexa.test(v),
+  rgbColor: (v) => rgb.test(v),
+  rgbaColor: (v) => rgba.test(v),
+  rgbOrRgbaColor: (v) => rgb.test(v) || rgba.test(v),
+  hexOrRgbColor: (v) => hex.test(v) || rgb.test(v),
+  hexaOrRgbaColor: (v) => hexa.test(v) || rgba.test(v),
+  anyColor: (v) => hexOrHexa.test(v) || rgb.test(v) || rgba.test(v)
+};
+const useCircularCommonProps = __spreadProps(__spreadValues({}, useSizeProps), {
+  min: {
+    type: Number,
+    default: 0
+  },
+  max: {
+    type: Number,
+    default: 100
+  },
+  color: String,
+  centerColor: String,
+  trackColor: String,
+  fontSize: String,
+  thickness: {
+    type: Number,
+    default: 0.2,
+    validator: (v) => v >= 0 && v <= 1
+  },
+  angle: {
+    type: Number,
+    default: 0
+  },
+  showValue: Boolean,
+  reverse: Boolean,
+  instantFeedback: Boolean
+});
+function between(v, min, max) {
+  return max <= min ? min : Math.min(max, Math.max(min, v));
+}
+const radius = 50, diameter = 2 * radius, circumference = diameter * Math.PI, strokeDashArray = Math.round(circumference * 1e3) / 1e3;
+createComponent({
+  name: "QCircularProgress",
+  props: __spreadProps(__spreadValues({}, useCircularCommonProps), {
+    value: {
+      type: Number,
+      default: 0
+    },
+    animationSpeed: {
+      type: [String, Number],
+      default: 600
+    },
+    indeterminate: Boolean
+  }),
+  setup(props2, { slots }) {
+    const { proxy: { $q } } = getCurrentInstance();
+    const sizeStyle = useSize(props2);
+    const svgStyle = computed(() => {
+      const angle = ($q.lang.rtl === true ? -1 : 1) * props2.angle;
+      return {
+        transform: props2.reverse !== ($q.lang.rtl === true) ? `scale3d(-1, 1, 1) rotate3d(0, 0, 1, ${-90 - angle}deg)` : `rotate3d(0, 0, 1, ${angle - 90}deg)`
+      };
+    });
+    const circleStyle = computed(() => props2.instantFeedback !== true && props2.indeterminate !== true ? { transition: `stroke-dashoffset ${props2.animationSpeed}ms ease 0s, stroke ${props2.animationSpeed}ms ease` } : "");
+    const viewBox = computed(() => diameter / (1 - props2.thickness / 2));
+    const viewBoxAttr = computed(() => `${viewBox.value / 2} ${viewBox.value / 2} ${viewBox.value} ${viewBox.value}`);
+    const normalized = computed(() => between(props2.value, props2.min, props2.max));
+    const strokeDashOffset = computed(() => circumference * (1 - (normalized.value - props2.min) / (props2.max - props2.min)));
+    const strokeWidth = computed(() => props2.thickness / 2 * viewBox.value);
+    function getCircle({ thickness, offset, color, cls }) {
+      return h("circle", {
+        class: "q-circular-progress__" + cls + (color !== void 0 ? ` text-${color}` : ""),
+        style: circleStyle.value,
+        fill: "transparent",
+        stroke: "currentColor",
+        "stroke-width": thickness,
+        "stroke-dasharray": strokeDashArray,
+        "stroke-dashoffset": offset,
+        cx: viewBox.value,
+        cy: viewBox.value,
+        r: radius
+      });
+    }
+    return () => {
+      const svgChild = [];
+      props2.centerColor !== void 0 && props2.centerColor !== "transparent" && svgChild.push(h("circle", {
+        class: `q-circular-progress__center text-${props2.centerColor}`,
+        fill: "currentColor",
+        r: radius - strokeWidth.value / 2,
+        cx: viewBox.value,
+        cy: viewBox.value
+      }));
+      props2.trackColor !== void 0 && props2.trackColor !== "transparent" && svgChild.push(getCircle({
+        cls: "track",
+        thickness: strokeWidth.value,
+        offset: 0,
+        color: props2.trackColor
+      }));
+      svgChild.push(getCircle({
+        cls: "circle",
+        thickness: strokeWidth.value,
+        offset: strokeDashOffset.value,
+        color: props2.color
+      }));
+      const child = [
+        h("svg", {
+          class: "q-circular-progress__svg",
+          style: svgStyle.value,
+          viewBox: viewBoxAttr.value,
+          "aria-hidden": "true"
+        }, svgChild)
+      ];
+      props2.showValue === true && child.push(h("div", {
+        class: "q-circular-progress__text absolute-full row flex-center content-center",
+        style: { fontSize: props2.fontSize }
+      }, slots.default !== void 0 ? slots.default() : [h("div", normalized.value)]));
+      return h("div", {
+        class: `q-circular-progress q-circular-progress--${props2.indeterminate === true ? "in" : ""}determinate`,
+        style: sizeStyle.value,
+        role: "progressbar",
+        "aria-valuemin": props2.min,
+        "aria-valuemax": props2.max,
+        "aria-valuenow": props2.indeterminate === true ? void 0 : normalized.value
+      }, hMergeSlotSafely(slots.internal, child));
+    };
+  }
+});
+const useFileEmits = ["rejected"];
+const coreEmits = [
+  ...useFileEmits,
+  "start",
+  "finish",
+  "added",
+  "removed"
+];
+const trueFn = () => true;
+function getEmitsObject(emitsArray) {
+  const emitsObject = {};
+  emitsArray.forEach((val) => {
+    emitsObject[val] = trueFn;
+  });
+  return emitsObject;
+}
+getEmitsObject(coreEmits);
+let buf, bufIdx = 0;
+const hexBytes = new Array(256);
+for (let i2 = 0; i2 < 256; i2++) {
+  hexBytes[i2] = (i2 + 256).toString(16).substr(1);
+}
+const randomBytes = (() => {
+  const lib = typeof crypto !== "undefined" ? crypto : typeof window !== "undefined" ? window.crypto || window.msCrypto : void 0;
+  if (lib !== void 0) {
+    if (lib.randomBytes !== void 0) {
+      return lib.randomBytes;
+    }
+    if (lib.getRandomValues !== void 0) {
+      return (n2) => {
+        const bytes = new Uint8Array(n2);
+        lib.getRandomValues(bytes);
+        return bytes;
+      };
+    }
+  }
+  return (n2) => {
+    const r2 = [];
+    for (let i2 = n2; i2 > 0; i2--) {
+      r2.push(Math.floor(Math.random() * 256));
+    }
+    return r2;
+  };
+})();
+const BUFFER_SIZE = 4096;
+function uid() {
+  if (buf === void 0 || bufIdx + 16 > BUFFER_SIZE) {
+    bufIdx = 0;
+    buf = randomBytes(BUFFER_SIZE);
+  }
+  const b = Array.prototype.slice.call(buf, bufIdx, bufIdx += 16);
+  b[6] = b[6] & 15 | 64;
+  b[8] = b[8] & 63 | 128;
+  return hexBytes[b[0]] + hexBytes[b[1]] + hexBytes[b[2]] + hexBytes[b[3]] + "-" + hexBytes[b[4]] + hexBytes[b[5]] + "-" + hexBytes[b[6]] + hexBytes[b[7]] + "-" + hexBytes[b[8]] + hexBytes[b[9]] + "-" + hexBytes[b[10]] + hexBytes[b[11]] + hexBytes[b[12]] + hexBytes[b[13]] + hexBytes[b[14]] + hexBytes[b[15]];
+}
+const lazyRulesValues = [true, false, "ondemand"];
+const useValidateProps = {
+  modelValue: {},
+  error: {
+    type: Boolean,
+    default: null
+  },
+  errorMessage: String,
+  noErrorIcon: Boolean,
+  rules: Array,
+  reactiveRules: Boolean,
+  lazyRules: {
+    type: [Boolean, String],
+    validator: (v) => lazyRulesValues.includes(v)
+  }
+};
+function useValidate(focused, innerLoading) {
+  const { props: props2, proxy } = getCurrentInstance();
+  const innerError = ref(false);
+  const innerErrorMessage = ref(null);
+  const isDirtyModel = ref(null);
+  useFormChild({ validate, resetValidation });
+  let validateIndex = 0, unwatchRules;
+  const hasRules = computed(() => props2.rules !== void 0 && props2.rules !== null && props2.rules.length > 0);
+  const hasActiveRules = computed(() => props2.disable !== true && hasRules.value === true);
+  const hasError = computed(() => props2.error === true || innerError.value === true);
+  const errorMessage = computed(() => typeof props2.errorMessage === "string" && props2.errorMessage.length > 0 ? props2.errorMessage : innerErrorMessage.value);
+  watch(() => props2.modelValue, () => {
+    validateIfNeeded();
+  });
+  watch(() => props2.reactiveRules, (val) => {
+    if (val === true) {
+      if (unwatchRules === void 0) {
+        unwatchRules = watch(() => props2.rules, () => {
+          validateIfNeeded(true);
+        });
+      }
+    } else if (unwatchRules !== void 0) {
+      unwatchRules();
+      unwatchRules = void 0;
+    }
+  }, { immediate: true });
+  watch(focused, (val) => {
+    if (val === true) {
+      if (isDirtyModel.value === null) {
+        isDirtyModel.value = false;
+      }
+    } else if (isDirtyModel.value === false) {
+      isDirtyModel.value = true;
+      if (hasActiveRules.value === true && props2.lazyRules !== "ondemand" && innerLoading.value === false) {
+        debouncedValidate();
+      }
+    }
+  });
+  function resetValidation() {
+    validateIndex++;
+    innerLoading.value = false;
+    isDirtyModel.value = null;
+    innerError.value = false;
+    innerErrorMessage.value = null;
+    debouncedValidate.cancel();
+  }
+  function validate(val = props2.modelValue) {
+    if (hasActiveRules.value !== true) {
+      return true;
+    }
+    const index = ++validateIndex;
+    if (innerLoading.value !== true && props2.lazyRules !== true) {
+      isDirtyModel.value = true;
+    }
+    const update2 = (err, msg) => {
+      if (innerError.value !== err) {
+        innerError.value = err;
+      }
+      const m = msg || void 0;
+      if (innerErrorMessage.value !== m) {
+        innerErrorMessage.value = m;
+      }
+      innerLoading.value = false;
+    };
+    const promises = [];
+    for (let i2 = 0; i2 < props2.rules.length; i2++) {
+      const rule = props2.rules[i2];
+      let res;
+      if (typeof rule === "function") {
+        res = rule(val);
+      } else if (typeof rule === "string" && testPattern[rule] !== void 0) {
+        res = testPattern[rule](val);
+      }
+      if (res === false || typeof res === "string") {
+        update2(true, res);
+        return false;
+      } else if (res !== true && res !== void 0) {
+        promises.push(res);
+      }
+    }
+    if (promises.length === 0) {
+      update2(false);
+      return true;
+    }
+    innerLoading.value = true;
+    return Promise.all(promises).then((res) => {
+      if (res === void 0 || Array.isArray(res) === false || res.length === 0) {
+        index === validateIndex && update2(false);
+        return true;
+      }
+      const msg = res.find((r2) => r2 === false || typeof r2 === "string");
+      index === validateIndex && update2(msg !== void 0, msg);
+      return msg === void 0;
+    }, (e2) => {
+      if (index === validateIndex) {
+        console.error(e2);
+        update2(true);
+      }
+      return false;
+    });
+  }
+  function validateIfNeeded(changedRules) {
+    if (hasActiveRules.value === true && props2.lazyRules !== "ondemand" && (isDirtyModel.value === true || props2.lazyRules !== true && changedRules !== true)) {
+      debouncedValidate();
+    }
+  }
+  const debouncedValidate = debounce(validate, 0);
+  onBeforeUnmount(() => {
+    unwatchRules !== void 0 && unwatchRules();
+    debouncedValidate.cancel();
+  });
+  Object.assign(proxy, { resetValidation, validate });
+  injectProp(proxy, "hasError", () => hasError.value);
+  return {
+    isDirtyModel,
+    hasRules,
+    hasError,
+    errorMessage,
+    validate,
+    resetValidation
+  };
+}
+const listenerRE = /^on[A-Z]/;
+function useSplitAttrs(attrs, vnode) {
+  const acc = {
+    listeners: ref({}),
+    attributes: ref({})
+  };
+  function update2() {
+    const attributes = {};
+    const listeners = {};
+    for (const key in attrs) {
+      if (key !== "class" && key !== "style" && listenerRE.test(key) === false) {
+        attributes[key] = attrs[key];
+      }
+    }
+    for (const key in vnode.props) {
+      if (listenerRE.test(key) === true) {
+        listeners[key] = vnode.props[key];
+      }
+    }
+    acc.attributes.value = attributes;
+    acc.listeners.value = listeners;
+  }
+  onBeforeUpdate(update2);
+  update2();
+  return acc;
+}
+function getTargetUid(val) {
+  return val === void 0 ? `f_${uid()}` : val;
+}
+function fieldValueIsFilled(val) {
+  return val !== void 0 && val !== null && ("" + val).length > 0;
+}
+const useFieldProps = __spreadProps(__spreadValues(__spreadValues({}, useDarkProps), useValidateProps), {
+  label: String,
+  stackLabel: Boolean,
+  hint: String,
+  hideHint: Boolean,
+  prefix: String,
+  suffix: String,
+  labelColor: String,
+  color: String,
+  bgColor: String,
+  filled: Boolean,
+  outlined: Boolean,
+  borderless: Boolean,
+  standout: [Boolean, String],
+  square: Boolean,
+  loading: Boolean,
+  labelSlot: Boolean,
+  bottomSlots: Boolean,
+  hideBottomSpace: Boolean,
+  rounded: Boolean,
+  dense: Boolean,
+  itemAligned: Boolean,
+  counter: Boolean,
+  clearable: Boolean,
+  clearIcon: String,
+  disable: Boolean,
+  readonly: Boolean,
+  autofocus: Boolean,
+  for: String,
+  maxlength: [Number, String]
+});
+const useFieldEmits = ["update:modelValue", "clear", "focus", "blur", "popup-show", "popup-hide"];
+function useFieldState() {
+  const { props: props2, attrs, proxy, vnode } = getCurrentInstance();
+  const isDark = useDark(props2, proxy.$q);
+  return {
+    isDark,
+    editable: computed(() => props2.disable !== true && props2.readonly !== true),
+    innerLoading: ref(false),
+    focused: ref(false),
+    hasPopupOpen: false,
+    splitAttrs: useSplitAttrs(attrs, vnode),
+    targetUid: ref(getTargetUid(props2.for)),
+    rootRef: ref(null),
+    targetRef: ref(null),
+    controlRef: ref(null)
+  };
+}
+function useField(state) {
+  const { props: props2, emit, slots, attrs, proxy } = getCurrentInstance();
+  const { $q } = proxy;
+  let focusoutTimer;
+  if (state.hasValue === void 0) {
+    state.hasValue = computed(() => fieldValueIsFilled(props2.modelValue));
+  }
+  if (state.emitValue === void 0) {
+    state.emitValue = (value) => {
+      emit("update:modelValue", value);
+    };
+  }
+  if (state.controlEvents === void 0) {
+    state.controlEvents = {
+      onFocusin: onControlFocusin,
+      onFocusout: onControlFocusout
+    };
+  }
+  Object.assign(state, {
+    clearValue,
+    onControlFocusin,
+    onControlFocusout,
+    focus
+  });
+  if (state.computedCounter === void 0) {
+    state.computedCounter = computed(() => {
+      if (props2.counter !== false) {
+        const len = typeof props2.modelValue === "string" || typeof props2.modelValue === "number" ? ("" + props2.modelValue).length : Array.isArray(props2.modelValue) === true ? props2.modelValue.length : 0;
+        const max = props2.maxlength !== void 0 ? props2.maxlength : props2.maxValues;
+        return len + (max !== void 0 ? " / " + max : "");
+      }
+    });
+  }
+  const {
+    isDirtyModel,
+    hasRules,
+    hasError,
+    errorMessage,
+    resetValidation
+  } = useValidate(state.focused, state.innerLoading);
+  const floatingLabel = state.floatingLabel !== void 0 ? computed(() => props2.stackLabel === true || state.focused.value === true || state.floatingLabel.value === true) : computed(() => props2.stackLabel === true || state.focused.value === true || state.hasValue.value === true);
+  const shouldRenderBottom = computed(() => props2.bottomSlots === true || props2.hint !== void 0 || hasRules.value === true || props2.counter === true || props2.error !== null);
+  const styleType = computed(() => {
+    if (props2.filled === true) {
+      return "filled";
+    }
+    if (props2.outlined === true) {
+      return "outlined";
+    }
+    if (props2.borderless === true) {
+      return "borderless";
+    }
+    if (props2.standout) {
+      return "standout";
+    }
+    return "standard";
+  });
+  const classes = computed(() => `q-field row no-wrap items-start q-field--${styleType.value}` + (state.fieldClass !== void 0 ? ` ${state.fieldClass.value}` : "") + (props2.rounded === true ? " q-field--rounded" : "") + (props2.square === true ? " q-field--square" : "") + (floatingLabel.value === true ? " q-field--float" : "") + (hasLabel.value === true ? " q-field--labeled" : "") + (props2.dense === true ? " q-field--dense" : "") + (props2.itemAligned === true ? " q-field--item-aligned q-item-type" : "") + (state.isDark.value === true ? " q-field--dark" : "") + (state.getControl === void 0 ? " q-field--auto-height" : "") + (state.focused.value === true ? " q-field--focused" : "") + (hasError.value === true ? " q-field--error" : "") + (hasError.value === true || state.focused.value === true ? " q-field--highlighted" : "") + (props2.hideBottomSpace !== true && shouldRenderBottom.value === true ? " q-field--with-bottom" : "") + (props2.disable === true ? " q-field--disabled" : props2.readonly === true ? " q-field--readonly" : ""));
+  const contentClass = computed(() => "q-field__control relative-position row no-wrap" + (props2.bgColor !== void 0 ? ` bg-${props2.bgColor}` : "") + (hasError.value === true ? " text-negative" : typeof props2.standout === "string" && props2.standout.length > 0 && state.focused.value === true ? ` ${props2.standout}` : props2.color !== void 0 ? ` text-${props2.color}` : ""));
+  const hasLabel = computed(() => props2.labelSlot === true || props2.label !== void 0);
+  const labelClass = computed(() => "q-field__label no-pointer-events absolute ellipsis" + (props2.labelColor !== void 0 && hasError.value !== true ? ` text-${props2.labelColor}` : ""));
+  const controlSlotScope = computed(() => ({
+    id: state.targetUid.value,
+    editable: state.editable.value,
+    focused: state.focused.value,
+    floatingLabel: floatingLabel.value,
+    modelValue: props2.modelValue,
+    emitValue: state.emitValue
+  }));
+  const attributes = computed(() => {
+    const acc = {
+      for: state.targetUid.value
+    };
+    if (props2.disable === true) {
+      acc["aria-disabled"] = "true";
+    } else if (props2.readonly === true) {
+      acc["aria-readonly"] = "true";
+    }
+    return acc;
+  });
+  watch(() => props2.for, (val) => {
+    state.targetUid.value = getTargetUid(val);
+  });
+  function focusHandler() {
+    const el = document.activeElement;
+    let target2 = state.targetRef !== void 0 && state.targetRef.value;
+    if (target2 && (el === null || el.id !== state.targetUid.value)) {
+      target2.hasAttribute("tabindex") === true || (target2 = target2.querySelector("[tabindex]"));
+      if (target2 && target2 !== el) {
+        target2.focus({ preventScroll: true });
+      }
+    }
+  }
+  function focus() {
+    addFocusFn(focusHandler);
+  }
+  function blur() {
+    removeFocusFn(focusHandler);
+    const el = document.activeElement;
+    if (el !== null && state.rootRef.value.contains(el)) {
+      el.blur();
+    }
+  }
+  function onControlFocusin(e2) {
+    clearTimeout(focusoutTimer);
+    if (state.editable.value === true && state.focused.value === false) {
+      state.focused.value = true;
+      emit("focus", e2);
+    }
+  }
+  function onControlFocusout(e2, then) {
+    clearTimeout(focusoutTimer);
+    focusoutTimer = setTimeout(() => {
+      if (document.hasFocus() === true && (state.hasPopupOpen === true || state.controlRef === void 0 || state.controlRef.value === null || state.controlRef.value.contains(document.activeElement) !== false)) {
+        return;
+      }
+      if (state.focused.value === true) {
+        state.focused.value = false;
+        emit("blur", e2);
+      }
+      then !== void 0 && then();
+    });
+  }
+  function clearValue(e2) {
+    stopAndPrevent(e2);
+    if ($q.platform.is.mobile !== true) {
+      const el = state.targetRef !== void 0 && state.targetRef.value || state.rootRef.value;
+      el.focus();
+    } else if (state.rootRef.value.contains(document.activeElement) === true) {
+      document.activeElement.blur();
+    }
+    if (props2.type === "file") {
+      state.inputRef.value.value = null;
+    }
+    emit("update:modelValue", null);
+    emit("clear", props2.modelValue);
+    nextTick(() => {
+      resetValidation();
+      if ($q.platform.is.mobile !== true) {
+        isDirtyModel.value = false;
+      }
+    });
+  }
+  function getContent() {
+    const node = [];
+    slots.prepend !== void 0 && node.push(h("div", {
+      class: "q-field__prepend q-field__marginal row no-wrap items-center",
+      key: "prepend",
+      onClick: prevent
+    }, slots.prepend()));
+    node.push(h("div", {
+      class: "q-field__control-container col relative-position row no-wrap q-anchor--skip"
+    }, getControlContainer()));
+    slots.append !== void 0 && node.push(h("div", {
+      class: "q-field__append q-field__marginal row no-wrap items-center",
+      key: "append",
+      onClick: prevent
+    }, slots.append()));
+    hasError.value === true && props2.noErrorIcon === false && node.push(getInnerAppendNode("error", [
+      h(QIcon, { name: $q.iconSet.field.error, color: "negative" })
+    ]));
+    if (props2.loading === true || state.innerLoading.value === true) {
+      node.push(getInnerAppendNode("inner-loading-append", slots.loading !== void 0 ? slots.loading() : [h(QSpinner, { color: props2.color })]));
+    } else if (props2.clearable === true && state.hasValue.value === true && state.editable.value === true) {
+      node.push(getInnerAppendNode("inner-clearable-append", [
+        h(QIcon, {
+          class: "q-field__focusable-action",
+          tag: "button",
+          name: props2.clearIcon || $q.iconSet.field.clear,
+          tabindex: 0,
+          type: "button",
+          "aria-hidden": null,
+          role: null,
+          onClick: clearValue
+        })
+      ]));
+    }
+    state.getInnerAppend !== void 0 && node.push(getInnerAppendNode("inner-append", state.getInnerAppend()));
+    state.getControlChild !== void 0 && node.push(state.getControlChild());
+    return node;
+  }
+  function getControlContainer() {
+    const node = [];
+    props2.prefix !== void 0 && props2.prefix !== null && node.push(h("div", {
+      class: "q-field__prefix no-pointer-events row items-center"
+    }, props2.prefix));
+    if (state.getShadowControl !== void 0 && state.hasShadow.value === true) {
+      node.push(state.getShadowControl());
+    }
+    if (state.getControl !== void 0) {
+      node.push(state.getControl());
+    } else if (slots.rawControl !== void 0) {
+      node.push(slots.rawControl());
+    } else if (slots.control !== void 0) {
+      node.push(h("div", __spreadProps(__spreadValues({
+        ref: state.targetRef,
+        class: "q-field__native row"
+      }, state.splitAttrs.attributes.value), {
+        "data-autofocus": props2.autofocus === true || void 0
+      }), slots.control(controlSlotScope.value)));
+    }
+    hasLabel.value === true && node.push(h("div", {
+      class: labelClass.value
+    }, hSlot(slots.label, props2.label)));
+    props2.suffix !== void 0 && props2.suffix !== null && node.push(h("div", {
+      class: "q-field__suffix no-pointer-events row items-center"
+    }, props2.suffix));
+    return node.concat(hSlot(slots.default));
+  }
+  function getBottom() {
+    let msg, key;
+    if (hasError.value === true) {
+      if (errorMessage.value !== null) {
+        msg = [h("div", { role: "alert" }, errorMessage.value)];
+        key = `q--slot-error-${errorMessage.value}`;
+      } else {
+        msg = hSlot(slots.error);
+        key = "q--slot-error";
+      }
+    } else if (props2.hideHint !== true || state.focused.value === true) {
+      if (props2.hint !== void 0) {
+        msg = [h("div", props2.hint)];
+        key = `q--slot-hint-${props2.hint}`;
+      } else {
+        msg = hSlot(slots.hint);
+        key = "q--slot-hint";
+      }
+    }
+    const hasCounter = props2.counter === true || slots.counter !== void 0;
+    if (props2.hideBottomSpace === true && hasCounter === false && msg === void 0) {
+      return;
+    }
+    const main = h("div", {
+      key,
+      class: "q-field__messages col"
+    }, msg);
+    return h("div", {
+      class: "q-field__bottom row items-start q-field__bottom--" + (props2.hideBottomSpace !== true ? "animated" : "stale")
+    }, [
+      props2.hideBottomSpace === true ? main : h(Transition, { name: "q-transition--field-message" }, () => main),
+      hasCounter === true ? h("div", {
+        class: "q-field__counter"
+      }, slots.counter !== void 0 ? slots.counter() : state.computedCounter.value) : null
+    ]);
+  }
+  function getInnerAppendNode(key, content) {
+    return content === null ? null : h("div", {
+      key,
+      class: "q-field__append q-field__marginal row no-wrap items-center q-anchor--skip"
+    }, content);
+  }
+  Object.assign(proxy, { focus, blur });
+  let shouldActivate = false;
+  onDeactivated(() => {
+    shouldActivate = true;
+  });
+  onActivated(() => {
+    shouldActivate === true && props2.autofocus === true && proxy.focus();
+  });
+  onMounted(() => {
+    if (isRuntimeSsrPreHydration.value === true && props2.for === void 0) {
+      state.targetUid.value = getTargetUid();
+    }
+    props2.autofocus === true && proxy.focus();
+  });
+  onBeforeUnmount(() => {
+    clearTimeout(focusoutTimer);
+  });
+  return function renderField() {
+    return h("label", __spreadValues({
+      ref: state.rootRef,
+      class: [
+        classes.value,
+        attrs.class
+      ],
+      style: attrs.style
+    }, attributes.value), [
+      slots.before !== void 0 ? h("div", {
+        class: "q-field__before q-field__marginal row no-wrap items-center",
+        onClick: prevent
+      }, slots.before()) : null,
+      h("div", {
+        class: "q-field__inner relative-position col self-stretch"
+      }, [
+        h("div", __spreadValues({
+          ref: state.controlRef,
+          class: contentClass.value,
+          tabindex: -1
+        }, state.controlEvents), getContent()),
+        shouldRenderBottom.value === true ? getBottom() : null
+      ]),
+      slots.after !== void 0 ? h("div", {
+        class: "q-field__after q-field__marginal row no-wrap items-center",
+        onClick: prevent
+      }, slots.after()) : null
+    ]);
+  };
+}
+const NAMED_MASKS = {
+  date: "####/##/##",
+  datetime: "####/##/## ##:##",
+  time: "##:##",
+  fulltime: "##:##:##",
+  phone: "(###) ### - ####",
+  card: "#### #### #### ####"
+};
+const TOKENS = {
+  "#": { pattern: "[\\d]", negate: "[^\\d]" },
+  S: { pattern: "[a-zA-Z]", negate: "[^a-zA-Z]" },
+  N: { pattern: "[0-9a-zA-Z]", negate: "[^0-9a-zA-Z]" },
+  A: { pattern: "[a-zA-Z]", negate: "[^a-zA-Z]", transform: (v) => v.toLocaleUpperCase() },
+  a: { pattern: "[a-zA-Z]", negate: "[^a-zA-Z]", transform: (v) => v.toLocaleLowerCase() },
+  X: { pattern: "[0-9a-zA-Z]", negate: "[^0-9a-zA-Z]", transform: (v) => v.toLocaleUpperCase() },
+  x: { pattern: "[0-9a-zA-Z]", negate: "[^0-9a-zA-Z]", transform: (v) => v.toLocaleLowerCase() }
+};
+const KEYS = Object.keys(TOKENS);
+KEYS.forEach((key) => {
+  TOKENS[key].regex = new RegExp(TOKENS[key].pattern);
+});
+const tokenRegexMask = new RegExp("\\\\([^.*+?^${}()|([\\]])|([.*+?^${}()|[\\]])|([" + KEYS.join("") + "])|(.)", "g"), escRegex = /[.*+?^${}()|[\]\\]/g;
+const MARKER = String.fromCharCode(1);
+const useMaskProps = {
+  mask: String,
+  reverseFillMask: Boolean,
+  fillMask: [Boolean, String],
+  unmaskedValue: Boolean
+};
+function useMask(props2, emit, emitValue, inputRef) {
+  let maskMarked, maskReplaced, computedMask, computedUnmask;
+  const hasMask = ref(null);
+  const innerValue = ref(getInitialMaskedValue());
+  function getIsTypeText() {
+    return props2.autogrow === true || ["textarea", "text", "search", "url", "tel", "password"].includes(props2.type);
+  }
+  watch(() => props2.type + props2.autogrow, updateMaskInternals);
+  watch(() => props2.mask, (v) => {
+    if (v !== void 0) {
+      updateMaskValue(innerValue.value, true);
+    } else {
+      const val = unmaskValue(innerValue.value);
+      updateMaskInternals();
+      props2.modelValue !== val && emit("update:modelValue", val);
+    }
+  });
+  watch(() => props2.fillMask + props2.reverseFillMask, () => {
+    hasMask.value === true && updateMaskValue(innerValue.value, true);
+  });
+  watch(() => props2.unmaskedValue, () => {
+    hasMask.value === true && updateMaskValue(innerValue.value);
+  });
+  function getInitialMaskedValue() {
+    updateMaskInternals();
+    if (hasMask.value === true) {
+      const masked = maskValue(unmaskValue(props2.modelValue));
+      return props2.fillMask !== false ? fillWithMask(masked) : masked;
+    }
+    return props2.modelValue;
+  }
+  function getPaddedMaskMarked(size2) {
+    if (size2 < maskMarked.length) {
+      return maskMarked.slice(-size2);
+    }
+    let pad = "", localMaskMarked = maskMarked;
+    const padPos = localMaskMarked.indexOf(MARKER);
+    if (padPos > -1) {
+      for (let i2 = size2 - localMaskMarked.length; i2 > 0; i2--) {
+        pad += MARKER;
+      }
+      localMaskMarked = localMaskMarked.slice(0, padPos) + pad + localMaskMarked.slice(padPos);
+    }
+    return localMaskMarked;
+  }
+  function updateMaskInternals() {
+    hasMask.value = props2.mask !== void 0 && props2.mask.length > 0 && getIsTypeText();
+    if (hasMask.value === false) {
+      computedUnmask = void 0;
+      maskMarked = "";
+      maskReplaced = "";
+      return;
+    }
+    const localComputedMask = NAMED_MASKS[props2.mask] === void 0 ? props2.mask : NAMED_MASKS[props2.mask], fillChar = typeof props2.fillMask === "string" && props2.fillMask.length > 0 ? props2.fillMask.slice(0, 1) : "_", fillCharEscaped = fillChar.replace(escRegex, "\\$&"), unmask = [], extract = [], mask = [];
+    let firstMatch = props2.reverseFillMask === true, unmaskChar = "", negateChar = "";
+    localComputedMask.replace(tokenRegexMask, (_, char1, esc, token, char2) => {
+      if (token !== void 0) {
+        const c = TOKENS[token];
+        mask.push(c);
+        negateChar = c.negate;
+        if (firstMatch === true) {
+          extract.push("(?:" + negateChar + "+)?(" + c.pattern + "+)?(?:" + negateChar + "+)?(" + c.pattern + "+)?");
+          firstMatch = false;
+        }
+        extract.push("(?:" + negateChar + "+)?(" + c.pattern + ")?");
+      } else if (esc !== void 0) {
+        unmaskChar = "\\" + (esc === "\\" ? "" : esc);
+        mask.push(esc);
+        unmask.push("([^" + unmaskChar + "]+)?" + unmaskChar + "?");
+      } else {
+        const c = char1 !== void 0 ? char1 : char2;
+        unmaskChar = c === "\\" ? "\\\\\\\\" : c.replace(escRegex, "\\\\$&");
+        mask.push(c);
+        unmask.push("([^" + unmaskChar + "]+)?" + unmaskChar + "?");
+      }
+    });
+    const unmaskMatcher = new RegExp("^" + unmask.join("") + "(" + (unmaskChar === "" ? "." : "[^" + unmaskChar + "]") + "+)?$"), extractLast = extract.length - 1, extractMatcher = extract.map((re, index) => {
+      if (index === 0 && props2.reverseFillMask === true) {
+        return new RegExp("^" + fillCharEscaped + "*" + re);
+      } else if (index === extractLast) {
+        return new RegExp("^" + re + "(" + (negateChar === "" ? "." : negateChar) + "+)?" + (props2.reverseFillMask === true ? "$" : fillCharEscaped + "*"));
+      }
+      return new RegExp("^" + re);
+    });
+    computedMask = mask;
+    computedUnmask = (val) => {
+      const unmaskMatch = unmaskMatcher.exec(val);
+      if (unmaskMatch !== null) {
+        val = unmaskMatch.slice(1).join("");
+      }
+      const extractMatch = [], extractMatcherLength = extractMatcher.length;
+      for (let i2 = 0, str = val; i2 < extractMatcherLength; i2++) {
+        const m = extractMatcher[i2].exec(str);
+        if (m === null) {
+          break;
+        }
+        str = str.slice(m.shift().length);
+        extractMatch.push(...m);
+      }
+      if (extractMatch.length > 0) {
+        return extractMatch.join("");
+      }
+      return val;
+    };
+    maskMarked = mask.map((v) => typeof v === "string" ? v : MARKER).join("");
+    maskReplaced = maskMarked.split(MARKER).join(fillChar);
+  }
+  function updateMaskValue(rawVal, updateMaskInternalsFlag, inputType) {
+    const inp = inputRef.value, end = inp.selectionEnd, endReverse = inp.value.length - end, unmasked = unmaskValue(rawVal);
+    updateMaskInternalsFlag === true && updateMaskInternals();
+    const preMasked = maskValue(unmasked), masked = props2.fillMask !== false ? fillWithMask(preMasked) : preMasked, changed = innerValue.value !== masked;
+    inp.value !== masked && (inp.value = masked);
+    changed === true && (innerValue.value = masked);
+    document.activeElement === inp && nextTick(() => {
+      if (masked === maskReplaced) {
+        const cursor = props2.reverseFillMask === true ? maskReplaced.length : 0;
+        inp.setSelectionRange(cursor, cursor, "forward");
+        return;
+      }
+      if (inputType === "insertFromPaste" && props2.reverseFillMask !== true) {
+        const cursor = end - 1;
+        moveCursor.right(inp, cursor, cursor);
+        return;
+      }
+      if (["deleteContentBackward", "deleteContentForward"].indexOf(inputType) > -1) {
+        const cursor = props2.reverseFillMask === true ? end === 0 ? masked.length > preMasked.length ? 1 : 0 : Math.max(0, masked.length - (masked === maskReplaced ? 0 : Math.min(preMasked.length, endReverse) + 1)) + 1 : end;
+        inp.setSelectionRange(cursor, cursor, "forward");
+        return;
+      }
+      if (props2.reverseFillMask === true) {
+        if (changed === true) {
+          const cursor = Math.max(0, masked.length - (masked === maskReplaced ? 0 : Math.min(preMasked.length, endReverse + 1)));
+          if (cursor === 1 && end === 1) {
+            inp.setSelectionRange(cursor, cursor, "forward");
+          } else {
+            moveCursor.rightReverse(inp, cursor, cursor);
+          }
+        } else {
+          const cursor = masked.length - endReverse;
+          inp.setSelectionRange(cursor, cursor, "backward");
+        }
+      } else {
+        if (changed === true) {
+          const cursor = Math.max(0, maskMarked.indexOf(MARKER), Math.min(preMasked.length, end) - 1);
+          moveCursor.right(inp, cursor, cursor);
+        } else {
+          const cursor = end - 1;
+          moveCursor.right(inp, cursor, cursor);
+        }
+      }
+    });
+    const val = props2.unmaskedValue === true ? unmaskValue(masked) : masked;
+    String(props2.modelValue) !== val && emitValue(val, true);
+  }
+  function moveCursorForPaste(inp, start, end) {
+    const preMasked = maskValue(unmaskValue(inp.value));
+    start = Math.max(0, maskMarked.indexOf(MARKER), Math.min(preMasked.length, start));
+    inp.setSelectionRange(start, end, "forward");
+  }
+  const moveCursor = {
+    left(inp, start, end, selection) {
+      const noMarkBefore = maskMarked.slice(start - 1).indexOf(MARKER) === -1;
+      let i2 = Math.max(0, start - 1);
+      for (; i2 >= 0; i2--) {
+        if (maskMarked[i2] === MARKER) {
+          start = i2;
+          noMarkBefore === true && start++;
+          break;
+        }
+      }
+      if (i2 < 0 && maskMarked[start] !== void 0 && maskMarked[start] !== MARKER) {
+        return moveCursor.right(inp, 0, 0);
+      }
+      start >= 0 && inp.setSelectionRange(start, selection === true ? end : start, "backward");
+    },
+    right(inp, start, end, selection) {
+      const limit = inp.value.length;
+      let i2 = Math.min(limit, end + 1);
+      for (; i2 <= limit; i2++) {
+        if (maskMarked[i2] === MARKER) {
+          end = i2;
+          break;
+        } else if (maskMarked[i2 - 1] === MARKER) {
+          end = i2;
+        }
+      }
+      if (i2 > limit && maskMarked[end - 1] !== void 0 && maskMarked[end - 1] !== MARKER) {
+        return moveCursor.left(inp, limit, limit);
+      }
+      inp.setSelectionRange(selection ? start : end, end, "forward");
+    },
+    leftReverse(inp, start, end, selection) {
+      const localMaskMarked = getPaddedMaskMarked(inp.value.length);
+      let i2 = Math.max(0, start - 1);
+      for (; i2 >= 0; i2--) {
+        if (localMaskMarked[i2 - 1] === MARKER) {
+          start = i2;
+          break;
+        } else if (localMaskMarked[i2] === MARKER) {
+          start = i2;
+          if (i2 === 0) {
+            break;
+          }
+        }
+      }
+      if (i2 < 0 && localMaskMarked[start] !== void 0 && localMaskMarked[start] !== MARKER) {
+        return moveCursor.rightReverse(inp, 0, 0);
+      }
+      start >= 0 && inp.setSelectionRange(start, selection === true ? end : start, "backward");
+    },
+    rightReverse(inp, start, end, selection) {
+      const limit = inp.value.length, localMaskMarked = getPaddedMaskMarked(limit), noMarkBefore = localMaskMarked.slice(0, end + 1).indexOf(MARKER) === -1;
+      let i2 = Math.min(limit, end + 1);
+      for (; i2 <= limit; i2++) {
+        if (localMaskMarked[i2 - 1] === MARKER) {
+          end = i2;
+          end > 0 && noMarkBefore === true && end--;
+          break;
+        }
+      }
+      if (i2 > limit && localMaskMarked[end - 1] !== void 0 && localMaskMarked[end - 1] !== MARKER) {
+        return moveCursor.leftReverse(inp, limit, limit);
+      }
+      inp.setSelectionRange(selection === true ? start : end, end, "forward");
+    }
+  };
+  function onMaskedKeydown(e2) {
+    if (shouldIgnoreKey(e2) === true) {
+      return;
+    }
+    const inp = inputRef.value, start = inp.selectionStart, end = inp.selectionEnd;
+    if (e2.keyCode === 37 || e2.keyCode === 39) {
+      const fn = moveCursor[(e2.keyCode === 39 ? "right" : "left") + (props2.reverseFillMask === true ? "Reverse" : "")];
+      e2.preventDefault();
+      fn(inp, start, end, e2.shiftKey);
+    } else if (e2.keyCode === 8 && props2.reverseFillMask !== true && start === end) {
+      moveCursor.left(inp, start, end, true);
+    } else if (e2.keyCode === 46 && props2.reverseFillMask === true && start === end) {
+      moveCursor.rightReverse(inp, start, end, true);
+    }
+  }
+  function maskValue(val) {
+    if (val === void 0 || val === null || val === "") {
+      return "";
+    }
+    if (props2.reverseFillMask === true) {
+      return maskValueReverse(val);
+    }
+    const mask = computedMask;
+    let valIndex = 0, output = "";
+    for (let maskIndex = 0; maskIndex < mask.length; maskIndex++) {
+      const valChar = val[valIndex], maskDef = mask[maskIndex];
+      if (typeof maskDef === "string") {
+        output += maskDef;
+        valChar === maskDef && valIndex++;
+      } else if (valChar !== void 0 && maskDef.regex.test(valChar)) {
+        output += maskDef.transform !== void 0 ? maskDef.transform(valChar) : valChar;
+        valIndex++;
+      } else {
+        return output;
+      }
+    }
+    return output;
+  }
+  function maskValueReverse(val) {
+    const mask = computedMask, firstTokenIndex = maskMarked.indexOf(MARKER);
+    let valIndex = val.length - 1, output = "";
+    for (let maskIndex = mask.length - 1; maskIndex >= 0 && valIndex > -1; maskIndex--) {
+      const maskDef = mask[maskIndex];
+      let valChar = val[valIndex];
+      if (typeof maskDef === "string") {
+        output = maskDef + output;
+        valChar === maskDef && valIndex--;
+      } else if (valChar !== void 0 && maskDef.regex.test(valChar)) {
+        do {
+          output = (maskDef.transform !== void 0 ? maskDef.transform(valChar) : valChar) + output;
+          valIndex--;
+          valChar = val[valIndex];
+        } while (firstTokenIndex === maskIndex && valChar !== void 0 && maskDef.regex.test(valChar));
+      } else {
+        return output;
+      }
+    }
+    return output;
+  }
+  function unmaskValue(val) {
+    return typeof val !== "string" || computedUnmask === void 0 ? typeof val === "number" ? computedUnmask("" + val) : val : computedUnmask(val);
+  }
+  function fillWithMask(val) {
+    if (maskReplaced.length - val.length <= 0) {
+      return val;
+    }
+    return props2.reverseFillMask === true && val.length > 0 ? maskReplaced.slice(0, -val.length) + val : val + maskReplaced.slice(val.length);
+  }
+  return {
+    innerValue,
+    hasMask,
+    moveCursorForPaste,
+    updateMaskValue,
+    onMaskedKeydown
+  };
+}
+const useFormProps = {
+  name: String
+};
+function useFormInject(formAttrs = {}) {
+  return (child, action, className) => {
+    child[action](h("input", __spreadValues({
+      class: "hidden" + (className || "")
+    }, formAttrs.value)));
+  };
+}
+function useFormInputNameAttr(props2) {
+  return computed(() => props2.name || props2.for);
+}
+function useFileFormDomProps(props2, typeGuard) {
+  function getFormDomProps() {
+    const model = props2.modelValue;
+    try {
+      const dt = "DataTransfer" in window ? new DataTransfer() : "ClipboardEvent" in window ? new ClipboardEvent("").clipboardData : void 0;
+      if (Object(model) === model) {
+        ("length" in model ? Array.from(model) : [model]).forEach((file) => {
+          dt.items.add(file);
+        });
+      }
+      return {
+        files: dt.files
+      };
+    } catch (e2) {
+      return {
+        files: void 0
+      };
+    }
+  }
+  return typeGuard === true ? computed(() => {
+    if (props2.type !== "file") {
+      return;
+    }
+    return getFormDomProps();
+  }) : computed(getFormDomProps);
+}
+const isJapanese = /[\u3000-\u303f\u3040-\u309f\u30a0-\u30ff\uff00-\uff9f\u4e00-\u9faf\u3400-\u4dbf]/;
+const isChinese = /[\u4e00-\u9fff\u3400-\u4dbf\u{20000}-\u{2a6df}\u{2a700}-\u{2b73f}\u{2b740}-\u{2b81f}\u{2b820}-\u{2ceaf}\uf900-\ufaff\u3300-\u33ff\ufe30-\ufe4f\uf900-\ufaff\u{2f800}-\u{2fa1f}]/u;
+const isKorean = /[\u3131-\u314e\u314f-\u3163\uac00-\ud7a3]/;
+function useKeyComposition(onInput) {
+  return function onComposition(e2) {
+    if (e2.type === "compositionend" || e2.type === "change") {
+      if (e2.target.composing !== true) {
+        return;
+      }
+      e2.target.composing = false;
+      onInput(e2);
+    } else if (e2.type === "compositionupdate") {
+      if (typeof e2.data === "string" && isJapanese.test(e2.data) === false && isChinese.test(e2.data) === false && isKorean.test(e2.data) === false) {
+        e2.target.composing = false;
+      }
+    } else {
+      e2.target.composing = true;
+    }
+  };
+}
+var QInput = createComponent({
+  name: "QInput",
+  inheritAttrs: false,
+  props: __spreadProps(__spreadValues(__spreadValues(__spreadValues({}, useFieldProps), useMaskProps), useFormProps), {
+    modelValue: { required: false },
+    shadowText: String,
+    type: {
+      type: String,
+      default: "text"
+    },
+    debounce: [String, Number],
+    autogrow: Boolean,
+    inputClass: [Array, String, Object],
+    inputStyle: [Array, String, Object]
+  }),
+  emits: [
+    ...useFieldEmits,
+    "paste",
+    "change"
+  ],
+  setup(props2, { emit, attrs }) {
+    const temp = {};
+    let emitCachedValue = NaN, typedNumber, stopValueWatcher, emitTimer, emitValueFn;
+    const inputRef = ref(null);
+    const nameProp = useFormInputNameAttr(props2);
+    const {
+      innerValue,
+      hasMask,
+      moveCursorForPaste,
+      updateMaskValue,
+      onMaskedKeydown
+    } = useMask(props2, emit, emitValue, inputRef);
+    const formDomProps = useFileFormDomProps(props2, true);
+    const hasValue = computed(() => fieldValueIsFilled(innerValue.value));
+    const onComposition = useKeyComposition(onInput);
+    const state = useFieldState();
+    const isTextarea = computed(() => props2.type === "textarea" || props2.autogrow === true);
+    const isTypeText = computed(() => isTextarea.value === true || ["text", "search", "url", "tel", "password"].includes(props2.type));
+    const onEvents = computed(() => {
+      const evt = __spreadProps(__spreadValues({}, state.splitAttrs.listeners.value), {
+        onInput,
+        onPaste,
+        onChange,
+        onBlur: onFinishEditing,
+        onFocus: stop
+      });
+      evt.onCompositionstart = evt.onCompositionupdate = evt.onCompositionend = onComposition;
+      if (hasMask.value === true) {
+        evt.onKeydown = onMaskedKeydown;
+      }
+      if (props2.autogrow === true) {
+        evt.onAnimationend = adjustHeight;
+      }
+      return evt;
+    });
+    const inputAttrs = computed(() => {
+      const attrs2 = __spreadProps(__spreadValues({
+        tabindex: 0,
+        "data-autofocus": props2.autofocus === true || void 0,
+        rows: props2.type === "textarea" ? 6 : void 0,
+        "aria-label": props2.label,
+        name: nameProp.value
+      }, state.splitAttrs.attributes.value), {
+        id: state.targetUid.value,
+        maxlength: props2.maxlength,
+        disabled: props2.disable === true,
+        readonly: props2.readonly === true
+      });
+      if (isTextarea.value === false) {
+        attrs2.type = props2.type;
+      }
+      if (props2.autogrow === true) {
+        attrs2.rows = 1;
+      }
+      return attrs2;
+    });
+    watch(() => props2.type, () => {
+      if (inputRef.value) {
+        inputRef.value.value = props2.modelValue;
+      }
+    });
+    watch(() => props2.modelValue, (v) => {
+      if (hasMask.value === true) {
+        if (stopValueWatcher === true) {
+          stopValueWatcher = false;
+          return;
+        }
+        updateMaskValue(v);
+      } else if (innerValue.value !== v) {
+        innerValue.value = v;
+        if (props2.type === "number" && temp.hasOwnProperty("value") === true) {
+          if (typedNumber === true) {
+            typedNumber = false;
+          } else {
+            delete temp.value;
+          }
+        }
+      }
+      props2.autogrow === true && nextTick(adjustHeight);
+    });
+    watch(() => props2.autogrow, (val) => {
+      if (val === true) {
+        nextTick(adjustHeight);
+      } else if (inputRef.value !== null && attrs.rows > 0) {
+        inputRef.value.style.height = "auto";
+      }
+    });
+    watch(() => props2.dense, () => {
+      props2.autogrow === true && nextTick(adjustHeight);
+    });
+    function focus() {
+      addFocusFn(() => {
+        const el = document.activeElement;
+        if (inputRef.value !== null && inputRef.value !== el && (el === null || el.id !== state.targetUid.value)) {
+          inputRef.value.focus({ preventScroll: true });
+        }
+      });
+    }
+    function select() {
+      inputRef.value !== null && inputRef.value.select();
+    }
+    function onPaste(e2) {
+      if (hasMask.value === true && props2.reverseFillMask !== true) {
+        const inp = e2.target;
+        moveCursorForPaste(inp, inp.selectionStart, inp.selectionEnd);
+      }
+      emit("paste", e2);
+    }
+    function onInput(e2) {
+      if (!e2 || !e2.target || e2.target.composing === true) {
+        return;
+      }
+      if (props2.type === "file") {
+        emit("update:modelValue", e2.target.files);
+        return;
+      }
+      const val = e2.target.value;
+      if (hasMask.value === true) {
+        updateMaskValue(val, false, e2.inputType);
+      } else {
+        emitValue(val);
+        if (isTypeText.value === true && e2.target === document.activeElement) {
+          const { selectionStart, selectionEnd } = e2.target;
+          if (selectionStart !== void 0 && selectionEnd !== void 0) {
+            nextTick(() => {
+              if (e2.target === document.activeElement && val.indexOf(e2.target.value) === 0) {
+                e2.target.setSelectionRange(selectionStart, selectionEnd);
+              }
+            });
+          }
+        }
+      }
+      props2.autogrow === true && adjustHeight();
+    }
+    function emitValue(val, stopWatcher) {
+      emitValueFn = () => {
+        if (props2.type !== "number" && temp.hasOwnProperty("value") === true) {
+          delete temp.value;
+        }
+        if (props2.modelValue !== val && emitCachedValue !== val) {
+          stopWatcher === true && (stopValueWatcher = true);
+          emit("update:modelValue", val);
+          nextTick(() => {
+            emitCachedValue === val && (emitCachedValue = NaN);
+          });
+        }
+        emitValueFn = void 0;
+      };
+      if (props2.type === "number") {
+        typedNumber = true;
+        temp.value = val;
+      }
+      if (props2.debounce !== void 0) {
+        clearTimeout(emitTimer);
+        temp.value = val;
+        emitTimer = setTimeout(emitValueFn, props2.debounce);
+      } else {
+        emitValueFn();
+      }
+    }
+    function adjustHeight() {
+      const inp = inputRef.value;
+      if (inp !== null) {
+        const parentStyle = inp.parentNode.style;
+        parentStyle.marginBottom = inp.scrollHeight - 1 + "px";
+        inp.style.height = "1px";
+        inp.style.height = inp.scrollHeight + "px";
+        parentStyle.marginBottom = "";
+      }
+    }
+    function onChange(e2) {
+      onComposition(e2);
+      clearTimeout(emitTimer);
+      emitValueFn !== void 0 && emitValueFn();
+      emit("change", e2.target.value);
+    }
+    function onFinishEditing(e2) {
+      e2 !== void 0 && stop(e2);
+      clearTimeout(emitTimer);
+      emitValueFn !== void 0 && emitValueFn();
+      typedNumber = false;
+      stopValueWatcher = false;
+      delete temp.value;
+      props2.type !== "file" && setTimeout(() => {
+        if (inputRef.value !== null) {
+          inputRef.value.value = innerValue.value !== void 0 ? innerValue.value : "";
+        }
+      });
+    }
+    function getCurValue() {
+      return temp.hasOwnProperty("value") === true ? temp.value : innerValue.value !== void 0 ? innerValue.value : "";
+    }
+    onBeforeUnmount(() => {
+      onFinishEditing();
+    });
+    onMounted(() => {
+      props2.autogrow === true && adjustHeight();
+    });
+    Object.assign(state, {
+      innerValue,
+      fieldClass: computed(() => `q-${isTextarea.value === true ? "textarea" : "input"}` + (props2.autogrow === true ? " q-textarea--autogrow" : "")),
+      hasShadow: computed(() => props2.type !== "file" && typeof props2.shadowText === "string" && props2.shadowText.length > 0),
+      inputRef,
+      emitValue,
+      hasValue,
+      floatingLabel: computed(() => hasValue.value === true || fieldValueIsFilled(props2.displayValue)),
+      getControl: () => {
+        return h(isTextarea.value === true ? "textarea" : "input", __spreadValues(__spreadValues(__spreadValues({
+          ref: inputRef,
+          class: [
+            "q-field__native q-placeholder",
+            props2.inputClass
+          ],
+          style: props2.inputStyle
+        }, inputAttrs.value), onEvents.value), props2.type !== "file" ? { value: getCurValue() } : formDomProps.value));
+      },
+      getShadowControl: () => {
+        return h("div", {
+          class: "q-field__native q-field__shadow absolute-bottom no-pointer-events" + (isTextarea.value === true ? "" : " text-no-wrap")
+        }, [
+          h("span", { class: "invisible" }, getCurValue()),
+          h("span", props2.shadowText)
+        ]);
+      }
+    });
+    const renderFn = useField(state);
+    const vm = getCurrentInstance();
+    Object.assign(vm.proxy, {
+      focus,
+      select,
+      getNativeElement: () => inputRef.value
+    });
+    return renderFn;
+  }
+});
+function useRefocusTarget(props2, rootRef) {
+  const refocusRef = ref(null);
+  const refocusTargetEl = computed(() => {
+    if (props2.disable !== true) {
+      return null;
+    }
+    return h("span", {
+      ref: refocusRef,
+      class: "no-outline",
+      tabindex: -1
+    });
+  });
+  function refocusTarget(e2) {
+    const root = rootRef.value;
+    if (e2 !== void 0 && e2.type.indexOf("key") === 0) {
+      if (root !== null && document.activeElement !== root && root.contains(document.activeElement) === true) {
+        root.focus();
+      }
+    } else if (refocusRef.value !== null && (e2 === void 0 || root !== null && root.contains(e2.target) === true)) {
+      refocusRef.value.focus();
+    }
+  }
+  return {
+    refocusTargetEl,
+    refocusTarget
+  };
+}
+var optionSizes = {
+  xs: 30,
+  sm: 35,
+  md: 40,
+  lg: 50,
+  xl: 60
+};
+const svg = h("svg", {
+  key: "svg",
+  class: "q-radio__bg absolute non-selectable",
+  viewBox: "0 0 24 24",
+  "aria-hidden": "true"
+}, [
+  h("path", {
+    d: "M12,22a10,10 0 0 1 -10,-10a10,10 0 0 1 10,-10a10,10 0 0 1 10,10a10,10 0 0 1 -10,10m0,-22a12,12 0 0 0 -12,12a12,12 0 0 0 12,12a12,12 0 0 0 12,-12a12,12 0 0 0 -12,-12"
+  }),
+  h("path", {
+    class: "q-radio__check",
+    d: "M12,6a6,6 0 0 0 -6,6a6,6 0 0 0 6,6a6,6 0 0 0 6,-6a6,6 0 0 0 -6,-6"
+  })
+]);
+var QRadio = createComponent({
+  name: "QRadio",
+  props: __spreadProps(__spreadValues(__spreadValues(__spreadValues({}, useDarkProps), useSizeProps), useFormProps), {
+    modelValue: { required: true },
+    val: { required: true },
+    label: String,
+    leftLabel: Boolean,
+    checkedIcon: String,
+    uncheckedIcon: String,
+    color: String,
+    keepColor: Boolean,
+    dense: Boolean,
+    disable: Boolean,
+    tabindex: [String, Number]
+  }),
+  emits: ["update:modelValue"],
+  setup(props2, { slots, emit }) {
+    const { proxy } = getCurrentInstance();
+    const isDark = useDark(props2, proxy.$q);
+    const sizeStyle = useSize(props2, optionSizes);
+    const rootRef = ref(null);
+    const { refocusTargetEl, refocusTarget } = useRefocusTarget(props2, rootRef);
+    const isTrue = computed(() => props2.modelValue === props2.val);
+    const classes = computed(() => "q-radio cursor-pointer no-outline row inline no-wrap items-center" + (props2.disable === true ? " disabled" : "") + (isDark.value === true ? " q-radio--dark" : "") + (props2.dense === true ? " q-radio--dense" : "") + (props2.leftLabel === true ? " reverse" : ""));
+    const innerClass = computed(() => {
+      const color = props2.color !== void 0 && (props2.keepColor === true || isTrue.value === true) ? ` text-${props2.color}` : "";
+      return `q-radio__inner relative-position q-radio__inner--${isTrue.value === true ? "truthy" : "falsy"}${color}`;
+    });
+    const icon = computed(() => (isTrue.value === true ? props2.checkedIcon : props2.uncheckedIcon) || null);
+    const tabindex = computed(() => props2.disable === true ? -1 : props2.tabindex || 0);
+    const formAttrs = computed(() => {
+      const prop = { type: "radio" };
+      props2.name !== void 0 && Object.assign(prop, {
+        "^checked": isTrue.value === true ? "checked" : void 0,
+        name: props2.name,
+        value: props2.val
+      });
+      return prop;
+    });
+    const injectFormInput = useFormInject(formAttrs);
+    function onClick(e2) {
+      if (e2 !== void 0) {
+        stopAndPrevent(e2);
+        refocusTarget(e2);
+      }
+      if (props2.disable !== true && isTrue.value !== true) {
+        emit("update:modelValue", props2.val, e2);
+      }
+    }
+    function onKeydown2(e2) {
+      if (e2.keyCode === 13 || e2.keyCode === 32) {
+        stopAndPrevent(e2);
+      }
+    }
+    function onKeyup2(e2) {
+      if (e2.keyCode === 13 || e2.keyCode === 32) {
+        onClick(e2);
+      }
+    }
+    Object.assign(proxy, { set: onClick });
+    return () => {
+      const content = icon.value !== null ? [
+        h("div", {
+          key: "icon",
+          class: "q-radio__icon-container absolute flex flex-center no-wrap"
+        }, [
+          h(QIcon, {
+            class: "q-radio__icon",
+            name: icon.value
+          })
+        ])
+      ] : [svg];
+      props2.disable !== true && injectFormInput(content, "unshift", " q-radio__native q-ma-none q-pa-none");
+      const child = [
+        h("div", {
+          class: innerClass.value,
+          style: sizeStyle.value
+        }, content)
+      ];
+      if (refocusTargetEl.value !== null) {
+        child.push(refocusTargetEl.value);
+      }
+      const label = props2.label !== void 0 ? hMergeSlot(slots.default, [props2.label]) : hSlot(slots.default);
+      label !== void 0 && child.push(h("div", {
+        class: "q-radio__label q-anchor--skip"
+      }, label));
+      return h("div", {
+        ref: rootRef,
+        class: classes.value,
+        tabindex: tabindex.value,
+        role: "radio",
+        "aria-label": props2.label,
+        "aria-checked": isTrue.value === true ? "true" : "false",
+        "aria-disabled": props2.disable === true ? "true" : void 0,
+        onClick,
+        onKeydown: onKeydown2,
+        onKeyup: onKeyup2
+      }, child);
+    };
+  }
+});
+const useCheckboxProps = __spreadProps(__spreadValues(__spreadValues(__spreadValues({}, useDarkProps), useSizeProps), useFormProps), {
+  modelValue: {
+    required: true,
+    default: null
+  },
+  val: {},
+  trueValue: { default: true },
+  falseValue: { default: false },
+  indeterminateValue: { default: null },
+  checkedIcon: String,
+  uncheckedIcon: String,
+  indeterminateIcon: String,
+  toggleOrder: {
+    type: String,
+    validator: (v) => v === "tf" || v === "ft"
+  },
+  toggleIndeterminate: Boolean,
+  label: String,
+  leftLabel: Boolean,
+  color: String,
+  keepColor: Boolean,
+  dense: Boolean,
+  disable: Boolean,
+  tabindex: [String, Number]
+});
+const useCheckboxEmits = ["update:modelValue"];
+function useCheckbox(type, getInner) {
+  const { props: props2, slots, emit, proxy } = getCurrentInstance();
+  const { $q } = proxy;
+  const isDark = useDark(props2, $q);
+  const rootRef = ref(null);
+  const { refocusTargetEl, refocusTarget } = useRefocusTarget(props2, rootRef);
+  const sizeStyle = useSize(props2, optionSizes);
+  const modelIsArray = computed(() => props2.val !== void 0 && Array.isArray(props2.modelValue));
+  const index = computed(() => modelIsArray.value === true ? props2.modelValue.indexOf(props2.val) : -1);
+  const isTrue = computed(() => modelIsArray.value === true ? index.value > -1 : props2.modelValue === props2.trueValue);
+  const isFalse = computed(() => modelIsArray.value === true ? index.value === -1 : props2.modelValue === props2.falseValue);
+  const isIndeterminate = computed(() => isTrue.value === false && isFalse.value === false);
+  const tabindex = computed(() => props2.disable === true ? -1 : props2.tabindex || 0);
+  const classes = computed(() => `q-${type} cursor-pointer no-outline row inline no-wrap items-center` + (props2.disable === true ? " disabled" : "") + (isDark.value === true ? ` q-${type}--dark` : "") + (props2.dense === true ? ` q-${type}--dense` : "") + (props2.leftLabel === true ? " reverse" : ""));
+  const innerClass = computed(() => {
+    const state = isTrue.value === true ? "truthy" : isFalse.value === true ? "falsy" : "indet";
+    const color = props2.color !== void 0 && (props2.keepColor === true || (type === "toggle" ? isTrue.value === true : isFalse.value !== true)) ? ` text-${props2.color}` : "";
+    return `q-${type}__inner relative-position non-selectable q-${type}__inner--${state}${color}`;
+  });
+  const formAttrs = computed(() => {
+    const prop = { type: "checkbox" };
+    props2.name !== void 0 && Object.assign(prop, {
+      "^checked": isTrue.value === true ? "checked" : void 0,
+      name: props2.name,
+      value: modelIsArray.value === true ? props2.val : props2.trueValue
+    });
+    return prop;
+  });
+  const injectFormInput = useFormInject(formAttrs);
+  const attributes = computed(() => {
+    const attrs = {
+      tabindex: tabindex.value,
+      role: "checkbox",
+      "aria-label": props2.label,
+      "aria-checked": isIndeterminate.value === true ? "mixed" : isTrue.value === true ? "true" : "false"
+    };
+    if (props2.disable === true) {
+      attrs["aria-disabled"] = "true";
+    }
+    return attrs;
+  });
+  function onClick(e2) {
+    if (e2 !== void 0) {
+      stopAndPrevent(e2);
+      refocusTarget(e2);
+    }
+    if (props2.disable !== true) {
+      emit("update:modelValue", getNextValue(), e2);
+    }
+  }
+  function getNextValue() {
+    if (modelIsArray.value === true) {
+      if (isTrue.value === true) {
+        const val = props2.modelValue.slice();
+        val.splice(index.value, 1);
+        return val;
+      }
+      return props2.modelValue.concat([props2.val]);
+    }
+    if (isTrue.value === true) {
+      if (props2.toggleOrder !== "ft" || props2.toggleIndeterminate === false) {
+        return props2.falseValue;
+      }
+    } else if (isFalse.value === true) {
+      if (props2.toggleOrder === "ft" || props2.toggleIndeterminate === false) {
+        return props2.trueValue;
+      }
+    } else {
+      return props2.toggleOrder !== "ft" ? props2.trueValue : props2.falseValue;
+    }
+    return props2.indeterminateValue;
+  }
+  function onKeydown2(e2) {
+    if (e2.keyCode === 13 || e2.keyCode === 32) {
+      stopAndPrevent(e2);
+    }
+  }
+  function onKeyup2(e2) {
+    if (e2.keyCode === 13 || e2.keyCode === 32) {
+      onClick(e2);
+    }
+  }
+  const getInnerContent = getInner(isTrue, isIndeterminate);
+  Object.assign(proxy, { toggle: onClick });
+  return () => {
+    const inner = getInnerContent();
+    props2.disable !== true && injectFormInput(inner, "unshift", ` q-${type}__native absolute q-ma-none q-pa-none`);
+    const child = [
+      h("div", {
+        class: innerClass.value,
+        style: sizeStyle.value
+      }, inner)
+    ];
+    if (refocusTargetEl.value !== null) {
+      child.push(refocusTargetEl.value);
+    }
+    const label = props2.label !== void 0 ? hMergeSlot(slots.default, [props2.label]) : hSlot(slots.default);
+    label !== void 0 && child.push(h("div", {
+      class: `q-${type}__label q-anchor--skip`
+    }, label));
+    return h("div", __spreadProps(__spreadValues({
+      ref: rootRef,
+      class: classes.value
+    }, attributes.value), {
+      onClick,
+      onKeydown: onKeydown2,
+      onKeyup: onKeyup2
+    }), child);
+  };
+}
+const bgNode = h("div", {
+  key: "svg",
+  class: "q-checkbox__bg absolute"
+}, [
+  h("svg", {
+    class: "q-checkbox__svg fit absolute-full",
+    viewBox: "0 0 24 24",
+    "aria-hidden": "true"
+  }, [
+    h("path", {
+      class: "q-checkbox__truthy",
+      fill: "none",
+      d: "M1.73,12.91 8.1,19.28 22.79,4.59"
+    }),
+    h("path", {
+      class: "q-checkbox__indet",
+      d: "M4,14H20V10H4"
+    })
+  ])
+]);
+var QCheckbox = createComponent({
+  name: "QCheckbox",
+  props: useCheckboxProps,
+  emits: useCheckboxEmits,
+  setup(props2) {
+    function getInner(isTrue, isIndeterminate) {
+      const icon = computed(() => (isTrue.value === true ? props2.checkedIcon : isIndeterminate.value === true ? props2.indeterminateIcon : props2.uncheckedIcon) || null);
+      return () => icon.value !== null ? [
+        h("div", {
+          key: "icon",
+          class: "q-checkbox__icon-container absolute flex flex-center no-wrap"
+        }, [
+          h(QIcon, {
+            class: "q-checkbox__icon",
+            name: icon.value
+          })
+        ])
+      ] : [bgNode];
+    }
+    return useCheckbox("checkbox", getInner);
+  }
+});
+var QToggle = createComponent({
+  name: "QToggle",
+  props: __spreadProps(__spreadValues({}, useCheckboxProps), {
+    icon: String,
+    iconColor: String
+  }),
+  emits: useCheckboxEmits,
+  setup(props2) {
+    function getInner(isTrue, isIndeterminate) {
+      const icon = computed(() => (isTrue.value === true ? props2.checkedIcon : isIndeterminate.value === true ? props2.indeterminateIcon : props2.uncheckedIcon) || props2.icon);
+      const color = computed(() => isTrue.value === true ? props2.iconColor : null);
+      return () => [
+        h("div", { class: "q-toggle__track" }),
+        h("div", {
+          class: "q-toggle__thumb absolute flex flex-center no-wrap"
+        }, icon.value !== void 0 ? [
+          h(QIcon, {
+            name: icon.value,
+            color: color.value
+          })
+        ] : void 0)
+      ];
+    }
+    return useCheckbox("toggle", getInner);
+  }
+});
+const components = {
+  radio: QRadio,
+  checkbox: QCheckbox,
+  toggle: QToggle
+};
+const typeValues = Object.keys(components);
+var QOptionGroup = createComponent({
+  name: "QOptionGroup",
+  props: __spreadProps(__spreadValues({}, useDarkProps), {
+    modelValue: {
+      required: true
+    },
+    options: {
+      type: Array,
+      validator: (opts) => opts.every((opt) => "value" in opt && "label" in opt)
+    },
+    name: String,
+    type: {
+      default: "radio",
+      validator: (v) => typeValues.includes(v)
+    },
+    color: String,
+    keepColor: Boolean,
+    dense: Boolean,
+    size: String,
+    leftLabel: Boolean,
+    inline: Boolean,
+    disable: Boolean
+  }),
+  emits: ["update:modelValue"],
+  setup(props2, { emit, slots }) {
+    const { proxy: { $q } } = getCurrentInstance();
+    const arrayModel = Array.isArray(props2.modelValue);
+    if (props2.type === "radio") {
+      if (arrayModel === true) {
+        console.error("q-option-group: model should not be array");
+      }
+    } else if (arrayModel === false) {
+      console.error("q-option-group: model should be array in your case");
+    }
+    const isDark = useDark(props2, $q);
+    const component = computed(() => components[props2.type]);
+    const classes = computed(() => "q-option-group q-gutter-x-sm" + (props2.inline === true ? " q-option-group--inline" : ""));
+    const attrs = computed(() => {
+      const attrs2 = {};
+      if (props2.type === "radio") {
+        attrs2.role = "radiogroup";
+        if (props2.disable === true) {
+          attrs2["aria-disabled"] = "true";
+        }
+      }
+      return attrs2;
+    });
+    function onUpdateModelValue(value) {
+      emit("update:modelValue", value);
+    }
+    return () => h("div", __spreadValues({
+      class: classes.value
+    }, attrs.value), props2.options.map((opt, i2) => {
+      const child = slots["label-" + i2] !== void 0 ? () => slots["label-" + i2](opt) : slots.label !== void 0 ? () => slots.label(opt) : void 0;
+      return h("div", [
+        h(component.value, {
+          modelValue: props2.modelValue,
+          val: opt.value,
+          name: opt.name === void 0 ? props2.name : opt.name,
+          disable: props2.disable || opt.disable,
+          label: child === void 0 ? opt.label : null,
+          leftLabel: opt.leftLabel === void 0 ? props2.leftLabel : opt.leftLabel,
+          color: opt.color === void 0 ? props2.color : opt.color,
+          checkedIcon: opt.checkedIcon,
+          uncheckedIcon: opt.uncheckedIcon,
+          dark: opt.dark || isDark.value,
+          size: opt.size === void 0 ? props2.size : opt.size,
+          dense: props2.dense,
+          keepColor: opt.keepColor === void 0 ? props2.keepColor : opt.keepColor,
+          "onUpdate:modelValue": onUpdateModelValue
+        }, child)
+      ]);
+    }));
+  }
+});
+var DialogPlugin = createComponent({
+  name: "DialogPlugin",
+  props: __spreadProps(__spreadValues({}, useDarkProps), {
+    title: String,
+    message: String,
+    prompt: Object,
+    options: Object,
+    progress: [Boolean, Object],
+    html: Boolean,
+    ok: {
+      type: [String, Object, Boolean],
+      default: true
+    },
+    cancel: [String, Object, Boolean],
+    focus: {
+      type: String,
+      default: "ok",
+      validator: (v) => ["ok", "cancel", "none"].includes(v)
+    },
+    stackButtons: Boolean,
+    color: String,
+    cardClass: [String, Array, Object],
+    cardStyle: [String, Array, Object]
+  }),
+  emits: ["ok", "hide"],
+  setup(props2, { emit }) {
+    const { proxy } = getCurrentInstance();
+    const { $q } = proxy;
+    const isDark = useDark(props2, $q);
+    const dialogRef = ref(null);
+    const model = ref(props2.prompt !== void 0 ? props2.prompt.model : props2.options !== void 0 ? props2.options.model : void 0);
+    const classes = computed(() => "q-dialog-plugin" + (isDark.value === true ? " q-dialog-plugin--dark q-dark" : "") + (props2.progress !== false ? " q-dialog-plugin--progress" : ""));
+    const vmColor = computed(() => props2.color || (isDark.value === true ? "amber" : "primary"));
+    const spinner = computed(() => props2.progress === false ? null : isPlainObject(props2.progress) === true ? {
+      component: props2.progress.spinner || QSpinner,
+      props: { color: props2.progress.color || vmColor.value }
+    } : {
+      component: QSpinner,
+      props: { color: vmColor.value }
+    });
+    const hasForm = computed(() => props2.prompt !== void 0 || props2.options !== void 0);
+    const formProps = computed(() => {
+      if (hasForm.value !== true) {
+        return {};
+      }
+      const _a = props2.prompt !== void 0 ? props2.prompt : props2.options, { model: model2, isValid, items } = _a, formProps2 = __objRest(_a, ["model", "isValid", "items"]);
+      return formProps2;
+    });
+    const okLabel = computed(() => isPlainObject(props2.ok) === true ? $q.lang.label.ok : props2.ok === true ? $q.lang.label.ok : props2.ok);
+    const cancelLabel = computed(() => isPlainObject(props2.cancel) === true ? $q.lang.label.cancel : props2.cancel === true ? $q.lang.label.cancel : props2.cancel);
+    const okDisabled = computed(() => {
+      if (props2.prompt !== void 0) {
+        return props2.prompt.isValid !== void 0 && props2.prompt.isValid(model.value) !== true;
+      }
+      if (props2.options !== void 0) {
+        return props2.options.isValid !== void 0 && props2.options.isValid(model.value) !== true;
+      }
+      return false;
+    });
+    const okProps = computed(() => __spreadProps(__spreadValues({
+      color: vmColor.value,
+      label: okLabel.value,
+      ripple: false,
+      disable: okDisabled.value
+    }, isPlainObject(props2.ok) === true ? props2.ok : { flat: true }), {
+      "data-autofocus": props2.focus === "ok" && hasForm.value !== true || void 0,
+      onClick: onOk
+    }));
+    const cancelProps = computed(() => __spreadProps(__spreadValues({
+      color: vmColor.value,
+      label: cancelLabel.value,
+      ripple: false
+    }, isPlainObject(props2.cancel) === true ? props2.cancel : { flat: true }), {
+      "data-autofocus": props2.focus === "cancel" && hasForm.value !== true || void 0,
+      onClick: onCancel
+    }));
+    watch(() => props2.prompt && props2.prompt.model, onUpdateModel);
+    watch(() => props2.options && props2.options.model, onUpdateModel);
+    function show() {
+      dialogRef.value.show();
+    }
+    function hide() {
+      dialogRef.value.hide();
+    }
+    function onOk() {
+      emit("ok", toRaw(model.value));
+      hide();
+    }
+    function onCancel() {
+      hide();
+    }
+    function onDialogHide() {
+      emit("hide");
+    }
+    function onUpdateModel(val) {
+      model.value = val;
+    }
+    function onInputKeyup(evt) {
+      if (okDisabled.value !== true && props2.prompt.type !== "textarea" && isKeyCode(evt, 13) === true) {
+        onOk();
+      }
+    }
+    function getSection(classes2, text) {
+      return props2.html === true ? h(QCardSection, {
+        class: classes2,
+        innerHTML: text
+      }) : h(QCardSection, { class: classes2 }, () => text);
+    }
+    function getPrompt() {
+      return [
+        h(QInput, __spreadProps(__spreadValues({
+          modelValue: model.value
+        }, formProps.value), {
+          color: vmColor.value,
+          dense: true,
+          autofocus: true,
+          dark: isDark.value,
+          "onUpdate:modelValue": onUpdateModel,
+          onKeyup: onInputKeyup
+        }))
+      ];
+    }
+    function getOptions() {
+      return [
+        h(QOptionGroup, __spreadProps(__spreadValues({
+          modelValue: model.value
+        }, formProps.value), {
+          color: vmColor.value,
+          options: props2.options.items,
+          dark: isDark.value,
+          "onUpdate:modelValue": onUpdateModel
+        }))
+      ];
+    }
+    function getButtons() {
+      const child = [];
+      props2.cancel && child.push(h(QBtn, cancelProps.value));
+      props2.ok && child.push(h(QBtn, okProps.value));
+      return h(QCardActions, {
+        class: props2.stackButtons === true ? "items-end" : "",
+        vertical: props2.stackButtons,
+        align: "right"
+      }, () => child);
+    }
+    function getCardContent() {
+      const child = [];
+      props2.title && child.push(getSection("q-dialog__title", props2.title));
+      props2.progress !== false && child.push(h(QCardSection, { class: "q-dialog__progress" }, () => h(spinner.value.component, spinner.value.props)));
+      props2.message && child.push(getSection("q-dialog__message", props2.message));
+      if (props2.prompt !== void 0) {
+        child.push(h(QCardSection, { class: "scroll q-dialog-plugin__form" }, getPrompt));
+      } else if (props2.options !== void 0) {
+        child.push(h(QSeparator, { dark: isDark.value }), h(QCardSection, { class: "scroll q-dialog-plugin__form" }, getOptions), h(QSeparator, { dark: isDark.value }));
+      }
+      if (props2.ok || props2.cancel) {
+        child.push(getButtons());
+      }
+      return child;
+    }
+    function getContent() {
+      return [
+        h(QCard, {
+          class: [
+            classes.value,
+            props2.cardClass
+          ],
+          style: props2.cardStyle,
+          dark: isDark.value
+        }, getCardContent)
+      ];
+    }
+    Object.assign(proxy, { show, hide });
+    return () => h(QDialog, {
+      ref: dialogRef,
+      onHide: onDialogHide
+    }, getContent);
+  }
+});
+function merge(target2, source) {
+  for (const key in source) {
+    if (key !== "spinner" && Object(source[key]) === source[key]) {
+      target2[key] = Object(target2[key]) !== target2[key] ? {} : __spreadValues({}, target2[key]);
+      merge(target2[key], source[key]);
+    } else {
+      target2[key] = source[key];
+    }
+  }
+}
+function globalDialog(DefaultComponent, supportsCustomComponent, parentApp) {
+  return (pluginProps) => {
+    let DialogComponent, props2;
+    const isCustom = supportsCustomComponent === true && pluginProps.component !== void 0;
+    if (isCustom === true) {
+      const { component, componentProps } = pluginProps;
+      DialogComponent = typeof component === "string" ? parentApp.component(component) : component;
+      props2 = componentProps;
+    } else {
+      const _a = pluginProps, { class: klass, style } = _a, otherProps = __objRest(_a, ["class", "style"]);
+      DialogComponent = DefaultComponent;
+      props2 = otherProps;
+      klass !== void 0 && (otherProps.cardClass = klass);
+      style !== void 0 && (otherProps.cardStyle = style);
+    }
+    let vm, emittedOK = false;
+    const dialogRef = ref(null);
+    const el = createGlobalNode();
+    const applyState = (cmd) => {
+      if (dialogRef.value !== null && dialogRef.value[cmd] !== void 0) {
+        dialogRef.value[cmd]();
+      } else if (vm.$.subTree && vm.$.subTree.component && vm.$.subTree.component.proxy && vm.$.subTree.component.proxy[cmd]) {
+        vm.$.subTree.component.proxy[cmd]();
+      } else {
+        console.error("[Quasar] Incorrectly defined Dialog component");
+      }
+    };
+    const okFns = [], cancelFns = [], API = {
+      onOk(fn) {
+        okFns.push(fn);
+        return API;
+      },
+      onCancel(fn) {
+        cancelFns.push(fn);
+        return API;
+      },
+      onDismiss(fn) {
+        okFns.push(fn);
+        cancelFns.push(fn);
+        return API;
+      },
+      hide() {
+        applyState("hide");
+        return API;
+      },
+      update(componentProps) {
+        if (vm !== null) {
+          if (isCustom === true) {
+            Object.assign(props2, componentProps);
+          } else {
+            const _a2 = componentProps, { class: klass, style } = _a2, cfg = __objRest(_a2, ["class", "style"]);
+            klass !== void 0 && (cfg.cardClass = klass);
+            style !== void 0 && (cfg.cardStyle = style);
+            merge(props2, cfg);
+          }
+          vm.$forceUpdate();
+        }
+        return API;
+      }
+    };
+    const onOk = (data) => {
+      emittedOK = true;
+      okFns.forEach((fn) => {
+        fn(data);
+      });
+    };
+    const onHide = () => {
+      app.unmount(el);
+      removeGlobalNode(el);
+      app = null;
+      vm = null;
+      if (emittedOK !== true) {
+        cancelFns.forEach((fn) => {
+          fn();
+        });
+      }
+    };
+    let app = createChildApp({
+      name: "QGlobalDialog",
+      setup: () => () => h(DialogComponent, __spreadProps(__spreadValues({}, props2), {
+        ref: dialogRef,
+        onOk,
+        onHide
+      }))
+    }, parentApp);
+    vm = app.mount(el);
+    function show() {
+      applyState("show");
+    }
+    if (typeof DialogComponent.__asyncLoader === "function") {
+      DialogComponent.__asyncLoader().then(() => {
+        nextTick(show);
+      });
+    } else {
+      nextTick(show);
+    }
+    return API;
+  };
+}
+var Dialog = {
+  install({ $q, parentApp }) {
+    $q.dialog = globalDialog(DialogPlugin, true, parentApp);
+    if (this.__installed !== true) {
+      this.create = $q.dialog;
+    }
+  }
+};
+var Quasar = {
+  version: "2.5.5",
+  install: installQuasar,
+  lang: Plugin$1,
+  iconSet: Plugin
+};
 /*!
   * vue-router v4.0.12
   * (c) 2021 Eduardo San Martin Morote
@@ -13677,7 +19026,7 @@ function applyToParams(fn, params) {
   }
   return newParams;
 }
-const noop$1 = () => {
+const noop = () => {
 };
 const TRAILING_SLASH_RE = /\/$/;
 const removeTrailingSlash = (path) => path.replace(TRAILING_SLASH_RE, "");
@@ -13714,24 +19063,24 @@ function stripBase(pathname, base) {
 function isSameRouteLocation(stringifyQuery2, a, b) {
   const aLastIndex = a.matched.length - 1;
   const bLastIndex = b.matched.length - 1;
-  return aLastIndex > -1 && aLastIndex === bLastIndex && isSameRouteRecord$1(a.matched[aLastIndex], b.matched[bLastIndex]) && isSameRouteLocationParams$1(a.params, b.params) && stringifyQuery2(a.query) === stringifyQuery2(b.query) && a.hash === b.hash;
+  return aLastIndex > -1 && aLastIndex === bLastIndex && isSameRouteRecord(a.matched[aLastIndex], b.matched[bLastIndex]) && isSameRouteLocationParams(a.params, b.params) && stringifyQuery2(a.query) === stringifyQuery2(b.query) && a.hash === b.hash;
 }
-function isSameRouteRecord$1(a, b) {
+function isSameRouteRecord(a, b) {
   return (a.aliasOf || a) === (b.aliasOf || b);
 }
-function isSameRouteLocationParams$1(a, b) {
+function isSameRouteLocationParams(a, b) {
   if (Object.keys(a).length !== Object.keys(b).length)
     return false;
   for (const key in a) {
-    if (!isSameRouteLocationParamsValue$1(a[key], b[key]))
+    if (!isSameRouteLocationParamsValue(a[key], b[key]))
       return false;
   }
   return true;
 }
-function isSameRouteLocationParamsValue$1(a, b) {
-  return Array.isArray(a) ? isEquivalentArray$1(a, b) : Array.isArray(b) ? isEquivalentArray$1(b, a) : a === b;
+function isSameRouteLocationParamsValue(a, b) {
+  return Array.isArray(a) ? isEquivalentArray(a, b) : Array.isArray(b) ? isEquivalentArray(b, a) : a === b;
 }
-function isEquivalentArray$1(a, b) {
+function isEquivalentArray(a, b) {
   return Array.isArray(b) ? a.length === b.length && a.every((value, i2) => value === b[i2]) : a.length === 1 && a[0] === b;
 }
 function resolveRelativePath(to, from) {
@@ -14365,7 +19714,7 @@ function createRouterMatcher(routes, globalOptions) {
     }
     return originalMatcher ? () => {
       removeRoute(originalMatcher);
-    } : noop$1;
+    } : noop;
   }
   function removeRoute(matcherRef) {
     if (isRouteName(matcherRef)) {
@@ -14596,21 +19945,21 @@ function normalizeQuery(query) {
   return normalizedQuery;
 }
 function useCallbacks() {
-  let handlers = [];
+  let handlers2 = [];
   function add2(handler) {
-    handlers.push(handler);
+    handlers2.push(handler);
     return () => {
-      const i2 = handlers.indexOf(handler);
+      const i2 = handlers2.indexOf(handler);
       if (i2 > -1)
-        handlers.splice(i2, 1);
+        handlers2.splice(i2, 1);
     };
   }
   function reset2() {
-    handlers = [];
+    handlers2 = [];
   }
   return {
     add: add2,
-    list: () => handlers,
+    list: () => handlers2,
     reset: reset2
   };
 }
@@ -14684,17 +20033,17 @@ function useLink(props2) {
     const currentMatched = currentRoute.matched;
     if (!routeMatched || !currentMatched.length)
       return -1;
-    const index = currentMatched.findIndex(isSameRouteRecord$1.bind(null, routeMatched));
+    const index = currentMatched.findIndex(isSameRouteRecord.bind(null, routeMatched));
     if (index > -1)
       return index;
-    const parentRecordPath = getOriginalPath$1(matched[length - 2]);
-    return length > 1 && getOriginalPath$1(routeMatched) === parentRecordPath && currentMatched[currentMatched.length - 1].path !== parentRecordPath ? currentMatched.findIndex(isSameRouteRecord$1.bind(null, matched[length - 2])) : index;
+    const parentRecordPath = getOriginalPath(matched[length - 2]);
+    return length > 1 && getOriginalPath(routeMatched) === parentRecordPath && currentMatched[currentMatched.length - 1].path !== parentRecordPath ? currentMatched.findIndex(isSameRouteRecord.bind(null, matched[length - 2])) : index;
   });
-  const isActive = computed(() => activeRecordIndex.value > -1 && includesParams$1(currentRoute.params, route.value.params));
-  const isExactActive = computed(() => activeRecordIndex.value > -1 && activeRecordIndex.value === currentRoute.matched.length - 1 && isSameRouteLocationParams$1(currentRoute.params, route.value.params));
+  const isActive = computed(() => activeRecordIndex.value > -1 && includesParams(currentRoute.params, route.value.params));
+  const isExactActive = computed(() => activeRecordIndex.value > -1 && activeRecordIndex.value === currentRoute.matched.length - 1 && isSameRouteLocationParams(currentRoute.params, route.value.params));
   function navigate(e2 = {}) {
     if (guardEvent(e2)) {
-      return router[unref(props2.replace) ? "replace" : "push"](unref(props2.to)).catch(noop$1);
+      return router[unref(props2.replace) ? "replace" : "push"](unref(props2.to)).catch(noop);
     }
     return Promise.resolve();
   }
@@ -14758,7 +20107,7 @@ function guardEvent(e2) {
     e2.preventDefault();
   return true;
 }
-function includesParams$1(outer, inner) {
+function includesParams(outer, inner) {
   for (const key in inner) {
     const innerValue = inner[key];
     const outerValue = outer[key];
@@ -14772,7 +20121,7 @@ function includesParams$1(outer, inner) {
   }
   return true;
 }
-function getOriginalPath$1(record) {
+function getOriginalPath(record) {
   return record ? record.aliasOf ? record.aliasOf.path : record.path : "";
 }
 const getLinkClass = (propClass, globalClass, defaultClass) => propClass != null ? propClass : globalClass != null ? globalClass : defaultClass;
@@ -14807,7 +20156,7 @@ const RouterViewImpl = /* @__PURE__ */ defineComponent({
           }
         }
       }
-      if (instance && to && (!from || !isSameRouteRecord$1(to, from) || !oldInstance)) {
+      if (instance && to && (!from || !isSameRouteRecord(to, from) || !oldInstance)) {
         (to.enterCallbacks[name] || []).forEach((callback) => callback(instance));
       }
     }, { flush: "post" });
@@ -15083,7 +20432,7 @@ function createRouter(options) {
       const toLocation = resolve2(to);
       const shouldRedirect = handleRedirectRecord(toLocation);
       if (shouldRedirect) {
-        pushWithRedirect(assign(shouldRedirect, { replace: true }), toLocation).catch(noop$1);
+        pushWithRedirect(assign(shouldRedirect, { replace: true }), toLocation).catch(noop);
         return;
       }
       pendingLocation = toLocation;
@@ -15100,7 +20449,7 @@ function createRouter(options) {
             if (isNavigationFailure(failure, 4 | 16) && !info.delta && info.type === NavigationType.pop) {
               routerHistory.go(-1, false);
             }
-          }).catch(noop$1);
+          }).catch(noop);
           return Promise.reject();
         }
         if (info.delta)
@@ -15116,7 +20465,7 @@ function createRouter(options) {
           }
         }
         triggerAfterEach(toLocation, from, failure);
-      }).catch(noop$1);
+      }).catch(noop);
     });
   }
   let readyHandlers = useCallbacks();
@@ -15224,14 +20573,14 @@ function extractChangingRecords(to, from) {
   for (let i2 = 0; i2 < len; i2++) {
     const recordFrom = from.matched[i2];
     if (recordFrom) {
-      if (to.matched.find((record) => isSameRouteRecord$1(record, recordFrom)))
+      if (to.matched.find((record) => isSameRouteRecord(record, recordFrom)))
         updatingRecords.push(recordFrom);
       else
         leavingRecords.push(recordFrom);
     }
     const recordTo = to.matched[i2];
     if (recordTo) {
-      if (!from.matched.find((record) => isSameRouteRecord$1(record, recordTo))) {
+      if (!from.matched.find((record) => isSameRouteRecord(record, recordTo))) {
         enteringRecords.push(recordTo);
       }
     }
@@ -15244,2099 +20593,6 @@ function useRouter() {
 function useRoute() {
   return inject(routeLocationKey);
 }
-const useSizeDefaults = {
-  xs: 18,
-  sm: 24,
-  md: 32,
-  lg: 38,
-  xl: 46
-};
-const useSizeProps = {
-  size: String
-};
-function useSize(props2, sizes = useSizeDefaults) {
-  return computed(() => props2.size !== void 0 ? { fontSize: props2.size in sizes ? `${sizes[props2.size]}px` : props2.size } : null);
-}
-const createComponent = (raw) => markRaw(defineComponent(raw));
-const createDirective = (raw) => markRaw(raw);
-function hSlot(slot, otherwise) {
-  return slot !== void 0 ? slot() || otherwise : otherwise;
-}
-function hUniqueSlot(slot, otherwise) {
-  if (slot !== void 0) {
-    const vnode = slot();
-    if (vnode !== void 0 && vnode !== null) {
-      return vnode.slice();
-    }
-  }
-  return otherwise;
-}
-function hMergeSlot(slot, source) {
-  return slot !== void 0 ? source.concat(slot()) : source;
-}
-function hMergeSlotSafely(slot, source) {
-  if (slot === void 0) {
-    return source;
-  }
-  return source !== void 0 ? source.concat(slot()) : slot();
-}
-const defaultViewBox = "0 0 24 24";
-const sameFn = (i2) => i2;
-const ionFn = (i2) => `ionicons ${i2}`;
-const libMap = {
-  "icon-": sameFn,
-  "bt-": (i2) => `bt ${i2}`,
-  "eva-": (i2) => `eva ${i2}`,
-  "ion-md": ionFn,
-  "ion-ios": ionFn,
-  "ion-logo": ionFn,
-  "mdi-": (i2) => `mdi ${i2}`,
-  "iconfont ": sameFn,
-  "ti-": (i2) => `themify-icon ${i2}`,
-  "bi-": (i2) => `bootstrap-icons ${i2}`
-};
-const matMap = {
-  o_: "-outlined",
-  r_: "-round",
-  s_: "-sharp"
-};
-const libRE = new RegExp("^(" + Object.keys(libMap).join("|") + ")");
-const matRE = new RegExp("^(" + Object.keys(matMap).join("|") + ")");
-const mRE = /^[Mm]\s?[-+]?\.?\d/;
-const imgRE = /^img:/;
-const svgUseRE = /^svguse:/;
-const ionRE = /^ion-/;
-const faLaRE = /^[lf]a[srlbdk]? /;
-var QIcon = createComponent({
-  name: "QIcon",
-  props: __spreadProps(__spreadValues({}, useSizeProps), {
-    tag: {
-      type: String,
-      default: "i"
-    },
-    name: String,
-    color: String,
-    left: Boolean,
-    right: Boolean
-  }),
-  setup(props2, { slots }) {
-    const { proxy: { $q } } = getCurrentInstance();
-    const sizeStyle = useSize(props2);
-    const classes = computed(() => "q-icon" + (props2.left === true ? " on-left" : "") + (props2.right === true ? " on-right" : "") + (props2.color !== void 0 ? ` text-${props2.color}` : ""));
-    const type = computed(() => {
-      let cls;
-      let icon = props2.name;
-      if (icon === "none" || !icon) {
-        return { none: true };
-      }
-      if ($q.iconMapFn !== null) {
-        const res = $q.iconMapFn(icon);
-        if (res !== void 0) {
-          if (res.icon !== void 0) {
-            icon = res.icon;
-            if (icon === "none" || !icon) {
-              return { none: true };
-            }
-          } else {
-            return {
-              cls: res.cls,
-              content: res.content !== void 0 ? res.content : " "
-            };
-          }
-        }
-      }
-      if (mRE.test(icon) === true) {
-        const [def2, viewBox = defaultViewBox] = icon.split("|");
-        return {
-          svg: true,
-          viewBox,
-          nodes: def2.split("&&").map((path) => {
-            const [d, style, transform] = path.split("@@");
-            return h("path", { style, d, transform });
-          })
-        };
-      }
-      if (imgRE.test(icon) === true) {
-        return {
-          img: true,
-          src: icon.substring(4)
-        };
-      }
-      if (svgUseRE.test(icon) === true) {
-        const [def2, viewBox = defaultViewBox] = icon.split("|");
-        return {
-          svguse: true,
-          src: def2.substring(7),
-          viewBox
-        };
-      }
-      let content = " ";
-      const matches = icon.match(libRE);
-      if (matches !== null) {
-        cls = libMap[matches[1]](icon);
-      } else if (faLaRE.test(icon) === true) {
-        cls = icon;
-      } else if (ionRE.test(icon) === true) {
-        cls = `ionicons ion-${$q.platform.is.ios === true ? "ios" : "md"}${icon.substr(3)}`;
-      } else {
-        cls = "notranslate material-icons";
-        const matches2 = icon.match(matRE);
-        if (matches2 !== null) {
-          icon = icon.substring(2);
-          cls += matMap[matches2[1]];
-        }
-        content = icon;
-      }
-      return {
-        cls,
-        content
-      };
-    });
-    return () => {
-      const data = {
-        class: classes.value,
-        style: sizeStyle.value,
-        "aria-hidden": "true",
-        role: "presentation"
-      };
-      if (type.value.none === true) {
-        return h(props2.tag, data, hSlot(slots.default));
-      }
-      if (type.value.img === true) {
-        return h("span", data, hMergeSlot(slots.default, [
-          h("img", { src: type.value.src })
-        ]));
-      }
-      if (type.value.svg === true) {
-        return h("span", data, hMergeSlot(slots.default, [
-          h("svg", {
-            viewBox: type.value.viewBox
-          }, type.value.nodes)
-        ]));
-      }
-      if (type.value.svguse === true) {
-        return h("span", data, hMergeSlot(slots.default, [
-          h("svg", {
-            viewBox: type.value.viewBox
-          }, [
-            h("use", { "xlink:href": type.value.src })
-          ])
-        ]));
-      }
-      if (type.value.cls !== void 0) {
-        data.class += " " + type.value.cls;
-      }
-      return h(props2.tag, data, hMergeSlot(slots.default, [
-        type.value.content
-      ]));
-    };
-  }
-});
-var QAvatar = createComponent({
-  name: "QAvatar",
-  props: __spreadProps(__spreadValues({}, useSizeProps), {
-    fontSize: String,
-    color: String,
-    textColor: String,
-    icon: String,
-    square: Boolean,
-    rounded: Boolean
-  }),
-  setup(props2, { slots }) {
-    const sizeStyle = useSize(props2);
-    const classes = computed(() => "q-avatar" + (props2.color ? ` bg-${props2.color}` : "") + (props2.textColor ? ` text-${props2.textColor} q-chip--colored` : "") + (props2.square === true ? " q-avatar--square" : props2.rounded === true ? " rounded-borders" : ""));
-    const contentStyle = computed(() => props2.fontSize ? { fontSize: props2.fontSize } : null);
-    return () => {
-      const icon = props2.icon !== void 0 ? [h(QIcon, { name: props2.icon })] : void 0;
-      return h("div", {
-        class: classes.value,
-        style: sizeStyle.value
-      }, [
-        h("div", {
-          class: "q-avatar__content row flex-center overflow-hidden",
-          style: contentStyle.value
-        }, hMergeSlotSafely(slots.default, icon))
-      ]);
-    };
-  }
-});
-const useSpinnerProps = {
-  size: {
-    type: [Number, String],
-    default: "1em"
-  },
-  color: String
-};
-function useSpinner(props2) {
-  return {
-    cSize: computed(() => props2.size in useSizeDefaults ? `${useSizeDefaults[props2.size]}px` : props2.size),
-    classes: computed(() => "q-spinner" + (props2.color ? ` text-${props2.color}` : ""))
-  };
-}
-var QSpinner = createComponent({
-  name: "QSpinner",
-  props: __spreadProps(__spreadValues({}, useSpinnerProps), {
-    thickness: {
-      type: Number,
-      default: 5
-    }
-  }),
-  setup(props2) {
-    const { cSize, classes } = useSpinner(props2);
-    return () => h("svg", {
-      class: classes.value + " q-spinner-mat",
-      width: cSize.value,
-      height: cSize.value,
-      viewBox: "25 25 50 50"
-    }, [
-      h("circle", {
-        class: "path",
-        cx: "50",
-        cy: "50",
-        r: "20",
-        fill: "none",
-        stroke: "currentColor",
-        "stroke-width": props2.thickness,
-        "stroke-miterlimit": "10"
-      })
-    ]);
-  }
-});
-function css(element, css2) {
-  const style = element.style;
-  for (const prop in css2) {
-    style[prop] = css2[prop];
-  }
-}
-function getElement(el) {
-  if (el === void 0 || el === null) {
-    return void 0;
-  }
-  if (typeof el === "string") {
-    try {
-      return document.querySelector(el) || void 0;
-    } catch (err) {
-      return void 0;
-    }
-  }
-  const target2 = isRef(el) === true ? el.value : el;
-  if (target2) {
-    return target2.$el || target2;
-  }
-}
-function childHasFocus(el, focusedEl) {
-  if (el === void 0 || el === null || el.contains(focusedEl) === true) {
-    return true;
-  }
-  for (let next = el.nextElementSibling; next !== null; next = next.nextElementSibling) {
-    if (next.contains(focusedEl)) {
-      return true;
-    }
-  }
-  return false;
-}
-const listenOpts = {
-  hasPassive: false,
-  passiveCapture: true,
-  notPassiveCapture: true
-};
-try {
-  const opts = Object.defineProperty({}, "passive", {
-    get() {
-      Object.assign(listenOpts, {
-        hasPassive: true,
-        passive: { passive: true },
-        notPassive: { passive: false },
-        passiveCapture: { passive: true, capture: true },
-        notPassiveCapture: { passive: false, capture: true }
-      });
-    }
-  });
-  window.addEventListener("qtest", null, opts);
-  window.removeEventListener("qtest", null, opts);
-} catch (e2) {
-}
-function noop() {
-}
-function position(e2) {
-  if (e2.touches && e2.touches[0]) {
-    e2 = e2.touches[0];
-  } else if (e2.changedTouches && e2.changedTouches[0]) {
-    e2 = e2.changedTouches[0];
-  } else if (e2.targetTouches && e2.targetTouches[0]) {
-    e2 = e2.targetTouches[0];
-  }
-  return {
-    top: e2.clientY,
-    left: e2.clientX
-  };
-}
-function getEventPath(e2) {
-  if (e2.path) {
-    return e2.path;
-  }
-  if (e2.composedPath) {
-    return e2.composedPath();
-  }
-  const path = [];
-  let el = e2.target;
-  while (el) {
-    path.push(el);
-    if (el.tagName === "HTML") {
-      path.push(document);
-      path.push(window);
-      return path;
-    }
-    el = el.parentElement;
-  }
-}
-function stop(e2) {
-  e2.stopPropagation();
-}
-function prevent(e2) {
-  e2.cancelable !== false && e2.preventDefault();
-}
-function stopAndPrevent(e2) {
-  e2.cancelable !== false && e2.preventDefault();
-  e2.stopPropagation();
-}
-function addEvt(ctx, targetName, events) {
-  const name = `__q_${targetName}_evt`;
-  ctx[name] = ctx[name] !== void 0 ? ctx[name].concat(events) : events;
-  events.forEach((evt) => {
-    evt[0].addEventListener(evt[1], ctx[evt[2]], listenOpts[evt[3]]);
-  });
-}
-function cleanEvt(ctx, targetName) {
-  const name = `__q_${targetName}_evt`;
-  if (ctx[name] !== void 0) {
-    ctx[name].forEach((evt) => {
-      evt[0].removeEventListener(evt[1], ctx[evt[2]], listenOpts[evt[3]]);
-    });
-    ctx[name] = void 0;
-  }
-}
-function shouldIgnoreKey(evt) {
-  return evt !== Object(evt) || evt.isComposing === true || evt.qKeyEvent === true;
-}
-function isKeyCode(evt, keyCodes) {
-  return shouldIgnoreKey(evt) === true ? false : [].concat(keyCodes).includes(evt.keyCode);
-}
-function throttle(fn, limit = 250) {
-  let wait = false, result;
-  return function() {
-    if (wait === false) {
-      wait = true;
-      setTimeout(() => {
-        wait = false;
-      }, limit);
-      result = fn.apply(this, arguments);
-    }
-    return result;
-  };
-}
-function showRipple(evt, el, ctx, forceCenter) {
-  ctx.modifiers.stop === true && stop(evt);
-  const color = ctx.modifiers.color;
-  let center = ctx.modifiers.center;
-  center = center === true || forceCenter === true;
-  const node = document.createElement("span"), innerNode = document.createElement("span"), pos = position(evt), { left, top, width, height } = el.getBoundingClientRect(), diameter = Math.sqrt(width * width + height * height), radius = diameter / 2, centerX = `${(width - diameter) / 2}px`, x = center ? centerX : `${pos.left - left - radius}px`, centerY = `${(height - diameter) / 2}px`, y = center ? centerY : `${pos.top - top - radius}px`;
-  innerNode.className = "q-ripple__inner";
-  css(innerNode, {
-    height: `${diameter}px`,
-    width: `${diameter}px`,
-    transform: `translate3d(${x},${y},0) scale3d(.2,.2,1)`,
-    opacity: 0
-  });
-  node.className = `q-ripple${color ? " text-" + color : ""}`;
-  node.setAttribute("dir", "ltr");
-  node.appendChild(innerNode);
-  el.appendChild(node);
-  const abort = () => {
-    node.remove();
-    clearTimeout(timer);
-  };
-  ctx.abort.push(abort);
-  let timer = setTimeout(() => {
-    innerNode.classList.add("q-ripple__inner--enter");
-    innerNode.style.transform = `translate3d(${centerX},${centerY},0) scale3d(1,1,1)`;
-    innerNode.style.opacity = 0.2;
-    timer = setTimeout(() => {
-      innerNode.classList.remove("q-ripple__inner--enter");
-      innerNode.classList.add("q-ripple__inner--leave");
-      innerNode.style.opacity = 0;
-      timer = setTimeout(() => {
-        node.remove();
-        ctx.abort.splice(ctx.abort.indexOf(abort), 1);
-      }, 275);
-    }, 250);
-  }, 50);
-}
-function updateModifiers(ctx, { modifiers, value, arg, instance }) {
-  const cfg = Object.assign({}, instance.$q.config.ripple, modifiers, value);
-  ctx.modifiers = {
-    early: cfg.early === true,
-    stop: cfg.stop === true,
-    center: cfg.center === true,
-    color: cfg.color || arg,
-    keyCodes: [].concat(cfg.keyCodes || 13)
-  };
-}
-var Ripple = createDirective({
-  name: "ripple",
-  beforeMount(el, binding) {
-    const ctx = {
-      enabled: binding.value !== false,
-      modifiers: {},
-      abort: [],
-      start(evt) {
-        if (ctx.enabled === true && evt.qSkipRipple !== true && (ctx.modifiers.early === true ? ["mousedown", "touchstart"].includes(evt.type) === true : evt.type === "click")) {
-          showRipple(evt, el, ctx, evt.qKeyEvent === true);
-        }
-      },
-      keystart: throttle((evt) => {
-        if (ctx.enabled === true && evt.qSkipRipple !== true && isKeyCode(evt, ctx.modifiers.keyCodes) === true && evt.type === `key${ctx.modifiers.early === true ? "down" : "up"}`) {
-          showRipple(evt, el, ctx, true);
-        }
-      }, 300)
-    };
-    updateModifiers(ctx, binding);
-    el.__qripple = ctx;
-    addEvt(ctx, "main", [
-      [el, "mousedown", "start", "passive"],
-      [el, "touchstart", "start", "passive"],
-      [el, "click", "start", "passive"],
-      [el, "keydown", "keystart", "passive"],
-      [el, "keyup", "keystart", "passive"]
-    ]);
-  },
-  updated(el, binding) {
-    if (binding.oldValue !== binding.value) {
-      const ctx = el.__qripple;
-      ctx.enabled = binding.value !== false;
-      if (ctx.enabled === true && Object(binding.value) === binding.value) {
-        updateModifiers(ctx, binding);
-      }
-    }
-  },
-  beforeUnmount(el) {
-    const ctx = el.__qripple;
-    ctx.abort.forEach((fn) => {
-      fn();
-    });
-    cleanEvt(ctx, "main");
-    delete el._qripple;
-  }
-});
-const alignMap = {
-  left: "start",
-  center: "center",
-  right: "end",
-  between: "between",
-  around: "around",
-  evenly: "evenly",
-  stretch: "stretch"
-};
-const alignValues = Object.keys(alignMap);
-const useAlignProps = {
-  align: {
-    type: String,
-    validator: (v) => alignValues.includes(v)
-  }
-};
-function useAlign(props2) {
-  return computed(() => {
-    const align = props2.align === void 0 ? props2.vertical === true ? "stretch" : "left" : props2.align;
-    return `${props2.vertical === true ? "items" : "justify"}-${alignMap[align]}`;
-  });
-}
-function getParentVm(vm) {
-  if (Object(vm.$parent) === vm.$parent) {
-    return vm.$parent;
-  }
-  vm = vm.$.parent;
-  while (Object(vm) === vm) {
-    if (Object(vm.proxy) === vm.proxy) {
-      return vm.proxy;
-    }
-    vm = vm.parent;
-  }
-}
-function vmHasRouter(vm) {
-  return vm.appContext.config.globalProperties.$router !== void 0;
-}
-function getOriginalPath(record) {
-  return record ? record.aliasOf ? record.aliasOf.path : record.path : "";
-}
-function isSameRouteRecord(a, b) {
-  return (a.aliasOf || a) === (b.aliasOf || b);
-}
-function includesParams(outer, inner) {
-  for (const key in inner) {
-    const innerValue = inner[key], outerValue = outer[key];
-    if (typeof innerValue === "string") {
-      if (innerValue !== outerValue) {
-        return false;
-      }
-    } else if (Array.isArray(outerValue) === false || outerValue.length !== innerValue.length || innerValue.some((value, i2) => value !== outerValue[i2])) {
-      return false;
-    }
-  }
-  return true;
-}
-function isEquivalentArray(a, b) {
-  return Array.isArray(b) === true ? a.length === b.length && a.every((value, i2) => value === b[i2]) : a.length === 1 && a[0] === b;
-}
-function isSameRouteLocationParamsValue(a, b) {
-  return Array.isArray(a) === true ? isEquivalentArray(a, b) : Array.isArray(b) === true ? isEquivalentArray(b, a) : a === b;
-}
-function isSameRouteLocationParams(a, b) {
-  if (Object.keys(a).length !== Object.keys(b).length) {
-    return false;
-  }
-  for (const key in a) {
-    if (isSameRouteLocationParamsValue(a[key], b[key]) === false) {
-      return false;
-    }
-  }
-  return true;
-}
-const useRouterLinkProps = {
-  to: [String, Object],
-  replace: Boolean,
-  exact: Boolean,
-  activeClass: {
-    type: String,
-    default: "q-router-link--active"
-  },
-  exactActiveClass: {
-    type: String,
-    default: "q-router-link--exact-active"
-  },
-  href: String,
-  target: String,
-  disable: Boolean
-};
-function useRouterLink(fallbackTag) {
-  const vm = getCurrentInstance();
-  const { props: props2, proxy } = vm;
-  const hasRouter = vmHasRouter(vm);
-  const hasHrefLink = computed(() => props2.disable !== true && props2.href !== void 0);
-  const hasRouterLinkProps = computed(() => hasRouter === true && props2.disable !== true && hasHrefLink.value !== true && props2.to !== void 0 && props2.to !== null && props2.to !== "");
-  const linkRoute = computed(() => {
-    if (hasRouterLinkProps.value === true) {
-      try {
-        return proxy.$router.resolve(props2.to);
-      } catch (err) {
-      }
-    }
-    return null;
-  });
-  const hasRouterLink = computed(() => linkRoute.value !== null);
-  const hasLink = computed(() => hasHrefLink.value === true || hasRouterLink.value === true);
-  const linkTag = computed(() => props2.type === "a" || hasLink.value === true ? "a" : props2.tag || fallbackTag || "div");
-  const linkProps = computed(() => hasHrefLink.value === true ? {
-    href: props2.href,
-    target: props2.target
-  } : hasRouterLink.value === true ? {
-    href: linkRoute.value.href,
-    target: props2.target
-  } : {});
-  const linkActiveIndex = computed(() => {
-    if (hasRouterLink.value === false) {
-      return null;
-    }
-    const { matched } = linkRoute.value, { length } = matched, routeMatched = matched[length - 1];
-    if (routeMatched === void 0) {
-      return -1;
-    }
-    const currentMatched = proxy.$route.matched;
-    if (currentMatched.length === 0) {
-      return -1;
-    }
-    const index = currentMatched.findIndex(isSameRouteRecord.bind(null, routeMatched));
-    if (index > -1) {
-      return index;
-    }
-    const parentRecordPath = getOriginalPath(matched[length - 2]);
-    return length > 1 && getOriginalPath(routeMatched) === parentRecordPath && currentMatched[currentMatched.length - 1].path !== parentRecordPath ? currentMatched.findIndex(isSameRouteRecord.bind(null, matched[length - 2])) : index;
-  });
-  const linkIsActive = computed(() => hasRouterLink.value === true && linkActiveIndex.value > -1 && includesParams(proxy.$route.params, linkRoute.value.params));
-  const linkIsExactActive = computed(() => linkIsActive.value === true && linkActiveIndex.value === proxy.$route.matched.length - 1 && isSameRouteLocationParams(proxy.$route.params, linkRoute.value.params));
-  const linkClass = computed(() => hasRouterLink.value === true ? linkIsExactActive.value === true ? ` ${props2.exactActiveClass} ${props2.activeClass}` : props2.exact === true ? "" : linkIsActive.value === true ? ` ${props2.activeClass}` : "" : "");
-  function navigateToRouterLink(e2) {
-    if (props2.disable === true || e2.metaKey || e2.altKey || e2.ctrlKey || e2.shiftKey || e2.__qNavigate !== true && e2.defaultPrevented === true || e2.button !== void 0 && e2.button !== 0 || props2.target === "_blank") {
-      return false;
-    }
-    prevent(e2);
-    return proxy.$router[props2.replace === true ? "replace" : "push"](props2.to).catch((err) => err);
-  }
-  return {
-    hasRouterLink,
-    hasHrefLink,
-    hasLink,
-    linkTag,
-    linkRoute,
-    linkIsActive,
-    linkIsExactActive,
-    linkClass,
-    linkProps,
-    navigateToRouterLink
-  };
-}
-const padding = {
-  none: 0,
-  xs: 4,
-  sm: 8,
-  md: 16,
-  lg: 24,
-  xl: 32
-};
-const defaultSizes = {
-  xs: 8,
-  sm: 10,
-  md: 14,
-  lg: 20,
-  xl: 24
-};
-const formTypes = ["button", "submit", "reset"];
-const mediaTypeRE = /[^\s]\/[^\s]/;
-const useBtnProps = __spreadProps(__spreadValues(__spreadValues({}, useSizeProps), useRouterLinkProps), {
-  type: {
-    type: String,
-    default: "button"
-  },
-  label: [Number, String],
-  icon: String,
-  iconRight: String,
-  round: Boolean,
-  outline: Boolean,
-  flat: Boolean,
-  unelevated: Boolean,
-  rounded: Boolean,
-  push: Boolean,
-  glossy: Boolean,
-  size: String,
-  fab: Boolean,
-  fabMini: Boolean,
-  padding: String,
-  color: String,
-  textColor: String,
-  noCaps: Boolean,
-  noWrap: Boolean,
-  dense: Boolean,
-  tabindex: [Number, String],
-  ripple: {
-    type: [Boolean, Object],
-    default: true
-  },
-  align: __spreadProps(__spreadValues({}, useAlignProps.align), {
-    default: "center"
-  }),
-  stack: Boolean,
-  stretch: Boolean,
-  loading: {
-    type: Boolean,
-    default: null
-  },
-  disable: Boolean
-});
-function useBtn(props2) {
-  const sizeStyle = useSize(props2, defaultSizes);
-  const alignClass = useAlign(props2);
-  const { hasRouterLink, hasLink, linkTag, linkProps, navigateToRouterLink } = useRouterLink("button");
-  const style = computed(() => {
-    const obj = props2.fab === false && props2.fabMini === false ? sizeStyle.value : {};
-    return props2.padding !== void 0 ? Object.assign({}, obj, {
-      padding: props2.padding.split(/\s+/).map((v) => v in padding ? padding[v] + "px" : v).join(" "),
-      minWidth: "0",
-      minHeight: "0"
-    }) : obj;
-  });
-  const isRounded = computed(() => props2.rounded === true || props2.fab === true || props2.fabMini === true);
-  const isActionable = computed(() => props2.disable !== true && props2.loading !== true);
-  const tabIndex = computed(() => isActionable.value === true ? props2.tabindex || 0 : -1);
-  const design = computed(() => {
-    if (props2.flat === true)
-      return "flat";
-    if (props2.outline === true)
-      return "outline";
-    if (props2.push === true)
-      return "push";
-    if (props2.unelevated === true)
-      return "unelevated";
-    return "standard";
-  });
-  const attributes = computed(() => {
-    const acc = { tabindex: tabIndex.value };
-    if (hasLink.value === true) {
-      Object.assign(acc, linkProps.value);
-    } else if (formTypes.includes(props2.type) === true) {
-      acc.type = props2.type;
-    }
-    if (linkTag.value === "a") {
-      if (props2.disable === true) {
-        acc["aria-disabled"] = "true";
-      } else if (acc.href === void 0) {
-        acc.role = "button";
-      }
-      if (hasRouterLink.value !== true && mediaTypeRE.test(props2.type) === true) {
-        acc.type = props2.type;
-      }
-    } else if (props2.disable === true) {
-      acc.disabled = "";
-      acc["aria-disabled"] = "true";
-    }
-    if (props2.loading === true && props2.percentage !== void 0) {
-      Object.assign(acc, {
-        role: "progressbar",
-        "aria-valuemin": 0,
-        "aria-valuemax": 100,
-        "aria-valuenow": props2.percentage
-      });
-    }
-    return acc;
-  });
-  const classes = computed(() => {
-    let colors;
-    if (props2.color !== void 0) {
-      if (props2.flat === true || props2.outline === true) {
-        colors = `text-${props2.textColor || props2.color}`;
-      } else {
-        colors = `bg-${props2.color} text-${props2.textColor || "white"}`;
-      }
-    } else if (props2.textColor) {
-      colors = `text-${props2.textColor}`;
-    }
-    return `q-btn--${design.value} q-btn--${props2.round === true ? "round" : `rectangle${isRounded.value === true ? " q-btn--rounded" : ""}`}` + (colors !== void 0 ? " " + colors : "") + (isActionable.value === true ? " q-btn--actionable q-focusable q-hoverable" : props2.disable === true ? " disabled" : "") + (props2.fab === true ? " q-btn--fab" : props2.fabMini === true ? " q-btn--fab-mini" : "") + (props2.noCaps === true ? " q-btn--no-uppercase" : "") + (props2.dense === true ? " q-btn--dense" : "") + (props2.stretch === true ? " no-border-radius self-stretch" : "") + (props2.glossy === true ? " glossy" : "");
-  });
-  const innerClasses = computed(() => alignClass.value + (props2.stack === true ? " column" : " row") + (props2.noWrap === true ? " no-wrap text-no-wrap" : "") + (props2.loading === true ? " q-btn__content--hidden" : ""));
-  return {
-    classes,
-    style,
-    innerClasses,
-    attributes,
-    hasRouterLink,
-    hasLink,
-    linkTag,
-    navigateToRouterLink,
-    isActionable
-  };
-}
-const { passiveCapture } = listenOpts;
-let touchTarget = null, keyboardTarget = null, mouseTarget = null;
-var QBtn = createComponent({
-  name: "QBtn",
-  props: __spreadProps(__spreadValues({}, useBtnProps), {
-    percentage: Number,
-    darkPercentage: Boolean
-  }),
-  emits: ["click", "keydown", "touchstart", "mousedown", "keyup"],
-  setup(props2, { slots, emit }) {
-    const { proxy } = getCurrentInstance();
-    const {
-      classes,
-      style,
-      innerClasses,
-      attributes,
-      hasRouterLink,
-      hasLink,
-      linkTag,
-      navigateToRouterLink,
-      isActionable
-    } = useBtn(props2);
-    const rootRef = ref(null);
-    const blurTargetRef = ref(null);
-    let localTouchTargetEl = null, avoidMouseRipple, mouseTimer;
-    const hasLabel = computed(() => props2.label !== void 0 && props2.label !== null && props2.label !== "");
-    const ripple = computed(() => props2.disable === true || props2.ripple === false ? false : __spreadValues({
-      keyCodes: hasLink.value === true ? [13, 32] : [13]
-    }, props2.ripple === true ? {} : props2.ripple));
-    const rippleProps = computed(() => ({ center: props2.round }));
-    const percentageStyle = computed(() => {
-      const val = Math.max(0, Math.min(100, props2.percentage));
-      return val > 0 ? { transition: "transform 0.6s", transform: `translateX(${val - 100}%)` } : {};
-    });
-    const onEvents = computed(() => {
-      if (props2.loading === true) {
-        return {
-          onMousedown: onLoadingEvt,
-          onTouchstartPassive: onLoadingEvt,
-          onClick: onLoadingEvt,
-          onKeydown: onLoadingEvt,
-          onKeyup: onLoadingEvt
-        };
-      }
-      if (isActionable.value === true) {
-        return {
-          onClick,
-          onKeydown,
-          onMousedown,
-          onTouchstartPassive
-        };
-      }
-      return {
-        onClick: stopAndPrevent
-      };
-    });
-    const nodeProps = computed(() => __spreadValues(__spreadValues({
-      ref: rootRef,
-      class: "q-btn q-btn-item non-selectable no-outline " + classes.value,
-      style: style.value
-    }, attributes.value), onEvents.value));
-    function onClick(e2) {
-      if (rootRef.value === null) {
-        return;
-      }
-      if (e2 !== void 0) {
-        if (e2.defaultPrevented === true) {
-          return;
-        }
-        const el = document.activeElement;
-        if (props2.type === "submit" && el !== document.body && rootRef.value.contains(el) === false && el.contains(rootRef.value) === false) {
-          rootRef.value.focus();
-          const onClickCleanup = () => {
-            document.removeEventListener("keydown", stopAndPrevent, true);
-            document.removeEventListener("keyup", onClickCleanup, passiveCapture);
-            rootRef.value !== null && rootRef.value.removeEventListener("blur", onClickCleanup, passiveCapture);
-          };
-          document.addEventListener("keydown", stopAndPrevent, true);
-          document.addEventListener("keyup", onClickCleanup, passiveCapture);
-          rootRef.value.addEventListener("blur", onClickCleanup, passiveCapture);
-        }
-      }
-      if (hasRouterLink.value === true) {
-        const go = () => {
-          e2.__qNavigate = true;
-          navigateToRouterLink(e2);
-        };
-        emit("click", e2, go);
-        e2.defaultPrevented !== true && go();
-      } else {
-        emit("click", e2);
-      }
-    }
-    function onKeydown(e2) {
-      if (rootRef.value === null) {
-        return;
-      }
-      if (isKeyCode(e2, [13, 32]) === true) {
-        stopAndPrevent(e2);
-        if (keyboardTarget !== rootRef.value) {
-          keyboardTarget !== null && cleanup();
-          rootRef.value.focus();
-          keyboardTarget = rootRef.value;
-          rootRef.value.classList.add("q-btn--active");
-          document.addEventListener("keyup", onPressEnd, true);
-          rootRef.value.addEventListener("blur", onPressEnd, passiveCapture);
-        }
-      }
-      emit("keydown", e2);
-    }
-    function onTouchstartPassive(e2) {
-      if (rootRef.value === null) {
-        return;
-      }
-      if (touchTarget !== rootRef.value) {
-        touchTarget !== null && cleanup();
-        touchTarget = rootRef.value;
-        localTouchTargetEl = e2.target;
-        localTouchTargetEl.addEventListener("touchcancel", onPressEnd, passiveCapture);
-        localTouchTargetEl.addEventListener("touchend", onPressEnd, passiveCapture);
-      }
-      avoidMouseRipple = true;
-      clearTimeout(mouseTimer);
-      mouseTimer = setTimeout(() => {
-        avoidMouseRipple = false;
-      }, 200);
-      emit("touchstart", e2);
-    }
-    function onMousedown(e2) {
-      if (rootRef.value === null) {
-        return;
-      }
-      if (mouseTarget !== rootRef.value) {
-        mouseTarget !== null && cleanup();
-        mouseTarget = rootRef.value;
-        rootRef.value.classList.add("q-btn--active");
-        document.addEventListener("mouseup", onPressEnd, passiveCapture);
-      }
-      e2.qSkipRipple = avoidMouseRipple === true;
-      emit("mousedown", e2);
-    }
-    function onPressEnd(e2) {
-      if (rootRef.value === null) {
-        return;
-      }
-      if (e2 !== void 0 && e2.type === "blur" && document.activeElement === rootRef.value) {
-        return;
-      }
-      if (e2 !== void 0 && e2.type === "keyup") {
-        if (keyboardTarget === rootRef.value && isKeyCode(e2, [13, 32]) === true) {
-          const evt = new MouseEvent("click", e2);
-          evt.qKeyEvent = true;
-          e2.defaultPrevented === true && prevent(evt);
-          e2.cancelBubble === true && stop(evt);
-          rootRef.value.dispatchEvent(evt);
-          stopAndPrevent(e2);
-          e2.qKeyEvent = true;
-        }
-        emit("keyup", e2);
-      }
-      cleanup();
-    }
-    function cleanup(destroying) {
-      const blurTarget = blurTargetRef.value;
-      if (destroying !== true && (touchTarget === rootRef.value || mouseTarget === rootRef.value) && blurTarget !== null && blurTarget !== document.activeElement) {
-        blurTarget.setAttribute("tabindex", -1);
-        blurTarget.focus();
-      }
-      if (touchTarget === rootRef.value) {
-        if (localTouchTargetEl !== null) {
-          localTouchTargetEl.removeEventListener("touchcancel", onPressEnd, passiveCapture);
-          localTouchTargetEl.removeEventListener("touchend", onPressEnd, passiveCapture);
-        }
-        touchTarget = localTouchTargetEl = null;
-      }
-      if (mouseTarget === rootRef.value) {
-        document.removeEventListener("mouseup", onPressEnd, passiveCapture);
-        mouseTarget = null;
-      }
-      if (keyboardTarget === rootRef.value) {
-        document.removeEventListener("keyup", onPressEnd, true);
-        rootRef.value !== null && rootRef.value.removeEventListener("blur", onPressEnd, passiveCapture);
-        keyboardTarget = null;
-      }
-      rootRef.value !== null && rootRef.value.classList.remove("q-btn--active");
-    }
-    function onLoadingEvt(evt) {
-      stopAndPrevent(evt);
-      evt.qSkipRipple = true;
-    }
-    onBeforeUnmount(() => {
-      cleanup(true);
-    });
-    Object.assign(proxy, { click: onClick });
-    return () => {
-      let inner = [];
-      props2.icon !== void 0 && inner.push(h(QIcon, {
-        name: props2.icon,
-        left: props2.stack === false && hasLabel.value === true,
-        role: "img",
-        "aria-hidden": "true"
-      }));
-      hasLabel.value === true && inner.push(h("span", { class: "block" }, [props2.label]));
-      inner = hMergeSlot(slots.default, inner);
-      if (props2.iconRight !== void 0 && props2.round === false) {
-        inner.push(h(QIcon, {
-          name: props2.iconRight,
-          right: props2.stack === false && hasLabel.value === true,
-          role: "img",
-          "aria-hidden": "true"
-        }));
-      }
-      const child = [
-        h("span", {
-          class: "q-focus-helper",
-          ref: blurTargetRef
-        })
-      ];
-      if (props2.loading === true && props2.percentage !== void 0) {
-        child.push(h("span", {
-          class: "q-btn__progress absolute-full overflow-hidden"
-        }, [
-          h("span", {
-            class: "q-btn__progress-indicator fit block" + (props2.darkPercentage === true ? " q-btn__progress--dark" : ""),
-            style: percentageStyle.value
-          })
-        ]));
-      }
-      child.push(h("span", {
-        class: "q-btn__content text-center col items-center q-anchor--skip " + innerClasses.value
-      }, inner));
-      props2.loading !== null && child.push(h(Transition, {
-        name: "q-transition--fade"
-      }, () => props2.loading === true ? [
-        h("span", {
-          key: "loading",
-          class: "absolute-full flex flex-center"
-        }, slots.loading !== void 0 ? slots.loading() : [h(QSpinner)])
-      ] : null));
-      return withDirectives(h(linkTag.value, nodeProps.value, child), [[
-        Ripple,
-        ripple.value,
-        void 0,
-        rippleProps.value
-      ]]);
-    };
-  }
-});
-let target = document.body;
-function createGlobalNode(id) {
-  const el = document.createElement("div");
-  if (id !== void 0) {
-    el.id = id;
-  }
-  target.appendChild(el);
-  return el;
-}
-function removeGlobalNode(el) {
-  el.remove();
-}
-function injectProp(target2, propName, get2, set2) {
-  Object.defineProperty(target2, propName, {
-    get: get2,
-    set: set2,
-    enumerable: true
-  });
-}
-const isRuntimeSsrPreHydration = ref(false);
-let iosCorrection;
-function getMatch(userAgent2, platformMatch) {
-  const match = /(edg|edge|edga|edgios)\/([\w.]+)/.exec(userAgent2) || /(opr)[\/]([\w.]+)/.exec(userAgent2) || /(vivaldi)[\/]([\w.]+)/.exec(userAgent2) || /(chrome|crios)[\/]([\w.]+)/.exec(userAgent2) || /(version)(applewebkit)[\/]([\w.]+).*(safari)[\/]([\w.]+)/.exec(userAgent2) || /(webkit)[\/]([\w.]+).*(version)[\/]([\w.]+).*(safari)[\/]([\w.]+)/.exec(userAgent2) || /(firefox|fxios)[\/]([\w.]+)/.exec(userAgent2) || /(webkit)[\/]([\w.]+)/.exec(userAgent2) || /(opera)(?:.*version|)[\/]([\w.]+)/.exec(userAgent2) || [];
-  return {
-    browser: match[5] || match[3] || match[1] || "",
-    version: match[2] || match[4] || "0",
-    versionNumber: match[4] || match[2] || "0",
-    platform: platformMatch[0] || ""
-  };
-}
-function getPlatformMatch(userAgent2) {
-  return /(ipad)/.exec(userAgent2) || /(ipod)/.exec(userAgent2) || /(windows phone)/.exec(userAgent2) || /(iphone)/.exec(userAgent2) || /(kindle)/.exec(userAgent2) || /(silk)/.exec(userAgent2) || /(android)/.exec(userAgent2) || /(win)/.exec(userAgent2) || /(mac)/.exec(userAgent2) || /(linux)/.exec(userAgent2) || /(cros)/.exec(userAgent2) || /(playbook)/.exec(userAgent2) || /(bb)/.exec(userAgent2) || /(blackberry)/.exec(userAgent2) || [];
-}
-const hasTouch = "ontouchstart" in window || window.navigator.maxTouchPoints > 0;
-function applyIosCorrection(is) {
-  iosCorrection = { is: __spreadValues({}, is) };
-  delete is.mac;
-  delete is.desktop;
-  const platform = Math.min(window.innerHeight, window.innerWidth) > 414 ? "ipad" : "iphone";
-  Object.assign(is, {
-    mobile: true,
-    ios: true,
-    platform,
-    [platform]: true
-  });
-}
-function getPlatform(UA) {
-  const userAgent2 = UA.toLowerCase(), platformMatch = getPlatformMatch(userAgent2), matched = getMatch(userAgent2, platformMatch), browser = {};
-  if (matched.browser) {
-    browser[matched.browser] = true;
-    browser.version = matched.version;
-    browser.versionNumber = parseInt(matched.versionNumber, 10);
-  }
-  if (matched.platform) {
-    browser[matched.platform] = true;
-  }
-  const knownMobiles = browser.android || browser.ios || browser.bb || browser.blackberry || browser.ipad || browser.iphone || browser.ipod || browser.kindle || browser.playbook || browser.silk || browser["windows phone"];
-  if (knownMobiles === true || userAgent2.indexOf("mobile") > -1) {
-    browser.mobile = true;
-    if (browser.edga || browser.edgios) {
-      browser.edge = true;
-      matched.browser = "edge";
-    } else if (browser.crios) {
-      browser.chrome = true;
-      matched.browser = "chrome";
-    } else if (browser.fxios) {
-      browser.firefox = true;
-      matched.browser = "firefox";
-    }
-  } else {
-    browser.desktop = true;
-  }
-  if (browser.ipod || browser.ipad || browser.iphone) {
-    browser.ios = true;
-  }
-  if (browser["windows phone"]) {
-    browser.winphone = true;
-    delete browser["windows phone"];
-  }
-  if (browser.chrome || browser.opr || browser.safari || browser.vivaldi || browser.mobile === true && browser.ios !== true && knownMobiles !== true) {
-    browser.webkit = true;
-  }
-  if (browser.edg) {
-    matched.browser = "edgechromium";
-    browser.edgeChromium = true;
-  }
-  if (browser.safari && browser.blackberry || browser.bb) {
-    matched.browser = "blackberry";
-    browser.blackberry = true;
-  }
-  if (browser.safari && browser.playbook) {
-    matched.browser = "playbook";
-    browser.playbook = true;
-  }
-  if (browser.opr) {
-    matched.browser = "opera";
-    browser.opera = true;
-  }
-  if (browser.safari && browser.android) {
-    matched.browser = "android";
-    browser.android = true;
-  }
-  if (browser.safari && browser.kindle) {
-    matched.browser = "kindle";
-    browser.kindle = true;
-  }
-  if (browser.safari && browser.silk) {
-    matched.browser = "silk";
-    browser.silk = true;
-  }
-  if (browser.vivaldi) {
-    matched.browser = "vivaldi";
-    browser.vivaldi = true;
-  }
-  browser.name = matched.browser;
-  browser.platform = matched.platform;
-  {
-    if (userAgent2.indexOf("electron") > -1) {
-      browser.electron = true;
-    } else if (document.location.href.indexOf("-extension://") > -1) {
-      browser.bex = true;
-    } else {
-      if (window.Capacitor !== void 0) {
-        browser.capacitor = true;
-        browser.nativeMobile = true;
-        browser.nativeMobileWrapper = "capacitor";
-      } else if (window._cordovaNative !== void 0 || window.cordova !== void 0) {
-        browser.cordova = true;
-        browser.nativeMobile = true;
-        browser.nativeMobileWrapper = "cordova";
-      }
-      if (hasTouch === true && browser.mac === true && (browser.desktop === true && browser.safari === true || browser.nativeMobile === true && browser.android !== true && browser.ios !== true && browser.ipad !== true)) {
-        applyIosCorrection(browser);
-      }
-    }
-  }
-  return browser;
-}
-const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-const ssrClient = {
-  has: {
-    touch: false,
-    webStorage: false
-  },
-  within: { iframe: false }
-};
-const client = {
-  userAgent,
-  is: getPlatform(userAgent),
-  has: {
-    touch: hasTouch
-  },
-  within: {
-    iframe: window.self !== window.top
-  }
-};
-const Platform = {
-  install(opts) {
-    const { $q } = opts;
-    if (isRuntimeSsrPreHydration.value === true) {
-      opts.onSSRHydrated.push(() => {
-        isRuntimeSsrPreHydration.value = false;
-        Object.assign($q.platform, client);
-        iosCorrection = void 0;
-      });
-      $q.platform = reactive(this);
-    } else {
-      $q.platform = this;
-    }
-  }
-};
-{
-  let hasWebStorage;
-  injectProp(client.has, "webStorage", () => {
-    if (hasWebStorage !== void 0) {
-      return hasWebStorage;
-    }
-    try {
-      if (window.localStorage) {
-        hasWebStorage = true;
-        return true;
-      }
-    } catch (e2) {
-    }
-    hasWebStorage = false;
-    return false;
-  });
-  client.is.ios === true && window.navigator.vendor.toLowerCase().indexOf("apple") === -1;
-  if (isRuntimeSsrPreHydration.value === true) {
-    Object.assign(Platform, client, iosCorrection, ssrClient);
-  } else {
-    Object.assign(Platform, client);
-  }
-}
-var defineReactivePlugin = (state, plugin) => {
-  const reactiveState = reactive(state);
-  for (const name in state) {
-    injectProp(plugin, name, () => reactiveState[name], (val) => {
-      reactiveState[name] = val;
-    });
-  }
-  return plugin;
-};
-function debounce(fn, wait = 250, immediate) {
-  let timeout;
-  function debounced() {
-    const args = arguments;
-    const later = () => {
-      timeout = void 0;
-      if (immediate !== true) {
-        fn.apply(this, args);
-      }
-    };
-    clearTimeout(timeout);
-    if (immediate === true && timeout === void 0) {
-      fn.apply(this, args);
-    }
-    timeout = setTimeout(later, wait);
-  }
-  debounced.cancel = () => {
-    clearTimeout(timeout);
-  };
-  return debounced;
-}
-const SIZE_LIST = ["sm", "md", "lg", "xl"];
-const { passive } = listenOpts;
-defineReactivePlugin({
-  width: 0,
-  height: 0,
-  name: "xs",
-  sizes: {
-    sm: 600,
-    md: 1024,
-    lg: 1440,
-    xl: 1920
-  },
-  lt: {
-    sm: true,
-    md: true,
-    lg: true,
-    xl: true
-  },
-  gt: {
-    xs: false,
-    sm: false,
-    md: false,
-    lg: false
-  },
-  xs: true,
-  sm: false,
-  md: false,
-  lg: false,
-  xl: false
-}, {
-  setSizes: noop,
-  setDebounce: noop,
-  install({ $q, onSSRHydrated }) {
-    $q.screen = this;
-    if (this.__installed === true) {
-      if ($q.config.screen !== void 0) {
-        if ($q.config.screen.bodyClasses === false) {
-          document.body.classList.remove(`screen--${this.name}`);
-        } else {
-          this.__update(true);
-        }
-      }
-      return;
-    }
-    const { visualViewport } = window;
-    const target2 = visualViewport || window;
-    const scrollingElement = document.scrollingElement || document.documentElement;
-    const getSize = visualViewport === void 0 || client.is.mobile === true ? () => [
-      Math.max(window.innerWidth, scrollingElement.clientWidth),
-      Math.max(window.innerHeight, scrollingElement.clientHeight)
-    ] : () => [
-      visualViewport.width * visualViewport.scale + window.innerWidth - scrollingElement.clientWidth,
-      visualViewport.height * visualViewport.scale + window.innerHeight - scrollingElement.clientHeight
-    ];
-    const classes = $q.config.screen !== void 0 && $q.config.screen.bodyClasses === true;
-    this.__update = (force) => {
-      const [w, h2] = getSize();
-      if (h2 !== this.height) {
-        this.height = h2;
-      }
-      if (w !== this.width) {
-        this.width = w;
-      } else if (force !== true) {
-        return;
-      }
-      let s = this.sizes;
-      this.gt.xs = w >= s.sm;
-      this.gt.sm = w >= s.md;
-      this.gt.md = w >= s.lg;
-      this.gt.lg = w >= s.xl;
-      this.lt.sm = w < s.sm;
-      this.lt.md = w < s.md;
-      this.lt.lg = w < s.lg;
-      this.lt.xl = w < s.xl;
-      this.xs = this.lt.sm;
-      this.sm = this.gt.xs === true && this.lt.md === true;
-      this.md = this.gt.sm === true && this.lt.lg === true;
-      this.lg = this.gt.md === true && this.lt.xl === true;
-      this.xl = this.gt.lg;
-      s = this.xs === true && "xs" || this.sm === true && "sm" || this.md === true && "md" || this.lg === true && "lg" || "xl";
-      if (s !== this.name) {
-        if (classes === true) {
-          document.body.classList.remove(`screen--${this.name}`);
-          document.body.classList.add(`screen--${s}`);
-        }
-        this.name = s;
-      }
-    };
-    let updateEvt, updateSizes = {}, updateDebounce = 16;
-    this.setSizes = (sizes) => {
-      SIZE_LIST.forEach((name) => {
-        if (sizes[name] !== void 0) {
-          updateSizes[name] = sizes[name];
-        }
-      });
-    };
-    this.setDebounce = (deb) => {
-      updateDebounce = deb;
-    };
-    const start = () => {
-      const style = getComputedStyle(document.body);
-      if (style.getPropertyValue("--q-size-sm")) {
-        SIZE_LIST.forEach((name) => {
-          this.sizes[name] = parseInt(style.getPropertyValue(`--q-size-${name}`), 10);
-        });
-      }
-      this.setSizes = (sizes) => {
-        SIZE_LIST.forEach((name) => {
-          if (sizes[name]) {
-            this.sizes[name] = sizes[name];
-          }
-        });
-        this.__update(true);
-      };
-      this.setDebounce = (delay) => {
-        updateEvt !== void 0 && target2.removeEventListener("resize", updateEvt, passive);
-        updateEvt = delay > 0 ? debounce(this.__update, delay) : this.__update;
-        target2.addEventListener("resize", updateEvt, passive);
-      };
-      this.setDebounce(updateDebounce);
-      if (Object.keys(updateSizes).length > 0) {
-        this.setSizes(updateSizes);
-        updateSizes = void 0;
-      } else {
-        this.__update();
-      }
-      classes === true && this.name === "xs" && document.body.classList.add("screen--xs");
-    };
-    if (isRuntimeSsrPreHydration.value === true) {
-      onSSRHydrated.push(start);
-    } else {
-      start();
-    }
-  }
-});
-const Plugin$2 = defineReactivePlugin({
-  isActive: false,
-  mode: false
-}, {
-  __media: void 0,
-  set(val) {
-    Plugin$2.mode = val;
-    if (val === "auto") {
-      if (Plugin$2.__media === void 0) {
-        Plugin$2.__media = window.matchMedia("(prefers-color-scheme: dark)");
-        Plugin$2.__updateMedia = () => {
-          Plugin$2.set("auto");
-        };
-        Plugin$2.__media.addListener(Plugin$2.__updateMedia);
-      }
-      val = Plugin$2.__media.matches;
-    } else if (Plugin$2.__media !== void 0) {
-      Plugin$2.__media.removeListener(Plugin$2.__updateMedia);
-      Plugin$2.__media = void 0;
-    }
-    Plugin$2.isActive = val === true;
-    document.body.classList.remove(`body--${val === true ? "light" : "dark"}`);
-    document.body.classList.add(`body--${val === true ? "dark" : "light"}`);
-  },
-  toggle() {
-    {
-      Plugin$2.set(Plugin$2.isActive === false);
-    }
-  },
-  install({ $q, onSSRHydrated, ssrContext }) {
-    const { dark } = $q.config;
-    $q.dark = this;
-    if (this.__installed === true && dark === void 0) {
-      return;
-    }
-    this.isActive = dark === true;
-    const initialVal = dark !== void 0 ? dark : false;
-    if (isRuntimeSsrPreHydration.value === true) {
-      const ssrSet = (val) => {
-        this.__fromSSR = val;
-      };
-      const originalSet = this.set;
-      this.set = ssrSet;
-      ssrSet(initialVal);
-      onSSRHydrated.push(() => {
-        this.set = originalSet;
-        this.set(this.__fromSSR);
-      });
-    } else {
-      this.set(initialVal);
-    }
-  }
-});
-var defaultLang = {
-  isoName: "en-US",
-  nativeName: "English (US)",
-  label: {
-    clear: "Clear",
-    ok: "OK",
-    cancel: "Cancel",
-    close: "Close",
-    set: "Set",
-    select: "Select",
-    reset: "Reset",
-    remove: "Remove",
-    update: "Update",
-    create: "Create",
-    search: "Search",
-    filter: "Filter",
-    refresh: "Refresh"
-  },
-  date: {
-    days: "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"),
-    daysShort: "Sun_Mon_Tue_Wed_Thu_Fri_Sat".split("_"),
-    months: "January_February_March_April_May_June_July_August_September_October_November_December".split("_"),
-    monthsShort: "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec".split("_"),
-    firstDayOfWeek: 0,
-    format24h: false,
-    pluralDay: "days"
-  },
-  table: {
-    noData: "No data available",
-    noResults: "No matching records found",
-    loading: "Loading...",
-    selectedRecords: (rows) => rows === 1 ? "1 record selected." : (rows === 0 ? "No" : rows) + " records selected.",
-    recordsPerPage: "Records per page:",
-    allRows: "All",
-    pagination: (start, end, total) => start + "-" + end + " of " + total,
-    columns: "Columns"
-  },
-  editor: {
-    url: "URL",
-    bold: "Bold",
-    italic: "Italic",
-    strikethrough: "Strikethrough",
-    underline: "Underline",
-    unorderedList: "Unordered List",
-    orderedList: "Ordered List",
-    subscript: "Subscript",
-    superscript: "Superscript",
-    hyperlink: "Hyperlink",
-    toggleFullscreen: "Toggle Fullscreen",
-    quote: "Quote",
-    left: "Left align",
-    center: "Center align",
-    right: "Right align",
-    justify: "Justify align",
-    print: "Print",
-    outdent: "Decrease indentation",
-    indent: "Increase indentation",
-    removeFormat: "Remove formatting",
-    formatting: "Formatting",
-    fontSize: "Font Size",
-    align: "Align",
-    hr: "Insert Horizontal Rule",
-    undo: "Undo",
-    redo: "Redo",
-    heading1: "Heading 1",
-    heading2: "Heading 2",
-    heading3: "Heading 3",
-    heading4: "Heading 4",
-    heading5: "Heading 5",
-    heading6: "Heading 6",
-    paragraph: "Paragraph",
-    code: "Code",
-    size1: "Very small",
-    size2: "A bit small",
-    size3: "Normal",
-    size4: "Medium-large",
-    size5: "Big",
-    size6: "Very big",
-    size7: "Maximum",
-    defaultFont: "Default Font",
-    viewSource: "View Source"
-  },
-  tree: {
-    noNodes: "No nodes available",
-    noResults: "No matching nodes found"
-  }
-};
-function getLocale() {
-  const val = Array.isArray(navigator.languages) === true && navigator.languages.length > 0 ? navigator.languages[0] : navigator.language;
-  if (typeof val === "string") {
-    return val.split(/[-_]/).map((v, i2) => i2 === 0 ? v.toLowerCase() : i2 > 1 || v.length < 4 ? v.toUpperCase() : v[0].toUpperCase() + v.slice(1).toLowerCase()).join("-");
-  }
-}
-const Plugin$1 = defineReactivePlugin({
-  __langPack: {}
-}, {
-  getLocale,
-  set(langObject = defaultLang, ssrContext) {
-    const lang = __spreadProps(__spreadValues({}, langObject), {
-      rtl: langObject.rtl === true,
-      getLocale
-    });
-    {
-      const el = document.documentElement;
-      el.setAttribute("dir", lang.rtl === true ? "rtl" : "ltr");
-      el.setAttribute("lang", lang.isoName);
-      lang.set = Plugin$1.set;
-      Object.assign(Plugin$1.__langPack, lang);
-      Plugin$1.props = lang;
-      Plugin$1.isoName = lang.isoName;
-      Plugin$1.nativeName = lang.nativeName;
-    }
-  },
-  install({ $q, lang, ssrContext }) {
-    {
-      $q.lang = Plugin$1.__langPack;
-      if (this.__installed === true) {
-        lang !== void 0 && this.set(lang);
-      } else {
-        this.set(lang || defaultLang);
-      }
-    }
-  }
-});
-var materialIcons = {
-  name: "material-icons",
-  type: {
-    positive: "check_circle",
-    negative: "warning",
-    info: "info",
-    warning: "priority_high"
-  },
-  arrow: {
-    up: "arrow_upward",
-    right: "arrow_forward",
-    down: "arrow_downward",
-    left: "arrow_back",
-    dropdown: "arrow_drop_down"
-  },
-  chevron: {
-    left: "chevron_left",
-    right: "chevron_right"
-  },
-  colorPicker: {
-    spectrum: "gradient",
-    tune: "tune",
-    palette: "style"
-  },
-  pullToRefresh: {
-    icon: "refresh"
-  },
-  carousel: {
-    left: "chevron_left",
-    right: "chevron_right",
-    up: "keyboard_arrow_up",
-    down: "keyboard_arrow_down",
-    navigationIcon: "lens"
-  },
-  chip: {
-    remove: "cancel",
-    selected: "check"
-  },
-  datetime: {
-    arrowLeft: "chevron_left",
-    arrowRight: "chevron_right",
-    now: "access_time",
-    today: "today"
-  },
-  editor: {
-    bold: "format_bold",
-    italic: "format_italic",
-    strikethrough: "strikethrough_s",
-    underline: "format_underlined",
-    unorderedList: "format_list_bulleted",
-    orderedList: "format_list_numbered",
-    subscript: "vertical_align_bottom",
-    superscript: "vertical_align_top",
-    hyperlink: "link",
-    toggleFullscreen: "fullscreen",
-    quote: "format_quote",
-    left: "format_align_left",
-    center: "format_align_center",
-    right: "format_align_right",
-    justify: "format_align_justify",
-    print: "print",
-    outdent: "format_indent_decrease",
-    indent: "format_indent_increase",
-    removeFormat: "format_clear",
-    formatting: "text_format",
-    fontSize: "format_size",
-    align: "format_align_left",
-    hr: "remove",
-    undo: "undo",
-    redo: "redo",
-    heading: "format_size",
-    code: "code",
-    size: "format_size",
-    font: "font_download",
-    viewSource: "code"
-  },
-  expansionItem: {
-    icon: "keyboard_arrow_down",
-    denseIcon: "arrow_drop_down"
-  },
-  fab: {
-    icon: "add",
-    activeIcon: "close"
-  },
-  field: {
-    clear: "cancel",
-    error: "error"
-  },
-  pagination: {
-    first: "first_page",
-    prev: "keyboard_arrow_left",
-    next: "keyboard_arrow_right",
-    last: "last_page"
-  },
-  rating: {
-    icon: "grade"
-  },
-  stepper: {
-    done: "check",
-    active: "edit",
-    error: "warning"
-  },
-  tabs: {
-    left: "chevron_left",
-    right: "chevron_right",
-    up: "keyboard_arrow_up",
-    down: "keyboard_arrow_down"
-  },
-  table: {
-    arrowUp: "arrow_upward",
-    warning: "warning",
-    firstPage: "first_page",
-    prevPage: "chevron_left",
-    nextPage: "chevron_right",
-    lastPage: "last_page"
-  },
-  tree: {
-    icon: "play_arrow"
-  },
-  uploader: {
-    done: "done",
-    clear: "clear",
-    add: "add_box",
-    upload: "cloud_upload",
-    removeQueue: "clear_all",
-    removeUploaded: "done_all"
-  }
-};
-const Plugin = defineReactivePlugin({
-  iconMapFn: null,
-  __icons: {}
-}, {
-  set(setObject, ssrContext) {
-    const def2 = __spreadProps(__spreadValues({}, setObject), { rtl: setObject.rtl === true });
-    {
-      def2.set = Plugin.set;
-      Object.assign(Plugin.__icons, def2);
-    }
-  },
-  install({ $q, iconSet, ssrContext }) {
-    {
-      if ($q.config.iconMapFn !== void 0) {
-        this.iconMapFn = $q.config.iconMapFn;
-      }
-      $q.iconSet = this.__icons;
-      injectProp($q, "iconMapFn", () => this.iconMapFn, (val) => {
-        this.iconMapFn = val;
-      });
-      if (this.__installed === true) {
-        iconSet !== void 0 && this.set(iconSet);
-      } else {
-        this.set(iconSet || materialIcons);
-      }
-    }
-  }
-});
-const formKey = "_q_fo_";
-function isPlainObject(v) {
-  return Object.prototype.toString.call(v) === "[object Object]";
-}
-function createChildApp(appCfg, parentApp) {
-  const app = createApp(appCfg);
-  app.config.globalProperties = parentApp.config.globalProperties;
-  const _a = parentApp._context, { reload } = _a, appContext = __objRest(_a, ["reload"]);
-  Object.assign(app._context, appContext);
-  return app;
-}
-let uid = 0;
-const defaults = {};
-const groups = {};
-const notificationsList = {};
-const positionClass = {};
-const emptyRE = /^\s*$/;
-const notifRefs = [];
-const positionList = [
-  "top-left",
-  "top-right",
-  "bottom-left",
-  "bottom-right",
-  "top",
-  "bottom",
-  "left",
-  "right",
-  "center"
-];
-const badgePositions = [
-  "top-left",
-  "top-right",
-  "bottom-left",
-  "bottom-right"
-];
-const notifTypes = {
-  positive: {
-    icon: ($q) => $q.iconSet.type.positive,
-    color: "positive"
-  },
-  negative: {
-    icon: ($q) => $q.iconSet.type.negative,
-    color: "negative"
-  },
-  warning: {
-    icon: ($q) => $q.iconSet.type.warning,
-    color: "warning",
-    textColor: "dark"
-  },
-  info: {
-    icon: ($q) => $q.iconSet.type.info,
-    color: "info"
-  },
-  ongoing: {
-    group: false,
-    timeout: 0,
-    spinner: true,
-    color: "grey-8"
-  }
-};
-function addNotification(config, $q, originalApi) {
-  if (!config) {
-    return logError("parameter required");
-  }
-  let Api;
-  const notif = { textColor: "white" };
-  if (config.ignoreDefaults !== true) {
-    Object.assign(notif, defaults);
-  }
-  if (isPlainObject(config) === false) {
-    if (notif.type) {
-      Object.assign(notif, notifTypes[notif.type]);
-    }
-    config = { message: config };
-  }
-  Object.assign(notif, notifTypes[config.type || notif.type], config);
-  if (typeof notif.icon === "function") {
-    notif.icon = notif.icon($q);
-  }
-  if (!notif.spinner) {
-    notif.spinner = false;
-  } else {
-    if (notif.spinner === true) {
-      notif.spinner = QSpinner;
-    }
-    notif.spinner = markRaw(notif.spinner);
-  }
-  notif.meta = {
-    hasMedia: Boolean(notif.spinner !== false || notif.icon || notif.avatar),
-    hasText: hasContent(notif.message) || hasContent(notif.caption)
-  };
-  if (notif.position) {
-    if (positionList.includes(notif.position) === false) {
-      return logError("wrong position", config);
-    }
-  } else {
-    notif.position = "bottom";
-  }
-  if (notif.timeout === void 0) {
-    notif.timeout = 5e3;
-  } else {
-    const t2 = parseInt(notif.timeout, 10);
-    if (isNaN(t2) || t2 < 0) {
-      return logError("wrong timeout", config);
-    }
-    notif.timeout = t2;
-  }
-  if (notif.timeout === 0) {
-    notif.progress = false;
-  } else if (notif.progress === true) {
-    notif.meta.progressClass = "q-notification__progress" + (notif.progressClass ? ` ${notif.progressClass}` : "");
-    notif.meta.progressStyle = {
-      animationDuration: `${notif.timeout + 1e3}ms`
-    };
-  }
-  const actions = (Array.isArray(config.actions) === true ? config.actions : []).concat(config.ignoreDefaults !== true && Array.isArray(defaults.actions) === true ? defaults.actions : []).concat(notifTypes[config.type] !== void 0 && Array.isArray(notifTypes[config.type].actions) === true ? notifTypes[config.type].actions : []);
-  const { closeBtn } = notif;
-  closeBtn && actions.push({
-    label: typeof closeBtn === "string" ? closeBtn : $q.lang.label.close
-  });
-  notif.actions = actions.map((_a) => {
-    var _b = _a, { handler, noDismiss } = _b, item = __objRest(_b, ["handler", "noDismiss"]);
-    return __spreadProps(__spreadValues({
-      flat: true
-    }, item), {
-      onClick: typeof handler === "function" ? () => {
-        handler();
-        noDismiss !== true && dismiss();
-      } : () => {
-        dismiss();
-      }
-    });
-  });
-  if (notif.multiLine === void 0) {
-    notif.multiLine = notif.actions.length > 1;
-  }
-  Object.assign(notif.meta, {
-    class: `q-notification row items-stretch q-notification--${notif.multiLine === true ? "multi-line" : "standard"}` + (notif.color !== void 0 ? ` bg-${notif.color}` : "") + (notif.textColor !== void 0 ? ` text-${notif.textColor}` : "") + (notif.classes !== void 0 ? ` ${notif.classes}` : ""),
-    wrapperClass: "q-notification__wrapper col relative-position border-radius-inherit " + (notif.multiLine === true ? "column no-wrap justify-center" : "row items-center"),
-    contentClass: "q-notification__content row items-center" + (notif.multiLine === true ? "" : " col"),
-    leftClass: notif.meta.hasText === true ? "additional" : "single",
-    attrs: __spreadValues({
-      role: "alert"
-    }, notif.attrs)
-  });
-  if (notif.group === false) {
-    notif.group = void 0;
-    notif.meta.group = void 0;
-  } else {
-    if (notif.group === void 0 || notif.group === true) {
-      notif.group = [
-        notif.message,
-        notif.caption,
-        notif.multiline
-      ].concat(notif.actions.map((props2) => `${props2.label}*${props2.icon}`)).join("|");
-    }
-    notif.meta.group = notif.group + "|" + notif.position;
-  }
-  if (notif.actions.length === 0) {
-    notif.actions = void 0;
-  } else {
-    notif.meta.actionsClass = "q-notification__actions row items-center " + (notif.multiLine === true ? "justify-end" : "col-auto") + (notif.meta.hasMedia === true ? " q-notification__actions--with-media" : "");
-  }
-  if (originalApi !== void 0) {
-    clearTimeout(originalApi.notif.meta.timer);
-    notif.meta.uid = originalApi.notif.meta.uid;
-    const index = notificationsList[notif.position].value.indexOf(originalApi.notif);
-    notificationsList[notif.position].value[index] = notif;
-  } else {
-    const original = groups[notif.meta.group];
-    if (original === void 0) {
-      notif.meta.uid = uid++;
-      notif.meta.badge = 1;
-      if (["left", "right", "center"].indexOf(notif.position) !== -1) {
-        notificationsList[notif.position].value.splice(Math.floor(notificationsList[notif.position].value.length / 2), 0, notif);
-      } else {
-        const action = notif.position.indexOf("top") > -1 ? "unshift" : "push";
-        notificationsList[notif.position].value[action](notif);
-      }
-      if (notif.group !== void 0) {
-        groups[notif.meta.group] = notif;
-      }
-    } else {
-      clearTimeout(original.meta.timer);
-      if (notif.badgePosition !== void 0) {
-        if (badgePositions.includes(notif.badgePosition) === false) {
-          return logError("wrong badgePosition", config);
-        }
-      } else {
-        notif.badgePosition = `top-${notif.position.indexOf("left") > -1 ? "right" : "left"}`;
-      }
-      notif.meta.uid = original.meta.uid;
-      notif.meta.badge = original.meta.badge + 1;
-      notif.meta.badgeClass = `q-notification__badge q-notification__badge--${notif.badgePosition}` + (notif.badgeColor !== void 0 ? ` bg-${notif.badgeColor}` : "") + (notif.badgeTextColor !== void 0 ? ` text-${notif.badgeTextColor}` : "") + (notif.badgeClass ? ` ${notif.badgeClass}` : "");
-      const index = notificationsList[notif.position].value.indexOf(original);
-      notificationsList[notif.position].value[index] = groups[notif.meta.group] = notif;
-    }
-  }
-  const dismiss = () => {
-    removeNotification(notif);
-    Api = void 0;
-  };
-  if (notif.timeout > 0) {
-    notif.meta.timer = setTimeout(() => {
-      dismiss();
-    }, notif.timeout + 1e3);
-  }
-  if (notif.group !== void 0) {
-    return (props2) => {
-      if (props2 !== void 0) {
-        logError("trying to update a grouped one which is forbidden", config);
-      } else {
-        dismiss();
-      }
-    };
-  }
-  Api = {
-    dismiss,
-    config,
-    notif
-  };
-  if (originalApi !== void 0) {
-    Object.assign(originalApi, Api);
-    return;
-  }
-  return (props2) => {
-    if (Api !== void 0) {
-      if (props2 === void 0) {
-        Api.dismiss();
-      } else {
-        const newNotif = Object.assign({}, Api.config, props2, {
-          group: false,
-          position: notif.position
-        });
-        addNotification(newNotif, $q, Api);
-      }
-    }
-  };
-}
-function removeNotification(notif) {
-  clearTimeout(notif.meta.timer);
-  const index = notificationsList[notif.position].value.indexOf(notif);
-  if (index !== -1) {
-    if (notif.group !== void 0) {
-      delete groups[notif.meta.group];
-    }
-    const el = notifRefs["" + notif.meta.uid];
-    if (el) {
-      const { width, height } = getComputedStyle(el);
-      el.style.left = `${el.offsetLeft}px`;
-      el.style.width = width;
-      el.style.height = height;
-    }
-    notificationsList[notif.position].value.splice(index, 1);
-    if (typeof notif.onDismiss === "function") {
-      notif.onDismiss();
-    }
-  }
-}
-function hasContent(str) {
-  return str !== void 0 && str !== null && emptyRE.test(str) !== true;
-}
-function logError(error, config) {
-  console.error(`Notify: ${error}`, config);
-  return false;
-}
-function getComponent() {
-  return createComponent({
-    name: "QNotifications",
-    devtools: { hide: true },
-    setup() {
-      return () => h("div", { class: "q-notifications" }, positionList.map((pos) => {
-        return h(TransitionGroup, {
-          key: pos,
-          class: positionClass[pos],
-          tag: "div",
-          name: `q-notification--${pos}`
-        }, () => notificationsList[pos].value.map((notif) => {
-          const meta = notif.meta;
-          const mainChild = [];
-          if (meta.hasMedia === true) {
-            if (notif.spinner !== false) {
-              mainChild.push(h(notif.spinner, {
-                class: "q-notification__spinner q-notification__spinner--" + meta.leftClass,
-                color: notif.spinnerColor,
-                size: notif.spinnerSize
-              }));
-            } else if (notif.icon) {
-              mainChild.push(h(QIcon, {
-                class: "q-notification__icon q-notification__icon--" + meta.leftClass,
-                name: notif.icon,
-                color: notif.iconColor,
-                size: notif.iconSize,
-                role: "img"
-              }));
-            } else if (notif.avatar) {
-              mainChild.push(h(QAvatar, {
-                class: "q-notification__avatar q-notification__avatar--" + meta.leftClass
-              }, () => h("img", { src: notif.avatar, "aria-hidden": "true" })));
-            }
-          }
-          if (meta.hasText === true) {
-            let msgChild;
-            const msgData = { class: "q-notification__message col" };
-            if (notif.html === true) {
-              msgData.innerHTML = notif.caption ? `<div>${notif.message}</div><div class="q-notification__caption">${notif.caption}</div>` : notif.message;
-            } else {
-              const msgNode = [notif.message];
-              msgChild = notif.caption ? [
-                h("div", msgNode),
-                h("div", { class: "q-notification__caption" }, [notif.caption])
-              ] : msgNode;
-            }
-            mainChild.push(h("div", msgData, msgChild));
-          }
-          const child = [
-            h("div", { class: meta.contentClass }, mainChild)
-          ];
-          notif.progress === true && child.push(h("div", {
-            key: `${meta.uid}|p|${meta.badge}`,
-            class: meta.progressClass,
-            style: meta.progressStyle
-          }));
-          notif.actions !== void 0 && child.push(h("div", {
-            class: meta.actionsClass
-          }, notif.actions.map((props2) => h(QBtn, props2))));
-          meta.badge > 1 && child.push(h("div", {
-            key: `${meta.uid}|${meta.badge}`,
-            class: notif.meta.badgeClass,
-            style: notif.badgeStyle
-          }, [meta.badge]));
-          return h("div", __spreadValues({
-            ref: (el) => {
-              notifRefs["" + meta.uid] = el;
-            },
-            key: meta.uid,
-            class: meta.class
-          }, meta.attrs), [
-            h("div", { class: meta.wrapperClass }, child)
-          ]);
-        }));
-      }));
-    }
-  });
-}
-var Notify = {
-  setDefaults(opts) {
-    {
-      isPlainObject(opts) === true && Object.assign(defaults, opts);
-    }
-  },
-  registerType(typeName, typeOpts) {
-    if (isPlainObject(typeOpts) === true) {
-      notifTypes[typeName] = typeOpts;
-    }
-  },
-  install({ $q, parentApp }) {
-    $q.notify = this.create = (opts) => addNotification(opts, $q);
-    $q.notify.setDefaults = this.setDefaults;
-    $q.notify.registerType = this.registerType;
-    if ($q.config.notify !== void 0) {
-      this.setDefaults($q.config.notify);
-    }
-    if (this.__installed !== true) {
-      positionList.forEach((pos) => {
-        notificationsList[pos] = ref([]);
-        const vert = ["left", "center", "right"].includes(pos) === true ? "center" : pos.indexOf("top") > -1 ? "top" : "bottom", align = pos.indexOf("left") > -1 ? "start" : pos.indexOf("right") > -1 ? "end" : "center", classes = ["left", "right"].includes(pos) ? `items-${pos === "left" ? "start" : "end"} justify-center` : pos === "center" ? "flex-center" : `items-${align}`;
-        positionClass[pos] = `q-notifications__list q-notifications__list--${vert} fixed column no-wrap ${classes}`;
-      });
-      const el = createGlobalNode("q-notify");
-      createChildApp(getComponent(), parentApp).mount(el);
-    }
-  }
-};
 var mdiAlert = "M13 14H11V9H13M13 18H11V16H13M1 21H23L12 2L1 21Z";
 var mdiChevronLeft = "M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z";
 var mdiCircleEditOutline = "M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12H20A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4V2M18.78,3C18.61,3 18.43,3.07 18.3,3.2L17.08,4.41L19.58,6.91L20.8,5.7C21.06,5.44 21.06,5 20.8,4.75L19.25,3.2C19.12,3.07 18.95,3 18.78,3M16.37,5.12L9,12.5V15H11.5L18.87,7.62L16.37,5.12Z";
@@ -17351,4 +20607,4 @@ var mdiPlusCircleOutline = "M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41
 var mdiSyncCircle = "M2 12A10 10 0 1 0 12 2A10 10 0 0 0 2 12M15.6 13.72A4 4 0 0 0 16 12A4 4 0 0 0 12 8V10L8.88 7L12 4V6A6 6 0 0 1 18 12A5.9 5.9 0 0 1 17.07 15.19M6 12A5.9 5.9 0 0 1 6.93 8.81L8.4 10.28A4 4 0 0 0 8 12A4 4 0 0 0 12 16V14L15 17L12 20V18A6 6 0 0 1 6 12Z";
 var mdiTrashCan = "M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M9,8H11V17H9V8M13,8H15V17H13V8Z";
 var mdiViewColumnOutline = "M4 5V18H21V5H4M14 7V16H11V7H14M6 7H9V16H6V7M19 16H16V7H19V16Z";
-export { useSizeProps as $, mdiViewColumnOutline as A, computed as B, ref as C, withDirectives as D, vModelText as E, Fragment as F, createCommentVNode as G, createBlock as H, useRoute as I, onBeforeUnmount as J, client as K, listenOpts as L, stopAndPrevent as M, Notify as N, getEventPath as O, createComponent as P, watch as Q, h as R, hSlot as S, Transition as T, getCurrentInstance as U, nextTick as V, childHasFocus as W, useAlignProps as X, useAlign as Y, inject as Z, formKey as _, defineComponent as a, useSize as a0, hMergeSlotSafely as a1, debounce as a2, injectProp as a3, onBeforeUpdate as a4, onDeactivated as a5, onActivated as a6, onMounted as a7, isRuntimeSsrPreHydration as a8, prevent as a9, reactive as aA, mdiDelete as aB, mdiPlusCircleOutline as aC, mdiChevronLeft as aD, mdiMenu as aE, useCssVars as aF, vShow as aG, mdiDeleteCircle as aH, mdiPencilCircle as aI, useRouterLinkProps as aJ, useRouterLink as aK, hUniqueSlot as aL, Platform as aM, addEvt as aN, cleanEvt as aO, position as aP, useBtnProps as aQ, createDirective as aR, mdiMenuDown as aS, QIcon as aa, QSpinner as ab, shouldIgnoreKey as ac, stop as ad, hMergeSlot as ae, isPlainObject as af, toRaw as ag, QBtn as ah, isKeyCode as ai, createGlobalNode as aj, createChildApp as ak, removeGlobalNode as al, mdiCircleEditOutline as am, mdiTrashCan as an, mdiPlusBox as ao, vmHasRouter as ap, getParentVm as aq, onUnmounted as ar, Teleport as as, getElement as at, css as au, getCurrentScope as av, onScopeDispose as aw, toRef as ax, withModifiers as ay, normalizeStyle as az, createElementBlock as b, createTRPCClient as c, defineStore as d, createVNode as e, createRouter as f, createWebHistory as g, onetime as h, createPinia as i, createApp as j, r as k, dayjs as l, mdiAlert as m, localizedFormat as n, openBlock as o, createBaseVNode as p, unref as q, resolveComponent as r, simpleVueIcon as s, createTextVNode as t, useRouter as u, renderList as v, withCtx as w, toDisplayString as x, mdiSyncCircle as y, mdiMouseVariant as z };
+export { useCssVars as $, mdiViewColumnOutline as A, computed as B, ref as C, Dialog as D, withDirectives as E, Fragment as F, vModelText as G, createCommentVNode as H, createBlock as I, useRoute as J, mdiCircleEditOutline as K, mdiTrashCan as L, mdiPlusBox as M, Notify as N, onMounted as O, getCurrentScope as P, Quasar as Q, onScopeDispose as R, watch as S, toRef as T, withModifiers as U, normalizeStyle as V, reactive as W, mdiDelete as X, mdiPlusCircleOutline as Y, mdiChevronLeft as Z, mdiMenu as _, defineComponent as a, vShow as a0, mdiDeleteCircle as a1, mdiPencilCircle as a2, createComponent as a3, h as a4, hSlot as a5, useDarkProps as a6, useRouterLinkProps as a7, useDark as a8, useRouterLink as a9, getScrollTarget as aA, Transition as aB, addFocusFn as aC, closePortalMenus as aD, addEscapeKey as aE, childHasFocus as aF, useBtnProps as aG, QIcon as aH, QBtn as aI, stop as aJ, createDirective as aK, getPortalVm as aL, closePortals as aM, mdiMenuDown as aN, QCheckbox as aO, getCurrentInstance as aa, isKeyCode as ab, stopAndPrevent as ac, hUniqueSlot as ad, Platform as ae, prevent as af, nextTick as ag, addEvt as ah, onBeforeUnmount as ai, cleanEvt as aj, listenOpts as ak, portalList as al, client as am, getScrollbarWidth as an, useModelToggleProps as ao, useTransitionProps as ap, useModelToggleEmits as aq, useTick as ar, useTimeout as as, useTransition as at, useModelToggle as au, usePortal as av, addFocusout as aw, position as ax, removeFocusout as ay, removeEscapeKey as az, createElementBlock as b, createTRPCClient as c, defineStore as d, createVNode as e, createRouter as f, createWebHistory as g, onetime as h, createPinia as i, createApp as j, r as k, dayjs as l, mdiAlert as m, localizedFormat as n, openBlock as o, createBaseVNode as p, unref as q, resolveComponent as r, simpleVueIcon as s, createTextVNode as t, useRouter as u, renderList as v, withCtx as w, toDisplayString as x, mdiSyncCircle as y, mdiMouseVariant as z };
