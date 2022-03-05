@@ -203,7 +203,7 @@ async function onDrop(event: DragEvent) {
 						timeblockColumnId: props.timeblockColumnId,
 					});
 
-					(task as FixedWeeklyTimeTask).setDayOfWeek(dayjs().day());
+					(task as FixedWeeklyTimeTask).setDayOfWeek(dayjs().tz().day());
 
 					break;
 				}

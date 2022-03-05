@@ -78,7 +78,8 @@ export const timeblockTaskBlockRouter = createRouter()
 							day: number;
 						};
 
-						const dayjsDate = dayjs(0)
+						const dayjsDate = dayjs
+							.tz(0)
 							.set('year', date.year)
 							.set('month', date.month)
 							.set('date', date.day);

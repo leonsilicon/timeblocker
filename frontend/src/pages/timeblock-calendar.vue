@@ -43,7 +43,7 @@ onMounted(() => {
 			mountComponent(
 				TimeblockCalenderDateCell,
 				{
-					date: dayjsToTimeblockDate(dayjs(ctx.date)),
+					date: dayjsToTimeblockDate(dayjs.tz(ctx.date)),
 				},
 				div
 			);

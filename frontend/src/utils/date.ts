@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import type { TimeblockDate } from '~f/types/date';
 
 export function timeblockDateToDayjs({ year, month, day }: TimeblockDate) {
-	return dayjs(0).set('year', year).set('month', month).set('date', day);
+	return dayjs.tz(0).set('year', year).set('month', month).set('date', day);
 }
 
 export function dayjsToTimeblockDate(d: Dayjs): TimeblockDate {
@@ -15,7 +15,7 @@ export function dayjsToTimeblockDate(d: Dayjs): TimeblockDate {
 }
 
 export function getTodayTimeblockDate(): TimeblockDate {
-	return dayjsToTimeblockDate(dayjs());
+	return dayjsToTimeblockDate(dayjs().tz());
 }
 
 export function getTodayDayjs(): Dayjs {
