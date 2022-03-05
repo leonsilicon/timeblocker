@@ -165,21 +165,27 @@ The register and login pages contain a basic form that prompts them to enter the
 
 Once a user clicks the Login button, the \code{login} function is called:
 
-\includegraphics[width=0.4\textwidth]{frontend-login-function.png}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{frontend-login-function.png}
+\end{figure}
 
-This function sets a variable \code{isRequestLoading} to true so that the loading spinner displays on the button. It then sends a request to the tRPC backend, which handles the \code{'login'} mutation by executing the following code on the backend:
+This function sets the variable \code{isRequestLoading} to true so that the loading spinner displays on the button. It then sends a request to the tRPC backend, which handles the \code{'login'} mutation by executing the following code on the backend:
 
-\includegraphics[width=0.4\textwidth]{backend-login-function.png}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{backend-login-function.png}
+\end{figure}
 
-When a user creates an account, the backend saves the password as a one-way bcrypt hash. Two strings that are the same will always produce the same hash. This allows me to confidently check whether the password the user enters matches the account password. In addition, given a password hash, it is computationally infeasible to find the original password. This way, if the information in my database ever gets leaked, users' passwords will still be protected because the original password can't be feasibly recovered from the hash.
+When a user creates an account, the backend saves the password as a one-way bcrypt hash. I stored the user's password as hashes because if the database gets leaked, retrieving the user's original password from the hash is computationally infeasible, making my app more secure. However, I can still verify whether the user typed in the correct password because two strings that are the same will always produce the same hash, so if the user's password is correct, it will produce the same hash as the one that's stored in the database.
 
 \section*{Timeblock Sidebar}
 
 I sort the tasks using a recursive merge sort algorithm:
 
-\includegraphics[width=1\textwidth]{merge-sort.png}
-
-Once the
+\begin{figure}[H]
+	\includegraphics[width=1\textwidth]{merge-sort.png}
+\end{figure}
 
 \section*{Timeblock Schedule}
 
@@ -189,14 +195,15 @@ To represent the different types of tasks (normal, fixed time, and fixed weekly 
 
 The FixedTimeTaskBlock class overrides the \code{getStartTime} and \code{getEndTime} methods of the base TaskBlock class. For the FixedTimeTaskBlock class, the start time and the end time are stored in the FixedTimeTask class that the task block is linked to, hence it returns the start time and end time of the task instead. By using inheritance and method overriding, I'm able to leverage polymorphism, as shown in the following code:
 
-\includegraphics[width=1\textwidth]{polymorphism.png}
+\begin{figure}[H]
+	\includegraphics[width=1\textwidth]{polymorphism.png}
+\end{figure}
 
 \begin{sloppypar}
 	In the above code, I'm retrieving the task block using the Timeblock class method \code{getTaskBlock(taskBlockId)}. My code doesn't care which type of TaskBlock it is; the TaskBlock just needs to have a \code{getStartMinute} and \code{getEndMinute} function. When the task block is a FixedTimeTaskBlock, the \code{getStartMinute} and \code{getEndMinute} of the FixedTimeTaskBlock class will be called instead of the \code{getStartMinute} and \code{getEndMinute} of the base TaskBlock class.
 \end{sloppypar}
 
 \section*{Timeblock Column}
-
 
 The task dock contains all the user's tasks, and the user has the option to add and delete tasks. The user can add a task by pressing on the ``Add Task'' button. The calendar contains all the ``task blocks,'' which represent chunks of time dedicated to a user's task. The user can toggle the task dock on and off by pressing the menu in the top left. To create a new task block, the user can drag one of their existing tasks onto the calendar. Then, a new task block will appear on the calendar that the user can resize or drag to a different time slot.
 
@@ -224,8 +231,16 @@ The backend uses tRPC, a TypeScript library for defining type-safe server routes
 	\end{itemize}
 \end{xltabular}
 
-\section*{Database Models}
-\includegraphics[width=1\textwidth]{backend-database-models.png}
+\section*{Database}
+
+To synchronize the user's data across different devices, the user's data is stored in a PostgreSQL database in the cloud. The server interacts with this database using the Prisma ORM, which provides type-safe functions to query the database and protects against SQL vulnerabilities by default:
+
+\subsection*{Database Models}
+
+\begin{figure}[H]
+	\caption{The database models I created for the Prisma ORM. Prisma takes these models and generates the corresponding TypeScript types that give me type safety when interacting with the database.}
+	\includegraphics[width=1\textwidth]{backend-database-models.png}
+\end{figure}
 
 \section*{tRPC Routes}
 \includegraphics[width=1\textwidth]{backend-trpc-routes.png}
