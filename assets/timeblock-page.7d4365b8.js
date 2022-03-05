@@ -41,11 +41,11 @@ var __async = (__this, __arguments, generator) => {
     step((generator = generator.apply(__this, __arguments)).next());
   });
 };
-import { P as getCurrentScope, R as onScopeDispose, C as ref, S as watch, q as unref, a as defineComponent, B as computed, T as toRef, o as openBlock, b as createElementBlock, p as createBaseVNode, U as withModifiers, t as createTextVNode, x as toDisplayString, H as createCommentVNode, V as normalizeStyle, F as Fragment, v as renderList, I as createBlock, W as reactive, e as createVNode, l as dayjs, r as resolveComponent, X as mdiDelete, Y as mdiPlusCircleOutline, w as withCtx, Z as mdiChevronLeft, _ as mdiMenu, $ as useCssVars, E as withDirectives, a0 as vShow, a1 as mdiDeleteCircle, a2 as mdiPencilCircle, a3 as createComponent, a4 as h, a5 as hSlot, a6 as useDarkProps, a7 as useRouterLinkProps, a8 as useDark, a9 as useRouterLink, aa as getCurrentInstance, ab as isKeyCode, ac as stopAndPrevent, ad as hUniqueSlot, ae as Platform, af as prevent, ag as nextTick, ah as addEvt, O as onMounted, ai as onBeforeUnmount, aj as cleanEvt, ak as listenOpts, al as portalList, am as client$1, an as getScrollbarWidth, ao as useModelToggleProps, ap as useTransitionProps, aq as useModelToggleEmits, ar as useTick, as as useTimeout, at as useTransition, au as useModelToggle, av as usePortal, aw as addFocusout, ax as position, ay as removeFocusout, az as removeEscapeKey, aA as getScrollTarget, aB as Transition, aC as addFocusFn, aD as closePortalMenus, aE as addEscapeKey, aF as childHasFocus, aG as useBtnProps, aH as QIcon, aI as QBtn, aJ as stop, aK as createDirective, aL as getPortalVm, aM as closePortals, aN as mdiMenuDown, aO as QCheckbox, G as vModelText, J as useRoute } from "./vendor.51772f19.js";
-import { u as useTimeblockStore, t as timeblockDateToDayjs } from "./date.4f336c4c.js";
-import { c as client, d as displayError } from "./index.e020f0b6.js";
+import { S as getCurrentScope, T as onScopeDispose, G as ref, U as watch, v as unref, a as defineComponent, E as computed, V as toRef, o as openBlock, b as createElementBlock, q as createBaseVNode, W as withModifiers, x as createTextVNode, z as toDisplayString, J as createCommentVNode, X as normalizeStyle, F as Fragment, y as renderList, K as createBlock, Y as reactive, e as createVNode, l as dayjs, r as resolveComponent, Z as mdiDelete, _ as mdiPlusCircleOutline, w as withCtx, $ as mdiChevronLeft, a0 as mdiMenu, a1 as useCssVars, H as withDirectives, a2 as vShow, a3 as mdiDeleteCircle, a4 as mdiPencilCircle, a5 as createComponent, a6 as h, a7 as hSlot, a8 as useDarkProps, a9 as useRouterLinkProps, aa as useDark, ab as useRouterLink, ac as getCurrentInstance, ad as isKeyCode, ae as stopAndPrevent, af as hUniqueSlot, ag as Platform, ah as prevent, ai as nextTick, aj as addEvt, R as onMounted, ak as onBeforeUnmount, al as cleanEvt, am as listenOpts, an as portalList, ao as client$1, ap as getScrollbarWidth, aq as useModelToggleProps, ar as useTransitionProps, as as useModelToggleEmits, at as useTick, au as useTimeout, av as useTransition, aw as useModelToggle, ax as usePortal, ay as addFocusout, az as position, aA as removeFocusout, aB as removeEscapeKey, aC as getScrollTarget, aD as Transition, aE as addFocusFn, aF as closePortalMenus, aG as addEscapeKey, aH as childHasFocus, aI as useBtnProps, aJ as QIcon, aK as QBtn, aL as stop, aM as createDirective, aN as getPortalVm, aO as closePortals, aP as mdiMenuDown, aQ as QCheckbox, I as vModelText, L as useRoute } from "./vendor.fc660d35.js";
+import { u as useTimeblockStore, t as timeblockDateToDayjs } from "./date.a8f0eaea.js";
+import { c as client, d as displayError } from "./index.da9e57f4.js";
 import { _ as _export_sfc } from "./plugin-vue_export-helper.21dcd24c.js";
-import { C as CircleSpinner } from "./circle-spinner.b74ab2c7.js";
+import { C as CircleSpinner } from "./circle-spinner.0c4cb918.js";
 let random = (bytes) => crypto.getRandomValues(new Uint8Array(bytes));
 let customRandom = (alphabet, defaultSize, getRandom) => {
   let mask = (2 << Math.log(alphabet.length - 1) / Math.LN2) - 1;
@@ -781,7 +781,7 @@ const _sfc_main$8 = /* @__PURE__ */ defineComponent({
                   endMinute,
                   timeblockColumnId: props.timeblockColumnId
                 });
-                task.setDayOfWeek(dayjs().day());
+                task.setDayOfWeek(dayjs().tz().day());
                 break;
               }
               default:

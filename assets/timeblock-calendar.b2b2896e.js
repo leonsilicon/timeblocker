@@ -18,10 +18,10 @@ var __async = (__this, __arguments, generator) => {
     step((generator = generator.apply(__this, __arguments)).next());
   });
 };
-import { a as defineComponent, B as computed, u as useRouter, r as resolveComponent, o as openBlock, b as createElementBlock, I as createBlock, q as unref, K as mdiCircleEditOutline, H as createCommentVNode, e as createVNode, L as mdiTrashCan, M as mdiPlusBox, t as createTextVNode, x as toDisplayString, D as Dialog, C as ref, O as onMounted, l as dayjs, p as createBaseVNode } from "./vendor.51772f19.js";
-import { c as client, m as mountComponent } from "./index.e020f0b6.js";
-import { C as CircleSpinner } from "./circle-spinner.b74ab2c7.js";
-import { u as useTimeblockStore, t as timeblockDateToDayjs, d as dayjsToTimeblockDate } from "./date.4f336c4c.js";
+import { a as defineComponent, E as computed, p as useRouter, r as resolveComponent, o as openBlock, b as createElementBlock, K as createBlock, v as unref, M as mdiCircleEditOutline, J as createCommentVNode, e as createVNode, O as mdiTrashCan, P as mdiPlusBox, x as createTextVNode, z as toDisplayString, D as Dialog, G as ref, R as onMounted, l as dayjs, q as createBaseVNode } from "./vendor.fc660d35.js";
+import { c as client, m as mountComponent } from "./index.da9e57f4.js";
+import { C as CircleSpinner } from "./circle-spinner.0c4cb918.js";
+import { u as useTimeblockStore, t as timeblockDateToDayjs, d as dayjsToTimeblockDate } from "./date.a8f0eaea.js";
 import "./plugin-vue_export-helper.21dcd24c.js";
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -9881,7 +9881,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
           const div = document.createElement("div");
           div.classList.add("grow");
           mountComponent(_sfc_main$1, {
-            date: dayjsToTimeblockDate(dayjs(ctx.date))
+            date: dayjsToTimeblockDate(dayjs.tz(ctx.date))
           }, div);
           return {
             domNodes: [div]

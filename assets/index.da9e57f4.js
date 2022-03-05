@@ -18,7 +18,7 @@ var __async = (__this, __arguments, generator) => {
     step((generator = generator.apply(__this, __arguments)).next());
   });
 };
-import { d as defineStore, c as createTRPCClient, a as defineComponent, r as resolveComponent, o as openBlock, b as createElementBlock, e as createVNode, f as createRouter, g as createWebHistory, N as Notify, m as mdiAlert, h as onetime, i as createPinia, j as createApp, Q as Quasar, D as Dialog, s as simpleVueIcon, k as r, l as dayjs, n as localizedFormat } from "./vendor.51772f19.js";
+import { d as defineStore, c as createTRPCClient, a as defineComponent, r as resolveComponent, o as openBlock, b as createElementBlock, e as createVNode, f as createRouter, g as createWebHistory, N as Notify, m as mdiAlert, h as onetime, i as createPinia, j as createApp, Q as Quasar, D as Dialog, s as simpleVueIcon, k as r, l as dayjs, u as utc, t as timezone, n as localizedFormat } from "./vendor.fc660d35.js";
 const p = function polyfill() {
   const relList = document.createElement("link").relList;
   if (relList && relList.supports && relList.supports("modulepreload")) {
@@ -159,31 +159,31 @@ const routes = [
   {
     path: "/",
     component: () => __async(this, null, function* () {
-      return __vitePreload(() => import("./content-layout.7a438fcf.js"), true ? ["assets/content-layout.7a438fcf.js","assets/vendor.51772f19.js","assets/vendor.ca830f9c.css"] : void 0);
+      return __vitePreload(() => import("./content-layout.d7807b73.js"), true ? ["assets/content-layout.d7807b73.js","assets/vendor.fc660d35.js","assets/vendor.ca830f9c.css"] : void 0);
     }),
     children: [
       {
         path: "/",
         component: () => __async(this, null, function* () {
-          return __vitePreload(() => import("./landing-page.8ec02e4c.js"), true ? ["assets/landing-page.8ec02e4c.js","assets/vendor.51772f19.js","assets/vendor.ca830f9c.css"] : void 0);
+          return __vitePreload(() => import("./landing-page.9cd1c25f.js"), true ? ["assets/landing-page.9cd1c25f.js","assets/vendor.fc660d35.js","assets/vendor.ca830f9c.css"] : void 0);
         })
       },
       {
         path: "/login",
         component: () => __async(this, null, function* () {
-          return __vitePreload(() => import("./entry-page.3eab20df.js"), true ? ["assets/entry-page.3eab20df.js","assets/vendor.51772f19.js","assets/vendor.ca830f9c.css","assets/circle-spinner.b74ab2c7.js","assets/plugin-vue_export-helper.21dcd24c.js"] : void 0);
+          return __vitePreload(() => import("./entry-page.dc57fd62.js"), true ? ["assets/entry-page.dc57fd62.js","assets/vendor.fc660d35.js","assets/vendor.ca830f9c.css","assets/circle-spinner.0c4cb918.js","assets/plugin-vue_export-helper.21dcd24c.js"] : void 0);
         })
       },
       {
         path: "/register",
         component: () => __async(this, null, function* () {
-          return __vitePreload(() => import("./entry-page.3eab20df.js"), true ? ["assets/entry-page.3eab20df.js","assets/vendor.51772f19.js","assets/vendor.ca830f9c.css","assets/circle-spinner.b74ab2c7.js","assets/plugin-vue_export-helper.21dcd24c.js"] : void 0);
+          return __vitePreload(() => import("./entry-page.dc57fd62.js"), true ? ["assets/entry-page.dc57fd62.js","assets/vendor.fc660d35.js","assets/vendor.ca830f9c.css","assets/circle-spinner.0c4cb918.js","assets/plugin-vue_export-helper.21dcd24c.js"] : void 0);
         })
       },
       {
         path: "/:catchAll(.*)",
         component: () => __async(this, null, function* () {
-          return __vitePreload(() => import("./404-page.5cac7836.js"), true ? ["assets/404-page.5cac7836.js","assets/plugin-vue_export-helper.21dcd24c.js","assets/vendor.51772f19.js","assets/vendor.ca830f9c.css"] : void 0);
+          return __vitePreload(() => import("./404-page.e6b11bb5.js"), true ? ["assets/404-page.e6b11bb5.js","assets/plugin-vue_export-helper.21dcd24c.js","assets/vendor.fc660d35.js","assets/vendor.ca830f9c.css"] : void 0);
         })
       }
     ]
@@ -191,13 +191,13 @@ const routes = [
   {
     path: "/timeblocks",
     component: () => __async(this, null, function* () {
-      return __vitePreload(() => import("./timeblock-calendar.ffb8336b.js"), true ? ["assets/timeblock-calendar.ffb8336b.js","assets/timeblock-calendar.fe576b31.css","assets/vendor.51772f19.js","assets/vendor.ca830f9c.css","assets/circle-spinner.b74ab2c7.js","assets/plugin-vue_export-helper.21dcd24c.js","assets/date.4f336c4c.js"] : void 0);
+      return __vitePreload(() => import("./timeblock-calendar.b2b2896e.js"), true ? ["assets/timeblock-calendar.b2b2896e.js","assets/timeblock-calendar.fe576b31.css","assets/vendor.fc660d35.js","assets/vendor.ca830f9c.css","assets/circle-spinner.0c4cb918.js","assets/plugin-vue_export-helper.21dcd24c.js","assets/date.a8f0eaea.js"] : void 0);
     })
   },
   {
     path: "/timeblock/:id",
     component: () => __async(this, null, function* () {
-      return __vitePreload(() => import("./timeblock-page.e4966f1f.js"), true ? ["assets/timeblock-page.e4966f1f.js","assets/timeblock-page.d6af0fa0.css","assets/vendor.51772f19.js","assets/vendor.ca830f9c.css","assets/date.4f336c4c.js","assets/plugin-vue_export-helper.21dcd24c.js","assets/circle-spinner.b74ab2c7.js"] : void 0);
+      return __vitePreload(() => import("./timeblock-page.7d4365b8.js"), true ? ["assets/timeblock-page.7d4365b8.js","assets/timeblock-page.d6af0fa0.css","assets/vendor.fc660d35.js","assets/vendor.ca830f9c.css","assets/date.a8f0eaea.js","assets/plugin-vue_export-helper.21dcd24c.js","assets/circle-spinner.0c4cb918.js"] : void 0);
     })
   }
 ];
@@ -273,6 +273,9 @@ function mountComponent(component, props, selectorOrElement) {
   app.use(router);
   app.mount(selectorOrElement);
 }
+dayjs.extend(utc);
+dayjs.extend(timezone);
 dayjs.extend(localizedFormat);
+dayjs.tz.setDefault("America/Toronto");
 mountComponent(_sfc_main, null, "#app");
 export { LocalStorageKey as L, client as c, displayError as d, getErrorMessage as g, mountComponent as m, useAppStore as u };

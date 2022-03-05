@@ -1,4 +1,4 @@
-import { d as defineStore, l as dayjs } from "./vendor.51772f19.js";
+import { d as defineStore, l as dayjs } from "./vendor.fc660d35.js";
 function createTimeblockStoreState() {
   return {
     activeTimeblockId: void 0,
@@ -43,7 +43,7 @@ const useTimeblockStore = defineStore("timeblock", {
   }
 });
 function timeblockDateToDayjs({ year, month, day }) {
-  return dayjs(0).set("year", year).set("month", month).set("date", day);
+  return dayjs.tz(0).set("year", year).set("month", month).set("date", day);
 }
 function dayjsToTimeblockDate(d) {
   return {

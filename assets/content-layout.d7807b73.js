@@ -18,8 +18,8 @@ var __async = (__this, __arguments, generator) => {
     step((generator = generator.apply(__this, __arguments)).next());
   });
 };
-import { a as defineComponent, u as useRouter, r as resolveComponent, o as openBlock, b as createElementBlock, e as createVNode, w as withCtx, p as createBaseVNode, q as unref, F as Fragment, t as createTextVNode } from "./vendor.51772f19.js";
-import { u as useAppStore, L as LocalStorageKey, c as client } from "./index.e020f0b6.js";
+import { a as defineComponent, p as useRouter, r as resolveComponent, o as openBlock, b as createElementBlock, e as createVNode, w as withCtx, q as createBaseVNode, v as unref, F as Fragment, x as createTextVNode } from "./vendor.fc660d35.js";
+import { u as useAppStore, L as LocalStorageKey, c as client } from "./index.da9e57f4.js";
 const _hoisted_1$1 = { class: "row items-center bg-white p-4" };
 const _hoisted_2$1 = /* @__PURE__ */ createTextVNode(" timeblocker.io ");
 const _hoisted_3 = { class: "ml-auto" };

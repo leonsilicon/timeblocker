@@ -1,5 +1,5 @@
 import { _ as _export_sfc } from "./plugin-vue_export-helper.21dcd24c.js";
-import { b as createElementBlock, p as createBaseVNode, e as createVNode, w as withCtx, t as createTextVNode, r as resolveComponent, o as openBlock } from "./vendor.51772f19.js";
+import { b as createElementBlock, q as createBaseVNode, e as createVNode, w as withCtx, x as createTextVNode, r as resolveComponent, o as openBlock } from "./vendor.fc660d35.js";
 const _sfc_main = {};
 const _hoisted_1 = { class: "column center h-full w-full" };
 const _hoisted_2 = /* @__PURE__ */ createBaseVNode("div", { class: "text-6xl font-bold" }, "404", -1);

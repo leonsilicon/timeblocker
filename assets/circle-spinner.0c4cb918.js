@@ -1,5 +1,5 @@
 import { _ as _export_sfc } from "./plugin-vue_export-helper.21dcd24c.js";
-import { o as openBlock, b as createElementBlock } from "./vendor.51772f19.js";
+import { o as openBlock, b as createElementBlock } from "./vendor.fc660d35.js";
 const _sfc_main = {};
 const _hoisted_1 = { class: "spinner-border h-6 w-6 animate-spin rounded-full" };
 function _sfc_render(_ctx, _cache) {
