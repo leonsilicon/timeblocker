@@ -18,8 +18,8 @@ var __async = (__this, __arguments, generator) => {
     step((generator = generator.apply(__this, __arguments)).next());
   });
 };
-import { a as defineComponent, b as createElementBlock, q as createBaseVNode, F as Fragment, y as renderList, p as useRouter, r as resolveComponent, o as openBlock, e as createVNode, z as toDisplayString, A as mdiSyncCircle, B as mdiMouseVariant, C as mdiViewColumnOutline } from "./vendor.fc660d35.js";
-import { u as useAppStore } from "./index.da9e57f4.js";
+import { a as defineComponent, b as createElementBlock, v as createBaseVNode, F as Fragment, B as renderList, p as useRouter, r as resolveComponent, o as openBlock, e as createVNode, C as toDisplayString, E as mdiSyncCircle, G as mdiMouseVariant, H as mdiViewColumnOutline } from "./vendor.9caf08f2.js";
+import { u as useAppStore } from "./index.d7652262.js";
 const _hoisted_1 = /* @__PURE__ */ createBaseVNode("div", { class: "mb-2 text-center text-5xl font-bold" }, "timeblocker.io", -1);
 const _hoisted_2 = /* @__PURE__ */ createBaseVNode("div", { class: "max-w-2xl px-8 text-center" }, ' Timeblocking is a way to manage your time more efficiently and effectively by chunking the hours in a day into "blocks," and assigning a single task to each of these blocks. ', -1);
 const _hoisted_3 = { class: "row mx-auto mb-8 max-w-5xl items-stretch gap-4 px-8" };

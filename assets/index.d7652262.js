@@ -18,7 +18,7 @@ var __async = (__this, __arguments, generator) => {
     step((generator = generator.apply(__this, __arguments)).next());
   });
 };
-import { d as defineStore, c as createTRPCClient, a as defineComponent, r as resolveComponent, o as openBlock, b as createElementBlock, e as createVNode, f as createRouter, g as createWebHistory, N as Notify, m as mdiAlert, h as onetime, i as createPinia, j as createApp, Q as Quasar, D as Dialog, s as simpleVueIcon, k as r, l as dayjs, u as utc, t as timezone, n as localizedFormat } from "./vendor.fc660d35.js";
+import { d as defineStore, c as createTRPCClient, a as defineComponent, r as resolveComponent, o as openBlock, b as createElementBlock, e as createVNode, f as createRouter, g as createWebHistory, N as Notify, m as mdiAlert, h as onetime, i as createPinia, j as createApp, Q as Quasar, D as Dialog, s as simpleVueIcon, k as r, l as dayjs, u as utc, t as timezone, n as localizedFormat } from "./vendor.9caf08f2.js";
 const p = function polyfill() {
   const relList = document.createElement("link").relList;
   if (relList && relList.supports && relList.supports("modulepreload")) {
@@ -159,45 +159,45 @@ const routes = [
   {
     path: "/",
     component: () => __async(this, null, function* () {
-      return __vitePreload(() => import("./content-layout.d7807b73.js"), true ? ["assets/content-layout.d7807b73.js","assets/vendor.fc660d35.js","assets/vendor.ca830f9c.css"] : void 0);
+      return __vitePreload(() => import("./content-layout.94765a9e.js"), true ? ["assets/content-layout.94765a9e.js","assets/vendor.9caf08f2.js","assets/vendor.ca830f9c.css"] : void 0);
     }),
     children: [
       {
         path: "/",
         component: () => __async(this, null, function* () {
-          return __vitePreload(() => import("./landing-page.9cd1c25f.js"), true ? ["assets/landing-page.9cd1c25f.js","assets/vendor.fc660d35.js","assets/vendor.ca830f9c.css"] : void 0);
+          return __vitePreload(() => import("./landing-page.52c8c82c.js"), true ? ["assets/landing-page.52c8c82c.js","assets/vendor.9caf08f2.js","assets/vendor.ca830f9c.css"] : void 0);
         })
       },
       {
         path: "/login",
         component: () => __async(this, null, function* () {
-          return __vitePreload(() => import("./entry-page.dc57fd62.js"), true ? ["assets/entry-page.dc57fd62.js","assets/vendor.fc660d35.js","assets/vendor.ca830f9c.css","assets/circle-spinner.0c4cb918.js","assets/plugin-vue_export-helper.21dcd24c.js"] : void 0);
+          return __vitePreload(() => import("./entry-page.fe6e97e6.js"), true ? ["assets/entry-page.fe6e97e6.js","assets/vendor.9caf08f2.js","assets/vendor.ca830f9c.css","assets/circle-spinner.c1326b80.js","assets/plugin-vue_export-helper.21dcd24c.js"] : void 0);
         })
       },
       {
         path: "/register",
         component: () => __async(this, null, function* () {
-          return __vitePreload(() => import("./entry-page.dc57fd62.js"), true ? ["assets/entry-page.dc57fd62.js","assets/vendor.fc660d35.js","assets/vendor.ca830f9c.css","assets/circle-spinner.0c4cb918.js","assets/plugin-vue_export-helper.21dcd24c.js"] : void 0);
+          return __vitePreload(() => import("./entry-page.fe6e97e6.js"), true ? ["assets/entry-page.fe6e97e6.js","assets/vendor.9caf08f2.js","assets/vendor.ca830f9c.css","assets/circle-spinner.c1326b80.js","assets/plugin-vue_export-helper.21dcd24c.js"] : void 0);
         })
       },
       {
         path: "/:catchAll(.*)",
         component: () => __async(this, null, function* () {
-          return __vitePreload(() => import("./404-page.e6b11bb5.js"), true ? ["assets/404-page.e6b11bb5.js","assets/plugin-vue_export-helper.21dcd24c.js","assets/vendor.fc660d35.js","assets/vendor.ca830f9c.css"] : void 0);
+          return __vitePreload(() => import("./404-page.a5e22c96.js"), true ? ["assets/404-page.a5e22c96.js","assets/plugin-vue_export-helper.21dcd24c.js","assets/vendor.9caf08f2.js","assets/vendor.ca830f9c.css"] : void 0);
+        })
+      },
+      {
+        path: "/timeblocks",
+        component: () => __async(this, null, function* () {
+          return __vitePreload(() => import("./timeblock-calendar.aa47740c.js"), true ? ["assets/timeblock-calendar.aa47740c.js","assets/timeblock-calendar.fe576b31.css","assets/vendor.9caf08f2.js","assets/vendor.ca830f9c.css","assets/circle-spinner.c1326b80.js","assets/plugin-vue_export-helper.21dcd24c.js","assets/date.61d6a1c3.js"] : void 0);
         })
       }
     ]
   },
   {
-    path: "/timeblocks",
-    component: () => __async(this, null, function* () {
-      return __vitePreload(() => import("./timeblock-calendar.b2b2896e.js"), true ? ["assets/timeblock-calendar.b2b2896e.js","assets/timeblock-calendar.fe576b31.css","assets/vendor.fc660d35.js","assets/vendor.ca830f9c.css","assets/circle-spinner.0c4cb918.js","assets/plugin-vue_export-helper.21dcd24c.js","assets/date.a8f0eaea.js"] : void 0);
-    })
-  },
-  {
     path: "/timeblock/:id",
     component: () => __async(this, null, function* () {
-      return __vitePreload(() => import("./timeblock-page.7d4365b8.js"), true ? ["assets/timeblock-page.7d4365b8.js","assets/timeblock-page.d6af0fa0.css","assets/vendor.fc660d35.js","assets/vendor.ca830f9c.css","assets/date.a8f0eaea.js","assets/plugin-vue_export-helper.21dcd24c.js","assets/circle-spinner.0c4cb918.js"] : void 0);
+      return __vitePreload(() => import("./timeblock-page.67d40eaa.js"), true ? ["assets/timeblock-page.67d40eaa.js","assets/timeblock-page.d6af0fa0.css","assets/vendor.9caf08f2.js","assets/vendor.ca830f9c.css","assets/date.61d6a1c3.js","assets/plugin-vue_export-helper.21dcd24c.js","assets/circle-spinner.c1326b80.js"] : void 0);
     })
   }
 ];
@@ -278,4 +278,4 @@ dayjs.extend(timezone);
 dayjs.extend(localizedFormat);
 dayjs.tz.setDefault("America/Toronto");
 mountComponent(_sfc_main, null, "#app");
-export { LocalStorageKey as L, client as c, displayError as d, getErrorMessage as g, mountComponent as m, useAppStore as u };
+export { LocalStorageKey as L, client as c, displayError as d, getErrorMessage as g, mountComponent as m, router as r, useAppStore as u };

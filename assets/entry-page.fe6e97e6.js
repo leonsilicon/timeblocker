@@ -18,9 +18,9 @@ var __async = (__this, __arguments, generator) => {
     step((generator = generator.apply(__this, __arguments)).next());
   });
 };
-import { a as defineComponent, E as computed, G as ref, b as createElementBlock, q as createBaseVNode, z as toDisplayString, H as withDirectives, I as vModelText, J as createCommentVNode, K as createBlock, e as createVNode, w as withCtx, L as useRoute, p as useRouter, r as resolveComponent, o as openBlock, x as createTextVNode } from "./vendor.fc660d35.js";
-import { c as client, L as LocalStorageKey, g as getErrorMessage } from "./index.da9e57f4.js";
-import { C as CircleSpinner } from "./circle-spinner.0c4cb918.js";
+import { a as defineComponent, I as computed, J as ref, b as createElementBlock, v as createBaseVNode, C as toDisplayString, K as withDirectives, L as vModelText, z as createCommentVNode, y as createBlock, e as createVNode, w as withCtx, q as useRoute, p as useRouter, r as resolveComponent, o as openBlock, A as createTextVNode } from "./vendor.9caf08f2.js";
+import { u as useAppStore, c as client, L as LocalStorageKey, g as getErrorMessage } from "./index.d7652262.js";
+import { C as CircleSpinner } from "./circle-spinner.c1326b80.js";
 import "./plugin-vue_export-helper.21dcd24c.js";
 const _hoisted_1 = { class: "column my-auto items-center gap-3 self-center rounded-md border-2 border-gray-300 py-8 px-20" };
 const _hoisted_2 = { class: "text-6xl font-bold" };
@@ -50,6 +50,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     const confirmPassword = ref("");
     let entryError = ref("");
     let isRequestLoading = ref(false);
+    const appStore = useAppStore();
     function login() {
       return __async(this, null, function* () {
         try {
@@ -60,6 +61,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
             password: password.value
           });
           window.localStorage.setItem(LocalStorageKey.sessionToken, sessionToken);
+          appStore.isLoggedIn = true;
           yield router.push("/timeblocks");
         } catch (error) {
           entryError.value = getErrorMessage(error);
@@ -81,6 +83,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
             password: password.value
           });
           window.localStorage.setItem(LocalStorageKey.sessionToken, sessionToken);
+          appStore.isLoggedIn = true;
           yield router.push("/timeblocks");
         } catch (error) {
           entryError.value = getErrorMessage(error);

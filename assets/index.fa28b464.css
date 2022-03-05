@@ -16116,14 +16116,14 @@ textarea.form-control.is-invalid {
 .mr-auto {
   margin-right: auto;
 }
+.mr-4 {
+  margin-right: 1rem;
+}
 .mt-\[-12px\] {
   margin-top: -12px;
 }
 .ml-4 {
   margin-left: 1rem;
-}
-.mr-4 {
-  margin-right: 1rem;
 }
 .mt-2 {
   margin-top: 0.5rem;
@@ -16228,6 +16228,9 @@ textarea.form-control.is-invalid {
 }
 .items-stretch {
   align-items: stretch;
+}
+.justify-end {
+  justify-content: flex-end;
 }
 .justify-center {
   justify-content: center;

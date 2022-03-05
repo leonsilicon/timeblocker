@@ -18,8 +18,8 @@ var __async = (__this, __arguments, generator) => {
     step((generator = generator.apply(__this, __arguments)).next());
   });
 };
-import { a as defineComponent, p as useRouter, r as resolveComponent, o as openBlock, b as createElementBlock, e as createVNode, w as withCtx, q as createBaseVNode, v as unref, F as Fragment, x as createTextVNode } from "./vendor.fc660d35.js";
-import { u as useAppStore, L as LocalStorageKey, c as client } from "./index.da9e57f4.js";
+import { a as defineComponent, p as useRouter, q as useRoute, r as resolveComponent, o as openBlock, b as createElementBlock, e as createVNode, w as withCtx, v as createBaseVNode, x as unref, F as Fragment, y as createBlock, z as createCommentVNode, A as createTextVNode } from "./vendor.9caf08f2.js";
+import { u as useAppStore, L as LocalStorageKey, c as client } from "./index.d7652262.js";
 const _hoisted_1$1 = { class: "row items-center bg-white p-4" };
 const _hoisted_2$1 = /* @__PURE__ */ createTextVNode(" timeblocker.io ");
 const _hoisted_3 = { class: "ml-auto" };
@@ -30,6 +30,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
   setup(__props) {
     const appStore = useAppStore();
     const router = useRouter();
+    const route = useRoute();
     function logout() {
       return __async(this, null, function* () {
         const sessionToken = localStorage.getItem(LocalStorageKey.sessionToken);
@@ -60,7 +61,8 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
         }),
         createBaseVNode("div", _hoisted_3, [
           unref(appStore).isLoggedIn === true ? (openBlock(), createElementBlock(Fragment, { key: 0 }, [
-            createVNode(_component_router_link, {
+            !unref(route).path.startsWith("/timeblock") ? (openBlock(), createBlock(_component_router_link, {
+              key: 0,
               to: "/timeblocks",
               class: "btn btn-primary btn-sm mr-2"
             }, {
@@ -68,7 +70,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
                 _hoisted_4
               ]),
               _: 1
-            }),
+            })) : createCommentVNode("", true),
             createBaseVNode("button", {
               class: "btn btn-sm btn-accent",
               onClick: logout

@@ -41,11 +41,11 @@ var __async = (__this, __arguments, generator) => {
     step((generator = generator.apply(__this, __arguments)).next());
   });
 };
-import { S as getCurrentScope, T as onScopeDispose, G as ref, U as watch, v as unref, a as defineComponent, E as computed, V as toRef, o as openBlock, b as createElementBlock, q as createBaseVNode, W as withModifiers, x as createTextVNode, z as toDisplayString, J as createCommentVNode, X as normalizeStyle, F as Fragment, y as renderList, K as createBlock, Y as reactive, e as createVNode, l as dayjs, r as resolveComponent, Z as mdiDelete, _ as mdiPlusCircleOutline, w as withCtx, $ as mdiChevronLeft, a0 as mdiMenu, a1 as useCssVars, H as withDirectives, a2 as vShow, a3 as mdiDeleteCircle, a4 as mdiPencilCircle, a5 as createComponent, a6 as h, a7 as hSlot, a8 as useDarkProps, a9 as useRouterLinkProps, aa as useDark, ab as useRouterLink, ac as getCurrentInstance, ad as isKeyCode, ae as stopAndPrevent, af as hUniqueSlot, ag as Platform, ah as prevent, ai as nextTick, aj as addEvt, R as onMounted, ak as onBeforeUnmount, al as cleanEvt, am as listenOpts, an as portalList, ao as client$1, ap as getScrollbarWidth, aq as useModelToggleProps, ar as useTransitionProps, as as useModelToggleEmits, at as useTick, au as useTimeout, av as useTransition, aw as useModelToggle, ax as usePortal, ay as addFocusout, az as position, aA as removeFocusout, aB as removeEscapeKey, aC as getScrollTarget, aD as Transition, aE as addFocusFn, aF as closePortalMenus, aG as addEscapeKey, aH as childHasFocus, aI as useBtnProps, aJ as QIcon, aK as QBtn, aL as stop, aM as createDirective, aN as getPortalVm, aO as closePortals, aP as mdiMenuDown, aQ as QCheckbox, I as vModelText, L as useRoute } from "./vendor.fc660d35.js";
-import { u as useTimeblockStore, t as timeblockDateToDayjs } from "./date.a8f0eaea.js";
-import { c as client, d as displayError } from "./index.da9e57f4.js";
+import { S as getCurrentScope, T as onScopeDispose, J as ref, U as watch, x as unref, a as defineComponent, I as computed, V as toRef, o as openBlock, b as createElementBlock, v as createBaseVNode, W as withModifiers, A as createTextVNode, C as toDisplayString, z as createCommentVNode, X as normalizeStyle, F as Fragment, B as renderList, y as createBlock, Y as reactive, e as createVNode, l as dayjs, r as resolveComponent, Z as mdiDelete, _ as mdiPlusCircleOutline, w as withCtx, $ as mdiChevronLeft, a0 as mdiMenu, a1 as useCssVars, K as withDirectives, a2 as vShow, a3 as mdiDeleteCircle, a4 as mdiPencilCircle, a5 as createComponent, a6 as h, a7 as hSlot, a8 as useDarkProps, a9 as useRouterLinkProps, aa as useDark, ab as useRouterLink, ac as getCurrentInstance, ad as isKeyCode, ae as stopAndPrevent, af as hUniqueSlot, ag as Platform, ah as prevent, ai as nextTick, aj as addEvt, R as onMounted, ak as onBeforeUnmount, al as cleanEvt, am as listenOpts, an as portalList, ao as client$1, ap as getScrollbarWidth, aq as useModelToggleProps, ar as useTransitionProps, as as useModelToggleEmits, at as useTick, au as useTimeout, av as useTransition, aw as useModelToggle, ax as usePortal, ay as addFocusout, az as position, aA as removeFocusout, aB as removeEscapeKey, aC as getScrollTarget, aD as Transition, aE as addFocusFn, aF as closePortalMenus, aG as addEscapeKey, aH as childHasFocus, aI as useBtnProps, aJ as QIcon, aK as QBtn, aL as stop, aM as createDirective, aN as getPortalVm, aO as closePortals, aP as mdiMenuDown, aQ as QCheckbox, L as vModelText, q as useRoute } from "./vendor.9caf08f2.js";
+import { u as useTimeblockStore, t as timeblockDateToDayjs } from "./date.61d6a1c3.js";
+import { c as client, d as displayError, u as useAppStore, L as LocalStorageKey, r as router } from "./index.d7652262.js";
 import { _ as _export_sfc } from "./plugin-vue_export-helper.21dcd24c.js";
-import { C as CircleSpinner } from "./circle-spinner.0c4cb918.js";
+import { C as CircleSpinner } from "./circle-spinner.c1326b80.js";
 let random = (bytes) => crypto.getRandomValues(new Uint8Array(bytes));
 let customRandom = (alphabet, defaultSize, getRandom) => {
   let mask = (2 << Math.log(alphabet.length - 1) / Math.LN2) - 1;
@@ -996,13 +996,29 @@ const _hoisted_1$5 = { class: "row mb-2 items-center justify-center" };
 const _hoisted_2$5 = { class: "row mr-auto flex-1 gap-2 p-4" };
 const _hoisted_3$5 = { class: "row flex-1 justify-center" };
 const _hoisted_4$3 = { class: "rounded-md px-2 text-xl font-bold" };
-const _hoisted_5$1 = /* @__PURE__ */ createBaseVNode("div", { class: "ml-auto flex-1" }, null, -1);
 const _sfc_main$5 = /* @__PURE__ */ defineComponent({
   setup(__props) {
     const timeblockStore = useTimeblockStore();
+    const appStore = useAppStore();
     const timeblockDate = computed(() => timeblockDateToDayjs(timeblockStore.activeTimeblock.getDate()).format("LL"));
     function toggleTaskDock() {
       timeblockStore.isTaskDockOpen = !timeblockStore.isTaskDockOpen;
+    }
+    function logout() {
+      return __async(this, null, function* () {
+        const sessionToken = localStorage.getItem(LocalStorageKey.sessionToken);
+        try {
+          if (sessionToken !== null) {
+            yield client.mutation("logout", {
+              sessionToken
+            });
+          }
+        } finally {
+          localStorage.removeItem(LocalStorageKey.sessionToken);
+          appStore.isLoggedIn = false;
+          yield router.push({ path: "/login", force: true });
+        }
+      });
     }
     return (_ctx, _cache) => {
       const _component_v_icon = resolveComponent("v-icon");
@@ -1027,7 +1043,12 @@ const _sfc_main$5 = /* @__PURE__ */ defineComponent({
         createBaseVNode("div", _hoisted_3$5, [
           createBaseVNode("div", _hoisted_4$3, toDisplayString(timeblockDate.value), 1)
         ]),
-        _hoisted_5$1
+        createBaseVNode("div", { class: "row ml-auto flex-1 justify-end" }, [
+          createBaseVNode("button", {
+            class: "btn btn-sm btn-accent mr-4",
+            onClick: logout
+          }, "Logout")
+        ])
       ]);
     };
   }
