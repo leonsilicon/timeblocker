@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+
 import type { Component } from 'vue';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 import onetime from 'onetime';
 import VIcon from 'simple-vue-icon';
 import { plugin as VueInputAutowidth } from 'vue-input-autowidth';
+import { Notify, Dialog, Quasar } from 'quasar';
 import { router } from '~f/router';
 import { displayError, getErrorCode } from '~f/utils/error';
 import { useAppStore } from '~f/store/app';
@@ -18,6 +21,12 @@ export function mountComponent(
 	selectorOrElement: string | HTMLElement
 ) {
 	const app = createApp(component, props);
+	app.use(Quasar as any, {
+		plugins: {
+			Notify,
+			Dialog,
+		},
+	});
 
 	function errorHandler(error: unknown) {
 		if (getErrorCode(error) === 'tokenNotFound') {
