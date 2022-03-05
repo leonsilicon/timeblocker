@@ -2,10 +2,11 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { outdent } from 'outdent';
 import { execaCommandSync as exec } from 'execa';
-import { getProjectDir } from 'lion-system';
+import { chProjectDir, getProjectDir } from 'lion-system';
 import { compileLatex } from 'latex-workflow';
 
 const projectDir = getProjectDir(import.meta.url);
+chProjectDir(import.meta.url);
 
 const bundleFolder = path.join(projectDir, 'bundle');
 const bundleCodeFolder = path.join(bundleFolder, 'code');
