@@ -5,6 +5,7 @@
 \usepackage{graphicx}
 \usepackage{tabularx}
 \usepackage{authoraftertitle}
+\usepackage{xltabular}
 
 \title{Criterion B: Design}
 \definecolor{msblue}{HTML}{5AB5D8}
@@ -73,13 +74,15 @@ function mergeSort (array, comparisonFunction)
 \newpage
 \section*{Product Development Plan}
 \def\arraystretch{1.5}
-\begin{tabularx}{\textwidth}{|X|X|}
+\begin{xltabular}{\textwidth}{|X|X|}
   \hline
   Function
    & Comments
   \\\hline
   Landing Page
+
   \medskip
+
   \textbf{Time:} 1 week
   &
   The landing page should contain a description of the app's features, as well as a call to action and the Login and Register buttons that allow the user to easily create a new account.
@@ -112,6 +115,6 @@ function mergeSort (array, comparisonFunction)
    &
   The calendar should allow the user to navigate between various months and see all the days where they've already created a timeblock. When viewing a timeblock for a specific day, the user must be able to interact with the timeblock schedule and have the ability to drag nd resize tasks to reorder them.
   \\\hline
-\end{tabularx}
+\end{xltabular}
 
 \end{document}
