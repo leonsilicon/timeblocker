@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useAppStore } from '~f/store/app';
 import { LocalStorageKey } from '~f/types/local-storage';
 import { client } from '~f/utils/trpc';
@@ -7,6 +7,7 @@ import { client } from '~f/utils/trpc';
 const appStore = useAppStore();
 
 const router = useRouter();
+const route = useRoute();
 
 async function logout() {
 	const sessionToken = localStorage.getItem(LocalStorageKey.sessionToken);
@@ -34,7 +35,11 @@ async function logout() {
 		</router-link>
 		<div class="ml-auto">
 			<template v-if="appStore.isLoggedIn === true">
-				<router-link to="/timeblocks" class="btn btn-primary btn-sm mr-2">
+				<router-link
+					v-if="!route.path.startsWith('/timeblock')"
+					to="/timeblocks"
+					class="btn btn-primary btn-sm mr-2"
+				>
 					Open Timeblock
 				</router-link>
 				<button class="btn btn-sm btn-accent" @click="logout">Logout</button>

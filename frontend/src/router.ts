@@ -23,11 +23,11 @@ export const routes: RouteRecordRaw[] = [
 				path: '/:catchAll(.*)',
 				component: async () => import('~f/pages/404-page.vue'),
 			},
+			{
+				path: '/timeblocks',
+				component: async () => import('~f/pages/timeblock-calendar.vue'),
+			},
 		],
-	},
-	{
-		path: '/timeblocks',
-		component: async () => import('~f/pages/timeblock-calendar.vue'),
 	},
 	{
 		path: '/timeblock/:id',

@@ -4,6 +4,7 @@ import { client } from '~f/utils/trpc';
 import CircleSpinner from '~f/components/circle-spinner.vue';
 import { LocalStorageKey } from '~f/types/local-storage';
 import { getErrorMessage } from '~f/utils/error';
+import { useAppStore } from '~f/store/app';
 
 const route = useRoute();
 const router = useRouter();
@@ -17,6 +18,8 @@ let entryError = $ref('');
 
 let isRequestLoading = $ref(false);
 
+const appStore = useAppStore();
+
 async function login() {
 	try {
 		entryError = '';
@@ -26,6 +29,7 @@ async function login() {
 			password,
 		});
 		window.localStorage.setItem(LocalStorageKey.sessionToken, sessionToken);
+		appStore.isLoggedIn = true;
 		await router.push('/timeblocks');
 	} catch (error: unknown) {
 		entryError = getErrorMessage(error);
@@ -48,6 +52,7 @@ async function register() {
 		});
 
 		window.localStorage.setItem(LocalStorageKey.sessionToken, sessionToken);
+		appStore.isLoggedIn = true;
 		await router.push('/timeblocks');
 	} catch (error: unknown) {
 		entryError = getErrorMessage(error);
