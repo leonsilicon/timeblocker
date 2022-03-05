@@ -19,7 +19,7 @@ var __async = (__this, __arguments, generator) => {
   });
 };
 import { a as defineComponent, B as computed, u as useRouter, r as resolveComponent, o as openBlock, b as createElementBlock, I as createBlock, q as unref, K as mdiCircleEditOutline, H as createCommentVNode, e as createVNode, L as mdiTrashCan, M as mdiPlusBox, t as createTextVNode, x as toDisplayString, D as Dialog, C as ref, O as onMounted, l as dayjs, p as createBaseVNode } from "./vendor.51772f19.js";
-import { c as client, m as mountComponent } from "./index.cde81365.js";
+import { c as client, m as mountComponent } from "./index.e020f0b6.js";
 import { C as CircleSpinner } from "./circle-spinner.b74ab2c7.js";
 import { u as useTimeblockStore, t as timeblockDateToDayjs, d as dayjsToTimeblockDate } from "./date.4f336c4c.js";
 import "./plugin-vue_export-helper.21dcd24c.js";

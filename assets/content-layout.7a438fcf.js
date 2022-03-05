@@ -19,7 +19,7 @@ var __async = (__this, __arguments, generator) => {
   });
 };
 import { a as defineComponent, u as useRouter, r as resolveComponent, o as openBlock, b as createElementBlock, e as createVNode, w as withCtx, p as createBaseVNode, q as unref, F as Fragment, t as createTextVNode } from "./vendor.51772f19.js";
-import { u as useAppStore, L as LocalStorageKey, c as client } from "./index.cde81365.js";
+import { u as useAppStore, L as LocalStorageKey, c as client } from "./index.e020f0b6.js";
 const _hoisted_1$1 = { class: "row items-center bg-white p-4" };
 const _hoisted_2$1 = /* @__PURE__ */ createTextVNode(" timeblocker.io ");
 const _hoisted_3 = { class: "ml-auto" };
@@ -33,13 +33,17 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
     function logout() {
       return __async(this, null, function* () {
         const sessionToken = localStorage.getItem(LocalStorageKey.sessionToken);
-        if (sessionToken !== null) {
-          yield client.mutation("logout", {
-            sessionToken
-          });
+        try {
+          if (sessionToken !== null) {
+            yield client.mutation("logout", {
+              sessionToken
+            });
+          }
+        } finally {
+          localStorage.removeItem(LocalStorageKey.sessionToken);
+          appStore.isLoggedIn = false;
+          yield router.push({ path: "/login", force: true });
         }
-        localStorage.removeItem(LocalStorageKey.sessionToken);
-        yield router.push({ path: "/login", force: true });
       });
     }
     return (_ctx, _cache) => {

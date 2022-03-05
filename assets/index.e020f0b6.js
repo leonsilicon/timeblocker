@@ -159,25 +159,25 @@ const routes = [
   {
     path: "/",
     component: () => __async(this, null, function* () {
-      return __vitePreload(() => import("./content-layout.64d04a13.js"), true ? ["assets/content-layout.64d04a13.js","assets/vendor.51772f19.js","assets/vendor.ca830f9c.css"] : void 0);
+      return __vitePreload(() => import("./content-layout.7a438fcf.js"), true ? ["assets/content-layout.7a438fcf.js","assets/vendor.51772f19.js","assets/vendor.ca830f9c.css"] : void 0);
     }),
     children: [
       {
         path: "/",
         component: () => __async(this, null, function* () {
-          return __vitePreload(() => import("./landing-page.57653621.js"), true ? ["assets/landing-page.57653621.js","assets/vendor.51772f19.js","assets/vendor.ca830f9c.css"] : void 0);
+          return __vitePreload(() => import("./landing-page.8ec02e4c.js"), true ? ["assets/landing-page.8ec02e4c.js","assets/vendor.51772f19.js","assets/vendor.ca830f9c.css"] : void 0);
         })
       },
       {
         path: "/login",
         component: () => __async(this, null, function* () {
-          return __vitePreload(() => import("./entry-page.30d1ac94.js"), true ? ["assets/entry-page.30d1ac94.js","assets/vendor.51772f19.js","assets/vendor.ca830f9c.css","assets/circle-spinner.b74ab2c7.js","assets/plugin-vue_export-helper.21dcd24c.js"] : void 0);
+          return __vitePreload(() => import("./entry-page.3eab20df.js"), true ? ["assets/entry-page.3eab20df.js","assets/vendor.51772f19.js","assets/vendor.ca830f9c.css","assets/circle-spinner.b74ab2c7.js","assets/plugin-vue_export-helper.21dcd24c.js"] : void 0);
         })
       },
       {
         path: "/register",
         component: () => __async(this, null, function* () {
-          return __vitePreload(() => import("./entry-page.30d1ac94.js"), true ? ["assets/entry-page.30d1ac94.js","assets/vendor.51772f19.js","assets/vendor.ca830f9c.css","assets/circle-spinner.b74ab2c7.js","assets/plugin-vue_export-helper.21dcd24c.js"] : void 0);
+          return __vitePreload(() => import("./entry-page.3eab20df.js"), true ? ["assets/entry-page.3eab20df.js","assets/vendor.51772f19.js","assets/vendor.ca830f9c.css","assets/circle-spinner.b74ab2c7.js","assets/plugin-vue_export-helper.21dcd24c.js"] : void 0);
         })
       },
       {
@@ -191,13 +191,13 @@ const routes = [
   {
     path: "/timeblocks",
     component: () => __async(this, null, function* () {
-      return __vitePreload(() => import("./timeblock-calendar.88d5749f.js"), true ? ["assets/timeblock-calendar.88d5749f.js","assets/timeblock-calendar.fe576b31.css","assets/vendor.51772f19.js","assets/vendor.ca830f9c.css","assets/circle-spinner.b74ab2c7.js","assets/plugin-vue_export-helper.21dcd24c.js","assets/date.4f336c4c.js"] : void 0);
+      return __vitePreload(() => import("./timeblock-calendar.ffb8336b.js"), true ? ["assets/timeblock-calendar.ffb8336b.js","assets/timeblock-calendar.fe576b31.css","assets/vendor.51772f19.js","assets/vendor.ca830f9c.css","assets/circle-spinner.b74ab2c7.js","assets/plugin-vue_export-helper.21dcd24c.js","assets/date.4f336c4c.js"] : void 0);
     })
   },
   {
     path: "/timeblock/:id",
     component: () => __async(this, null, function* () {
-      return __vitePreload(() => import("./timeblock-page.55708a05.js"), true ? ["assets/timeblock-page.55708a05.js","assets/timeblock-page.d6af0fa0.css","assets/vendor.51772f19.js","assets/vendor.ca830f9c.css","assets/date.4f336c4c.js","assets/plugin-vue_export-helper.21dcd24c.js","assets/circle-spinner.b74ab2c7.js"] : void 0);
+      return __vitePreload(() => import("./timeblock-page.e4966f1f.js"), true ? ["assets/timeblock-page.e4966f1f.js","assets/timeblock-page.d6af0fa0.css","assets/vendor.51772f19.js","assets/vendor.ca830f9c.css","assets/date.4f336c4c.js","assets/plugin-vue_export-helper.21dcd24c.js","assets/circle-spinner.b74ab2c7.js"] : void 0);
     })
   }
 ];
