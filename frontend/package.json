@@ -34,7 +34,7 @@
 		"vue-router": "^4.0.12"
 	},
 	"devDependencies": {
-		"@quasar/vite-plugin": "^1.0.4",
+		"@quasar/vite-plugin": "^1.0.5",
 		"@trpc/server": "^9.19.0",
 		"@types/node": "^17.0.0",
 		"@vitejs/plugin-vue": "^2.0.0",
