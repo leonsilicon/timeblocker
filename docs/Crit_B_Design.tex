@@ -34,24 +34,37 @@ There will be multiple types of TaskBlocks, and the \texttt{FixedTimeTaskBlock} 
 \end{figure}
 
 \section*{UI Design}
+
+I created the following UI designs using Figma (https://figma.com).
+
+\subsection*{Register Page}
 \begin{figure}[H]
-\includegraphics[width=\textwidth]{login-page.png}
+	\caption{For the register page, the user must enter their password twice in order to make sure that they've typed it correctly.}
+	\includegraphics[width=\textwidth]{register-page.png}
 \end{figure}
 
+\subsection*{Login Page}
 \begin{figure}[H]
-\includegraphics[width=\textwidth]{register-page.png}
+	\caption{For the login page, the user enters the same email and password they used when registering for a new account.}
+	\includegraphics[width=\textwidth]{login-page.png}
 \end{figure}
 
+\subsection*{Calendar View}
 \begin{figure}[H]
-\includegraphics[width=\textwidth]{month-view.png}
+	\caption{The calendar view provides the user with a high level overview of their various timeblocks for each day.}
+	\includegraphics[width=\textwidth]{month-view.png}
 \end{figure}
 
+\subsection*{Week View}
 \begin{figure}[H]
-\includegraphics[width=\textwidth]{week-view.png}
+	\caption{The week view provides the user with a view of their timeblocks for the current week.}
+	\includegraphics[width=\textwidth]{week-view.png}
 \end{figure}
 
+\subsection*{Day View}
 \begin{figure}[H]
-\includegraphics[width=\textwidth]{day-view.png}
+	\caption{The day view provides the user with a specific hour-by-hour breakdown of how they've scheduled their day.}
+	\includegraphics[width=\textwidth]{day-view.png}
 \end{figure}
 
 \newpage
@@ -59,6 +72,9 @@ There will be multiple types of TaskBlocks, and the \texttt{FixedTimeTaskBlock} 
 \section*{Algorithms}
 
 \subsection*{Merge Sort}
+
+Merge sort is used to sort the tasks in alphabetical order. Because the tasks are JavaScript objects (equivalent of hashmaps in other languages), a custom comparison function must be used that compares the \texttt{name} property of the objects.
+
 \begin{verbatim}
 // The comparison function returns true if the first element is less than
 // the second element
@@ -100,6 +116,10 @@ function mergeSort (array, comparisonFunction)
 	& Comments
 	\\\hline
 	Landing Page
+	\begin{itemize}
+		\item Login/Register Button, Call to Action
+		\item Features List
+	\end{itemize}
 
 	\medskip
 
@@ -126,14 +146,13 @@ function mergeSort (array, comparisonFunction)
 	&
 	The user needs to be able to manage their task blocks on the sidebar, with the ability to add different types of tasks and sort the tasks based on the name.
 	\\\hline
-	The Calendar View
+	The Calendar Views
 	\begin{itemize}
 		\item Able to see a calendar and create a timeblock for any day on the calendar.
-		\item Ability to see a time-based (hour-by-hour) view when viewing a timeblock schedule for a specific day.
 	\end{itemize}
 	\textbf{Time:} 2 weeks
 	&
-	The calendar should allow the user to navigate between various months and see all the days where they've already created a timeblock. When viewing a timeblock for a specific day, the user must be able to interact with the timeblock schedule and have the ability to drag nd resize tasks to reorder them.
+	The calendar should allow the user to navigate between various months and see all the days where they've already created a timeblock. When viewing a timeblock for a specific day, the user must be able to interact with the timeblock schedule and have the ability to drag and resize tasks to reorder them.
 	\\\hline
 \end{xltabular}
 

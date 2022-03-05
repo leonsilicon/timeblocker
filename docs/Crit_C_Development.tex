@@ -12,8 +12,10 @@
 \usepackage{xcolor}
 \usepackage{titling} % https://tex.stackexchange.com/questions/591/removing-vertical-space-inside-maketitle/593
 \usepackage{authoraftertitle}
-\usepackage{pythontex}
 \usepackage{xltabular}
+\usepackage[document]{ragged2e}
+\usepackage[font=small,labelfont=bf]{caption}
+
 \renewcommand{\familydefault}{\sfdefault}
 
 \graphicspath{{images/}}
@@ -22,7 +24,6 @@
 
 \title{Criterion C: Development}
 \definecolor{msblue}{HTML}{5AB5D8}
-\makeatletter
 
 \begin{document}
 % Title
@@ -46,7 +47,7 @@ The frontend is a single-page application built with Vue, a JavaScript framework
 	\centerline{\adjustbox{valign=t}{
 			\includegraphics[width=0.3\textwidth]{frontend-files.png}
 		}}
-	 &
+	&
 	\begin{itemize}[label={}, leftmargin=5pt]
 		\item \textbf{public:} Assets that are hosted on the website as-is (e.g. the favicon).
 		\item \textbf{src/:} The main website source code.
@@ -78,9 +79,9 @@ For the frontend, I used Vite, a build tool that uses a feature called ``Hot Mod
 		X
 	}
 	\centerline{\adjustbox{valign=t}{
-			\includegraphics[width=1\textwidth]{frontend-pages-folder.png}
+			\includegraphics[width=1\linewidth]{frontend-pages-folder.png}
 		}}
-	 &
+	&
 	The code responsible for the user interface is stored under the src/pages folder.
 	The \code{.vue} file extension indicates Vue Single-File Components, or SFCs for short.
 	These files contain all the necessary HTML, CSS, and JavaScript to render a component part of a dynamic user interface.
@@ -96,7 +97,7 @@ For the frontend, I used Vite, a build tool that uses a feature called ``Hot Mod
 		@{}
 	}
 	In each Vue SFC, there are three root tags: the \code{<script>} tag, the \code{<template>} tag, and the \code{<style>} tag. The \code{<script>} tag contains the JavaScript/TypeScript code that is executed when the component is initialized for the first time. The \code{<template>} tag contains the HTML that defines the structure of the component, and the \code{<style>} tag contains the CSS that is used to style the component.
-	 &
+	&
 	\centerline{\adjustbox{valign=t}{
 			\includegraphics[width=0.6\textwidth]{frontend-vue-sfc.png}
 		}}
@@ -105,26 +106,60 @@ For the frontend, I used Vite, a build tool that uses a feature called ``Hot Mod
 Most of the SFCs don't contain a \code{<style>} tag because the CSS styles are primarily contained within the HTML using TailwindCSS's utility classes. TailwindCSS is a CSS framework that provides flexible utility classes for making it easier to style HTML. In addition, I used a Tailwind library known as daisyUI that provides out-of-the-box styled components for common HTML components.
 
 \section*{Landing Page}
-\includegraphics[width=\textwidth]{frontend-landing-page.png}
 
-To build the landing page, I used Vue's \code{v-for} feature: instead of copy-pasting my HTML code three times and, I defined the information needed to render each feature in my JavaScript and used \code{v-for} to render multiple HTML elements:
+\begin{figure}[H]
+	\caption{A screenshot of Timeblocker's landing page.}
+	\includegraphics[width=\textwidth]{frontend-landing-page.png}
+\end{figure}
 
-\includegraphics[width=\textwidth]{landing-page-features.png}
-\includegraphics[width=\textwidth]{landing-page-v-for.png}
+\newpage
 
-In addition, I used an if statement for the functionality of the "Create Timeblock" button that dynamically redirects the user based on whether or not they are logged in to the site. If they are logged in, it brings the user to the "Timeblock" page, and otherwise to the "Register" page.
-\includegraphics[width=0.3\textwidth]{landing-page-go-to-timeblock-page.png}
+To build the landing page, I used Vue's \code{v-for} feature: instead of copy-pasting my HTML code three times, I defined the information needed to render each feature in my JavaScript and used \code{v-for} to render multiple HTML elements:
 
+\begin{figure}[H]
+	\caption{Storing the features and descriptions in a JavaScript array.}
+	\includegraphics[width=\textwidth]{landing-page-features.png}
+\end{figure}
+
+\begin{figure}[H]
+	\caption{Rendering the landing page features using Vue's equivalent of a for loop.}
+	\includegraphics[width=\textwidth]{landing-page-v-for.png}
+\end{figure}
+
+\newpage
+
+In addition, I used an if statement for the functionality of the "Create Timeblock" button so that if the use is logged in, it brings them to the "Timeblock" page and otherwise to the "Register" page.
+\begin{figure}[H]
+	\centering
+	\caption{Using an if statement to dynamically redirect the user.}
+	\includegraphics[width=0.5\textwidth]{landing-page-go-to-timeblock-page.png}
+\end{figure}
+
+\newpage
 \section*{Register/Login Page}
 
-\includegraphics[width=0.4\textwidth]{frontend-register-page.png}
-\includegraphics[width=0.4\textwidth]{frontend-login-page.png}
+\begin{figure}[H]
+	\centering
+	\caption{Screenshots of the Register and Login pages, respectively.}
+	\includegraphics[width=0.7\textwidth]{frontend-register-page.png}
+	\includegraphics[width=0.7\textwidth]{frontend-login-page.png}
+\end{figure}
 
-The register and login page presents the user with a basic form that prompts them to enter their email and password. Even though they may look like two separate pages, I actually only used one file to create both these pages since they share a lot of code, and I decided whether to display the register or the login form based on the route (\code{/login} vs \code{/register}):
+The register and login pages contain a basic form that prompts them to enter their email and password. Even though they may look like two separate pages, I actually only used one file to create both these pages since they share a lot of code, and I used the current page's route (either \code{/login} or \code{/register}) to decide which form to display:
 
-\includegraphics[width=0.4\textwidth]{frontend-entry-page-route.png}
+\begin{figure}[H]
+	\centering
+	\caption{An example of code reuse: I'm always displaying the password input because both the login and register form require a password, but I'm only displaying the Confirm Password input when the register form is active.}
+	\includegraphics[width=0.7\textwidth]{passwords.png}
+\end{figure}
 
-The \code{\$computed} function is Vue-specific function that will automatically update the value of the variable \code{isLogin} whenever the \code{route} variable changes. This way, my page will automatically re-render the correct form whenever the user navigates from the login page to the register page and vice-versa.
+\begin{figure}[H]
+	\centering
+	\caption{Using Vue's \code{\$computed} function that automatically updates the value of \code{isLogin} whenever the webpage's route changes (which is stored in the \code{route} variable. This way, my page will automatically re-render the correct form whenever the user navigates from the login page to the register page and vice-versa.}
+	\includegraphics[width=0.7\textwidth]{frontend-entry-page-route.png}
+\end{figure}
+
+\newpage
 
 \section*{Authentication}
 
@@ -156,7 +191,9 @@ The FixedTimeTaskBlock class overrides the \code{getStartTime} and \code{getEndT
 
 \includegraphics[width=1\textwidth]{polymorphism.png}
 
-In the above code, I'm retrieving the task block using the Timeblock class method \code{getTaskBlock(taskBlockId)}. My code doesn't care which type of TaskBlock it is; the TaskBlock just needs to have a \code{getStartMinute} and \code{getEndMinute} function. When the task block is a FixedTimeTaskBlock, the \code{getStartMinute} and \code{getEndMinute} of the FixedTimeTaskBlock class will be called instead of the \code{getStartMinute} and \code{getEndMinute} of the base TaskBlock class.
+\begin{sloppypar}
+	In the above code, I'm retrieving the task block using the Timeblock class method \code{getTaskBlock(taskBlockId)}. My code doesn't care which type of TaskBlock it is; the TaskBlock just needs to have a \code{getStartMinute} and \code{getEndMinute} function. When the task block is a FixedTimeTaskBlock, the \code{getStartMinute} and \code{getEndMinute} of the FixedTimeTaskBlock class will be called instead of the \code{getStartMinute} and \code{getEndMinute} of the base TaskBlock class.
+\end{sloppypar}
 
 \section*{Timeblock Column}
 
@@ -174,7 +211,7 @@ The backend uses tRPC, a TypeScript library for defining type-safe server routes
 		X
 	}
 	\adjustbox{valign=t}{\includegraphics[width=0.3\textwidth]{backend-files.png}}
-	 &
+	&
 	\begin{itemize}[label={}, leftmargin=5pt]
 		\item	\textbf{prisma/:} Database models and configuration files for the Prisma ORM.
 		\item	\textbf{src/:} Main backend source code.

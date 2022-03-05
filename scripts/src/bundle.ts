@@ -43,6 +43,7 @@ const latexFilenames = [
 	'Crit_B_Record_of_tasks.tex',
 	'Crit_C_Development.tex',
 	'Crit_E_Evaluation.tex',
+	'Appendix.tex'
 ];
 
 await Promise.all(
