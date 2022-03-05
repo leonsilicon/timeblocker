@@ -54,7 +54,15 @@ await Promise.all(
 		const latexDocumentName = `${path.basename(latexFilename, '.tex')}.pdf`;
 		await fs.promises.cp(
 			path.join(docsFolder, 'out', latexDocumentName),
-			path.join(bundleFolder, latexDocumentName)
+			path.join(bundleFolder, latexDocumentName),
+			{ force: true }
 		);
 	})
 );
+
+console.info('Removing node_modules...');
+// Remove node_modules before zipping the file
+exec('rm -rf .git bundle/code/node_modules bundle/code/**/node_modules', { shell: true, stdio: 'inherit' });
+
+console.info('Creating zip files...');
+exec('zip -r bundle.zip bundle', { stdio: 'inherit' });
