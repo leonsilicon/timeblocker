@@ -47,33 +47,35 @@ def word_count():
 \section{Problem Description}
 Many people, especially students like me, have many tasks they need to finish in a day.
 However, an unstructured daily plan can be inefficient: that's where Timeblocking comes in.
-Timeblocking is a strategy where you dedicate chunks of time in your day to work on specific tasks—I use timeblocking in my daily life to help keep my tasks under control.
-While timeblocking is a powerful strategy, implementing
-there's no online program focused on timeblocking: current solutions like Google Calendar make this process difficult and time-consuming.
-These apps don't have features that are essential for timeblocking, like an easy way to create a copy of a schedule to resize it
+
+Timeblocking is a strategy where you dedicate chunks of time of your day to work on specific tasks—I use timeblocking every day to help keep my schedule under control.
+
+While timeblocking is a powerful strategy, there's no online program focused on timeblocking: current solutions like Google Calendar make this process difficult and time-consuming. These apps don't have features that are essential for timeblocking, like an easy way to create a copy of a schedule to resize it
+
 Initially, I considered building a plugin for these apps that would add the additional features, but I eventually learned that they don't expose the necessary functionality for me to fully customize the calendar view.
-Thus, I want to create an app from scratch that allows me (and other students!) to easily create a timeblocking schedule that will sync between multiple devices.
+
+Thus, I want to create an app from scratch that allows me (and other students!) to easily create a timeblocking schedule.
+
+Because I would benefit from an timeblocking app, I have decided that I will be the client of this app, and my dad will be my advisor, helping me determine whether my app is easy to use for new users. I chose my dad as my advisor since he generally has a hard time learning to use new technology, so he would be invaluable for making sure that I design an app that is intuitive for new users to use.
 
 \bigskip
 \py{word_count()}
 
 \section{Proposed Solution}
 My app, Timeblocker, will provide an interface that allows students to add tasks to a daily timeblocking schedule.
-My app will contain two parts: task boxes and a schedule. The boxes will represent tasks, and the user will be able to drag the boxes onto the schedule, where they'll be able to resize the boxes to fit the time on the schedule during when they would like to work on it. The user can create and reuse task blocks, so that they don't need to create a separate event each time.
+My app will contain two parts: task blocks and a schedule. The user will be able to drag the task blocks onto the schedule. They'll also be able to resize the task boxes to mark the exact time range during which they would like to work on the task.
 
-Each task block will have a title (the name of the task), a description, and extra information based on the box type.
-There will be multiple types of boxes, such as a school based box, an entertainment box, etc.
-Thus, this will need the use of inheritance (SchoolTaskBox extends TaskBox).
+Each task block will have a title and a description. There will be multiple types of task blocks, such as one for representing recurring tasks.
 
-The app will also allow the user the ability to import and export their schedules as a file.
-In addition, users will have the ability to create an account to synchronize their schedules across different computers.
+In addition, users will have the ability to synchronize their schedules across different devices.
 
 I'm building this app in TypeScript (a superset of JavaScript that compiles to JavaScript) because I want this app to be as accessible as possible.
-Since TypeScript compiles to JavaScript, a programming language that all browser support, users will be able to access my app from any device with a browser:
-all they need to do is visit the website \href{https://ib.timeblocker.io}{timeblocker.io}\footnote{For my IB submission, I'm deploying the site under the URL https://ib.timeblocker.io in case I wish to make changes to the site on the original domain. I'll also be including a pre-built version of the website in the code linked to the title page as well.}.
+Since TypeScript compiles to JavaScript, a programming language that all browsers support, users will be able to access my app from any device with a browser:
+all they need to do is visit a website.
+
+I decided to use TypeScript instead of plain JavaScript because TypeScript's strongly-typed guarantees help eliminate many type errors at compile-time (e.g., typos, passing wrong types to functions, etc.).
 In addition, I'll also be building the server in TypeScript:
-by building the frontend and backend in the same language, I'll be able to share code between the frontend and backend which enables me to use powerful libraries like tRPC that automatically read the backend's routes to create type-safe functions.
-I decided to use TypeScript instead of plain JavaScript because TypeScript's strongly-typed guarantees help eliminate many type errors at compile-time (e.g., typos, passing wrong types to functions, calling non-existent class methods).
+by building the frontend and backend in the same language, I'll be able to share code between the frontend and backend, enabling me to leverage powerful libraries like tRPC that automatically read the backend's routes to create type-safe functions for the frontend.
 
 \bigskip
 \py{word_count()}

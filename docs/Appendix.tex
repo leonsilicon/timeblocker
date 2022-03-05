@@ -6,6 +6,7 @@
 \usepackage{pythontex}
 \usepackage{xltabular}
 \usepackage{ragged2e}
+\usepackage{parskip}
 
 \title{Appendix}
 \definecolor{msblue}{HTML}{5AB5D8}
@@ -15,6 +16,57 @@
 \centerline{\textcolor{msblue}{
 		\fontspec{Cambria}\textbf{\fontsize{13}{13}\MyTitle}
 	}}
+
+
+\bgroup\obeylines
+\section*{First Meeting with Advisor}
+\textbf{Me:} Hi dad, could you test out my app for a school project? It's an app that allows you to create a schedule for your day. To use it, you have to visit ib.timeblocker.io.
+\textbf{Dad:} It's a website? Will there be a program I need to download?
+\textbf{Me:} No, you won't need to download a program. Everything will be functional on the website alone.
+\textbf{Dad:} Ok. (visits ib.timeblocker.io) What do I do now?
+\textbf{Me:} You have to create an account using the Register button.
+\textbf{Dad:} (visits the Register page) Do I have to use a valid email?
+\textbf{Me:} No, it can be anything you want. So, what do you think of the pages so far? Do they look nice?
+\textbf{Dad:} Yes, I think they look ok. (creates an account, gets redirected to the timeblock calendar page)
+\textbf{Dad:} So I press the green button to create a timeblock?
+\textbf{Me:} Yes.
+\textbf{Dad:} Ok. (clicks the "add task" button). In the morning, I get up (creates a task called "get up"). I think, at 10AM (drags the "get up" task from the task sidebar and resizes it to fit between 10AM and 10:15AM). Then, I will need to go to the bank (creates a task called "go to bank" and drags it to fit between 11AM and 11:15AM). Then, I will need to go shopping (creates a task called "go shopping").
+\textbf{Me:} What do you think of the interface?
+\textbf{Dad:} I think it looks nice. But, I think the task font should be a bit larger.
+\textbf{Me:} Ok.
+\textbf{Dad:} So how do I create a schedule for a different day?
+\textbf{Me:} You have to click the left arrow in the top left of the screen.
+\textbf{Dad:} (returns to previous page) I also have to visit the Doctor on Monday (creates a timeblock for next Monday). Huh, why are the tasks I created still showing up?
+\textbf{Me:} That's because you might still want to reuse those tasks.
+\textbf{Dad:} But it looks messy and it's a bit confusing.
+\textbf{Me:} I think that I will add a search bar that allows you to filter those tasks to only show some of them and to find certain tasks more easily.
+\textbf{Dad:} (creates a task called "go to doctor" and resizes it between 1PM and 2PM) Alright, I think those are all the tasks I have.
+\textbf{Me:} What did you think overall about the app?
+\textbf{Dad:} I think it was good, I think adding a search bar and making the font size bigger would make the app better.
+\textbf{Me:} Alright, thank you for testing it!
+
+\section*{Second Meeting with Advisor}
+\textbf{Me:} Hi dad, I've implemented the changes you wanted from our first meeting. Could you test the app again?
+\textbf{Dad:} Is it still at the same website?
+\textbf{Me:} Yes, you just need to visit ib.timeblocker.io
+\textbf{Dad:} (visits the website and types in his credentials) Oh, the schedules saved from last time!
+\textbf{Me:} Oh yeah, I forgot to tell you about that the first time.
+\textbf{Dad:} (clicks on one of his timeblocks). I see the bigger font size, it looks much better.
+\textbf{Me:} Thanks.
+\textbf{Dad:} (types in "bank" in the search bar). And the search bar works.
+\textbf{Me:} I also added a checkbox that allows you to sort the tasks by name.
+\textbf{Dad:} (selects the checkbox and then unselects the checkbox) That's cool.
+\textbf{Me:} Oh, and I forgot to mention the first time, there's also the ability to create a new column by pressing the plus icon in the top right.
+\textbf{Dad:} (presses the "add column" button) What is the point of a new column?
+\textbf{Me:} Well, it's for when you want to change your schedule in case it ends up getting interrupted.
+\textbf{Dad:} Why can't you just modify the original schedule?
+\textbf{Me:} I guess, so that you can preserve history and also compare your new schedule with your old one.
+\textbf{Dad:} Oh, ok. (navigates back) I think the app is good.
+\textbf{Me:} Do you think it would benefit students?
+\textbf{Dad:} Yes, for sure.
+\textbf{Me:} Alright, thank you for testing it once again!
+\egroup
+
 
 \section*{Third-party libraries}
 My program makes extensive use of third-party libraries:
@@ -181,20 +233,18 @@ packages = [
 	),
 	(
 		"bcrypt",
-		"TODO",
+		"A hashing library for creating secure one-way hashes of users' passwords.",
 		"Backend"
 	),
-	("fastify","TODO", "Backend"),
-	("fastify-cookie","TODO", "Backend"),
-	("fastify-cors","TODO", "Backend"),
-	("fastify-plugin","TODO", "Backend"),
-	("got","TODO", "Backend"),
-	("onetime","TODO", "Backend"),
-	("zod","TODO", "Backend"),
-	("execa","TODO", "Backend"),
-	("lion-system","TODO", "Backend"),
-	("nodemon","TODO", "Backend"),
-	("tsc-alias","TODO", "Backend"),
+	("fastify","A web framework for Node.js", "Backend"),
+	("fastify-cookie","A Fastify plugin that adds supports for cookies.", "Backend"),
+	("fastify-cors","A Fastify plugin that adds support for CORS (Cross-Origin Resource Sharing).", "Backend"),
+	("fastify-plugin","A Fastify tool that allows me to create custom plugins.", "Backend"),
+	("got","A tool that allows me to make requests to other websites.", "Backend"),
+	("onetime","A function that ensures a function only gets run once.", "Backend"),
+	("zod","A validation library.", "Backend"),
+	("execa","A function that allows running code on the system.", "Backend"),
+	("lion-system","A custom library containing useful tools for my workflow.", "Backend"),
 ]
 
 def create_libraries_table():
@@ -212,9 +262,9 @@ def create_libraries_table():
 
 \def\arraystretch{1.5}
 \noindent\begin{xltabular}{\textwidth}{|
-	p{0.3\textwidth\RaggedRight}|
-	X|
-	p{0.12\textwidth\RaggedRight}|}
+		p{0.3\textwidth\RaggedRight}|
+		X|
+		p{0.12\textwidth\RaggedRight}|}
 	\hline
 	Name &
 	Description &

@@ -10,6 +10,7 @@
 \definecolor{msblue}{HTML}{5AB5D8}
 \makeatletter
 \graphicspath{{images/}}
+\newenvironment{code}{\ttfamily}{\par}
 
 \begin{document}
 \centerline{\textcolor{msblue}{
@@ -28,6 +29,46 @@
 \includegraphics[width=\textwidth]{month-view.png}
 \includegraphics[width=\textwidth]{week-view.png}
 \includegraphics[width=\textwidth]{day-view.png}
+
+\section*{Algorithms}
+
+\subsection*{Merge Sort}
+\bgroup\obeylines
+\noindent\begin{code}
+// The comparison function returns true if the first element is less than the second element
+function merge (leftArray, rightArray, comparisonFunction)
+	sortedArray = []
+	leftIndex = 0
+	rightIndex = 0
+
+	while leftIndex < leftArray.length and rightIndex < rightArray.length
+		// If the left element is less than the right element
+		if comparisonFunction(left[leftIndex], right[rightIndex])
+			sortedArray.push(left[leftIndex])
+			leftIndex += 1
+		else
+			sortedArray.push(right[rightIndex])
+			rightIndex += 1
+
+	return sortedArray +
+		remaining elements of left array +
+		remaining elements of right array
+
+function mergeSort (array, comparisonFunction)
+	half = array.length / 2
+
+	if array.length < 2
+		return array
+
+	left = array.slice(0, half)
+	right = array.slice(half, array.length)
+
+	return merge(
+		mergeSort(left, comparisonFunction),
+		mergeSort(right, comparisonFunction)
+	)
+\end{code}
+\egroup
 
 \newpage
 \section*{Product Development Plan}
