@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { mdiMenuDown } from '@mdi/js';
-import { getCurrentInstance } from 'vue';
 
 const emit = defineEmits(['select']);
-console.log(getCurrentInstance());
 </script>
 
 <template>
