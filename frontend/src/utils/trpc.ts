@@ -4,7 +4,7 @@ import { LocalStorageKey } from '~f/types/local-storage';
 
 export const client = createTRPCClient<AppRouter>({
 	url: import.meta.env.VITE_BACKEND_URL,
-	headers: () => {
+	headers() {
 		const sessionToken = window.localStorage.getItem(
 			LocalStorageKey.sessionToken
 		);

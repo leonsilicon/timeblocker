@@ -16,10 +16,7 @@
 
 \section*{Success Criteria Evaluation}
 
-Overall, I met most of the success criteria.
-
-\section*{Recommendations for Future Improvements}
-However, there is still some room for improvement, such as preventing task blocks from overlapping and the ability to change the task block independently of the task name.
+I successfully met most of the success criteria—I did modify two of them because I believed that there was a better solution for Timeblocker:
 
 \def\arraystretch{1.5}
 \begin{xltabular}{\textwidth}{|X|X|}
@@ -67,6 +64,40 @@ However, there is still some room for improvement, such as preventing task block
 	Schedule autosaves every time changes are made
 	&
 	Yes, I designed Timeblocker so that whenever the user makes a change to the schedule, it will send a request to the server updating the database with the user's local changes so that they can be reflected on other devices.
+	\\\hline
+\end{xltabular}
+
+\section*{Recommendations for Future Improvements}
+
+\begin{xltabular}{\linewidth}{|X|X|}
+	\hline
+	\textbf{Improvement}
+	&
+	\textbf{Description}
+	\\\hline
+	Preventing task blocks from overlapping
+	&
+	Currently, you can overlap one task block over another, and while this might be useful in a few cases, I think it would be better to have the two task blocks separated side-by-side like in other calendar apps so you can see both of the tasks at once.
+	\\\hline
+	Adding a tutorial
+	&
+	I had to explain to my advisor a bit about how to use the app, so I think it might make it easier to use if there was a help menu or a follow-along tutorial that played for the user when they visited it for the first time.
+	\\\hline
+	Account password resets \& deletion
+	&
+	Currently, there is no way to reset an account's password or to change the password, and there's also no way to delete the account. Optimally, these features should be implemented in a public app for security/privacy purposes.
+	\\\hline
+	Scaling the calendar based on the active tasks
+	&
+	My original plan was to make certain time chunks on the calendar smaller when there wasn't any task that was happening at that time (e.g. from 12AM to 6AM), but I found the implementation too difficult (especially since the user needs to drag the blocks). I think this would make the calendar much cleaner to view, especially on smaller screens.
+	\\\hline
+	Offline support
+	&
+	A downside with the application being a website is that you need internet to access it. However, there is a feature called Progressive Web Apps that allows websites to function offline. I think this would make Timeblocker much more useful, especially in use cases where the user might not have internet.
+	\\\hline
+	Creating task blocks directly on the schedule without creating a task beforehand
+	&
+	Sometimes, the user might have one-off tasks and they don't want to make a task beforehand to have to drag onto the schedule. It would be convenient if the user could create these tasks directly on the schedule.
 	\\\hline
 \end{xltabular}
 

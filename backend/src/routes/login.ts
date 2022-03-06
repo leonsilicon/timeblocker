@@ -1,10 +1,6 @@
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
-import {
-	authenticateClient,
-	getCtxAccountId,
-	getCtxSessionToken,
-} from '~b/utils/auth.js';
+import { authenticateClient, getCtxAccountId } from '~b/utils/auth.js';
 import { throwTrpcError } from '~b/utils/error.js';
 import { createRouter } from '~b/utils/index.js';
 import { trpcError } from '~s/types/error.js';

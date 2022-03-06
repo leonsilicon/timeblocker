@@ -6,7 +6,10 @@
 \usepackage{authoraftertitle}
 \usepackage{xltabular}
 \usepackage{float}
+\usepackage{enumitem}
 \usepackage[font=small,labelfont=bf]{caption}
+
+\setlist{nolistsep}
 
 \title{Criterion B: Design}
 \definecolor{msblue}{HTML}{5AB5D8}
@@ -158,5 +161,52 @@ function mergeSort (array, comparisonFunction)
 
 \newpage
 
+\section*{Testing Plan}
+\begin{xltabular}{\linewidth}{|X|X|}
+	\hline
+	\textbf{Test Description}
+	&
+	\textbf{Success Criteria Fulfilled}
+	\\\hline
+	Creating a new account with the email ``test@example.com" with the password "password", then logging out, then trying to log back in with the same email but different password, which should give an error. Then, enter the correct password, which should log in successfully.
+	&
+	\vspace{-5mm}
+	\begin{itemize}
+		\item Registering and logging into accounts
+	\end{itemize}
+	\\\hline
+	Creating a new task, dragging it onto the schedule, resizing the task block, renaming the task and having all timeblocks on the schedule renamed, then deleting the task and having the task on the schedule remain there (since deleting shouldn't delete tasks on the schedule in order to preserve history).
+	&
+	\vspace{-5mm}
+	\begin{itemize}
+		\item Creating, editing, and delete tasks
+		\item Drag tasks onto the schedule to create task blocks
+		\item Resizing the task blocks that are on the schedule
+	\end{itemize}
+	\\\hline
+	Creating a timeblock for today and adding a task to the timeblock, then returning to the calendar, and then creating a timeblock for the following day and adding a different task to the timeblock, then returning back to the timeblock for today and seeing that the right tasks are shown on the calendar.
+	&
+	\vspace{-5mm}
+	\begin{itemize}
+		\item Creating multiple timeblocks
+		\item Changing the schedule view between day and week/month
+		\item Schedule autosaves every time changes are made
+	\end{itemize}
+	\\\hline
+	Creating tasks with the names "Task 1" and "Task 2", with descriptions of "Description 3" and "Description 4" respectively, then typing in the search bar "Task 1" and only seeing the first task, and then typing in the search bar "Description 4" and only seeing the second task.
+	&
+	\vspace{-5mm}
+	\begin{itemize}
+		\item Searching through task blocks
+	\end{itemize}
+	\\\hline
+	Opening a new browser and checking that the timeblocks are successfully saved when I log into my account. Then, create a new task on the new browser session and then closing the browser and refresh the previous browser. The new task should show up in the previous browser.
+	&
+	\vspace{-5mm}
+	\begin{itemize}
+		\item Server-side synchronization with a database to access schedules across devices
+	\end{itemize}
+	\\\hline
+\end{xltabular}
 
 \end{document}

@@ -60,7 +60,7 @@ type AuthenticateClientProps = {
 
 /**
  * Authenticates the client.
- * @returns The payload to be sent back to the client (undefined in the case of a cookie)
+ * @returns The payload to be sent back to the client.
  */
 export async function authenticateClient(
 	ctx: Context,

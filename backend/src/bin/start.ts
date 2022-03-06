@@ -1,7 +1,6 @@
 import process from 'node:process';
 import fastify from 'fastify';
 import { fastifyTRPCPlugin } from '@trpc/server/adapters/fastify/dist/trpc-server-adapters-fastify.cjs.js';
-import fastifyCookie from 'fastify-cookie';
 import fastifyCors from 'fastify-cors';
 import fp from 'fastify-plugin';
 import dayjs from 'dayjs';
@@ -11,6 +10,7 @@ import timezone from 'dayjs/plugin/timezone.js';
 import { getAppRouter } from '~b/routes/router.js';
 import { createContext, getPrismaClient } from '~b/utils/index.js';
 
+// Initialize dayjs plugins
 dayjs.extend(objectSupport);
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -19,6 +19,7 @@ dayjs.tz.setDefault('America/Toronto');
 // Ensure the prisma client is connected to the database
 await getPrismaClient();
 
+// Start fastify server and register tRPC plugin
 const app = fastify();
 void app.register(fastifyCors);
 void app.register(fp(fastifyTRPCPlugin as any), {
@@ -28,20 +29,8 @@ void app.register(fp(fastifyTRPCPlugin as any), {
 		createContext,
 	},
 });
-void app.register(fastifyCookie, {
-	secret: process.env.APP_SECRET,
-	parseOptions: {
-		httpOnly: false,
-		secure: process.env.NODE_ENV === 'production',
-		domain:
-			process.env.NODE_ENV === 'production'
-				? process.env.CLIENT_URL
-				: undefined,
-		sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'none',
-		signed: true,
-	},
-});
 
+// Bind server to port
 app.listen(process.env.PORT ?? 4000, '0.0.0.0', (err, address) => {
 	if (err) {
 		console.error(err);

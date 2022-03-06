@@ -8,6 +8,29 @@ import { trpcError } from '~s/types/error.js';
 
 export const timeblockCrudRouter = createRouter()
 	.middleware(accountMiddleware)
+	.query('getTimeblock', {
+		input: z.object({
+			timeblockId: z.string(),
+		}),
+		async resolve({ ctx, input: { timeblockId } }) {
+			const timeblock = await ctx.prisma.timeblock.findFirst({
+				select: {
+					id: true,
+					date: true,
+				},
+				where: {
+					id: timeblockId,
+					ownerAccountId: ctx.accountId,
+				},
+			});
+
+			if (timeblock === null) {
+				throwTrpcError(trpcError.timeblockNotFound);
+			}
+
+			return timeblock;
+		},
+	})
 	.mutation('createTimeblock', {
 		input: z.object({
 			date: z.object({
@@ -110,29 +133,7 @@ export const timeblockCrudRouter = createRouter()
 			};
 		},
 	})
-	.query('getTimeblock', {
-		input: z.object({
-			timeblockId: z.string(),
-		}),
-		async resolve({ ctx, input: { timeblockId } }) {
-			const timeblock = await ctx.prisma.timeblock.findFirst({
-				select: {
-					id: true,
-					date: true,
-				},
-				where: {
-					id: timeblockId,
-					ownerAccountId: ctx.accountId,
-				},
-			});
 
-			if (timeblock === null) {
-				throwTrpcError(trpcError.timeblockNotFound);
-			}
-
-			return timeblock;
-		},
-	})
 	.query('listTimeblocks', {
 		async resolve({ ctx }) {
 			const timeblocks = await ctx.prisma.timeblock.findMany({
