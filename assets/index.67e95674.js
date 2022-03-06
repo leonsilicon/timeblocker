@@ -76,7 +76,7 @@ var LocalStorageKey;
 })(LocalStorageKey || (LocalStorageKey = {}));
 const client = createTRPCClient({
   url: "https://ib-timeblocker.herokuapp.com/trpc",
-  headers: () => {
+  headers() {
     const sessionToken = window.localStorage.getItem(LocalStorageKey.sessionToken);
     if (sessionToken === null) {
       return {};
@@ -159,25 +159,25 @@ const routes = [
   {
     path: "/",
     component: () => __async(this, null, function* () {
-      return __vitePreload(() => import("./content-layout.94765a9e.js"), true ? ["assets/content-layout.94765a9e.js","assets/vendor.9caf08f2.js","assets/vendor.ca830f9c.css"] : void 0);
+      return __vitePreload(() => import("./content-layout.e245d753.js"), true ? ["assets/content-layout.e245d753.js","assets/vendor.9caf08f2.js","assets/vendor.ca830f9c.css"] : void 0);
     }),
     children: [
       {
         path: "/",
         component: () => __async(this, null, function* () {
-          return __vitePreload(() => import("./landing-page.52c8c82c.js"), true ? ["assets/landing-page.52c8c82c.js","assets/vendor.9caf08f2.js","assets/vendor.ca830f9c.css"] : void 0);
+          return __vitePreload(() => import("./landing-page.84270220.js"), true ? ["assets/landing-page.84270220.js","assets/vendor.9caf08f2.js","assets/vendor.ca830f9c.css"] : void 0);
         })
       },
       {
         path: "/login",
         component: () => __async(this, null, function* () {
-          return __vitePreload(() => import("./entry-page.fe6e97e6.js"), true ? ["assets/entry-page.fe6e97e6.js","assets/vendor.9caf08f2.js","assets/vendor.ca830f9c.css","assets/circle-spinner.c1326b80.js","assets/plugin-vue_export-helper.21dcd24c.js"] : void 0);
+          return __vitePreload(() => import("./entry-page.b1cea9f2.js"), true ? ["assets/entry-page.b1cea9f2.js","assets/vendor.9caf08f2.js","assets/vendor.ca830f9c.css","assets/circle-spinner.c1326b80.js","assets/plugin-vue_export-helper.21dcd24c.js"] : void 0);
         })
       },
       {
         path: "/register",
         component: () => __async(this, null, function* () {
-          return __vitePreload(() => import("./entry-page.fe6e97e6.js"), true ? ["assets/entry-page.fe6e97e6.js","assets/vendor.9caf08f2.js","assets/vendor.ca830f9c.css","assets/circle-spinner.c1326b80.js","assets/plugin-vue_export-helper.21dcd24c.js"] : void 0);
+          return __vitePreload(() => import("./entry-page.b1cea9f2.js"), true ? ["assets/entry-page.b1cea9f2.js","assets/vendor.9caf08f2.js","assets/vendor.ca830f9c.css","assets/circle-spinner.c1326b80.js","assets/plugin-vue_export-helper.21dcd24c.js"] : void 0);
         })
       },
       {
@@ -189,7 +189,7 @@ const routes = [
       {
         path: "/timeblocks",
         component: () => __async(this, null, function* () {
-          return __vitePreload(() => import("./timeblock-calendar.aa47740c.js"), true ? ["assets/timeblock-calendar.aa47740c.js","assets/timeblock-calendar.fe576b31.css","assets/vendor.9caf08f2.js","assets/vendor.ca830f9c.css","assets/circle-spinner.c1326b80.js","assets/plugin-vue_export-helper.21dcd24c.js","assets/date.61d6a1c3.js"] : void 0);
+          return __vitePreload(() => import("./timeblock-calendar.7cbf00e9.js"), true ? ["assets/timeblock-calendar.7cbf00e9.js","assets/timeblock-calendar.fe576b31.css","assets/vendor.9caf08f2.js","assets/vendor.ca830f9c.css","assets/circle-spinner.c1326b80.js","assets/plugin-vue_export-helper.21dcd24c.js","assets/date.61d6a1c3.js"] : void 0);
         })
       }
     ]
@@ -197,7 +197,7 @@ const routes = [
   {
     path: "/timeblock/:id",
     component: () => __async(this, null, function* () {
-      return __vitePreload(() => import("./timeblock-page.67d40eaa.js"), true ? ["assets/timeblock-page.67d40eaa.js","assets/timeblock-page.d6af0fa0.css","assets/vendor.9caf08f2.js","assets/vendor.ca830f9c.css","assets/date.61d6a1c3.js","assets/plugin-vue_export-helper.21dcd24c.js","assets/circle-spinner.c1326b80.js"] : void 0);
+      return __vitePreload(() => import("./timeblock-page.f66cf9bc.js"), true ? ["assets/timeblock-page.f66cf9bc.js","assets/timeblock-page.d6af0fa0.css","assets/vendor.9caf08f2.js","assets/vendor.ca830f9c.css","assets/date.61d6a1c3.js","assets/plugin-vue_export-helper.21dcd24c.js","assets/circle-spinner.c1326b80.js"] : void 0);
     })
   }
 ];

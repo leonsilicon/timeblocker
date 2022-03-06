@@ -19,7 +19,7 @@ var __async = (__this, __arguments, generator) => {
   });
 };
 import { a as defineComponent, p as useRouter, q as useRoute, r as resolveComponent, o as openBlock, b as createElementBlock, e as createVNode, w as withCtx, v as createBaseVNode, x as unref, F as Fragment, y as createBlock, z as createCommentVNode, A as createTextVNode } from "./vendor.9caf08f2.js";
-import { u as useAppStore, L as LocalStorageKey, c as client } from "./index.d7652262.js";
+import { u as useAppStore, L as LocalStorageKey, c as client } from "./index.67e95674.js";
 const _hoisted_1$1 = { class: "row items-center bg-white p-4" };
 const _hoisted_2$1 = /* @__PURE__ */ createTextVNode(" timeblocker.io ");
 const _hoisted_3 = { class: "ml-auto" };
