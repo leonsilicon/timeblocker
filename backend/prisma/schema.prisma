@@ -17,10 +17,29 @@ model Account {
   timeblocks   Timeblock[]
 
   accountSessionTokens AccountSessionToken[]
+  accountCsrfTokens    AccountCsrfToken[]
   TimeblockTask        TimeblockTask[]
 }
 
+enum AuthenticationMethod {
+  header
+  cookie
+}
+
 model AccountSessionToken {
+  token     String  @id()
+  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  accountId String
+
+  // Token to be sent in the header in "cookie" requests and
+  // stored in localStorage to prevent CSRF attacks
+  csrfToken String?
+
+  // Either 'header' or 'cookie'
+  authenticationMethod AuthenticationMethod
+}
+
+model AccountCsrfToken {
   token     String  @id()
   account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
   accountId String
