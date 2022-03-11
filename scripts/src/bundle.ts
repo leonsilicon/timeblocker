@@ -86,9 +86,11 @@ fs.rmSync(path.join(submissionProductFolder, 'docs'), { recursive: true });
 fs.writeFileSync(
 	path.join(submissionFolder, 'Product/run.bat'),
 	outdent`
-		python -m http.server --directory ./code/frontend/dist 7800
+		python -m http.server --directory ./frontend/dist 7800
 	`
 );
+
+exec('chmod +x Product/run.bat');
 
 fs.cpSync(
 	'assets/cover_page.html',
