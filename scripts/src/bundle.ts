@@ -90,7 +90,10 @@ fs.writeFileSync(
 	`
 );
 
-fs.cpSync('assets/cover_page.html', submissionFolder);
+fs.cpSync(
+	'assets/cover_page.html',
+	path.join(submissionFolder, 'cover_page.html')
+);
 
 console.info('Creating zip files...');
 exec('zip -r ComputerScienceIA.zip ComputerScienceIA', { stdio: 'inherit' });
