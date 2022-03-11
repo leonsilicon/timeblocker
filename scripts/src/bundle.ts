@@ -90,7 +90,7 @@ fs.writeFileSync(
 	`
 );
 
-exec('chmod +x Product/run.bat');
+exec('chmod +x ComputerScienceIA/Product/run.bat');
 
 fs.cpSync(
 	'assets/cover_page.html',
