@@ -1,1 +1,0 @@
-python -m http.server --directory ./code/frontend/dist 7800

@@ -8,16 +8,19 @@ import { compileLatex } from 'latex-workflow';
 const projectDir = getProjectDir(import.meta.url);
 chProjectDir(import.meta.url);
 
-const bundleFolder = path.join(projectDir, 'bundle');
-const bundleCodeFolder = path.join(bundleFolder, 'code');
+const bundleFolder = path.join(projectDir, 'ComputerScienceIA');
+const bundleCodeFolder = path.join(bundleFolder, 'Product');
 
-console.info('Removing old bundle/code folder...');
+console.info('Removing old bundle product folder...');
 fs.rmSync(bundleCodeFolder, { force: true, recursive: true });
 
 console.info('Cloning the repository...');
-exec('git clone git@github.com:leonzalion/timeblocker bundle/code', {
-	stdio: 'inherit',
-});
+exec(
+	'git clone git@github.com:leonzalion/timeblocker ComputerScienceIA/Product',
+	{
+		stdio: 'inherit',
+	}
+);
 
 console.info('Installing dependencies...');
 exec('pnpm i', { stdio: 'inherit', cwd: bundleCodeFolder });
@@ -38,13 +41,16 @@ exec('pnpm build:frontend', { stdio: 'inherit', cwd: bundleCodeFolder });
 const docsFolder = path.join(projectDir, 'docs');
 
 const latexFilenames = [
-	'Crit_A_Planning.tex',
-	'Crit_B_Design.tex',
-	'Crit_B_Record_of_tasks.tex',
-	'Crit_C_Development.tex',
-	'Crit_E_Evaluation.tex',
-	'Appendix.tex'
+	'Criterion_A_Planning.tex',
+	'Criterion_B_Design.tex',
+	'Criterion_B_Record_of_tasks.tex',
+	'Criterion_C_Development.tex',
+	'Criterion_E_Evaluation.tex',
+	'Appendix.tex',
 ];
+
+const documentationFolder = path.join(bundleFolder, 'Documentation');
+await fs.promises.mkdir(documentationFolder, { recursive: true });
 
 await Promise.all(
 	latexFilenames.map(async (latexFilename) => {
@@ -55,10 +61,15 @@ await Promise.all(
 		const latexDocumentName = `${path.basename(latexFilename, '.tex')}.pdf`;
 		await fs.promises.cp(
 			path.join(docsFolder, 'out', latexDocumentName),
-			path.join(bundleFolder, latexDocumentName),
+			path.join(documentationFolder, latexDocumentName),
 			{ force: true }
 		);
 	})
+);
+
+await fs.promises.cp(
+	path.join(docsFolder, 'Criterion_D_Functionality.mp4'),
+	path.join(documentationFolder, 'Criterion_D_Functionality.mp4')
 );
 
 console.info('Removing node_modules...');
@@ -69,5 +80,15 @@ exec('rm -rf .git node_modules **/node_modules', {
 	cwd: bundleCodeFolder,
 });
 
+console.info('Removing LaTeX files...');
+fs.rmSync(path.join(bundleCodeFolder, 'docs'), { recursive: true });
+
+fs.writeFileSync(
+	path.join(bundleFolder, 'Product/run.bat'),
+	outdent`
+		python -m http.server --directory ./code/frontend/dist 7800
+	`
+);
+
 console.info('Creating zip files...');
-exec('zip -r bundle.zip bundle', { stdio: 'inherit' });
+exec('zip -r ComputerScienceIA.zip ComputerScienceIA', { stdio: 'inherit' });
