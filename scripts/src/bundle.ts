@@ -8,11 +8,11 @@ import { compileLatex } from 'latex-workflow';
 const projectDir = getProjectDir(import.meta.url);
 chProjectDir(import.meta.url);
 
-const bundleFolder = path.join(projectDir, 'ComputerScienceIA');
-const bundleCodeFolder = path.join(bundleFolder, 'Product');
+const submissionFolder = path.join(projectDir, 'ComputerScienceIA');
+const submissionProductFolder = path.join(submissionFolder, 'Product');
 
-console.info('Removing old bundle product folder...');
-fs.rmSync(bundleCodeFolder, { force: true, recursive: true });
+console.info('Removing old submission product folder...');
+fs.rmSync(submissionProductFolder, { force: true, recursive: true });
 
 console.info('Cloning the repository...');
 exec(
@@ -23,21 +23,21 @@ exec(
 );
 
 console.info('Installing dependencies...');
-exec('pnpm i', { stdio: 'inherit', cwd: bundleCodeFolder });
+exec('pnpm i', { stdio: 'inherit', cwd: submissionProductFolder });
 
 const frontendEnvFileContents = outdent`
   VITE_BACKEND_URL=https://ib-timeblocker.herokuapp.com/trpc
 `;
 
 fs.writeFileSync(
-	path.join(bundleCodeFolder, 'frontend/.env.production'),
+	path.join(submissionProductFolder, 'frontend/.env.production'),
 	frontendEnvFileContents
 );
 
 console.info('Building frontend...');
-exec('pnpm build:frontend', { stdio: 'inherit', cwd: bundleCodeFolder });
+exec('pnpm build:frontend', { stdio: 'inherit', cwd: submissionProductFolder });
 
-// Copying the PDFs into the bundle
+// Copying the PDFs into the submission
 const docsFolder = path.join(projectDir, 'docs');
 
 const latexFilenames = [
@@ -49,8 +49,8 @@ const latexFilenames = [
 	'Appendix.tex',
 ];
 
-const documentationFolder = path.join(bundleFolder, 'Documentation');
-await fs.promises.mkdir(documentationFolder, { recursive: true });
+const documentationFolder = path.join(submissionFolder, 'Documentation');
+fs.mkdirSync(documentationFolder, { recursive: true });
 
 await Promise.all(
 	latexFilenames.map(async (latexFilename) => {
@@ -67,7 +67,7 @@ await Promise.all(
 	})
 );
 
-await fs.promises.cp(
+fs.cpSync(
 	path.join(docsFolder, 'Criterion_D_Functionality.mp4'),
 	path.join(documentationFolder, 'Criterion_D_Functionality.mp4')
 );
@@ -77,18 +77,20 @@ console.info('Removing node_modules...');
 exec('rm -rf .git node_modules **/node_modules', {
 	shell: true,
 	stdio: 'inherit',
-	cwd: bundleCodeFolder,
+	cwd: submissionProductFolder,
 });
 
 console.info('Removing LaTeX files...');
-fs.rmSync(path.join(bundleCodeFolder, 'docs'), { recursive: true });
+fs.rmSync(path.join(submissionProductFolder, 'docs'), { recursive: true });
 
 fs.writeFileSync(
-	path.join(bundleFolder, 'Product/run.bat'),
+	path.join(submissionFolder, 'Product/run.bat'),
 	outdent`
 		python -m http.server --directory ./code/frontend/dist 7800
 	`
 );
+
+fs.cpSync('assets/cover_page.html', submissionFolder);
 
 console.info('Creating zip files...');
 exec('zip -r ComputerScienceIA.zip ComputerScienceIA', { stdio: 'inherit' });
